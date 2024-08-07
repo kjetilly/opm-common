@@ -440,7 +440,7 @@ WELSPECS
     // the file
     BOOST_CHECK_EQUAL(file_size, write_and_check(3, 5));
     
-    std::cout << "Testing 10 timesteps" << std::endl;
+    std::cout << "Testing 5 timesteps" << std::endl;
     write_and_check(1, 5);
 
 
