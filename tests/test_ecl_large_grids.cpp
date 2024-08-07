@@ -18,7 +18,7 @@ along with OPM.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "config.h"
 
-#define BOOST_TEST_MODULE EclipseIO
+#define BOOST_TEST_MODULE EclLargeGrids
 #include <boost/test/unit_test.hpp>
 
 #include <opm/output/eclipse/EclipseIO.hpp>
@@ -261,7 +261,7 @@ ecl_util_make_date(const int day, const int month, const int year)
 
 } // Anonymous namespace
 
-BOOST_AUTO_TEST_CASE(EclipseIOIntegration)
+BOOST_AUTO_TEST_CASE(EclipseLargeGridFiles)
 {
     const size_t nx = 466;
     const size_t ny = 466;
