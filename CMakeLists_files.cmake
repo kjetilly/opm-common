@@ -453,6 +453,7 @@ list (APPEND TEST_SOURCE_FILES
       tests/test_cmp.cpp
       tests/test_ConditionalStorage.cpp
       tests/test_cubic.cpp
+
       tests/test_EvaluationFormat.cpp
       tests/test_densead.cpp
       tests/test_messagelimiter.cpp
@@ -611,6 +612,7 @@ if(ENABLE_ECL_OUTPUT)
           tests/test_data_GuideRateValue.cpp
           tests/test_data_InterRegFlow.cpp
           tests/test_data_InterRegFlowMap.cpp
+          tests/test_ecl_large_grids.cpp
           tests/test_EclipseIO.cpp
           tests/test_Inplace.cpp
           tests/test_InteHEAD.cpp
