@@ -360,6 +360,7 @@ WELSPECS
         data::GroupAndNetworkValues grp_nwrk;
 
         for (int i = first; i < last; ++i) {
+            std::cout << fmt::format("first = {}, last = {}, i = {}\r", first, last, i) << std::flush;
             data::Solution sol = createBlackoilState(i, totalcells);
             sol.insert("KRO", measure::identity, std::vector<double>(totalcells, i), TargetType::RESTART_AUXILIARY);
             sol.insert(
@@ -375,6 +376,7 @@ WELSPECS
 
             checkRestartFile(i, totalcells);
         }
+        std::cout << std::endl;
 
         checkInitFile(deck, eGridProps);
         checkEgridFile(eclGrid);
@@ -437,6 +439,14 @@ WELSPECS
     // Verify that restarting a simulation, then writing fewer steps truncates
     // the file
     BOOST_CHECK_EQUAL(file_size, write_and_check(3, 5));
+    
+    std::cout << "Testing 10 timesteps" << std::endl;
+    write_and_check(1, 5);
 
+
+    std::cout << "Testing 10 timesteps" << std::endl;
+    write_and_check(1, 10);
+
+    std::cout << "Testing 30 timesteps" << std::endl;
     write_and_check(1, 30);
 }
