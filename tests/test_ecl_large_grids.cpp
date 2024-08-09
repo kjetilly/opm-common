@@ -306,7 +306,7 @@ BASIC=2
 /
 SCHEDULE
 TSTEP
-1.0 2.0 3.0 4.0 5.0 6.0 7.0 /
+1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 13.0 14.0 15.0 16.0 17.0 18.0 19.0 20.0 21.0 22.0 23.0 24.0 25.0 26.0 27.0 28.0 29.0 30.0 /
 WELSPECS
 'INJ' 'G' 1 1 2000 'GAS' /
 'PROD' 'G' 3 3 1000 'OIL' /
@@ -439,14 +439,10 @@ WELSPECS
     // Verify that restarting a simulation, then writing fewer steps truncates
     // the file
     BOOST_CHECK_EQUAL(file_size, write_and_check(3, 5));
-    
-    std::cout << "Testing 5 timesteps" << std::endl;
-    write_and_check(1, 5);
 
-
-    std::cout << "Testing 10 timesteps" << std::endl;
-    write_and_check(1, 10);
-
-    std::cout << "Testing 30 timesteps" << std::endl;
-    write_and_check(1, 30);
+    for (int timesteps = 5; timesteps <= 30; timesteps += 1) {
+        fmt::println("Testing {} timesteps", timesteps);
+        const auto filesize = write_and_check(1, timesteps);
+        fmt::println("File size was {} GB", filesize / (1024.0 * 1024.0 * 1024.0));
+    }
 }
