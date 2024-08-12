@@ -503,6 +503,7 @@ if(ENABLE_ECL_INPUT)
     tests/test_ESmry.cpp
     tests/test_ExtESmry.cpp
     tests/test_FIPRegionStatistics.cpp
+    tests/test_read_spe11.cpp
     tests/test_RegionSetMatcher.cpp
     tests/test_PAvgCalculator.cpp
     tests/test_PAvgDynamicSourceData.cpp
