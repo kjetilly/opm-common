@@ -90,39 +90,6 @@ sum(const std::vector<T>& array)
     return std::accumulate(array.begin(), array.end(), T(0));
 }
 
-data::Solution
-createBlackoilState(int timeStepIdx, int numCells)
-{
-
-    std::vector<double> pressure(numCells);
-    std::vector<double> swat(numCells);
-    std::vector<double> sgas(numCells);
-    std::vector<double> rs(numCells);
-    std::vector<double> rv(numCells);
-
-    for (int cellIdx = 0; cellIdx < numCells; ++cellIdx) {
-
-        pressure[cellIdx] = timeStepIdx * 1e5 + 1e4 + cellIdx;
-        sgas[cellIdx] = timeStepIdx * 1e5 + 2.2e4 + cellIdx;
-        swat[cellIdx] = timeStepIdx * 1e5 + 2.3e4 + cellIdx;
-
-        // oil vaporization factor
-        rv[cellIdx] = timeStepIdx * 1e5 + 3e4 + cellIdx;
-        // gas dissolution factor
-        rs[cellIdx] = timeStepIdx * 1e5 + 4e4 + cellIdx;
-    }
-
-    data::Solution solution;
-
-    solution.insert("PRESSURE", UnitSystem::measure::pressure, pressure, data::TargetType::RESTART_SOLUTION);
-    solution.insert("SWAT", UnitSystem::measure::identity, swat, data::TargetType::RESTART_SOLUTION);
-    solution.insert("SGAS", UnitSystem::measure::identity, sgas, data::TargetType::RESTART_SOLUTION);
-    solution.insert("RS", UnitSystem::measure::identity, rs, data::TargetType::RESTART_SOLUTION);
-    solution.insert("RV", UnitSystem::measure::identity, rv, data::TargetType::RESTART_SOLUTION);
-
-    return solution;
-}
-
 template <typename T, typename U>
 void
 compareErtData(const std::vector<T>& src, const std::vector<U>& dst, double tolerance)
@@ -270,12 +237,6 @@ checkRestartFile(int timeStepIdx, const std::string& rstFilename)
     }
 }
 
-time_t
-ecl_util_make_date(const int day, const int month, const int year)
-{
-    const auto ymd = Opm::TimeStampUTC::YMD {year, month, day};
-    return static_cast<time_t>(asTimeT(Opm::TimeStampUTC {ymd}));
-}
 
 } // Anonymous namespace
 
@@ -298,9 +259,6 @@ BOOST_AUTO_TEST_CASE(ReadLargeSPE11C)
     const auto deck = Parser().parseFile(deckfilename);
     auto es = EclipseState(deck);
     const auto& eclGrid = es.getInputGrid();
-    const Schedule schedule(deck, es, std::make_shared<Python>());
-    const SummaryConfig summary_config(deck, schedule, es.fieldProps(), es.aquifer());
-    const SummaryState st(TimeService::now(), 0.0);
 
     checkInitFile(deck, initFilename);
     checkEgridFile(eclGrid, initFilename);
