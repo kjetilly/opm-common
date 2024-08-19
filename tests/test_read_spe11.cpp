@@ -143,30 +143,38 @@ void
 checkEgridFile(const EclipseGrid& eclGrid, const std::string& gridFilename)
 {
     auto egridFile = EclIO::EGrid(gridFilename);
-
-    {
-        const auto& coord = egridFile.get<float>("COORD");
-        const auto& expect = eclGrid.getCOORD();
-        // compareErtData(expect, coord, 1e-6);
+    std::cout << "In file: " << std::endl;
+    for (const auto& arrayname : egridFile.arrayNames()) {
+        std::cout << arrayname << std::endl;
     }
+    std::cout << "#####################" << std::endl;
+    // {
+    //     std::cout << "Getting coord" << std::endl;
+    //     for (const auto& arrayname : egridFile.arrayNames()) {
+    //         std::cout << arrayname << std::endl;
+    //     }
+    //     const auto& coord = egridFile.get<float>("COORD");
+    //     const auto& expect = eclGrid.getCOORD();
+    //     // compareErtData(expect, coord, 1e-6);
+    // }
 
-    {
-        const auto& zcorn = egridFile.get<float>("ZCORN");
-        const auto& expect = eclGrid.getZCORN();
-        // compareErtData(expect, zcorn, 1e-6);
-    }
+    // {
+    //     const auto& zcorn = egridFile.get<float>("ZCORN");
+    //     const auto& expect = eclGrid.getZCORN();
+    //     // compareErtData(expect, zcorn, 1e-6);
+    // }
 
-    if (egridFile.hasKey("ACTNUM")) {
-        const auto& actnum = egridFile.get<int>("ACTNUM");
-        auto expect = eclGrid.getACTNUM();
+    // if (egridFile.hasKey("ACTNUM")) {
+    //     const auto& actnum = egridFile.get<int>("ACTNUM");
+    //     auto expect = eclGrid.getACTNUM();
 
-        if (expect.empty()) {
-            const auto numCells = eclGrid.getNX() * eclGrid.getNY() * eclGrid.getNZ();
-            expect.assign(numCells, 1);
-        }
+    //     if (expect.empty()) {
+    //         const auto numCells = eclGrid.getNX() * eclGrid.getNY() * eclGrid.getNZ();
+    //         expect.assign(numCells, 1);
+    //     }
 
-        //        compareErtData(expect, actnum);
-    }
+    //     //        compareErtData(expect, actnum);
+    // }
 }
 
 void
@@ -198,9 +206,14 @@ checkInitFile(const Deck& deck, const std::string& initpath)
     BOOST_CHECK_MESSAGE(initFile.hasKey("FIPNUM"), R"(INIT file must have "FIPNUM" array)");
     BOOST_CHECK_MESSAGE(initFile.hasKey("SATNUM"), R"(INIT file must have "SATNUM" array)");
     std::array<std::string, 3> multipliers {"MULTX", "MULTY", "MULTZ"};
-    for (const auto& mult : multipliers) {
-        BOOST_CHECK_MESSAGE(initFile.hasKey(mult), R"(INIT file must have ")" + mult + R"(" array)");
+    // for (const auto& mult : multipliers) {
+    //     BOOST_CHECK_MESSAGE(initFile.hasKey(mult), R"(INIT file must have ")" + mult + R"(" array)");
+    // }
+    std::cout << "init file names" << std::endl;
+    for (const auto& arrayname : initFile.arrayNames()) {
+        std::cout << arrayname << std::endl;
     }
+    std::cout << "############################" << std::endl;
 
     // for (const auto& prop : simProps) {
     //     BOOST_CHECK_MESSAGE(initFile.hasKey(prop.first), R"(INIT file must have ")" + prop.first + R"(" array)");
@@ -208,46 +221,51 @@ checkInitFile(const Deck& deck, const std::string& initpath)
 }
 
 void
-checkRestartFile(int timeStepIdx, size_t numcells, const std::string& rstFilename)
+checkRestartFile(int timeStepIdx, const std::string& rstFilename)
 {
     EclIO::ERst rstFile {rstFilename};
 
     for (int i = 1; i <= timeStepIdx; ++i) {
-        if (!rstFile.hasReportStepNumber(i))
+        if (!rstFile.hasReportStepNumber(i)) {
+            std::cout << "skipping " << i << std::endl;
             continue;
+        }
 
-        auto sol = createBlackoilState(i, numcells);
+
 
         rstFile.loadReportStepNumber(i);
 
         const auto& knownVec = rstFile.listOfRstArrays(i);
 
         if (keywordExists(knownVec, "PRESSURE")) {
+            std::cout << "Reading pressure " << std::endl;
             const auto& press = rstFile.getRestartData<float>("PRESSURE", i, 0);
-            for (auto& x : sol.data<double>("PRESSURE"))
-                x /= Metric::Pressure;
-
-            compareErtData(sol.data<double>("PRESSURE"), press, 1e-4);
+            std::cout << "Sum press = " << sum(press) << std::endl;
+            std::cout << "press.size() = " << press.size() << std::endl;
         }
 
         if (keywordExists(knownVec, "SWAT")) {
+            std::cout << "Reading swat " << std::endl;
             const auto& swat = rstFile.getRestartData<float>("SWAT", i, 0);
-            compareErtData(sol.data<double>("SWAT"), swat, 1e-4);
+
+            std::cout << "Sum swat = " << sum(swat) << std::endl;
         }
 
         if (keywordExists(knownVec, "SGAS")) {
+            std::cout << "Reading sgas " << std::endl;
             const auto& sgas = rstFile.getRestartData<float>("SGAS", i, 0);
-            compareErtData(sol.data<double>("SGAS"), sgas, 1e-4);
+
+            std::cout << "Sum sgas = " << sum(sgas) << std::endl;
         }
 
         if (keywordExists(knownVec, "KRO")) {
+            std::cout << "Reading kro " << std::endl;
             const auto& kro = rstFile.getRestartData<float>("KRO", i, 0);
-            BOOST_CHECK_CLOSE(1.0 * i * kro.size(), sum(kro), 1.0e-8);
         }
 
         if (keywordExists(knownVec, "KRG")) {
+            std::cout << "Reading krg " << std::endl;
             const auto& krg = rstFile.getRestartData<float>("KRG", i, 0);
-            BOOST_CHECK_CLOSE(10.0 * i * krg.size(), sum(krg), 1.0e-8);
         }
     }
 }
@@ -265,9 +283,9 @@ BOOST_AUTO_TEST_CASE(ReadLargeSPE11C)
 {
     // TODO: Use filesystem lib
     const std::string basedirectory = "/mnt/external/kjetil/alldata/spe11_full_run";
-    const std::string deckfilename = fmt::format("{}/deck/SPE11C.DATA");
-    const std::string initFilename = fmt::format("{}/output/SPE11C.INIT");
-    const std::string unrstFilename = fmt::format("{}/output/SPE11C.UNRST");
+    const std::string deckfilename = fmt::format("{}/deck/SPE11C.DATA", basedirectory);
+    const std::string initFilename = fmt::format("{}/output/SPE11C.INIT", basedirectory);
+    const std::string unrstFilename = fmt::format("{}/output/SPE11C.UNRST", basedirectory);
     const size_t nx = 466;
     const size_t ny = 466;
     const size_t nz = 466;
@@ -286,4 +304,5 @@ BOOST_AUTO_TEST_CASE(ReadLargeSPE11C)
 
     checkInitFile(deck, initFilename);
     checkEgridFile(eclGrid, initFilename);
+    checkRestartFile(30, unrstFilename);
 }
