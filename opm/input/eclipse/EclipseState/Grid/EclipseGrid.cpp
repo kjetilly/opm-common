@@ -69,6 +69,7 @@
 #include <unordered_map>
 
 #include <fmt/format.h>
+#include "EclipseGrid.hpp"
 
 namespace Opm {
 
@@ -88,7 +89,8 @@ std::optional<UnitSystem> make_grid_units(const std::string& grid_unit) {
     return std::nullopt;
 }
 
-void apply_GRIDUNIT(const UnitSystem& deck_units, const UnitSystem& grid_units, std::vector<double>& data)
+template<typename T>
+void apply_GRIDUNIT(const UnitSystem& deck_units, const UnitSystem& grid_units, std::vector<T>& data)
 {
     double scale_factor = grid_units.getDimension(UnitSystem::measure::length).getSIScaling() / deck_units.getDimension(UnitSystem::measure::length).getSIScaling();
     std::transform(data.begin(), data.end(), data.begin(),
@@ -761,7 +763,49 @@ EclipseGrid::EclipseGrid(const Deck& deck, const int * actnum)
     }
 
 
-    std::vector<double> EclipseGrid::makeCoordDxvDyvDzvDepthz(const std::vector<double>& dxv, const std::vector<double>& dyv, const std::vector<double>& dzv, const std::vector<double>& depthz) const {
+
+    void
+    EclipseGrid::setCoordZcorn(const Deck& deck)
+    {
+        const auto& coord = deck.get<ParserKeywords::COORD>().back().getSIDoubleData();
+        const auto& zcorn = deck.get<ParserKeywords::ZCORN>().back().getSIDoubleData();
+
+        m_coord_f.resize(m_coord.size());
+        m_zcorn_f.resize(m_zcorn.size());
+
+        const auto& units = deck.getActiveUnitSystem();
+        Opm::UnitSystem::UnitType unitSystemType = units.getType();
+        constexpr auto length = ::Opm::UnitSystem::measure::length;
+
+        if (deck.hasKeyword<ParserKeywords::GRIDUNIT>()) {
+            const auto& kw = deck.get<ParserKeywords::GRIDUNIT>().front();
+            const auto& length_unit = trim_copy(kw.getRecord(0).getItem(0).get<std::string>(0));
+            auto grid_units = make_grid_units(length_unit);
+            
+            if (grid_units.value() != deck.getActiveUnitSystem()) {
+                apply_GRIDUNIT(deck.getActiveUnitSystem(), grid_units.value(), m_coord_f);
+                apply_GRIDUNIT(deck.getActiveUnitSystem(), grid_units.value(), m_zcorn_f);
+            }
+        }
+
+        // Preparing vectors to be saved
+
+        auto convert_length = [&units](const double x) { return static_cast<float>(units.from_si(length, x)); };
+
+        std::transform(coord.begin(), coord.end(), m_coord_f.begin(), convert_length);
+
+        // create zcorn vector of floats with input units, converted from SI
+        
+        std::transform(zcorn.begin(), zcorn.end(), m_zcorn_f.begin(), convert_length);
+
+    }
+
+    std::vector<double>
+    EclipseGrid::makeCoordDxvDyvDzvDepthz(const std::vector<double>& dxv,
+                                          const std::vector<double>& dyv,
+                                          const std::vector<double>& dzv,
+                                          const std::vector<double>& depthz) const
+    {
         auto nx = this->getNX();
         auto ny = this->getNY();
         auto nz = this->getNZ();
@@ -1222,8 +1266,8 @@ EclipseGrid::EclipseGrid(const Deck& deck, const int * actnum)
         m_coord = coord;
         m_zcorn = zcorn;
 
-        m_input_coord = coord;
-        m_input_zcorn = zcorn;
+        //m_input_coord = coord;
+        //m_input_zcorn = zcorn;
 
         ZcornMapper mapper( getNX(), getNY(), getNZ());
         zcorn_fixed = mapper.fixupZCORN( m_zcorn );
@@ -1872,9 +1916,12 @@ std::vector<double> EclipseGrid::createDVector(const std::array<int,3>& dims, st
 
         auto convert_length = [&units](const double x) { return static_cast<float>(units.from_si(length, x)); };
 
-        if (m_input_coord.has_value()) {
-            std::transform(m_input_coord.value().begin(), m_input_coord.value().end(), coord_f.begin(), convert_length);
-        } else {
+        // if (m_input_coord.has_value()) {
+        //     std::transform(m_input_coord.value().begin(), m_input_coord.value().end(), coord_f.begin(), convert_length);
+        // } else {
+        //     std::transform(m_coord.begin(), m_coord.end(), coord_f.begin(), convert_length);
+        // }
+        if (m_coord_f.size() != m_coord.size()) {
             std::transform(m_coord.begin(), m_coord.end(), coord_f.begin(), convert_length);
         }
 
@@ -1882,9 +1929,12 @@ std::vector<double> EclipseGrid::createDVector(const std::array<int,3>& dims, st
         std::vector<float> zcorn_f;
         zcorn_f.resize(m_zcorn.size());
 
-        if (m_input_zcorn.has_value()) {
-            std::transform(m_input_zcorn.value().begin(), m_input_zcorn.value().end(), zcorn_f.begin(), convert_length);
-        } else {
+        // if (m_input_zcorn.has_value()) {
+        //     std::transform(m_input_zcorn.value().begin(), m_input_zcorn.value().end(), zcorn_f.begin(), convert_length);
+        // } else {
+        //     std::transform(m_zcorn.begin(), m_zcorn.end(), zcorn_f.begin(), convert_length);
+        // }
+        if (zcorn_f.size() != m_zcorn.size()) {
             std::transform(m_zcorn.begin(), m_zcorn.end(), zcorn_f.begin(), convert_length);
         }
 
@@ -1950,8 +2000,8 @@ std::vector<double> EclipseGrid::createDVector(const std::array<int,3>& dims, st
         egridfile.write("GRIDUNIT", gridunits);
         egridfile.write("GRIDHEAD", gridhead);
 
-        egridfile.write("COORD", coord_f);
-        egridfile.write("ZCORN", zcorn_f);
+        egridfile.write("COORD", m_coord_f);
+        egridfile.write("ZCORN", m_zcorn_f);
 
         egridfile.write("ACTNUM", m_actnum);
         egridfile.write("ENDGRID", endgrid);

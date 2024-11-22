@@ -290,6 +290,10 @@ namespace Opm {
         mutable std::optional<std::vector<double>> m_input_zcorn;
         mutable std::optional<std::vector<double>> m_input_coord;
 
+        std::vector<float> m_zcorn_f;
+        std::vector<float> m_coord_f;
+        
+
         std::vector<double> m_zcorn;
         std::vector<double> m_coord;
 
@@ -354,6 +358,8 @@ namespace Opm {
                             std::array<double,8>& X,
                             std::array<double,8>& Y,
                             std::array<double,8>& Z) const;
+
+        void setCoordZcorn(const Deck& deck);
 
    };
 
