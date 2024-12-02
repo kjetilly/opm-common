@@ -1287,6 +1287,7 @@ EclipseGrid::EclipseGrid(const Deck& deck, const int * actnum)
         this->initCornerPointGrid(coord.getSIDoubleData(),
                                   zcorn.getSIDoubleData(),
                                   nullptr);
+        this->setCoordZcorn(deck);
     }
 
     bool EclipseGrid::hasCornerPointKeywords(const Deck& deck) {
