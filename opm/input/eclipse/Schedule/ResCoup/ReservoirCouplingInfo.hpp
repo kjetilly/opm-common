@@ -46,7 +46,7 @@ public:
     std::map<std::string, GrupSlav>& grupSlavs() {
         return this->m_grup_slavs;
     }
-    int grupSlavCount() const {
+    long long grupSlavCount() const {
         return this->m_grup_slavs.size();
     }
 
@@ -69,7 +69,7 @@ public:
     const MasterGroup& masterGroup(const std::string& name) const {
         return m_master_groups.at(name);
     }
-    int masterGroupCount() const {
+    long long masterGroupCount() const {
         return m_master_groups.size();
     }
 
@@ -82,7 +82,7 @@ public:
     const Slave& slave(const std::string& name) const {
         return m_slaves.at(name);
     }
-    int slaveCount() const {
+    long long slaveCount() const {
         return m_slaves.size();
     }
 

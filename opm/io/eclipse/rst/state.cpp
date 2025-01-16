@@ -111,7 +111,7 @@ namespace {
         return define;
     }
 
-    Opm::UDQUpdate udq_update(const std::vector<int>& iudq,
+    Opm::UDQUpdate udq_update(const std::vector<long long>& iudq,
                               const std::size_t       udq_index)
     {
         return Opm::UDQ::updateType(iudq[udq_index * Opm::UDQDims::entriesPerIUDQ()]);
@@ -140,7 +140,7 @@ namespace {
         explicit UDQVectors(std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
             : rstView_{ std::move(rst_view) }
         {
-            const auto& intehead = this->rstView_->getKeyword<int>("INTEHEAD");
+            const auto& intehead = this->rstView_->getKeyword<long long>("INTEHEAD");
 
             this->maxNumMsWells_  = intehead[VI::intehead::NSWLMX];
             this->maxNumSegments_ = intehead[VI::intehead::NSEGMX];
@@ -350,7 +350,7 @@ RstState::RstState(std::shared_ptr<EclIO::RestartFileView> rstView,
     this->load_oil_vaporization(rstView->intehead(), rstView->doubhead());
 }
 
-void RstState::load_oil_vaporization(const std::vector<int>& intehead,
+void RstState::load_oil_vaporization(const std::vector<long long>& intehead,
                                      const std::vector<double>& doubhead)
 {
     const std::size_t numPvtRegions = this->oilvap.numPvtRegions();
@@ -360,7 +360,7 @@ void RstState::load_oil_vaporization(const std::vector<int>& intehead,
     OilVaporizationProperties::updateDRSDT(this->oilvap, maximums, options);
 }
 
-void RstState::load_tuning(const std::vector<int>& intehead,
+void RstState::load_tuning(const std::vector<long long>& intehead,
                            const std::vector<double>& doubhead)
 {
     using M  = ::Opm::UnitSystem::measure;
@@ -401,11 +401,11 @@ void RstState::load_tuning(const std::vector<int>& intehead,
 }
 
 void RstState::add_groups(const std::vector<std::string>& zgrp,
-                          const std::vector<int>& igrp,
+                          const std::vector<long long>& igrp,
                           const std::vector<float>& sgrp,
                           const std::vector<double>& xgrp)
 {
-    auto load_group = [this, &zgrp, &igrp, &sgrp, &xgrp](const int ig)
+    auto load_group = [this, &zgrp, &igrp, &sgrp, &xgrp](const long long ig)
     {
         std::size_t zgrp_offset = ig * this->header.nzgrpz;
         std::size_t igrp_offset = ig * this->header.nigrpz;
@@ -421,7 +421,7 @@ void RstState::add_groups(const std::vector<std::string>& zgrp,
     };
 
     // Load active named/user-defined groups.
-    for (int ig=0; ig < this->header.ngroup; ig++)
+    for (long long ig=0; ig < this->header.ngroup; ig++)
         load_group(ig);
 
     // Load FIELD group from zero-based window index NGMAX in the *GRP
@@ -435,15 +435,15 @@ void RstState::add_groups(const std::vector<std::string>& zgrp,
 }
 
 void RstState::add_wells(const std::vector<std::string>& zwel,
-                         const std::vector<int>& iwel,
+                         const std::vector<long long>& iwel,
                          const std::vector<float>& swel,
                          const std::vector<double>& xwel,
-                         const std::vector<int>& icon,
+                         const std::vector<long long>& icon,
                          const std::vector<float>& scon,
                          const std::vector<double>& xcon)
 {
 
-    for (int iw = 0; iw < this->header.num_wells; iw++) {
+    for (long long iw = 0; iw < this->header.num_wells; iw++) {
         std::size_t zwel_offset = iw * this->header.nzwelz;
         std::size_t iwel_offset = iw * this->header.niwelz;
         std::size_t swel_offset = iw * this->header.nswelz;
@@ -451,7 +451,7 @@ void RstState::add_wells(const std::vector<std::string>& zwel,
         std::size_t icon_offset = iw * this->header.niconz * this->header.ncwmax;
         std::size_t scon_offset = iw * this->header.nsconz * this->header.ncwmax;
         std::size_t xcon_offset = iw * this->header.nxconz * this->header.ncwmax;
-        int group_index = iwel[ iwel_offset + VI::IWell::Group ] - 1;
+        long long group_index = iwel[ iwel_offset + VI::IWell::Group ] - 1;
         const std::string group = this->groups[group_index].name;
 
         this->wells.emplace_back(this->unit_system,
@@ -471,17 +471,17 @@ void RstState::add_wells(const std::vector<std::string>& zwel,
 }
 
 void RstState::add_msw(const std::vector<std::string>& zwel,
-                       const std::vector<int>& iwel,
+                       const std::vector<long long>& iwel,
                        const std::vector<float>& swel,
                        const std::vector<double>& xwel,
-                       const std::vector<int>& icon,
+                       const std::vector<long long>& icon,
                        const std::vector<float>& scon,
                        const std::vector<double>& xcon,
-                       const std::vector<int>& iseg,
+                       const std::vector<long long>& iseg,
                        const std::vector<double>& rseg)
 {
 
-    for (int iw = 0; iw < this->header.num_wells; iw++) {
+    for (long long iw = 0; iw < this->header.num_wells; iw++) {
         std::size_t zwel_offset = iw * this->header.nzwelz;
         std::size_t iwel_offset = iw * this->header.niwelz;
         std::size_t swel_offset = iw * this->header.nswelz;
@@ -489,7 +489,7 @@ void RstState::add_msw(const std::vector<std::string>& zwel,
         std::size_t icon_offset = iw * this->header.niconz * this->header.ncwmax;
         std::size_t scon_offset = iw * this->header.nsconz * this->header.ncwmax;
         std::size_t xcon_offset = iw * this->header.nxconz * this->header.ncwmax;
-        int group_index = iwel[ iwel_offset + VI::IWell::Group ] - 1;
+        long long group_index = iwel[ iwel_offset + VI::IWell::Group ] - 1;
         const std::string group = this->groups[group_index].name;
 
         this->wells.emplace_back(this->unit_system,
@@ -509,14 +509,14 @@ void RstState::add_msw(const std::vector<std::string>& zwel,
 
 void RstState::add_udqs(std::shared_ptr<EclIO::RestartFileView> rstView)
 {
-    const auto& iudq = rstView->getKeyword<int>("IUDQ");
+    const auto& iudq = rstView->getKeyword<long long>("IUDQ");
     const auto& zudn = rstView->getKeyword<std::string>("ZUDN");
     const auto& zudl = rstView->getKeyword<std::string>("ZUDL");
 
-    if (rstView->hasKeyword<int>("IUAD")) {
-        const auto& iuad = rstView->getKeyword<int>("IUAD");
-        const auto& iuap = rstView->getKeyword<int>("IUAP");
-        const auto& igph = rstView->getKeyword<int>("IGPH");
+    if (rstView->hasKeyword<long long>("IUAD")) {
+        const auto& iuad = rstView->getKeyword<long long>("IUAD");
+        const auto& iuap = rstView->getKeyword<long long>("IUAP");
+        const auto& igph = rstView->getKeyword<long long>("IGPH");
 
         this->udq_active = RstUDQActive(iuad, iuap, igph);
     }
@@ -543,10 +543,10 @@ void RstState::add_actions(const Parser& parser,
                            const Runspec& runspec,
                            std::time_t sim_time,
                            const std::vector<std::string>& zact,
-                           const std::vector<int>& iact,
+                           const std::vector<long long>& iact,
                            const std::vector<float>& sact,
                            const std::vector<std::string>& zacn,
-                           const std::vector<int>& iacn,
+                           const std::vector<long long>& iacn,
                            const std::vector<double>& sacn,
                            const std::vector<std::string>& zlact)
 {
@@ -611,7 +611,7 @@ void RstState::add_actions(const Parser& parser,
 }
 
 void RstState::add_wlist(const std::vector<std::string>& zwls,
-                         const std::vector<int>& iwls)
+                         const std::vector<long long>& iwls)
 {
     for (auto well_index = 0*this->header.num_wells; well_index < this->header.num_wells; well_index++) {
         const auto zwls_offset = this->header.max_wlist * well_index;
@@ -658,7 +658,7 @@ RstState RstState::load(std::shared_ptr<EclIO::RestartFileView> rstView,
     // groups unconditionally.
     {
         const auto& zgrp = rstView->getKeyword<std::string>("ZGRP");
-        const auto& igrp = rstView->getKeyword<int>("IGRP");
+        const auto& igrp = rstView->getKeyword<long long>("IGRP");
         const auto& sgrp = rstView->getKeyword<float>("SGRP");
         const auto& xgrp = rstView->getKeyword<double>("XGRP");
 
@@ -667,17 +667,17 @@ RstState RstState::load(std::shared_ptr<EclIO::RestartFileView> rstView,
 
     if (state.header.num_wells > 0) {
         const auto& zwel = rstView->getKeyword<std::string>("ZWEL");
-        const auto& iwel = rstView->getKeyword<int>("IWEL");
+        const auto& iwel = rstView->getKeyword<long long>("IWEL");
         const auto& swel = rstView->getKeyword<float>("SWEL");
         const auto& xwel = rstView->getKeyword<double>("XWEL");
 
-        const auto& icon = rstView->getKeyword<int>("ICON");
+        const auto& icon = rstView->getKeyword<long long>("ICON");
         const auto& scon = rstView->getKeyword<float>("SCON");
         const auto& xcon = rstView->getKeyword<double>("XCON");
 
-        if (rstView->hasKeyword<int>("ISEG")) {
+        if (rstView->hasKeyword<long long>("ISEG")) {
             // Multi-segmented wells in restart file.
-            const auto& iseg = rstView->getKeyword<int>("ISEG");
+            const auto& iseg = rstView->getKeyword<long long>("ISEG");
             const auto& rseg = rstView->getKeyword<double>("RSEG");
 
             state.add_msw(zwel, iwel, swel, xwel,
@@ -690,8 +690,8 @@ RstState RstState::load(std::shared_ptr<EclIO::RestartFileView> rstView,
                             icon, scon, xcon);
         }
 
-        if (rstView->hasKeyword<int>("IWLS")) {
-            const auto& iwls = rstView->getKeyword<int>("IWLS");
+        if (rstView->hasKeyword<long long>("IWLS")) {
+            const auto& iwls = rstView->getKeyword<long long>("IWLS");
             const auto& zwls = rstView->getKeyword<std::string>("ZWLS");
 
             state.add_wlist(zwls, iwls);
@@ -704,10 +704,10 @@ RstState RstState::load(std::shared_ptr<EclIO::RestartFileView> rstView,
 
     if (state.header.num_action > 0) {
         const auto& zact = rstView->getKeyword<std::string>("ZACT");
-        const auto& iact = rstView->getKeyword<int>("IACT");
+        const auto& iact = rstView->getKeyword<long long>("IACT");
         const auto& sact = rstView->getKeyword<float>("SACT");
         const auto& zacn = rstView->getKeyword<std::string>("ZACN");
-        const auto& iacn = rstView->getKeyword<int>("IACN");
+        const auto& iacn = rstView->getKeyword<long long>("IACN");
         const auto& sacn = rstView->getKeyword<double>("SACN");
         const auto& zlact= rstView->getKeyword<std::string>("ZLACT");
         state.add_actions(parser, runspec, state.header.sim_time(), zact, iact, sact, zacn, iacn, sacn, zlact);

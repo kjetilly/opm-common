@@ -42,7 +42,7 @@ T calcSum(const std::vector<T>& x)
 
 std::unique_ptr<Opm::EclIO::RestartFileView>
 openRestart(const std::string& filename,
-            const int          report_step)
+            const long long          report_step)
 {
     auto rst = std::make_shared<Opm::EclIO::ERst>(filename);
     return std::make_unique<Opm::EclIO::RestartFileView>
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_SUITE(Restart_File_View)
 
 BOOST_AUTO_TEST_CASE(Load_Step_10)
 {
-    const std::vector<int> ref_icon_10 = {
+    const std::vector<long long> ref_icon_10 = {
         1,10,10,3,0,1,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,
         0,1,1,1,1,0,1,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0,
     };
@@ -66,12 +66,12 @@ BOOST_AUTO_TEST_CASE(Load_Step_10)
     BOOST_CHECK_EQUAL(rst1->simStep(), 9ull);
     BOOST_CHECK_EQUAL(rst1->reportStep(), 10);
 
-    BOOST_REQUIRE_MESSAGE(rst1->hasKeyword<int>("ICON"), "Restart file view must have ICON");
+    BOOST_REQUIRE_MESSAGE(rst1->hasKeyword<long long>("ICON"), "Restart file view must have ICON");
     BOOST_REQUIRE_MESSAGE(rst1->hasKeyword<float>("PRESSURE"), "Restart file view must have PRESSURE");
     BOOST_REQUIRE_MESSAGE(rst1->hasKeyword<double>("XGRP"), "Restart file view must have XGRP");
     BOOST_REQUIRE_MESSAGE(rst1->hasKeyword<std::string>("ZWEL"), "Restart file view must have ZWEL");
 
-    const auto icon = rst1->getKeyword<int>("ICON");
+    const auto icon = rst1->getKeyword<long long>("ICON");
     const auto pres = rst1->getKeyword<float>("PRESSURE");
     const auto xgrp = rst1->getKeyword<double>("XGRP");
     const auto zwel = rst1->getKeyword<std::string>("ZWEL");

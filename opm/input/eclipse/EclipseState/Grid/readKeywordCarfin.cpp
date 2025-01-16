@@ -33,15 +33,15 @@ namespace Opm {
         const auto& active_carfin = carfinManager.getActiveCarfin();
 
         const std::string name = NAMEItem.defaultApplied(0) ? active_carfin.NAME() : NAMEItem.get<std::string>(0);
-        const int i1 = I1Item.defaultApplied(0) ? active_carfin.I1() : I1Item.get<int>(0) - 1;
-        const int i2 = I2Item.defaultApplied(0) ? active_carfin.I2() : I2Item.get<int>(0) - 1;
-        const int j1 = J1Item.defaultApplied(0) ? active_carfin.J1() : J1Item.get<int>(0) - 1;
-        const int j2 = J2Item.defaultApplied(0) ? active_carfin.J2() : J2Item.get<int>(0) - 1;
-        const int k1 = K1Item.defaultApplied(0) ? active_carfin.K1() : K1Item.get<int>(0) - 1;
-        const int k2 = K2Item.defaultApplied(0) ? active_carfin.K2() : K2Item.get<int>(0) - 1;
-        const int nx = NXItem.defaultApplied(0) ? active_carfin.NX() : NXItem.get<int>(0);
-        const int ny = NYItem.defaultApplied(0) ? active_carfin.NY() : NYItem.get<int>(0);
-        const int nz = NZItem.defaultApplied(0) ? active_carfin.NZ() : NZItem.get<int>(0);
+        const long long i1 = I1Item.defaultApplied(0) ? active_carfin.I1() : I1Item.get<long long>(0) - 1;
+        const long long i2 = I2Item.defaultApplied(0) ? active_carfin.I2() : I2Item.get<long long>(0) - 1;
+        const long long j1 = J1Item.defaultApplied(0) ? active_carfin.J1() : J1Item.get<long long>(0) - 1;
+        const long long j2 = J2Item.defaultApplied(0) ? active_carfin.J2() : J2Item.get<long long>(0) - 1;
+        const long long k1 = K1Item.defaultApplied(0) ? active_carfin.K1() : K1Item.get<long long>(0) - 1;
+        const long long k2 = K2Item.defaultApplied(0) ? active_carfin.K2() : K2Item.get<long long>(0) - 1;
+        const long long nx = NXItem.defaultApplied(0) ? active_carfin.NX() : NXItem.get<long long>(0);
+        const long long ny = NYItem.defaultApplied(0) ? active_carfin.NY() : NYItem.get<long long>(0);
+        const long long nz = NZItem.defaultApplied(0) ? active_carfin.NZ() : NZItem.get<long long>(0);
 
         carfinManager.readKeywordCarfin(name,i1,i2,j1,j2,k1,k2,nx,ny,nz);
 

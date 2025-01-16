@@ -26,7 +26,7 @@
 namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems {
 
     namespace IAnalyticAquifer {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             NumAquiferConn = 0, // Number of active aquifer connections for this aquifer
             WatPropTable = 1,   // PVT number (ACUCT(10) or AQUFETP(7))
 
@@ -37,7 +37,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
         };
 
         namespace Value {
-            enum ModelType : int {
+            enum ModelType : long long {
                 Fetkovich = 0,
                 CarterTracy = 1,
                 ConstantFlux = 2,
@@ -46,7 +46,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
     } // IAnalyticAquifer
 
     namespace IAnalyticAquiferConn {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             Index_I = 0,        // One-based I index of connecting cell
             Index_J = 1,        // One-based J index of connecting cell
             Index_K = 2,        // One-based K index of connecting cell
@@ -62,7 +62,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
    } // IAnalyticAquiferConn
 
     namespace INumericAquifer {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             AquiferID = 0,      // ID of numeric aquifer
             Cell_I = 1,         // I coordinate of aquifer cell
             Cell_J = 2,         // J coordinate of aquifer cell

@@ -64,7 +64,7 @@ public:
     using Scalar = typename Traits::Scalar;
 
     //! The number of fluid phases
-    static constexpr int numPhases = Traits::numPhases;
+    static constexpr long long numPhases = Traits::numPhases;
     static_assert(numPhases == 2,
                   "The piecewise linear two-phase capillary pressure law only"
                   "applies to the case of two fluid phases");

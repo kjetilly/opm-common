@@ -44,29 +44,29 @@ namespace VI = Opm::RestartIO::Helpers::VectorItems;
 // ---------------------------------------------------------------------
 
 namespace {
-std::size_t maxNoWells(const std::vector<int>& inteHead)
+std::size_t maxNoWells(const std::vector<long long>& inteHead)
 {
     return inteHead[VI::intehead::NWMAXZ];
 }
 
-std::size_t maxNoOfWellListsPrWell(const std::vector<int>& inteHead)
+std::size_t maxNoOfWellListsPrWell(const std::vector<long long>& inteHead)
 {
     return inteHead[VI::intehead::MXWLSTPRWELL];
 }
 
 template <typename T>
-std::optional<int> findInVector(const std::vector<T>  & vecOfElements, const T  & element)
+std::optional<long long> findInVector(const std::vector<T>  & vecOfElements, const T  & element)
 {
     // Find given element in vector
     auto it = std::find(vecOfElements.begin(), vecOfElements.end(), element);
 
-    return (it != vecOfElements.end()) ? std::optional<int> {std::distance(vecOfElements.begin(), it)} :
+    return (it != vecOfElements.end()) ? std::optional<long long> {std::distance(vecOfElements.begin(), it)} :
            std::nullopt;
 }
 
 std::vector<std::vector<std::size_t>> wellOrderInWList(const Opm::Schedule&   sched,
                                                                 const std::size_t sim_step,
-                                                                const std::vector<int>& inteHead ) {
+                                                                const std::vector<long long>& inteHead ) {
     const auto& wells = sched.wellNames(sim_step);
     const auto& wlmngr = sched[sim_step].wlist_manager.get();
 
@@ -117,10 +117,10 @@ void wellLoop(const std::vector<std::string>& wells,
 
 namespace IWls {
 
-Opm::RestartIO::Helpers::WindowedArray<int>
-allocate(const std::vector<int>& inteHead)
+Opm::RestartIO::Helpers::WindowedArray<long long>
+allocate(const std::vector<long long>& inteHead)
 {
-    using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+    using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
     return WV {
         WV::NumWindows{ maxNoWells(inteHead) },
@@ -152,7 +152,7 @@ namespace ZWls {
 Opm::RestartIO::Helpers::WindowedArray<
 Opm::EclIO::PaddedOutputString<8>
 >
-allocate(const std::vector<int>& inteHead)
+allocate(const std::vector<long long>& inteHead)
 {
     using WV = Opm::RestartIO::Helpers::WindowedArray<
                Opm::EclIO::PaddedOutputString<8>
@@ -191,7 +191,7 @@ void staticContrib(const Opm::Well& well,
 // =====================================================================
 
 Opm::RestartIO::Helpers::AggregateWListData::
-AggregateWListData(const std::vector<int>& inteHead)
+AggregateWListData(const std::vector<long long>& inteHead)
     : iWls_ (IWls::allocate(inteHead))
     , zWls_ (ZWls::allocate(inteHead))
 
@@ -203,7 +203,7 @@ void
 Opm::RestartIO::Helpers::AggregateWListData::
 captureDeclaredWListData(const Schedule&   sched,
                          const std::size_t sim_step,
-                         const std::vector<int>& inteHead)
+                         const std::vector<long long>& inteHead)
 {
     const auto& wells = sched.wellNames(sim_step);
     const auto& wlmngr = sched[sim_step].wlist_manager.get();

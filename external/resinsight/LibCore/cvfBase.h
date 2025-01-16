@@ -115,7 +115,7 @@ namespace cvf {
 
 typedef unsigned char    ubyte;
 typedef unsigned short   ushort;
-typedef unsigned int     uint;
+typedef size_t     uint;
 
 // 64bit integer support via the int64 type
 #ifdef WIN32

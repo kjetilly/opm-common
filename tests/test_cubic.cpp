@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_SUITE (Cubic)
 
 BOOST_AUTO_TEST_CASE (cubic)
 {
-    const int num_v = 3;
+    const long long num_v = 3;
     double xv[num_v] = {0.0, 1.0, 2.0};
     double fv[num_v] = {10.0, 21.0, 2.0};
     std::vector<double> x(xv, xv + num_v);

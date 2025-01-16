@@ -640,8 +640,8 @@ private:
         LhsEval m = 1E3/58.44 * S/(1-S);
         d_h = 0;
 
-        for (int i = 0; i <=3 ; ++i) {
-            for (int j = 0; j <= 2; ++j) {
+        for (long long i = 0; i <=3 ; ++i) {
+            for (long long j = 0; j <= 2; ++j) {
                 d_h = d_h + a[i][j] * pow(theta, static_cast<Scalar>(i)) * pow(m, j);
             }
         }

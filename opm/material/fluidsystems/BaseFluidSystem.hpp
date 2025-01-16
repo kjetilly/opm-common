@@ -60,10 +60,10 @@ public:
     };
 
     //! Number of chemical species in the fluid system
-    static const int numComponents = -1000;
+    static const long long numComponents = -1000;
 
     //! Number of fluid phases in the fluid system
-    static const int numPhases = -2000;
+    static const long long numPhases = -2000;
 
     /*!
      * \brief Return the human readable name of a fluid phase

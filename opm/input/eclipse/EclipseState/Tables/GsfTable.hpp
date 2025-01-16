@@ -28,7 +28,7 @@ namespace Opm {
     class GsfTable : public SimpleTable {
 
     public:
-        GsfTable( const DeckItem& item, const int tableID );
+        GsfTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getSgColumn() const;
         const TableColumn& getKrgColumn() const;

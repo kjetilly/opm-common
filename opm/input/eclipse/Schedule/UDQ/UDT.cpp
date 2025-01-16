@@ -52,7 +52,7 @@ double UDT::operator()(const double x) const
     switch (interp_type_) {
     case InterpolationType::NearestNeighbour:
     {
-        const int idx = Opm::tableIndex(xvals_, x);
+        const long long idx = Opm::tableIndex(xvals_, x);
         const double dist1 = std::abs(x - xvals_[idx]);
         const double dist2 = std::abs(x - xvals_[idx+1]);
         return dist1 < dist2 ? yvals_[idx] : yvals_[idx+1];

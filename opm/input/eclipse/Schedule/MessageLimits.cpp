@@ -64,128 +64,128 @@ namespace Opm {
     }
 
 
-    int MessageLimits::getMessagePrintLimit() const
+    long long MessageLimits::getMessagePrintLimit() const
     {
         return this->message_print_limit;
     }
 
-    int MessageLimits::getCommentPrintLimit() const
+    long long MessageLimits::getCommentPrintLimit() const
     {
         return this->comment_print_limit;
     }
 
-    int MessageLimits::getWarningPrintLimit() const
+    long long MessageLimits::getWarningPrintLimit() const
     {
         return this->warning_print_limit;
     }
 
-    int MessageLimits::getProblemPrintLimit() const
+    long long MessageLimits::getProblemPrintLimit() const
     {
         return this->problem_print_limit;
     }
 
-    int MessageLimits::getErrorPrintLimit() const
+    long long MessageLimits::getErrorPrintLimit() const
     {
         return this->error_print_limit;
     }
 
-    int MessageLimits::getBugPrintLimit() const
+    long long MessageLimits::getBugPrintLimit() const
     {
         return this->bug_print_limit;
     }
 
     /*-----------------------------------------------------------------*/
 
-    int MessageLimits::getMessageStopLimit() const
+    long long MessageLimits::getMessageStopLimit() const
     {
         return this->message_stop_limit;
     }
 
-    int MessageLimits::getCommentStopLimit() const
+    long long MessageLimits::getCommentStopLimit() const
     {
         return this->comment_stop_limit;
     }
 
-    int MessageLimits::getWarningStopLimit() const
+    long long MessageLimits::getWarningStopLimit() const
     {
         return this->warning_stop_limit;
     }
 
-    int MessageLimits::getProblemStopLimit() const
+    long long MessageLimits::getProblemStopLimit() const
     {
         return this->problem_stop_limit;
     }
 
-    int MessageLimits::getErrorStopLimit() const
+    long long MessageLimits::getErrorStopLimit() const
     {
         return this->error_stop_limit;
     }
 
-    int MessageLimits::getBugStopLimit() const
+    long long MessageLimits::getBugStopLimit() const
     {
         return this->bug_stop_limit;
     }
 
     /*-----------------------------------------------------------------*/
 
-    void MessageLimits::setMessagePrintLimit(int value)
+    void MessageLimits::setMessagePrintLimit(long long value)
     {
         this->message_print_limit = value;
     }
 
-    void MessageLimits::setCommentPrintLimit(int value)
+    void MessageLimits::setCommentPrintLimit(long long value)
     {
         this->comment_print_limit = value;
     }
 
-    void MessageLimits::setWarningPrintLimit(int value)
+    void MessageLimits::setWarningPrintLimit(long long value)
     {
         this->warning_print_limit = value;
     }
 
-    void MessageLimits::setProblemPrintLimit(int value)
+    void MessageLimits::setProblemPrintLimit(long long value)
     {
         this->problem_print_limit = value;
     }
 
-    void MessageLimits::setErrorPrintLimit(int value)
+    void MessageLimits::setErrorPrintLimit(long long value)
     {
         this->error_print_limit = value;
     }
 
-    void MessageLimits::setBugPrintLimit(int value)
+    void MessageLimits::setBugPrintLimit(long long value)
     {
         this->bug_print_limit = value;
     }
 
     /*-----------------------------------------------------------------*/
 
-    void MessageLimits::setMessageStopLimit(int value)
+    void MessageLimits::setMessageStopLimit(long long value)
     {
         this->message_stop_limit = value;
     }
 
-    void MessageLimits::setCommentStopLimit(int value)
+    void MessageLimits::setCommentStopLimit(long long value)
     {
         this->comment_stop_limit = value;
     }
 
-    void MessageLimits::setWarningStopLimit(int value)
+    void MessageLimits::setWarningStopLimit(long long value)
     {
         this->warning_stop_limit = value;
     }
 
-    void MessageLimits::setProblemStopLimit(int value)
+    void MessageLimits::setProblemStopLimit(long long value)
     {
         this->problem_stop_limit = value;
     }
 
-    void MessageLimits::setErrorStopLimit(int value)
+    void MessageLimits::setErrorStopLimit(long long value)
     {
         this->error_stop_limit = value;
     }
 
-    void MessageLimits::setBugStopLimit(int value)
+    void MessageLimits::setBugStopLimit(long long value)
     {
         this->bug_stop_limit = value;
     }
@@ -228,7 +228,7 @@ namespace Opm {
             const auto& item = record.getItem( pair.first );
             if (!item.defaultApplied(0)) {
                 const set_limit_fptr& fptr = pair.second;
-                int value = item.get<int>(0);
+                long long value = item.get<long long>(0);
                 fptr( *this, value );
             }
         }

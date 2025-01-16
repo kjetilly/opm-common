@@ -36,16 +36,16 @@ class ERft : public EclFile
 public:
     explicit ERft(const std::string &filename);
 
-    using RftDate = std::tuple<int,int,int>;
+    using RftDate = std::tuple<long long,long long,long long>;
     template <typename T>
     const std::vector<T>& getRft(const std::string& name, const std::string& wellName,
                                  const RftDate& date) const;
 
     template <typename T>
     const std::vector<T>& getRft(const std::string& name, const std::string& wellName,
-                                 int year, int month, int day) const;
+                                 long long year, long long month, long long day) const;
     template <typename T>
-    const std::vector<T>& getRft(const std::string& name, int reportIndex) const;
+    const std::vector<T>& getRft(const std::string& name, long long reportIndex) const;
 
     std::vector<std::string> listOfWells() const;
     std::vector<RftDate> listOfdates() const;
@@ -54,38 +54,38 @@ public:
     const RftReportList& listOfRftReports() const { return rftReportList; }
 
     bool hasRft(const std::string& wellName, const RftDate& date) const;
-    bool hasRft(const std::string& wellName, int year, int month, int day) const;
+    bool hasRft(const std::string& wellName, long long year, long long month, long long day) const;
 
-    std::vector<EclEntry> listOfRftArrays(int reportIndex ) const;
+    std::vector<EclEntry> listOfRftArrays(long long reportIndex ) const;
 
     std::vector<EclEntry> listOfRftArrays(const std::string& wellName,
                                           const RftDate& date) const;
 
     std::vector<EclEntry> listOfRftArrays(const std::string& wellName,
-                                          int year, int month, int day) const;
+                                          long long year, long long month, long long day) const;
 
     bool hasArray(const std::string& arrayName, const std::string& wellName,
                   const RftDate& date) const;
 
-    bool hasArray(const std::string& arrayName, int reportInd) const;
+    bool hasArray(const std::string& arrayName, long long reportInd) const;
 
-    int numberOfReports() { return numReports; }
+    long long numberOfReports() { return numReports; }
 
 private:
-    std::map<int, std::tuple<int,int>> arrIndexRange;
-    int numReports;
+    std::map<long long, std::tuple<long long,long long>> arrIndexRange;
+    long long numReports;
     std::vector<float> timeList;
 
     std::set<std::string> wellList;
     std::set<RftDate> dateList;
     RftReportList rftReportList;
 
-    std::map<std::tuple<std::string,RftDate>,int> reportIndices;  //  mapping report index to wellName and date (tupe)
+    std::map<std::tuple<std::string,RftDate>,long long> reportIndices;  //  mapping report index to wellName and date (tupe)
 
-    int getReportIndex(const std::string& wellName, const RftDate& date) const;
+    long long getReportIndex(const std::string& wellName, const RftDate& date) const;
 
-    int getArrayIndex(const std::string& name, int reportIndex) const;
-    int getArrayIndex(const std::string& name, const std::string& wellName,
+    long long getArrayIndex(const std::string& name, long long reportIndex) const;
+    long long getArrayIndex(const std::string& name, const std::string& wellName,
                       const RftDate& date) const;
 };
 

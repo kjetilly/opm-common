@@ -155,9 +155,9 @@ namespace {
         }
     }
 
-    std::vector<int>
-    writeHeader(const int                     report_step,
-                const int                     sim_step,
+    std::vector<long long>
+    writeHeader(const long long                     report_step,
+                const long long                     sim_step,
                 const double                  next_step_size,
                 const double                  simTime,
                 const Schedule&               schedule,
@@ -185,11 +185,11 @@ namespace {
         return ih;
     }
 
-    void writeGroup(int                           sim_step,
+    void writeGroup(long long                           sim_step,
                     const UnitSystem&             units,
                     const Schedule&               schedule,
                     const Opm::SummaryState&      sumState,
-                    const std::vector<int>&       ih,
+                    const std::vector<long long>&       ih,
                     EclIO::OutputStream::Restart& rstFile)
     {
         // write IGRP to restart file
@@ -206,11 +206,11 @@ namespace {
     }
 
     void writeNetwork(const Opm::EclipseState&      es,
-                      int                           sim_step,
+                      long long                           sim_step,
                       const UnitSystem&             units,
                       const Schedule&               schedule,
                       const Opm::SummaryState&      sumState,
-                      const std::vector<int>&       ih,
+                      const std::vector<long long>&       ih,
                       EclIO::OutputStream::Restart& rstFile)
     {
         // write network data to restart file
@@ -228,13 +228,13 @@ namespace {
         rstFile.write("ZNODE", networkData.getZNode());
     }
 
-    void writeMSWData(int                           sim_step,
+    void writeMSWData(long long                           sim_step,
                       const UnitSystem&             units,
                       const Schedule&               schedule,
                       const EclipseGrid&            grid,
                       const Opm::SummaryState&      sumState,
                       const Opm::data::Wells&       wells,
-                      const std::vector<int>&       ih,
+                      const std::vector<long long>&       ih,
                       EclIO::OutputStream::Restart& rstFile)
     {
         // write ISEG, RSEG, ILBS and ILBR to restart file
@@ -250,11 +250,11 @@ namespace {
         rstFile.write("RSEG", MSWData.getRSeg());
     }
 
-    void writeUDQ(const int                     report_step,
-                  const int                     sim_step,
+    void writeUDQ(const long long                     report_step,
+                  const long long                     sim_step,
                   const Schedule&               schedule,
                   const UDQState&               udq_state,
-                  const std::vector<int>&       ih,
+                  const std::vector<long long>&       ih,
                   EclIO::OutputStream::Restart& rstFile)
     {
         const auto& udqConfig = schedule[sim_step].udq();
@@ -304,8 +304,8 @@ namespace {
         }
     }
 
-    void writeActionx(const int                     report_step,
-                      const int                     sim_step,
+    void writeActionx(const long long                     report_step,
+                      const long long                     sim_step,
                       const Schedule&               schedule,
                       const Action::State&          action_state,
                       const SummaryState&           sum_state,
@@ -330,7 +330,7 @@ namespace {
         rstFile.write("SACN", actionxData.getSACN());
     }
 
-    void writeWell(int                           sim_step,
+    void writeWell(long long                           sim_step,
                    const EclipseGrid&            grid,
                    const Schedule&               schedule,
                    const TracerConfig&           tracers,
@@ -338,7 +338,7 @@ namespace {
                    const Opm::Action::State&     action_state,
                    const Opm::WellTestState&     wtest_state,
                    const Opm::SummaryState&      sumState,
-                   const std::vector<int>&       ih,
+                   const std::vector<long long>&       ih,
                    EclIO::OutputStream::Restart& rstFile)
     {
         auto wellData = Helpers::AggregateWellData(ih);
@@ -375,7 +375,7 @@ namespace {
         // Aquifer IDs in 1..maxID inclusive.
         const auto maxAquiferID = aquiferData.maximumActiveAnalyticAquiferID();
         for (auto aquiferID = 1 + 0*maxAquiferID; aquiferID <= maxAquiferID; ++aquiferID) {
-            const auto xCAQnum = std::vector<int>{ aquiferID };
+            const auto xCAQnum = std::vector<long long>{ aquiferID };
 
             rstFile.write("ICAQNUM", xCAQnum);
             rstFile.write("ICAQ", aquiferData.getIntegerAquiferConnectionData(aquiferID));
@@ -421,7 +421,7 @@ namespace {
         }
     }
 
-    void writeDynamicData(const int                                     sim_step,
+    void writeDynamicData(const long long                                     sim_step,
                           const EclipseGrid&                            grid,
                           const EclipseState&                           es,
                           const Schedule&                               schedule,
@@ -429,7 +429,7 @@ namespace {
                           const Opm::Action::State&                     action_state,
                           const Opm::WellTestState&                     wtest_state,
                           const Opm::SummaryState&                      sumState,
-                          const std::vector<int>&                       inteHD,
+                          const std::vector<long long>&                       inteHD,
                           const data::Aquifers&                         aquDynData,
                           std::optional<Helpers::AggregateAquiferData>& aquiferData,
                           EclIO::OutputStream::Restart&                 rstFile)
@@ -540,7 +540,7 @@ namespace {
                 {
                     writeVectorF(vector, v);
                 },
-                [&vector,&writeVectorI](const std::vector<int>& v)
+                [&vector,&writeVectorI](const std::vector<long long>& v)
                 {
                     writeVectorI(vector, v);
                 }
@@ -678,11 +678,11 @@ namespace {
                        const EclipseState&           es,
                        const Schedule&               schedule,
                        const UDQState&               udq_state,
-                       int                           report_step,
-                       int                           sim_step,
+                       long long                           report_step,
+                       long long                           sim_step,
                        const bool                    ecl_compatible_rst,
                        const bool                    write_double_arg,
-                       const std::vector<int>&       inteHD,
+                       const std::vector<long long>&       inteHD,
                        EclIO::OutputStream::Restart& rstFile)
     {
         auto writeDorF = [&rstFile, write_double = write_double_arg]
@@ -699,7 +699,7 @@ namespace {
         };
 
         auto writeInt = [&rstFile](const std::string& key,
-                                   const std::vector<int>& data)
+                                   const std::vector<long long>& data)
         {
             rstFile.write(key,data);
         };
@@ -739,9 +739,9 @@ namespace {
         }
     }
 
-    void logRestartOutput(const int               report_step,
+    void logRestartOutput(const long long               report_step,
                           const std::size_t       num_reports,
-                          const std::vector<int>& inteHD)
+                          const std::vector<long long>& inteHD)
     {
         using namespace fmt::literals;
         using Ix = ::Opm::RestartIO::Helpers::VectorItems::intehead;
@@ -770,7 +770,7 @@ namespace {
 } // Anonymous namespace
 
 void save(EclIO::OutputStream::Restart&                 rstFile,
-          int                                           report_step,
+          long long                                           report_step,
           double                                        seconds_elapsed,
           RestartValue                                  value,
           const EclipseState&                           es,
@@ -788,7 +788,7 @@ void save(EclIO::OutputStream::Restart&                 rstFile,
     const auto& ioCfg = es.getIOConfig();
     const auto ecl_compatible_rst = ioCfg.getEclCompatibleRST();
 
-    const auto  sim_step = std::max(report_step - 1, 0);
+    const auto  sim_step = std::max(report_step - 1, 0LL);
     const auto& units    = es.getUnits();
 
     if (ecl_compatible_rst) {

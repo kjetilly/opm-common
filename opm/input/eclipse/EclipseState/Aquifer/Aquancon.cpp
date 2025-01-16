@@ -51,7 +51,7 @@
 
 namespace {
     Opm::Aquancon::AquancCell
-    makeAquiferCell(const int                                            aquiferID,
+    makeAquiferCell(const long long                                            aquiferID,
                     const Opm::RestartIO::RstAquifer::Connections::Cell& rst_cell)
     {
         return {
@@ -64,7 +64,7 @@ namespace {
     }
 
     std::vector<Opm::Aquancon::AquancCell>
-    makeAquiferConnections(const int                                      aquiferID,
+    makeAquiferConnections(const long long                                      aquiferID,
                            const Opm::RestartIO::RstAquifer::Connections& rst_connections)
     {
         auto connections = std::vector<Opm::Aquancon::AquancCell>{};
@@ -103,7 +103,7 @@ namespace Opm {
         void add_cell(const KeywordLocation& location,
                       std::map<std::size_t, Aquancon::AquancCell>& work,
                       const EclipseGrid& grid,
-                      const int aquiferID,
+                      const long long aquiferID,
                       const std::size_t global_index,
                       std::optional<double> influx_coeff,
                       const double influx_mult,
@@ -143,19 +143,19 @@ namespace Opm {
     Aquancon::Aquancon(const EclipseGrid& grid, const Deck& deck)
     {
         std::map<std::size_t, Aquancon::AquancCell> work;
-        const std::vector<int>& actnum = grid.getACTNUM();
+        const std::vector<long long>& actnum = grid.getACTNUM();
         for (std::size_t iaq = 0; iaq < deck.count("AQUANCON"); iaq++) {
             const auto& aquanconKeyword = deck["AQUANCON"][iaq];
             OpmLog::info(OpmInputError::format("Initializing aquifer connections from {keyword} in {file} line {line}", aquanconKeyword.location()));
-            int num_connections_to_inactive_cells = 0;
+            long long num_connections_to_inactive_cells = 0;
             for (const auto& aquanconRecord : aquanconKeyword) {
-                const int aquiferID = aquanconRecord.getItem("AQUIFER_ID").get<int>(0);
-                const int i1 = aquanconRecord.getItem("I1").get<int>(0) - 1;
-                const int i2 = aquanconRecord.getItem("I2").get<int>(0) - 1;
-                const int j1 = aquanconRecord.getItem("J1").get<int>(0) - 1;
-                const int j2 = aquanconRecord.getItem("J2").get<int>(0) - 1;
-                const int k1 = aquanconRecord.getItem("K1").get<int>(0) - 1;
-                const int k2 = aquanconRecord.getItem("K2").get<int>(0) - 1;
+                const long long aquiferID = aquanconRecord.getItem("AQUIFER_ID").get<long long>(0);
+                const long long i1 = aquanconRecord.getItem("I1").get<long long>(0) - 1;
+                const long long i2 = aquanconRecord.getItem("I2").get<long long>(0) - 1;
+                const long long j1 = aquanconRecord.getItem("J1").get<long long>(0) - 1;
+                const long long j2 = aquanconRecord.getItem("J2").get<long long>(0) - 1;
+                const long long k1 = aquanconRecord.getItem("K1").get<long long>(0) - 1;
+                const long long k2 = aquanconRecord.getItem("K2").get<long long>(0) - 1;
                 const double influx_mult = aquanconRecord.getItem("INFLUX_MULT").getSIDouble(0);
                 const FaceDir::DirEnum faceDir
                     = FaceDir::FromString(aquanconRecord.getItem("FACE").getTrimmedString(0));
@@ -165,9 +165,9 @@ namespace Opm {
                 const bool allow_aquifer_inside_reservoir = DeckItem::to_bool(str_inside_reservoir);
 
                 // Loop over the cartesian indices to convert to the global grid index
-                for (int k = k1; k <= k2; k++) {
-                    for (int j = j1; j <= j2; j++) {
-                        for (int i = i1; i <= i2; i++) {
+                for (long long k = k1; k <= k2; k++) {
+                    for (long long j = j1; j <= j2; j++) {
+                        for (long long i = i1; i <= i2; i++) {
                             if (actnum[grid.getGlobalIndex(i, j, k)]) { // the cell itself needs to be active
                                 if (allow_aquifer_inside_reservoir
                                     || !AquiferHelpers::neighborCellInsideReservoirAndActive(grid, i, j, k, faceDir, actnum)) {
@@ -218,7 +218,7 @@ namespace Opm {
     }
 
 
-    const std::vector<Aquancon::AquancCell>& Aquancon::getConnections(int aquiferID) const {
+    const std::vector<Aquancon::AquancCell>& Aquancon::getConnections(long long aquiferID) const {
         const auto search = this->cells.find(aquiferID);
         if (search == this->cells.end()) {
             auto msg = fmt::format("There is no connection associated with analytical aquifer {}\n", aquiferID);
@@ -227,12 +227,12 @@ namespace Opm {
         return search->second;
     }
 
-    bool Aquancon::hasAquiferConnections(const int aquiferID) const {
+    bool Aquancon::hasAquiferConnections(const long long aquiferID) const {
         auto search = this->cells.find(aquiferID);
         return (search != this->cells.end()) && !search->second.empty();
     }
 
-    Aquancon::Aquancon(const std::unordered_map<int, std::vector<Aquancon::AquancCell>>& data) :
+    Aquancon::Aquancon(const std::unordered_map<long long, std::vector<Aquancon::AquancCell>>& data) :
         cells(data)
     {}
 
@@ -262,7 +262,7 @@ namespace Opm {
         }
     }
 
-    const std::unordered_map<int, std::vector<Aquancon::AquancCell>>& Aquancon::data() const {
+    const std::unordered_map<long long, std::vector<Aquancon::AquancCell>>& Aquancon::data() const {
         return this->cells;
     }
 

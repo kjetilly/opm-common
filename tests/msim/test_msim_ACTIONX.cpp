@@ -142,23 +142,23 @@ bool ecl_sum_has_general_var(const EclIO::ESmry& smry, const std::string& var)
     return smry.hasKey(var);
 }
 
-float ecl_sum_get_general_var(const EclIO::ESmry& smry, const int timeIdx, const std::string& var)
+float ecl_sum_get_general_var(const EclIO::ESmry& smry, const long long timeIdx, const std::string& var)
 {
     return smry.get(var)[timeIdx];
 }
 
-int ecl_sum_get_data_length(const EclIO::ESmry& smry)
+long long ecl_sum_get_data_length(const EclIO::ESmry& smry)
 {
-    return static_cast<int>(smry.get("TIME").size());
+    return static_cast<long long>(smry.get("TIME").size());
 }
 
-int ecl_sum_get_last_report_step(const EclIO::ESmry& smry)
+long long ecl_sum_get_last_report_step(const EclIO::ESmry& smry)
 {
-    return static_cast<int>(smry.get_at_rstep("TIME").size());
+    return static_cast<long long>(smry.get_at_rstep("TIME").size());
 }
 
 
-int ecl_sum_iget_report_end(const EclIO::ESmry& smry, const int reportStep)
+long long ecl_sum_iget_report_end(const EclIO::ESmry& smry, const long long reportStep)
 {
     return smry.timestepIdxAtReportstepStart(reportStep + 1) - 1;
 }
@@ -325,7 +325,7 @@ BOOST_AUTO_TEST_CASE(UDQ_WUWCT) {
         const auto& base_name = td.state.getIOConfig().getBaseName();
         const EclIO::ESmry ecl_sum(base_name + ".SMSPEC");
 
-        for (int step = 0; step < ecl_sum_get_data_length(ecl_sum); step++) {
+        for (long long step = 0; step < ecl_sum_get_data_length(ecl_sum); step++) {
             double wopr_sum = 0;
             for (const auto& well : {"P1", "P2", "P3", "P4"}) {
                 std::string wwct_key  = std::string("WWCT:") + well;
@@ -445,10 +445,10 @@ BOOST_AUTO_TEST_CASE(UDA) {
 
         // Should only get at report steps
         const auto last_report = ecl_sum_get_last_report_step(ecl_sum);
-        for (int report_step = 2; report_step < last_report; report_step++) {
+        for (long long report_step = 2; report_step < last_report; report_step++) {
             double wwpr_sum = 0;
             {
-                int prev_tstep = ecl_sum_iget_report_end(ecl_sum, report_step - 1);
+                long long prev_tstep = ecl_sum_iget_report_end(ecl_sum, report_step - 1);
                 for (const auto& well : {"P1", "P2", "P3", "P4"}) {
                     std::string wwpr_key  = std::string("WWPR:") + well;
                     wwpr_sum += ecl_sum_get_general_var(ecl_sum, prev_tstep, wwpr_key);

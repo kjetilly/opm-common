@@ -43,13 +43,13 @@ class EnsureCompileTimeConstant
 class IAmAnIslandLeaveMeAlone
 {
 public:
-    IAmAnIslandLeaveMeAlone(int, int)
+    IAmAnIslandLeaveMeAlone(long long, long long)
     {}
 
     IAmAnIslandLeaveMeAlone& operator=(const IAmAnIslandLeaveMeAlone&) = delete;
 };
 
-int main()
+long long main()
 {
     {
         typedef Opm::ConditionalStorage<true, std::string> ConditionalTrueString;

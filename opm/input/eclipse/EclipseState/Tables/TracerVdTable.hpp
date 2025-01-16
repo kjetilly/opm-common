@@ -35,7 +35,7 @@ class TracerVdTable : public SimpleTable
 {
 public:
     TracerVdTable() = default;
-    TracerVdTable(const Opm::DeckItem& item, double inv_volume, const int tableID);
+    TracerVdTable(const Opm::DeckItem& item, double inv_volume, const long long tableID);
 
     /*!
      * \brief Return the depth column

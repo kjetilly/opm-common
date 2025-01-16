@@ -142,11 +142,11 @@ public:
 
         // ideal gas part
         result = log(pi_);
-        for (int i = 0; i < 9; ++i)
+        for (long long i = 0; i < 9; ++i)
             result += n_g(i)*pow(tau_, J_g(i));
 
         // residual part
-        for (int i = 0; i < 43; ++i)
+        for (long long i = 0; i < 43; ++i)
             result +=
                 n_r(i)*
                 pow(pi_, I_r(i))*
@@ -174,7 +174,7 @@ public:
 
         // ideal gas part
         Evaluation result = 0.0;
-        for (int i = 0; i < 9; i++) {
+        for (long long i = 0; i < 9; i++) {
             result +=
                 n_g(i) *
                 J_g(i) *
@@ -182,7 +182,7 @@ public:
         }
 
         // residual part
-        for (int i = 0; i < 43; i++) {
+        for (long long i = 0; i < 43; i++) {
             result +=
                 n_r(i) *
                 pow(pi_,  static_cast<Scalar>(I_r(i))) *
@@ -215,7 +215,7 @@ public:
         Evaluation result = 1/pi_;
 
         // residual part
-        for (int i = 0; i < 43; i++) {
+        for (long long i = 0; i < 43; i++) {
             result +=
                 n_r(i) *
                 I_r(i) *
@@ -248,7 +248,7 @@ public:
         Evaluation result = 0.0;
 
         // residual part
-        for (int i = 0; i < 43; i++) {
+        for (long long i = 0; i < 43; i++) {
             result +=
                 n_r(i) *
                 I_r(i) *
@@ -282,7 +282,7 @@ public:
         Evaluation result = -1/(pi_*pi_);
 
         // residual part
-        for (int i = 0; i < 43; i++) {
+        for (long long i = 0; i < 43; i++) {
             result +=
                 n_r(i) *
                 I_r(i) *
@@ -314,7 +314,7 @@ public:
 
         // ideal gas part
         Evaluation result = 0.0;
-        for (int i = 0; i < 9; i++) {
+        for (long long i = 0; i < 9; i++) {
             result +=
                 n_g(i) *
                 J_g(i) *
@@ -323,7 +323,7 @@ public:
         }
 
         // residual part
-        for (int i = 0; i < 43; i++) {
+        for (long long i = 0; i < 43; i++) {
             result +=
                 n_r(i) *
                 pow(pi_,  I_r(i)) *
@@ -337,7 +337,7 @@ public:
 
 
 private:
-    static Scalar n_g(int i)
+    static Scalar n_g(long long i)
     {
         static const Scalar n[9] = {
             -0.96927686500217e1, 0.10086655968018e2, -0.56087911283020e-2,
@@ -347,7 +347,7 @@ private:
         return n[i];
     }
 
-    static Scalar n_r(int i)
+    static Scalar n_r(long long i)
     {
         static const Scalar n[43] = {
             -0.17731742473213e-2, -0.17834862292358e-1, -0.45996013696365e-1,
@@ -369,9 +369,9 @@ private:
         return n[i];
     }
 
-    static Scalar I_r(int i)
+    static Scalar I_r(long long i)
     {
-        static const short int I[43] = {
+        static const short I[43] = {
             1, 1, 1,
             1, 1, 2,
             2, 2, 2,
@@ -391,9 +391,9 @@ private:
         return I[i];
     }
 
-    static Scalar J_g(int i)
+    static Scalar J_g(long long i)
     {
-        static const short int J[9] = {
+        static const short J[9] = {
             0, 1, -5,
             -4, -3, -2,
             -1, 2, 3
@@ -401,9 +401,9 @@ private:
         return J[i];
     }
 
-    static Scalar J_r(int i)
+    static Scalar J_r(long long i)
     {
-        static const short int J[43] = {
+        static const short J[43] = {
             0, 1, 2,
             3, 6, 1,
             2, 4, 7,

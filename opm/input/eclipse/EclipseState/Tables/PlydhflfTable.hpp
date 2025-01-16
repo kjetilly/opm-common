@@ -28,7 +28,7 @@ namespace Opm {
     class PlydhflfTable : public SimpleTable {
     public:
 
-        PlydhflfTable( const DeckItem& item, const int tableID );
+        PlydhflfTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getTemperatureColumn() const;
         const TableColumn& getPolymerHalflifeColumn() const;

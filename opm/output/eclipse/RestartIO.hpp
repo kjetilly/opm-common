@@ -78,7 +78,7 @@ namespace Opm { namespace Action {
 namespace Opm { namespace RestartIO {
 
     void save(EclIO::OutputStream::Restart&                 rstFile,
-              int                                           report_step,
+              long long                                           report_step,
               double                                        seconds_elapsed,
               RestartValue                                  value,
               const EclipseState&                           es,
@@ -93,7 +93,7 @@ namespace Opm { namespace RestartIO {
 
 
     RestartValue load(const std::string&             filename,
-                      int                            report_step,
+                      long long                            report_step,
                       Action::State&                 action_state,
                       SummaryState&                  summary_state,
                       const std::vector<RestartKey>& solution_keys,

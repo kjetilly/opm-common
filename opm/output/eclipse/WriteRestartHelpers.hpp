@@ -48,14 +48,14 @@ namespace Opm::RestartIO::Helpers {
                    const double        simTime,
                    const double        nextTimeStep);
 
-    std::vector<int>
+    std::vector<long long>
     createInteHead(const EclipseState& es,
                    const EclipseGrid&  grid,
                    const Schedule&     sched,
                    const double        simTime,
-                   const int           num_solver_steps,
-                   const int           report_step,
-                   const int           lookup_step);
+                   const long long           num_solver_steps,
+                   const long long           report_step,
+                   const long long           lookup_step);
 
     std::vector<bool>
     createLogiHead(const EclipseState& es);
@@ -78,7 +78,7 @@ namespace Opm::RestartIO::Helpers {
     std::size_t
     entriesPerSACN(const Opm::Actdims& actdims);
 
-    std::vector<int>
+    std::vector<long long>
     createActionRSTDims(const Schedule&     sched,
                         const std::size_t   simStep);
 

@@ -61,7 +61,7 @@ public:
 
     static EzrokhiTable serializationTestObject();
 
-    void init(const DeckRecord& record, const std::string& cname, const int icomp);
+    void init(const DeckRecord& record, const std::string& cname, const long long icomp);
     std::size_t size() const;
     bool empty() const;
     std::unordered_map<std::string, EzrokhiRecord>::const_iterator begin() const;

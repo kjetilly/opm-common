@@ -42,8 +42,8 @@ private:
 
 struct B {
     double a;
-    int b;
-    int getb() {return b;}
+    long long b;
+    long long getb() {return b;}
 };
 } // namespace
 

@@ -51,9 +51,9 @@ namespace Opm {
         Segment(const Segment& src, double new_depth, double new_length, double new_volume);
         Segment(const Segment& src, double new_depth, double new_length);
         Segment(const Segment& src, double new_volume);
-        Segment(const int segment_number_in,
-                const int branch_in,
-                const int outlet_segment_in,
+        Segment(const long long segment_number_in,
+                const long long branch_in,
+                const long long outlet_segment_in,
                 const double length_in,
                 const double depth_in,
                 const double internal_diameter_in,
@@ -68,9 +68,9 @@ namespace Opm {
 
         static Segment serializationTestObject();
 
-        int segmentNumber() const;
-        int branchNumber() const;
-        int outletSegment() const;
+        long long segmentNumber() const;
+        long long branchNumber() const;
+        long long outletSegment() const;
         double perfLength() const;
         double totalLength() const;
         double node_X() const;
@@ -83,9 +83,9 @@ namespace Opm {
         bool dataReady() const;
 
         SegmentType segmentType() const;
-        int ecl_type_id() const;
+        long long ecl_type_id() const;
 
-        const std::vector<int>& inletSegments() const;
+        const std::vector<long long>& inletSegments() const;
 
         static double invalidValue();
 
@@ -101,7 +101,7 @@ namespace Opm {
         void updateAutoICD(const AutoICD& aicd);
         void updateValve(const Valve& valve, const double segment_length);
         void updateValve(const Valve& valve);
-        void addInletSegment(const int segment_number);
+        void addInletSegment(const long long segment_number);
 
         bool isRegular() const
         {
@@ -160,18 +160,18 @@ namespace Opm {
 
         // segment number
         // it should work as a ID.
-        int m_segment_number;
+        long long m_segment_number;
 
         // branch number
         // for top segment, it should always be 1
-        int m_branch;
+        long long m_branch;
 
         // the outlet junction segment
         // for top segment, it should be -1
-        int m_outlet_segment;
+        long long m_outlet_segment;
 
         // the segments whose outlet segments are the current segment
-        std::vector<int> m_inlet_segments;
+        std::vector<long long> m_inlet_segments;
 
         // length of the segment node to the bhp reference point.
         // when reading in from deck, with 'INC',

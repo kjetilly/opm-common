@@ -47,7 +47,7 @@ namespace Opm {
            RAW_STRING and UDA.
 
         DataType: This the C++ type of items generated when parsing the deck,
-           currently the available datatypes are int, double, std::string and
+           currently the available datatypes are long long, double, std::string and
            the user defined type UDAValue.
 
       Splitting the type treatment in two layers in this way enables
@@ -104,7 +104,7 @@ namespace Opm {
 
     private:
         double dval{0};
-        int ival{0};
+        long long ival{0};
         std::string sval{};
         RawString rsval{};
         UDAValue uval{};

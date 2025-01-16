@@ -60,7 +60,7 @@ public:
     static constexpr Scalar eps = 1.0e-10; //tolerance
 
     //! The number of fluid phases to which this material law applies.
-    static constexpr int numPhases = Traits::numPhases;
+    static constexpr long long numPhases = Traits::numPhases;
 
     //! Specify whether this material law implements the two-phase
     //! convenience API
@@ -254,7 +254,7 @@ public:
         // Newton-Raphson method
         Evaluation sw = 0.5;
         //Scalar eps = 1e-10;
-        for (int i = 0; i < 20; ++i) {
+        for (long long i = 0; i < 20; ++i) {
             Evaluation f = krn - twoPhaseSatKrn(params, sw);
             if (Opm::abs(f) < 1e-10) {
                 return sw;
@@ -284,7 +284,7 @@ public:
         if (Opm::abs(fR) < eps)
             return SR;
         if (fL*fR < 0.0) {
-            for (int i = 0; i < 50; ++i) {
+            for (long long i = 0; i < 50; ++i) {
                 sw = 0.5*(SL+SR);
                 if (abs(SR-SL) < eps) {
                     return sw;

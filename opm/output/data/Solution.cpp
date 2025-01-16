@@ -79,7 +79,7 @@ Solution::insert(std::string               name,
 
 std::pair<Solution::iterator, bool>
 Solution::insert(std::string               name,
-                 std::vector<int>          xs,
+                 std::vector<long long>          xs,
                  const TargetType          type)
 {
     return this->emplace(std::piecewise_construct,
@@ -123,7 +123,7 @@ void data::Solution::convertFromSI(const UnitSystem& units)
 
 template std::vector<double>& data::Solution::data<double>(const std::string&);
 template const std::vector<double>& data::Solution::data<double>(const std::string&) const;
-template std::vector<int>& data::Solution::data<int>(const std::string&);
-template const std::vector<int>& data::Solution::data<int>(const std::string&) const;
+template std::vector<long long>& data::Solution::data<long long>(const std::string&);
+template const std::vector<long long>& data::Solution::data<long long>(const std::string&) const;
 
 }} // namespace Opm::data

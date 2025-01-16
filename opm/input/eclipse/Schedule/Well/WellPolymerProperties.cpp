@@ -66,12 +66,12 @@ namespace Opm {
     }
 
     void WellPolymerProperties::handleWPMITAB(const DeckRecord& record) {
-        this->m_plymwinjtable = record.getItem("TABLE_NUMBER").get<int>(0);
+        this->m_plymwinjtable = record.getItem("TABLE_NUMBER").get<long long>(0);
     }
 
     void WellPolymerProperties::handleWSKPTAB(const DeckRecord& record) {
-        this->m_skprwattable = record.getItem("TABLE_NUMBER_WATER").get<int>(0);
-        this->m_skprpolytable = record.getItem("TABLE_NUMBER_POLYMER").get<int>(0);
+        this->m_skprwattable = record.getItem("TABLE_NUMBER_WATER").get<long long>(0);
+        this->m_skprpolytable = record.getItem("TABLE_NUMBER_POLYMER").get<long long>(0);
     }
 
     bool WellPolymerProperties::operator!=(const WellPolymerProperties& other) const {

@@ -65,7 +65,7 @@ public:
     typedef typename Traits::Scalar Scalar;
 
     //! The number of fluid phases
-    static const int numPhases = Traits::numPhases;
+    static const long long numPhases = Traits::numPhases;
     static_assert(numPhases == 2,
                   "The van Genuchten capillary pressure law only "
                   "applies to the case of two fluid phases");

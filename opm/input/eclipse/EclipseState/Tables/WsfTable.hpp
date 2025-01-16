@@ -28,7 +28,7 @@ namespace Opm {
     class WsfTable : public SimpleTable {
 
     public:
-        WsfTable( const DeckItem& item, const int tableID );
+        WsfTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getSwColumn() const;
         const TableColumn& getKrwColumn() const;

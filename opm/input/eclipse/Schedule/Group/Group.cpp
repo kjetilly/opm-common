@@ -91,16 +91,16 @@ namespace {
         injection.injection_controls = 0;
 
         if (active.rate)
-            injection.injection_controls += static_cast<int>(Opm::Group::InjectionCMode::RATE);
+            injection.injection_controls += static_cast<long long>(Opm::Group::InjectionCMode::RATE);
 
         if (active.resv)
-            injection.injection_controls += static_cast<int>(Opm::Group::InjectionCMode::RESV);
+            injection.injection_controls += static_cast<long long>(Opm::Group::InjectionCMode::RESV);
 
         if (active.rein)
-            injection.injection_controls += static_cast<int>(Opm::Group::InjectionCMode::REIN);
+            injection.injection_controls += static_cast<long long>(Opm::Group::InjectionCMode::REIN);
 
         if (active.vrep)
-            injection.injection_controls += static_cast<int>(Opm::Group::InjectionCMode::VREP);
+            injection.injection_controls += static_cast<long long>(Opm::Group::InjectionCMode::VREP);
     }
 
     bool has_active(const ProductionLimits& limits)
@@ -142,16 +142,16 @@ namespace {
         production.production_controls = 0;
 
         if (active.oil)
-            production.production_controls += static_cast<int>(Opm::Group::ProductionCMode::ORAT);
+            production.production_controls += static_cast<long long>(Opm::Group::ProductionCMode::ORAT);
 
         if (active.gas)
-            production.production_controls += static_cast<int>(Opm::Group::ProductionCMode::GRAT);
+            production.production_controls += static_cast<long long>(Opm::Group::ProductionCMode::GRAT);
 
         if (active.wat)
-            production.production_controls += static_cast<int>(Opm::Group::ProductionCMode::WRAT);
+            production.production_controls += static_cast<long long>(Opm::Group::ProductionCMode::WRAT);
 
         if (active.liq)
-            production.production_controls += static_cast<int>(Opm::Group::ProductionCMode::LRAT);
+            production.production_controls += static_cast<long long>(Opm::Group::ProductionCMode::LRAT);
 
         return production;
     }
@@ -306,12 +306,12 @@ const Group::GroupInjectionProperties& Group::injectionProperties(Phase phase) c
 namespace {
 namespace detail {
 
-bool has_control(int controls, Group::InjectionCMode cmode) {
-    return ((controls & static_cast<int>(cmode)) != 0);
+bool has_control(long long controls, Group::InjectionCMode cmode) {
+    return ((controls & static_cast<long long>(cmode)) != 0);
 }
 
-bool has_control(int controls, Group::ProductionCMode cmode) {
-    return ((controls & static_cast<int>(cmode)) != 0);
+bool has_control(long long controls, Group::ProductionCMode cmode) {
+    return ((controls & static_cast<long long>(cmode)) != 0);
 }
 }
 }
@@ -424,7 +424,7 @@ bool Group::GroupInjectionProperties::operator!=(const GroupInjectionProperties&
 }
 
 bool Group::GroupInjectionProperties::updateUDQActive(const UDQConfig& udq_config, UDQActive& active) const {
-    int update_count = 0;
+    long long update_count = 0;
 
     update_count += active.update(udq_config, this->surface_max_rate, this->name, UDAControl::GCONINJE_SURFACE_MAX_RATE);
     update_count += active.update(udq_config, this->resv_max_rate, this->name, UDAControl::GCONINJE_RESV_MAX_RATE);
@@ -528,7 +528,7 @@ bool Group::GroupProductionProperties::operator==(const GroupProductionPropertie
 }
 
 bool Group::GroupProductionProperties::updateUDQActive(const UDQConfig& udq_config, UDQActive& active) const {
-    int update_count = 0;
+    long long update_count = 0;
 
     update_count += active.update(udq_config, this->oil_target, this->name, UDAControl::GCONPROD_OIL_TARGET);
     update_count += active.update(udq_config, this->water_target, this->name, UDAControl::GCONPROD_WATER_TARGET);
@@ -929,7 +929,7 @@ Group::ExceedAction Group::ExceedActionFromString( const std::string& stringValu
         throw std::invalid_argument("Unknown enum state string: " + stringValue );
 }
 
-Group::ExceedAction Group::ExceedActionFromInt( const int value ) {
+Group::ExceedAction Group::ExceedActionFromInt( const long long value ) {
 
     if (value <= 0) return ExceedAction::NONE;
     if (value == 4) return ExceedAction::RATE;
@@ -1033,7 +1033,7 @@ Group::ProductionCMode Group::ProductionCModeFromString( const std::string& stri
         throw std::invalid_argument("Unknown enum state string: " + stringValue );
 }
 
-Group::ProductionCMode Group::ProductionCModeFromInt(int ecl_int) {
+Group::ProductionCMode Group::ProductionCModeFromInt(long long ecl_int) {
     switch (ecl_int) {
     case 0:
         // The inverse function returns 0 also for ProductionCMode::FLD.
@@ -1053,7 +1053,7 @@ Group::ProductionCMode Group::ProductionCModeFromInt(int ecl_int) {
     }
 }
 
-int Group::ProductionCMode2Int(Group::ProductionCMode cmode) {
+long long Group::ProductionCMode2Int(Group::ProductionCMode cmode) {
     switch (cmode) {
     case Group::ProductionCMode::NONE:
     case Group::ProductionCMode::FLD:
@@ -1080,7 +1080,7 @@ int Group::ProductionCMode2Int(Group::ProductionCMode cmode) {
 
 
 
-Group::InjectionCMode Group::InjectionCModeFromInt(int ecl_int) {
+Group::InjectionCMode Group::InjectionCModeFromInt(long long ecl_int) {
     switch (ecl_int) {
     case 0:
         // The inverse function returns 0 also for InjectionCMode::FLD and InjectionCMode::SALE
@@ -1098,7 +1098,7 @@ Group::InjectionCMode Group::InjectionCModeFromInt(int ecl_int) {
     }
 }
 
-int Group::InjectionCMode2Int(InjectionCMode cmode) {
+long long Group::InjectionCMode2Int(InjectionCMode cmode) {
     switch (cmode) {
     case InjectionCMode::NONE:
     case InjectionCMode::FLD:
@@ -1130,7 +1130,7 @@ Group::GuideRateInjTarget Group::GuideRateInjTargetFromString( const std::string
         return GuideRateInjTarget::NO_GUIDE_RATE;
 }
 
-int Group::GuideRateInjTargetToInt(GuideRateInjTarget target) {
+long long Group::GuideRateInjTargetToInt(GuideRateInjTarget target) {
     switch (target) {
     case GuideRateInjTarget::RATE:
         return 1;
@@ -1145,7 +1145,7 @@ int Group::GuideRateInjTargetToInt(GuideRateInjTarget target) {
     }
 }
 
-Group::GuideRateInjTarget Group::GuideRateInjTargetFromInt(int ecl_id) {
+Group::GuideRateInjTarget Group::GuideRateInjTargetFromInt(long long ecl_id) {
     switch (ecl_id) {
     case 1:
         return GuideRateInjTarget::RATE;
@@ -1192,7 +1192,7 @@ Group::GuideRateProdTarget Group::GuideRateProdTargetFromString( const std::stri
 
 
 // Integer values defined vectoritems/group.hpp
-Group::GuideRateProdTarget Group::GuideRateProdTargetFromInt(int ecl_id) {
+Group::GuideRateProdTarget Group::GuideRateProdTargetFromInt(long long ecl_id) {
     switch(ecl_id) {
     case 0:
         return GuideRateProdTarget::NO_GUIDE_RATE;

@@ -82,7 +82,7 @@ public:
             using value_type = std::pair<std::size_t, double>;
 
             /// Iterator's difference type.
-            using difference_type = int;
+            using difference_type = long long;
 
             /// Iterator's pointer type (return type from operator->())
             using pointer = const value_type*;
@@ -161,14 +161,14 @@ public:
             ///
             /// \param[in] index range element value.
             Iterator(std::size_t ix,
-                     const int*  i,
+                     const long long*  i,
                      const std::variant<double, const double*>& value)
                 : ix_{ix}, i_{i}, value_{value}
             {}
 
             /// Index range element value
             std::size_t ix_;
-            const int* i_;
+            const long long* i_;
             std::variant<double, const double*> value_;
 
             value_type deref_value_{};
@@ -202,7 +202,7 @@ public:
         /// the range.
         ValueRange(std::size_t  begin_arg,
                    std::size_t  end_arg,
-                   const int*   i,
+                   const long long*   i,
                    const double value)
             : begin_{begin_arg}, end_{end_arg}, i_{i}, value_{value}
         {}
@@ -222,7 +222,7 @@ public:
         /// sub-entity in the value range.
         ValueRange(std::size_t   begin_arg,
                    std::size_t   end_arg,
-                   const int*    i,
+                   const long long*    i,
                    const double* value)
             : begin_{begin_arg}, end_{end_arg}, i_{i}, value_{value}
         {}
@@ -234,7 +234,7 @@ public:
         std::size_t end_{};
 
         /// Sub-entities.
-        const int* i_{};
+        const long long* i_{};
 
         /// Values pertaining to each sub-entity of the range.
         ///
@@ -315,7 +315,7 @@ public:
     /// well or group level UDQs, pass zero for the sub-entity.
     ///
     /// \param[in] value Numeric UDQ value for this entity/sub-entity pair.
-    void addValue(const int entity, const int subEntity, const double value);
+    void addValue(const long long entity, const long long subEntity, const double value);
 
     /// End value accumulation.
     ///
@@ -376,7 +376,7 @@ public:
     /// \endcode
     /// provided named entities are meaningful for this UDQ--i.e., if it
     /// pertains to the well, group, connection, or segment levels.
-    const std::vector<int>& nameIndex() const;
+    const std::vector<long long>& nameIndex() const;
 
     /// UDQ's defining expression
     ///
@@ -406,10 +406,10 @@ public:
 private:
     /// Entity mapping type.
     ///
-    /// VertexID = int
+    /// VertexID = long long
     /// TrackCompressedIdx = true (need SA mapping)
     /// PermitSelfConnections = true (MS well 5 may have segment number 5).
-    using Graph = utility::CSRGraphFromCoordinates<int, true, true>;
+    using Graph = utility::CSRGraphFromCoordinates<long long, true, true>;
 
     /// Wrapper for a DEFINE expression
     struct Definition
@@ -463,10 +463,10 @@ private:
     /// Largest entity index seen in all addValue() calls so far.
     ///
     /// Nullopt before first call to addValue().
-    std::optional<int> maxEntityIdx_{};
+    std::optional<long long> maxEntityIdx_{};
 
     /// Map entity indices to entity names.
-    mutable std::optional<std::vector<int>> wgNameIdx_{};
+    mutable std::optional<std::vector<long long>> wgNameIdx_{};
 
     /// UDQ's definition.
     ///
@@ -506,7 +506,7 @@ struct RstUDQActive
     /// One single UDA
     struct RstRecord
     {
-        enum class UDAKind : int {
+        enum class UDAKind : long long {
             /// UDA is of a regular kind that applies either to a well or a
             /// non-field group.
             Regular,
@@ -571,12 +571,12 @@ struct RstUDQActive
     ///
     /// \param[in] igph.  Restart file IGPH array.  Injection phases for
     /// groups.
-    RstUDQActive(const std::vector<int>& iuad,
-                 const std::vector<int>& iuap,
-                 const std::vector<int>& igph);
+    RstUDQActive(const std::vector<long long>& iuad,
+                 const std::vector<long long>& iuap,
+                 const std::vector<long long>& igph);
 
     /// Wells/groups affected by each UDA.
-    std::vector<int> wg_index{};
+    std::vector<long long> wg_index{};
 
     /// Exploded items of each UDA.
     std::vector<RstRecord> iuad{};

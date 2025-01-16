@@ -39,10 +39,10 @@ namespace Opm {
     }
 
     void CarfinManager::setInputCarfin(const std::string& name,
-                                       int i1, int i2,
-                                       int j1, int j2,
-                                       int k1, int k2,
-                                       int nx, int ny, int nz)
+                                       long long i1, long long i2,
+                                       long long j1, long long j2,
+                                       long long k1, long long k2,
+                                       long long nx, long long ny, long long nz)
     {
         this->m_inputCarfin = this->makeLgr(name, i1, i2, j1, j2, k1, k2, nx, ny, nz);
     }
@@ -64,10 +64,10 @@ namespace Opm {
     }
 
     void CarfinManager::readKeywordCarfin(const std::string& name,
-                                          int i1, int i2,
-                                          int j1, int j2, 
-                                          int k1, int k2, 
-                                          int nx, int ny, int nz)
+                                          long long i1, long long i2,
+                                          long long j1, long long j2, 
+                                          long long k1, long long k2, 
+                                          long long nx, long long ny, long long nz)
     {
         this->m_keywordCarfin = this->makeLgr(name, i1, i2, j1, j2, k1, k2, nx, ny, nz);
     }
@@ -83,10 +83,10 @@ namespace Opm {
     }
 
     std::unique_ptr<Carfin>
-    CarfinManager::makeLgr(std::string name, int i1, int i2, 
-                            int j1, int j2, 
-                            int k1, int k2, 
-                            int nx , int ny , int nz) const
+    CarfinManager::makeLgr(std::string name, long long i1, long long i2, 
+                            long long j1, long long j2, 
+                            long long k1, long long k2, 
+                            long long nx , long long ny , long long nz) const
     {
         return std::make_unique<Carfin>(this->gridDims_,
                                      this->isActive_,

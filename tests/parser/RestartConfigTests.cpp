@@ -47,7 +47,7 @@ using namespace Opm;
 
 namespace {
 
-std::vector<std::string> filter_keywords(const std::map<std::string, int>& keywords) {
+std::vector<std::string> filter_keywords(const std::map<std::string, long long>& keywords) {
     std::vector<std::string> kwlist;
     for (const auto& [kw, value] : keywords) {
         if (kw == "BASIC" || kw == "FREQ" || kw == "RESTART")

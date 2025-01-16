@@ -223,7 +223,7 @@ void RigEclipseWellLogExtractor::buildCellSearchTree()
             cvf::Vec3d cornerPoint;
 
 // #pragma omp for
-            for (int cIdx = 0; cIdx < (int)cellCount; ++cIdx) {
+            for (long long cIdx = 0; cIdx < (long long)cellCount; ++cIdx) {
                 const auto[i,j,k] = m_grid.getIJK(cIdx);
                 cvf::BoundingBox cellBB;
                 for (std::size_t l = 0; l < 8; l++) {

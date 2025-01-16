@@ -39,13 +39,13 @@ public:
 
     bool hasParameter(const std::string &name) const;
 
-    int getActiveReportStep() { return activeReportStep; }
-    bool hasReportStep(int rstep);
-    void setReportStep(int rstep);
+    long long getActiveReportStep() { return activeReportStep; }
+    bool hasReportStep(long long rstep);
+    void setReportStep(long long rstep);
 
     std::vector<std::tuple<std::string, Opm::EclIO::eclArrType>> getListOfParameters() const;
 
-    std::vector<int> getListOfReportSteps() const {return rstfile->listOfReportStepNumbers(); };
+    std::vector<long long> getListOfReportSteps() const {return rstfile->listOfReportStepNumbers(); };
 
     template <typename T>
     const std::vector<T>& getParam(const std::string& name);
@@ -62,27 +62,27 @@ public:
 
     void addHCvolFilter();
 
-    int getNumberOfActiveCells();
+    long long getNumberOfActiveCells();
 
 
-    std::tuple<int, int, int> gridDims(){ return std::make_tuple(nI, nJ, nK); };
+    std::tuple<long long, long long, long long> gridDims(){ return std::make_tuple(nI, nJ, nK); };
 
 
 private:
 
-    int nI, nJ, nK;
-    int activeReportStep;
+    long long nI, nJ, nK;
+    long long activeReportStep;
 
     size_t nActive;
 
     bool activeFilter, celVolCalculated;
 
     std::vector<float> filteredFloatVect;
-    std::vector<int> filteredIntVect;
+    std::vector<long long> filteredIntVect;
 
     std::vector<float> PORV;
     std::vector<float> CELLVOL;
-    std::vector<int> I, J, K;
+    std::vector<long long> I, J, K;
     std::vector<bool> ActFilter;
 
     Opm::EclIO::EclFile initfile;
@@ -90,21 +90,21 @@ private:
     std::optional<Opm::EclIO::ERst> rstfile;
 
 
-    std::map<std::string, int> initParam;
+    std::map<std::string, long long> initParam;
     std::vector<std::string> initParamName;
     std::vector<Opm::EclIO::eclArrType> initParamType;
-    std::vector<int> indInInitEclfile;
+    std::vector<long long> indInInitEclfile;
 
-    std::map<std::string, int> solutionParam;
+    std::map<std::string, long long> solutionParam;
     std::vector<std::string> solutionParamName;
     std::vector<Opm::EclIO::eclArrType> solutionParamType;
-    std::vector<int> indInRstEclfile;
+    std::vector<long long> indInRstEclfile;
 
-    int nEqlnum=0;
+    long long nEqlnum=0;
     std::vector<float> FreeWaterlevel = {};
 
     void get_cell_volumes_from_grid();
-    void initSolutionData(int rstep);
+    void initSolutionData(long long rstep);
 
     bool hasInitParameter(const std::string &name) const;
     bool hasSolutionParameter(const std::string &name) const;

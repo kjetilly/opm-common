@@ -5,7 +5,7 @@
 
 namespace {
 
-    double eval( const TableManager& tab,  std::string tab_name, int tab_idx, std::string col_name, double x ) {
+    double eval( const TableManager& tab,  std::string tab_name, long long tab_idx, std::string col_name, double x ) {
         try {
             return tab[tab_name].getTable(tab_idx).evaluate(col_name, x);
         } catch( std::invalid_argument& e ) {

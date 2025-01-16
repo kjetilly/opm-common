@@ -36,7 +36,7 @@ namespace {
     struct ArrayType;
 
     template<>
-    struct ArrayType<int>
+    struct ArrayType<long long>
     {
         static Opm::EclIO::eclArrType T;
     };
@@ -65,7 +65,7 @@ namespace {
         static Opm::EclIO::eclArrType T;
     };
 
-    Opm::EclIO::eclArrType ArrayType<int>::T         = ::Opm::EclIO::eclArrType::INTE;
+    Opm::EclIO::eclArrType ArrayType<long long>::T         = ::Opm::EclIO::eclArrType::INTE;
     Opm::EclIO::eclArrType ArrayType<bool>::T        = ::Opm::EclIO::eclArrType::LOGI;
     Opm::EclIO::eclArrType ArrayType<float>::T       = ::Opm::EclIO::eclArrType::REAL;
     Opm::EclIO::eclArrType ArrayType<double>::T      = ::Opm::EclIO::eclArrType::DOUB;
@@ -76,7 +76,7 @@ class Opm::EclIO::RestartFileView::Implementation
 {
 public:
     explicit Implementation(std::shared_ptr<ERst> restart_file,
-                            const int             report_step);
+                            const long long             report_step);
 
     ~Implementation() = default;
 
@@ -91,12 +91,12 @@ public:
         return this->sim_step_;
     }
 
-    int reportStep() const
+    long long reportStep() const
     {
         return this->report_step_;
     }
 
-    int occurrenceCount(const std::string& vector) const
+    long long occurrenceCount(const std::string& vector) const
     {
         return this->rst_file_->occurrence_count(vector, this->report_step_);
     }
@@ -113,23 +113,23 @@ public:
 
     template <typename ElmType>
     const std::vector<ElmType>&
-    getKeyword(const std::string& vector, const int occurrence)
+    getKeyword(const std::string& vector, const long long occurrence)
     {
         return this->rst_file_->
             getRestartData<ElmType>(vector, this->report_step_, occurrence);
     }
 
-    const std::vector<int>& intehead()
+    const std::vector<long long>& intehead()
     {
         const auto ihkw = std::string { "INTEHEAD" };
 
-        if (! this->hasKeyword<int>(ihkw)) {
+        if (! this->hasKeyword<long long>(ihkw)) {
             throw std::domain_error {
                 "Purported Restart File Does not Have Integer Header"
             };
         }
 
-        return this->getKeyword<int>(ihkw, 0);
+        return this->getKeyword<long long>(ihkw, 0);
     }
 
     const std::vector<bool>& logihead()
@@ -163,11 +163,11 @@ private:
 
     using VectorColl = std::unordered_set<std::string>;
     using TypedColl  = std::unordered_map<
-        eclArrType, VectorColl, std::hash<int>
+        eclArrType, VectorColl, std::hash<long long>
         >;
 
     RstFile     rst_file_;
-    int         report_step_;
+    long long         report_step_;
     std::size_t sim_step_;
     TypedColl   vectors_;
 
@@ -180,10 +180,10 @@ private:
 
 Opm::EclIO::RestartFileView::Implementation::
 Implementation(std::shared_ptr<ERst> restart_file,
-               const int             report_step)
+               const long long             report_step)
     : rst_file_   { std::move(restart_file) }
     , report_step_(report_step)
-    , sim_step_   (std::max(report_step - 1, 0))
+    , sim_step_   (std::max(report_step - 1, 0LL))
 {
     if (! this->rst_file_->hasReportStepNumber(this->report_step_)) {
         this->rst_file_.reset();
@@ -217,7 +217,7 @@ Opm::EclIO::RestartFileView::Implementation&
 Opm::EclIO::RestartFileView::Implementation::operator=(Implementation&& rhs)
 {
     this->rst_file_    = std::move(rhs.rst_file_);
-    this->report_step_ = rhs.report_step_;         // Scalar (int)
+    this->report_step_ = rhs.report_step_;         // Scalar (long long)
     this->sim_step_    = rhs.sim_step_;            // Scalar (size_t)
     this->vectors_     = std::move(rhs.vectors_);
 
@@ -225,7 +225,7 @@ Opm::EclIO::RestartFileView::Implementation::operator=(Implementation&& rhs)
 }
 
 Opm::EclIO::RestartFileView::RestartFileView(std::shared_ptr<ERst> restart_file,
-                                             const int             report_step)
+                                             const long long             report_step)
     : pImpl_{ new Implementation{ std::move(restart_file), report_step } }
 {}
 
@@ -248,17 +248,17 @@ std::size_t Opm::EclIO::RestartFileView::simStep() const
     return this->pImpl_->simStep();
 }
 
-int Opm::EclIO::RestartFileView::reportStep() const
+long long Opm::EclIO::RestartFileView::reportStep() const
 {
     return this->pImpl_->reportStep();
 }
 
-int Opm::EclIO::RestartFileView::occurrenceCount(const std::string& vector) const
+long long Opm::EclIO::RestartFileView::occurrenceCount(const std::string& vector) const
 {
     return this->pImpl_->occurrenceCount(vector);
 }
 
-const std::vector<int>& Opm::EclIO::RestartFileView::intehead() const
+const std::vector<long long>& Opm::EclIO::RestartFileView::intehead() const
 {
     return this->pImpl_->intehead();
 }
@@ -282,7 +282,7 @@ bool Opm::EclIO::RestartFileView::hasKeyword(const std::string& vector) const
 template <typename ElmType>
 const std::vector<ElmType>&
 Opm::EclIO::RestartFileView::getKeyword(const std::string& vector,
-                                        const int          occurrence) const
+                                        const long long          occurrence) const
 {
     return this->pImpl_->template getKeyword<ElmType>(vector, occurrence);
 }
@@ -291,25 +291,25 @@ Opm::EclIO::RestartFileView::getKeyword(const std::string& vector,
 
 namespace Opm { namespace EclIO {
 
-template bool RestartFileView::hasKeyword<int>        (const std::string&) const;
+template bool RestartFileView::hasKeyword<long long>        (const std::string&) const;
 template bool RestartFileView::hasKeyword<bool>       (const std::string&) const;
 template bool RestartFileView::hasKeyword<float>      (const std::string&) const;
 template bool RestartFileView::hasKeyword<double>     (const std::string&) const;
 template bool RestartFileView::hasKeyword<std::string>(const std::string&) const;
 
-template const std::vector<int>&
-RestartFileView::getKeyword<int>(const std::string&, const int) const;
+template const std::vector<long long>&
+RestartFileView::getKeyword<long long>(const std::string&, const long long) const;
 
 template const std::vector<bool>&
-RestartFileView::getKeyword<bool>(const std::string&, const int) const;
+RestartFileView::getKeyword<bool>(const std::string&, const long long) const;
 
 template const std::vector<float>&
-RestartFileView::getKeyword<float>(const std::string&, const int) const;
+RestartFileView::getKeyword<float>(const std::string&, const long long) const;
 
 template const std::vector<double>&
-RestartFileView::getKeyword<double>(const std::string&, const int) const;
+RestartFileView::getKeyword<double>(const std::string&, const long long) const;
 
 template const std::vector<std::string>&
-RestartFileView::getKeyword<std::string>(const std::string&, const int) const;
+RestartFileView::getKeyword<std::string>(const std::string&, const long long) const;
 
 }} // Opm::EclIO

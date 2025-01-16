@@ -89,15 +89,15 @@ T calcSum(const std::vector<T>& x)
 BOOST_AUTO_TEST_CASE(TestERst_1) {
 
     std::string testFile="SPE1_TESTCASE.UNRST";
-    std::vector<int> refReportStepNumbers= {1,2,5,10,15,25,50,100,120};
+    std::vector<long long> refReportStepNumbers= {1,2,5,10,15,25,50,100,120};
 
     std::vector<std::string> ref_zwel_10 = {"PROD","","","INJ","",""};
     std::vector<std::string> ref_zwel_25 = {"PROD","","","INJ","",""};
 
-    std::vector<int> ref_icon_10 = {1,10,10,3,0,1,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0,1,1,
+    std::vector<long long> ref_icon_10 = {1,10,10,3,0,1,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0,1,1,
                                     1,1,0,1,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0};
 
-    std::vector<int> ref_icon_25 = {1,10,10,3,0,1,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0,1,1,
+    std::vector<long long> ref_icon_25 = {1,10,10,3,0,1,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0,1,1,
                                     1,1,0,1,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0};
 
     std::vector<bool> ref_logih_10 = {true,true,false,false,false,false,false,false,false,false,false,false,false,
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(TestERst_1) {
     ERst rst1(testFile);
     rst1.loadReportStepNumber(5);
 
-    std::vector<int> reportStepNumbers = rst1.listOfReportStepNumbers();
+    std::vector<long long> reportStepNumbers = rst1.listOfReportStepNumbers();
     BOOST_CHECK_EQUAL(reportStepNumbers==refReportStepNumbers, true);
 
     BOOST_CHECK_EQUAL(rst1.hasReportStepNumber(4), false);
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE(TestERst_1) {
 
     // non exising report step number, should throw exception
 
-    BOOST_CHECK_THROW(std::vector<int> vect1=rst1.getRestartData<int>("ICON",0, 0) , std::invalid_argument );
+    BOOST_CHECK_THROW(std::vector<long long> vect1=rst1.getRestartData<long long>("ICON",0, 0) , std::invalid_argument );
     BOOST_CHECK_THROW(std::vector<float> vect2=rst1.getRestartData<float>("PRESSURE",0, 0) , std::invalid_argument );
     BOOST_CHECK_THROW(std::vector<double> vect3=rst1.getRestartData<double>("XGRP",0, 0) , std::invalid_argument );
     BOOST_CHECK_THROW(std::vector<bool> vect4=rst1.getRestartData<bool>("LOGIHEAD",0, 0) , std::invalid_argument );
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(TestERst_1) {
     // calling getRestartData<T> member function with wrong type, should throw exception
 
     BOOST_CHECK_THROW(std::vector<float> vect1=rst1.getRestartData<float>("ICON",5, 0) , std::runtime_error );
-    BOOST_CHECK_THROW(std::vector<int> vect2=rst1.getRestartData<int>("PRESSURE",5, 0), std::runtime_error );
+    BOOST_CHECK_THROW(std::vector<long long> vect2=rst1.getRestartData<long long>("PRESSURE",5, 0), std::runtime_error );
     BOOST_CHECK_THROW(std::vector<float> vect3=rst1.getRestartData<float>("XGRP",5, 0), std::runtime_error );
     BOOST_CHECK_THROW(std::vector<double> vect4=rst1.getRestartData<double>("LOGIHEAD",5, 0), std::runtime_error );
     BOOST_CHECK_THROW(std::vector<bool> vect5=rst1.getRestartData<bool>("ZWEL",5, 0), std::runtime_error );
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(TestERst_1) {
     // report step number exists, but data is not loaded. Vector should in this case
     // be loaded on demand. Hence not throwing an exception
 
-    std::vector<int> vect1=rst1.getRestartData<int>("ICON",10, 0);
+    std::vector<long long> vect1=rst1.getRestartData<long long>("ICON",10, 0);
     std::vector<float> vect2=rst1.getRestartData<float>("PRESSURE",10, 0);
     std::vector<double> vect3=rst1.getRestartData<double>("XGRP",10, 0);
     std::vector<bool> vect4=rst1.getRestartData<bool>("LOGIHEAD",10, 0);
@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(TestERst_1) {
 
     rst1.loadReportStepNumber(25);
 
-    vect1 = rst1.getRestartData<int>("ICON",25, 0);
+    vect1 = rst1.getRestartData<long long>("ICON",25, 0);
     vect2 = rst1.getRestartData<float>("PRESSURE",25, 0);
     vect3 = rst1.getRestartData<double>("XGRP",25, 0);
     vect4 = rst1.getRestartData<bool>("LOGIHEAD",25, 0);
@@ -192,11 +192,11 @@ BOOST_AUTO_TEST_CASE(TestERst_1) {
 
 
 static void readAndWrite(EclOutput& eclTest, ERst& rst1,
-                         const std::string& name, int seqnum,
+                         const std::string& name, long long seqnum,
                          eclArrType arrType)
 {
     if (arrType == INTE) {
-        std::vector<int> vect = rst1.getRestartData<int>(name, seqnum, 0);
+        std::vector<long long> vect = rst1.getRestartData<long long>(name, seqnum, 0);
         eclTest.write(name, vect);
     } else if (arrType == REAL) {
         std::vector<float> vect = rst1.getRestartData<float>(name, seqnum, 0);
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE(TestERst_2) {
     {
         EclOutput eclTest(outFile, false);
 
-        std::vector<int> seqnums = rst1.listOfReportStepNumbers();
+        std::vector<long long> seqnums = rst1.listOfReportStepNumbers();
 
         for (size_t i = 0; i < seqnums.size(); i++) {
             rst1.loadReportStepNumber(seqnums[i]);
@@ -266,8 +266,8 @@ BOOST_AUTO_TEST_CASE(TestERst_3) {
     {
         EclOutput eclTest(outFile, true);
 
-        std::vector<int> seqnums = rst1.listOfReportStepNumbers();
-        for (unsigned int i = 0; i < seqnums.size(); i++) {
+        std::vector<long long> seqnums = rst1.listOfReportStepNumbers();
+        for (size_t i = 0; i < seqnums.size(); i++) {
             rst1.loadReportStepNumber(seqnums[i]);
 
             auto rstArrays = rst1.listOfRstArrays(seqnums[i]);
@@ -337,7 +337,7 @@ BOOST_AUTO_TEST_CASE(TestERst_5b) {
 
     std::string testRstFile = "LGR_TESTMOD.UNRST";
 
-    std::vector<int> ref_reports = {0, 1, 2, 3};
+    std::vector<long long> ref_reports = {0, 1, 2, 3};
 
     std::vector<std::string> ref_names_global = {"SEQNUM", "INTEHEAD", "LOGIHEAD", "DOUBHEAD",
         "IGRP", "SGRP", "XGRP", "ZGRP", "IWEL", "SWEL", "XWEL", "ZWEL", "ZWLS", "IWLS", "ICON",
@@ -345,7 +345,7 @@ BOOST_AUTO_TEST_CASE(TestERst_5b) {
         "REGDIMS", "FIPFAMNA", "REGRPT", "FIPOIL", "FIPWAT", "FIPGAS", "PBUB", "LGRNAMES",
         "ENDSOL" };
 
-    std::vector<int> ref_size_global = { 1, 411, 121, 229, 400, 448, 720, 20, 310, 244, 260, 6,
+    std::vector<long long> ref_size_global = { 1, 411, 121, 229, 400, 448, 720, 20, 310, 244, 260, 6,
         3, 3, 1250, 2050, 2900, 30, 58, 0, 30, 30, 30, 30, 40, 1, 304, 30, 30, 30, 30, 2, 0 };
 
     std::vector<std::string> ref_names_lgr1 = { "LGR", "LGRHEADI", "LGRHEADQ", "LGRHEADD", "INTEHEAD",
@@ -353,7 +353,7 @@ BOOST_AUTO_TEST_CASE(TestERst_5b) {
         "ZWLS", "IWLS", "ICON", "SCON", "XCON", "DLYTIM", "HIDDEN", "STARTSOL", "PRESSURE", "SWAT",
         "SGAS", "RS", "PBUB", "ENDSOL", "ENDLGR"};
 
-    std::vector<int> ref_size_lgr1 = {1, 45, 5, 5, 411, 121, 229, 200, 224, 360, 10, 155, 122, 130,
+    std::vector<long long> ref_size_lgr1 = {1, 45, 5, 5, 411, 121, 229, 200, 224, 360, 10, 155, 122, 130,
         3, 1, 1, 1, 625, 1025, 1450, 30, 58, 0, 128, 128, 128, 128, 128, 0, 1 };
 
    std::vector<std::string> ref_names_lgr2 = {"LGR", "LGRHEADI", "LGRHEADQ", "LGRHEADD", "INTEHEAD",
@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE(TestERst_5b) {
        "ZWLS", "IWLS", "ICON", "SCON", "XCON", "DLYTIM", "HIDDEN", "STARTSOL", "PRESSURE", "SWAT",
        "SGAS", "RS", "PBUB", "ENDSOL", "ENDLGR" };
 
-    std::vector<int> ref_size_lgr2 = {1, 45, 5, 5, 411, 121, 229, 200, 224, 360, 10, 155, 122, 130, 3,
+    std::vector<long long> ref_size_lgr2 = {1, 45, 5, 5, 411, 121, 229, 200, 224, 360, 10, 155, 122, 130, 3,
         1, 1, 1, 625, 1025, 1450, 30, 58, 0, 192, 192, 192, 192, 192, 0, 1};
 
     ERst rst1(testRstFile);
@@ -378,7 +378,7 @@ BOOST_AUTO_TEST_CASE(TestERst_5b) {
 
     BOOST_CHECK_EQUAL(rst1.hasLGR("LGR1", 2), true);
 
-    int rstep = 0;
+    long long rstep = 0;
 
     auto array_list_1 = rst1.listOfRstArrays(rstep);
 
@@ -395,8 +395,8 @@ BOOST_AUTO_TEST_CASE(TestERst_5b) {
         std::string name = std::get<0>(array_list_1[index]);
 
         if (std::get<1>(array_list_1[index]) == Opm::EclIO::INTE){
-            auto vect1 = rst1.getRestartData<int>(name, rstep);
-            auto vect2 = rst1.getRestartData<int>(index, rstep);
+            auto vect1 = rst1.getRestartData<long long>(name, rstep);
+            auto vect2 = rst1.getRestartData<long long>(index, rstep);
             BOOST_CHECK_EQUAL(vect1 == vect2, true);
         }
 
@@ -446,8 +446,8 @@ BOOST_AUTO_TEST_CASE(TestERst_5b) {
         std::string name = std::get<0>(array_list_2[index]);
 
         if (std::get<1>(array_list_2[index]) == Opm::EclIO::INTE){
-            auto vect1 = rst1.getRestartData<int>(name, rstep, lgr_name);
-            auto vect2 = rst1.getRestartData<int>(index, rstep, lgr_name);
+            auto vect1 = rst1.getRestartData<long long>(name, rstep, lgr_name);
+            auto vect2 = rst1.getRestartData<long long>(index, rstep, lgr_name);
             BOOST_CHECK_EQUAL(vect1 == vect2, true);
         }
 
@@ -495,8 +495,8 @@ BOOST_AUTO_TEST_CASE(TestERst_5b) {
         std::string name = std::get<0>(array_list_3[index]);
 
         if (std::get<1>(array_list_3[index]) == Opm::EclIO::INTE){
-            auto vect1 = rst1.getRestartData<int>(name, rstep, lgr_name);
-            auto vect2 = rst1.getRestartData<int>(index, rstep, lgr_name);
+            auto vect1 = rst1.getRestartData<long long>(name, rstep, lgr_name);
+            auto vect2 = rst1.getRestartData<long long>(index, rstep, lgr_name);
             BOOST_CHECK_EQUAL(vect1 == vect2, true);
         }
 
@@ -581,7 +581,7 @@ namespace Opm { namespace EclIO {
     operator<<(std::ostream& os, const EclFile::EclEntry& e)
     {
         os << "{ " << std::get<0>(e)
-           << ", " << static_cast<int>(std::get<1>(e))
+           << ", " << static_cast<long long>(std::get<1>(e))
            << ", " << std::get<2>(e)
            << " }";
 
@@ -603,7 +603,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {1, 7, 2, 9});
+        rst.write("I", std::vector<long long>        {1, 7, 2, 9});
         rst.write("L", std::vector<bool>       {true, false, false, true});
         rst.write("S", std::vector<float>      {3.1f, 4.1f, 59.265f});
         rst.write("D", std::vector<double>     {2.71, 8.21});
@@ -616,7 +616,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {35, 51, 13});
+        rst.write("I", std::vector<long long>        {35, 51, 13});
         rst.write("L", std::vector<bool>       {true, true, true, false});
         rst.write("S", std::vector<float>      {17.29e-02f, 1.4142f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180, 123.45e6});
@@ -633,7 +633,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
 
         {
             const auto seqnum        = rst.listOfReportStepNumbers();
-            const auto expect_seqnum = std::vector<int>{1};
+            const auto expect_seqnum = std::vector<long long>{1};
 
             BOOST_CHECK_EQUAL_COLLECTIONS(seqnum.begin(), seqnum.end(),
                                           expect_seqnum.begin(),
@@ -658,8 +658,8 @@ BOOST_AUTO_TEST_CASE(Unformatted)
         rst.loadReportStepNumber(1);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 1, 0);
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = rst.getRestartData<long long>("I", 1, 0);
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -712,7 +712,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {1, 2, 3, 4});
+        rst.write("I", std::vector<long long>        {1, 2, 3, 4});
         rst.write("L", std::vector<bool>       {false, false, false, true});
         rst.write("S", std::vector<float>      {1.23e-04f, 1.234e5f, -5.4321e-9f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180});
@@ -731,7 +731,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
 
         {
             const auto seqnum        = rst.listOfReportStepNumbers();
-            const auto expect_seqnum = std::vector<int>{5};
+            const auto expect_seqnum = std::vector<long long>{5};
 
             BOOST_CHECK_EQUAL_COLLECTIONS(seqnum.begin(), seqnum.end(),
                                           expect_seqnum.begin(),
@@ -756,8 +756,8 @@ BOOST_AUTO_TEST_CASE(Unformatted)
         rst.loadReportStepNumber(5);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 5, 0);
-            const auto  expect_I = std::vector<int>{ 1, 2, 3, 4 };
+            const auto& I = rst.getRestartData<long long>("I", 5, 0);
+            const auto  expect_I = std::vector<long long>{ 1, 2, 3, 4 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -810,7 +810,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {35, 51, 13});
+        rst.write("I", std::vector<long long>        {35, 51, 13});
         rst.write("L", std::vector<bool>       {true, true, true, false});
         rst.write("S", std::vector<float>      {17.29e-02f, 1.4142f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180, 123.45e6});
@@ -829,7 +829,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
 
         {
             const auto seqnum        = rst.listOfReportStepNumbers();
-            const auto expect_seqnum = std::vector<int>{13};
+            const auto expect_seqnum = std::vector<long long>{13};
 
             BOOST_CHECK_EQUAL_COLLECTIONS(seqnum.begin(), seqnum.end(),
                                           expect_seqnum.begin(),
@@ -854,8 +854,8 @@ BOOST_AUTO_TEST_CASE(Unformatted)
         rst.loadReportStepNumber(13);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 13, 0);
-            const auto  expect_I = std::vector<int>{ 35, 51, 13};
+            const auto& I = rst.getRestartData<long long>("I", 13, 0);
+            const auto  expect_I = std::vector<long long>{ 35, 51, 13};
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -915,7 +915,7 @@ BOOST_AUTO_TEST_CASE(Formatted)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {1, 7, 2, 9});
+        rst.write("I", std::vector<long long>        {1, 7, 2, 9});
         rst.write("L", std::vector<bool>       {true, false, false, true});
         rst.write("S", std::vector<float>      {3.1f, 4.1f, 59.265f});
         rst.write("D", std::vector<double>     {2.71, 8.21});
@@ -928,7 +928,7 @@ BOOST_AUTO_TEST_CASE(Formatted)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {35, 51, 13});
+        rst.write("I", std::vector<long long>        {35, 51, 13});
         rst.write("L", std::vector<bool>       {true, true, true, false});
         rst.write("S", std::vector<float>      {17.29e-02f, 1.4142f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180, 123.45e6});
@@ -962,8 +962,8 @@ BOOST_AUTO_TEST_CASE(Formatted)
         rst.loadReportStepNumber(13);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 13, 0);
-            const auto  expect_I = std::vector<int>{ 35, 51, 13 };
+            const auto& I = rst.getRestartData<long long>("I", 13, 0);
+            const auto  expect_I = std::vector<long long>{ 35, 51, 13 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1017,7 +1017,7 @@ BOOST_AUTO_TEST_CASE(Formatted)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {1, 2, 3, 4});
+        rst.write("I", std::vector<long long>        {1, 2, 3, 4});
         rst.write("L", std::vector<bool>       {false, false, false, true});
         rst.write("S", std::vector<float>      {1.23e-04f, 1.234e5f, -5.4321e-9f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180});
@@ -1051,8 +1051,8 @@ BOOST_AUTO_TEST_CASE(Formatted)
         rst.loadReportStepNumber(5);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 5, 0);
-            const auto  expect_I = std::vector<int>{ 1, 2, 3, 4 };
+            const auto& I = rst.getRestartData<long long>("I", 5, 0);
+            const auto  expect_I = std::vector<long long>{ 1, 2, 3, 4 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1132,8 +1132,8 @@ BOOST_AUTO_TEST_CASE(Formatted)
         rst.loadReportStepNumber(13);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 13, 0);
-            const auto  expect_I = std::vector<int>{ 35, 51, 13 };
+            const auto& I = rst.getRestartData<long long>("I", 13, 0);
+            const auto  expect_I = std::vector<long long>{ 35, 51, 13 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());

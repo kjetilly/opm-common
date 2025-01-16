@@ -129,14 +129,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SimpleH2O, Scalar, Types)
     using SimpleHuDuanH2O = Opm::SimpleHuDuanH2O<Scalar>;
     using EvalToolbox = Opm::MathToolbox<Evaluation>;
 
-    int numT = 67;
-    int numP = 45;
+    long long numT = 67;
+    long long numP = 45;
     Evaluation T = 280;
 
-    for (int iT = 0; iT < numT; ++iT) {
+    for (long long iT = 0; iT < numT; ++iT) {
         Evaluation p = 1e6;
         T += 5;
-        for (int iP = 0; iP < numP; ++iP) {
+        for (long long iP = 0; iP < numP; ++iP) {
             p *= 1.1;
             BOOST_CHECK_MESSAGE(EvalToolbox::isSame(H2O::liquidDensity(T,p),
                                                     SimpleHuDuanH2O::liquidDensity(T,p,false),
@@ -170,14 +170,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DynamicBrine, Scalar, Types)
     Brine::salinity = 0.1;
     Evaluation sal = Brine::salinity;
 
-    int numT = 67;
-    int numP = 45;
+    long long numT = 67;
+    long long numP = 45;
     Evaluation T = 280;
 
-    for (int iT = 0; iT < numT; ++iT) {
+    for (long long iT = 0; iT < numT; ++iT) {
         Evaluation p = 1e6;
         T += 5;
-        for (int iP = 0; iP < numP; ++iP) {
+        for (long long iP = 0; iP < numP; ++iP) {
             p *= 1.1;
 
             BOOST_CHECK_MESSAGE(EvalToolbox::isSame(Brine::liquidDensity(T, p),
@@ -224,8 +224,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CO2Class, Scalar, Types)
     Json::JsonObject pres_ref = parser.get_item("pres");
     
     // Setup pressure and temperature values
-    int numT = temp_ref.size();
-    int numP = pres_ref.size();
+    long long numT = temp_ref.size();
+    long long numP = pres_ref.size();
 
     // Rel. diff. tolerance
     Scalar tol = 1e-2;
@@ -236,11 +236,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CO2Class, Scalar, Types)
     Opm::CO2Tables params;
     
     // Loop over temperature and pressure, and compare to reference values
-    for (int iT = 0; iT < numT; ++iT) {
+    for (long long iT = 0; iT < numT; ++iT) {
         // Get temperature from reference data
         T = Evaluation(temp_ref.get_array_item(iT).as_double());
 
-        for (int iP = 0; iP < numP; ++iP) {
+        for (long long iP = 0; iP < numP; ++iP) {
             // Get pressure value from reference data
             p = Evaluation(pres_ref.get_array_item(iP).as_double());
 
@@ -293,15 +293,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CO2Class, Scalar, Types)
     Json::JsonObject pres_ref2 = parser2.get_item("pres");
 
     // Setup pressure and temperature values
-    int numT2 = temp_ref2.size();
-    int numP2 = pres_ref2.size();
+    long long numT2 = temp_ref2.size();
+    long long numP2 = pres_ref2.size();
 
     // Loop over temperature and pressure, and compare to reference values
-    for (int iT = 0; iT < numT2; ++iT) {
+    for (long long iT = 0; iT < numT2; ++iT) {
         // Get temperature from reference data
         T = Evaluation(temp_ref2.get_array_item(iT).as_double());
 
-        for (int iP = 0; iP < numP2; ++iP) {
+        for (long long iP = 0; iP < numP2; ++iP) {
             // Get pressure value from reference data
             p = Evaluation(pres_ref2.get_array_item(iP).as_double());
 
@@ -365,12 +365,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(CO2Class, Scalar, Types)
     // Json::JsonObject pres_ref4 = parser4.get_item("pres");
 
     // // Number of data
-    // int numSat = temp_ref3.size();
+    // long long numSat = temp_ref3.size();
 
     // // Compare
     // Evaluation p_below;
     // Evaluation p_above;
-    // for (int i = 0; i < numSat; ++i) {
+    // for (long long i = 0; i < numSat; ++i) {
     //     // Same temeperature above and below saturation curve, but different pressures
     //     Json::JsonObject t_ref = temp_ref3.get_array_item(i);
     //     Json::JsonObject p_ref = pres_ref3.get_array_item(i);
@@ -439,8 +439,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SimpleHuDuanClass, Scalar, Types)
        };
     
     // Setup pressure and temperature values
-    int numT = temp_ref.size();
-    int numP = pres_ref.size();
+    long long numT = temp_ref.size();
+    long long numP = pres_ref.size();
     Evaluation T;
     Evaluation p;
 
@@ -451,11 +451,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SimpleHuDuanClass, Scalar, Types)
     bool extrapolate = true;
     
     // Loop over temperature and pressure, and compare to reference values in JSON file
-    for (int iT = 0; iT < numT; ++iT) {
+    for (long long iT = 0; iT < numT; ++iT) {
         // Get temperature from reference data
         T = Evaluation(temp_ref.get_array_item(iT).as_double());
 
-        for (int iP = 0; iP < numP; ++iP) {
+        for (long long iP = 0; iP < numP; ++iP) {
             // Get pressure value from reference data
             p = Evaluation(pres_ref.get_array_item(iP).as_double());
 
@@ -501,8 +501,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(H2OClass, Scalar, Types)
     Json::JsonObject pres_ref = parser.get_item("pres");
     
     // Setup pressure and temperature values
-    int numT = temp_ref.size();
-    int numP = pres_ref.size();
+    long long numT = temp_ref.size();
+    long long numP = pres_ref.size();
     Evaluation T;
     Evaluation p;
 
@@ -510,11 +510,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(H2OClass, Scalar, Types)
     Scalar tol = 1e-2;
 
     // Loop over temperature and pressure, and compare to values in JSON file
-    for (int iT = 0; iT < numT; ++iT) {
+    for (long long iT = 0; iT < numT; ++iT) {
         // Get temperature from reference data
         T = Evaluation(temp_ref.get_array_item(iT).as_double());
 
-        for (int iP = 0; iP < numP; ++iP) {
+        for (long long iP = 0; iP < numP; ++iP) {
             // Get pressure value from reference data
             p = Evaluation(pres_ref.get_array_item(iP).as_double());
 
@@ -565,9 +565,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BrineWithH2OClass, Scalar, Types)
     Json::JsonObject salinity_ref = parser.get_item("salinity");
     
     // Setup pressure and temperature values
-    int numT = temp_ref.size();
-    int numP = pres_ref.size();
-    int numS = salinity_ref.size();
+    long long numT = temp_ref.size();
+    long long numP = pres_ref.size();
+    long long numS = salinity_ref.size();
     Evaluation T;
     Evaluation p;
     Evaluation S;
@@ -580,15 +580,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BrineWithH2OClass, Scalar, Types)
     bool extrapolate = true;
 
     // Loop over temperature and pressure, and compare to Coolprop values in JSON file
-    for (int iS = 0; iS < numS; ++iS){
+    for (long long iS = 0; iS < numS; ++iS){
         // Get salinity from reference data (mass fraction)
         S = Evaluation(salinity_ref.get_array_item(iS).as_double());
 
-        for (int iT = 0; iT < numT; ++iT) {
+        for (long long iT = 0; iT < numT; ++iT) {
             // Get temperature from reference data
             T = Evaluation(temp_ref.get_array_item(iT).as_double());
 
-            for (int iP = 0; iP < numP; ++iP) {
+            for (long long iP = 0; iP < numP; ++iP) {
                 // Get pressure value from reference data
                 p = Evaluation(pres_ref.get_array_item(iP).as_double());
 
@@ -646,9 +646,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BrineWithSimpleHuDuanH2OClass, Scalar, Types)
     Json::JsonObject salinity_ref = parser.get_item("salinity");
     
     // Setup pressure, temperature and salinity values
-    int numT = temp_ref.size();
-    int numP = pres_ref.size();
-    int numS = salinity_ref.size();
+    long long numT = temp_ref.size();
+    long long numP = pres_ref.size();
+    long long numS = salinity_ref.size();
     Evaluation T;
     Evaluation p;
     Evaluation S;
@@ -660,15 +660,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BrineWithSimpleHuDuanH2OClass, Scalar, Types)
     bool extrapolate = true;
 
     // Loop over temperature, pressure and salinity, and compare to reference values in JSON file
-    for (int iS = 0; iS < numS; ++iS){
+    for (long long iS = 0; iS < numS; ++iS){
         // Get salinity from reference data (mass fraction)
         S = Evaluation(salinity_ref.get_array_item(iS).as_double());
         
-        for (int iT = 0; iT < numT; ++iT) {
+        for (long long iT = 0; iT < numT; ++iT) {
             // Get temperature from reference data
             T = Evaluation(temp_ref.get_array_item(iT).as_double());
 
-            for (int iP = 0; iP < numP; ++iP) {
+            for (long long iP = 0; iP < numP; ++iP) {
                 // Get pressure value from reference data
                 p = Evaluation(pres_ref.get_array_item(iP).as_double());
 
@@ -724,8 +724,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(H2Class, Scalar, Types)
     Json::JsonObject pres_ref = parser.get_item("pres");
     
     // Setup pressure and temperature values
-    int numT = temp_ref.size();
-    int numP = pres_ref.size();
+    long long numT = temp_ref.size();
+    long long numP = pres_ref.size();
     Evaluation T;
     Evaluation p;
 
@@ -738,11 +738,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(H2Class, Scalar, Types)
     Scalar tol_enth = 3.8e-2;
     
     // Loop over temperature and pressure, and compare to reference values in JSON file
-    for (int iT = 0; iT < numT; ++iT) {
+    for (long long iT = 0; iT < numT; ++iT) {
         // Get temperature from reference data
         T = Evaluation(temp_ref.get_array_item(iT).as_double());
 
-        for (int iP = 0; iP < numP; ++iP) {
+        for (long long iP = 0; iP < numP; ++iP) {
             // Get pressure value from reference data
             p = Evaluation(pres_ref.get_array_item(iP).as_double());
 

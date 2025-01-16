@@ -265,12 +265,12 @@ bool is_RPTSCHED_mnemonic(const std::string& kw)
     return std::binary_search(std::begin(valid), std::end(valid), kw);
 }
 
-std::map<std::string, int>
-RPTSCHED_integer(const std::vector<int>& ints)
+std::map<std::string, long long>
+RPTSCHED_integer(const std::vector<long long>& ints)
 {
     const std::size_t size = std::min(ints.size(), SCHEDIntegerKeywords.size());
 
-    std::map<std::string, int> mnemonics;
+    std::map<std::string, long long> mnemonics;
     for (std::size_t i = 0; i < size; ++i) {
         mnemonics[SCHEDIntegerKeywords[i]] = ints[i];
     }
@@ -278,10 +278,10 @@ RPTSCHED_integer(const std::vector<int>& ints)
     return mnemonics;
 }
 
-std::map<std::string, int>
-RPTRST_integer(const std::vector<int>& ints)
+std::map<std::string, long long>
+RPTRST_integer(const std::vector<long long>& ints)
 {
-    std::map<std::string, int> mnemonics;
+    std::map<std::string, long long> mnemonics;
 
     const std::size_t PCO_index = 26;
     const std::size_t BASIC_index = 0;
@@ -331,7 +331,7 @@ RPTRST_integer(const std::vector<int>& ints)
 }
 
 template <typename F, typename G>
-std::map<std::string, int>
+std::map<std::string, long long>
 RPT(const Opm::DeckKeyword&  keyword,
     const Opm::ParseContext& parseContext,
     Opm::ErrorGuard&         errors,
@@ -351,7 +351,7 @@ RPT(const Opm::DeckKeyword&  keyword,
     // heuristics to interpret this as list of mnemonics.  See the
     // documentation of the RPT_MIXED_STYLE error handler for more details.
     if (! strs) {
-        auto stoi = [](const std::string& str) { return std::stoi(str); };
+        auto stoi = [](const std::string& str) { return std::stoll(str); };
         return integer_mnemonic(Opm::fun::map(stoi, deck_items));
     }
 
@@ -402,7 +402,7 @@ RPT(const Opm::DeckKeyword&  keyword,
         items = deck_items;
     }
 
-    std::map<std::string, int> mnemonics;
+    std::map<std::string, long long> mnemonics;
     for (const auto& mnemonic : items) {
         const auto sep_pos = mnemonic.find_first_of( "= " );
 
@@ -418,7 +418,7 @@ RPT(const Opm::DeckKeyword&  keyword,
             continue;
         }
 
-        int val = 1;
+        long long val = 1;
         if (sep_pos != std::string::npos) {
             const auto value_pos = mnemonic.find_first_not_of("= ", sep_pos);
             if (value_pos != std::string::npos) {
@@ -432,7 +432,7 @@ RPT(const Opm::DeckKeyword&  keyword,
     return mnemonics;
 }
 
-void expand_RPTRST_mnemonics(std::map<std::string, int>& mnemonics)
+void expand_RPTRST_mnemonics(std::map<std::string, long long>& mnemonics)
 {
     auto allprops_iter = mnemonics.find("ALLPROPS");
     if (allprops_iter == mnemonics.end()) {
@@ -447,21 +447,21 @@ void expand_RPTRST_mnemonics(std::map<std::string, int>& mnemonics)
     }
 }
 
-std::optional<int> extract(std::map<std::string, int>& mnemonics, const std::string& key)
+std::optional<long long> extract(std::map<std::string, long long>& mnemonics, const std::string& key)
 {
     auto iter = mnemonics.find(key);
     if (iter == mnemonics.end()) {
         return {};
     }
 
-    int value = iter->second;
+    long long value = iter->second;
     mnemonics.erase(iter);
     return value;
 }
 
 std::pair<
-    std::map<std::string, int>,
-    std::pair<std::optional<int>, std::optional<int>>
+    std::map<std::string, long long>,
+    std::pair<std::optional<long long>, std::optional<long long>>
     >
 RPTRST(const Opm::DeckKeyword&  keyword,
        const Opm::ParseContext& parseContext,
@@ -680,8 +680,8 @@ void RSTConfig::handleRPTSCHED(const DeckKeyword&  keyword,
         const auto restart = extract(mnemonics, "RESTART");
 
         if (restart.has_value()) {
-            const auto basic_value = std::min(2, restart.value());
-            this->update_schedule({basic_value, 1});
+            const auto basic_value = std::min(2LL, restart.value());
+            this->update_schedule({basic_value, 1LL});
         }
     }
 
@@ -690,7 +690,7 @@ void RSTConfig::handleRPTSCHED(const DeckKeyword&  keyword,
     }
 }
 
-void RSTConfig::update_schedule(const std::pair<std::optional<int>, std::optional<int>>& basic_freq)
+void RSTConfig::update_schedule(const std::pair<std::optional<long long>, std::optional<long long>>& basic_freq)
 {
     update_optional(this->basic, basic_freq.first);
     update_optional(this->freq, basic_freq.second);

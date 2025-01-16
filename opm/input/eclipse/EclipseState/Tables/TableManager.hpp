@@ -178,9 +178,9 @@ namespace Opm {
         const WatdentTable& getWatdentTable() const;
         const SgofletTable& getSgofletTable() const;
         const SwofletTable& getSwofletTable() const;
-        const std::map<int, PlymwinjTable>& getPlymwinjTables() const;
-        const std::map<int, SkprwatTable>& getSkprwatTables() const;
-        const std::map<int, SkprpolyTable>& getSkprpolyTables() const;
+        const std::map<long long, PlymwinjTable>& getPlymwinjTables() const;
+        const std::map<long long, SkprwatTable>& getSkprwatTables() const;
+        const std::map<long long, SkprpolyTable>& getSkprpolyTables() const;
         const std::map<std::string, TableContainer>& getSimpleTables() const;
 
         /// deck has keyword "IMPTVD" --- Imbition end-point versus depth tables
@@ -389,9 +389,9 @@ namespace Opm {
         std::vector<RwgsaltTable> m_rwgsaltTables;
         std::vector<BrineDensityTable> m_bdensityTables;
         std::vector<SolventDensityTable> m_sdensityTables;
-        std::map<int, PlymwinjTable> m_plymwinjTables;
-        std::map<int, SkprwatTable> m_skprwatTables;
-        std::map<int, SkprpolyTable> m_skprpolyTables;
+        std::map<long long, PlymwinjTable> m_plymwinjTables;
+        std::map<long long, SkprwatTable> m_skprwatTables;
+        std::map<long long, SkprpolyTable> m_skprpolyTables;
 
         Tabdims m_tabdims;
         Regdims m_regdims;

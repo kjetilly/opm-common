@@ -126,7 +126,7 @@ namespace Opm {
                  const bool lowActionParsingStrictness = false,
                  const bool slave_mode = false,
                  const bool keepKeywords = true,
-                 const std::optional<int>& output_interval = {},
+                 const std::optional<long long>& output_interval = {},
                  const RestartIO::RstState* rst = nullptr,
                  const TracerConfig* tracer_config = nullptr);
 
@@ -141,7 +141,7 @@ namespace Opm {
                  const bool lowActionParsingStrictness = false,
                  const bool slave_mode = false,
                  const bool keepKeywords = true,
-                 const std::optional<int>& output_interval = {},
+                 const std::optional<long long>& output_interval = {},
                  const RestartIO::RstState* rst = nullptr,
                  const TracerConfig* tracer_config = nullptr);
 
@@ -153,7 +153,7 @@ namespace Opm {
                  const bool lowActionParsingStrictness = false,
                  const bool slave_mode = false,
                  const bool keepKeywords = true,
-                 const std::optional<int>& output_interval = {},
+                 const std::optional<long long>& output_interval = {},
                  const RestartIO::RstState* rst = nullptr,
                  const TracerConfig* tracer_config = nullptr);
 
@@ -165,7 +165,7 @@ namespace Opm {
                  const bool lowActionParsingStrictness = false,
                  const bool slave_mode = false,
                  const bool keepKeywords = true,
-                 const std::optional<int>& output_interval = {},
+                 const std::optional<long long>& output_interval = {},
                  const RestartIO::RstState* rst = nullptr);
 
         template <typename T>
@@ -177,7 +177,7 @@ namespace Opm {
                  const bool lowActionParsingStrictness = false,
                  const bool slave_mode = false,
                  const bool keepKeywords = true,
-                 const std::optional<int>& output_interval = {},
+                 const std::optional<long long>& output_interval = {},
                  const RestartIO::RstState* rst = nullptr);
 
         Schedule(const Deck& deck,
@@ -186,13 +186,13 @@ namespace Opm {
                  const bool lowActionParsingStrictness = false,
                  const bool slave_mode = false,
                  const bool keepKeywords = true,
-                 const std::optional<int>& output_interval = {},
+                 const std::optional<long long>& output_interval = {},
                  const RestartIO::RstState* rst = nullptr);
 
         // The constructor *without* the Python arg should really only be used from Python itself
         Schedule(const Deck& deck,
                  const EclipseState& es,
-                 const std::optional<int>& output_interval = {},
+                 const std::optional<long long>& output_interval = {},
                  const RestartIO::RstState* rst = nullptr);
 
         ~Schedule() = default;
@@ -209,7 +209,7 @@ namespace Opm {
         std::time_t simTime(std::size_t timeStep) const;
         double seconds(std::size_t timeStep) const;
         double stepLength(std::size_t timeStep) const;
-        std::optional<int> exitStatus() const;
+        std::optional<long long> exitStatus() const;
         const UnitSystem& getUnits() const { return this->m_static.m_unit_system; }
         const Runspec& runspec() const { return this->m_static.m_runspec; }
 
@@ -246,13 +246,13 @@ namespace Opm {
         const Well& getWell(const std::string& wellName, std::size_t timeStep) const;
         const Well& getWellatEnd(const std::string& well_name) const;
         // get the list of the constant flux aquifer specified in the whole schedule
-        std::unordered_set<int> getAquiferFluxSchedule() const;
+        std::unordered_set<long long> getAquiferFluxSchedule() const;
         std::vector<Well> getWells(std::size_t timeStep) const;
         std::vector<Well> getWellsatEnd() const;
         std::vector<Well> getActiveWellsAtEnd() const; // Get wells that have been active any time during simulation
         std::vector<std::string> getInactiveWellNamesAtEnd() const; // Get well names of wells that have never been active
 
-        const std::unordered_map<std::string, std::set<int>>& getPossibleFutureConnections() const;
+        const std::unordered_map<std::string, std::set<long long>>& getPossibleFutureConnections() const;
 
         void shut_well(const std::string& well_name, std::size_t report_step);
         void shut_well(const std::string& well_name);
@@ -282,7 +282,7 @@ namespace Opm {
         std::size_t size() const;
 
         bool write_rst_file(std::size_t report_step) const;
-        const std::map< std::string, int >& rst_keywords( size_t timestep ) const;
+        const std::map< std::string, long long >& rst_keywords( size_t timestep ) const;
 
         // The applyAction() member function is invoked from the simulator
         // *after* an ACTIONX has triggered.  Its return value is a small
@@ -396,7 +396,7 @@ namespace Opm {
         ScheduleDeck m_sched_deck{};
         Action::WGNames action_wgnames{};
         std::unordered_set<std::string> potential_wellopen_patterns{}; // Set of well name patterns that potentially can open
-        std::optional<int> exit_status{};
+        std::optional<long long> exit_status{};
         std::vector<ScheduleState> snapshots{};
         WriteRestartFileEvents restart_output{};
         CompletedCells completed_cells{};
@@ -410,7 +410,7 @@ namespace Opm {
         // This unordered_map contains possible future connections of wells that might get added through an ACTIONX.
         // For parallel runs, this unordered_map is retrieved by the grid partitioner to ensure these connections
         // end up on the same partition.
-        std::unordered_map<std::string, std::set<int>> possibleFutureConnections;
+        std::unordered_map<std::string, std::set<long long>> possibleFutureConnections;
 
         // The current_report_step is set to the current report step when a PYACTION call is executed.
         // This is needed since the Schedule object does not know the current report step of the simulator and
@@ -429,14 +429,14 @@ namespace Opm {
         void addWell(Well well);
         void addWell(const std::string& wellName,
                      const std::string& group,
-                     int headI,
-                     int headJ,
+                     long long headI,
+                     long long headJ,
                      Phase preferredPhase,
                      const std::optional<double>& refDepth,
                      double drainageRadius,
                      bool allowCrossFlow,
                      bool automaticShutIn,
-                     int pvt_table,
+                     long long pvt_table,
                      WellGasInflowEquation gas_inflow,
                      std::size_t timeStep,
                      ConnectionOrder wellConnectionOrder);

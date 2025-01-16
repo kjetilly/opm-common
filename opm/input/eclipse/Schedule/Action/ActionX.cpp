@@ -143,7 +143,7 @@ ActionX::ActionX(const std::string& name,
 
 ActionX::ActionX(const DeckRecord& record, const std::time_t start_time)
     : ActionX(record.getItem<ParserKeywords::ACTIONX::NAME>().getTrimmedString(0),
-              record.getItem<ParserKeywords::ACTIONX::NUM>().get<int>(0),
+              record.getItem<ParserKeywords::ACTIONX::NUM>().get<long long>(0),
               record.getItem<ParserKeywords::ACTIONX::MIN_WAIT>().getSIDouble(0),
               start_time)
 {}
@@ -366,7 +366,7 @@ parseActionX(const DeckKeyword& kw,
         return {
             ActionX {
                 name,
-                static_cast<std::size_t>(record.getItem<ParserKeywords::ACTIONX::NUM>().get<int>(0)),
+                static_cast<std::size_t>(record.getItem<ParserKeywords::ACTIONX::NUM>().get<long long>(0)),
                 record.getItem<ParserKeywords::ACTIONX::MIN_WAIT>().getSIDouble(0),
                 start_time,
                 std::move(conditions),

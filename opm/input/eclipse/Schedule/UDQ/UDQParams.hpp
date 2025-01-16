@@ -36,8 +36,8 @@ namespace Opm {
         static UDQParams serializationTestObject();
 
         bool reseed() const;
-        int rand_seed() const noexcept;
-        void   reseedRNG(int seed);
+        long long rand_seed() const noexcept;
+        void   reseedRNG(long long seed);
         double range() const noexcept;
         double undefinedValue() const noexcept;
         double cmpEpsilon() const noexcept;
@@ -66,7 +66,7 @@ namespace Opm {
 
     private:
         bool reseed_rng;
-        int random_seed;
+        long long random_seed;
         double value_range;
         double undefined_value;
         double cmp_eps;

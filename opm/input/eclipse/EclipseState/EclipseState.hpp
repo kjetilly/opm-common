@@ -133,15 +133,15 @@ namespace Opm {
         const Co2StoreConfig& getCo2StoreConfig() const;
 
         void prune_global_for_schedule_run();
-        void reset_actnum(const std::vector<int>& new_actnum);
-        void set_active_indices(const std::vector<int>& indices);
+        void reset_actnum(const std::vector<long long>& new_actnum);
+        void set_active_indices(const std::vector<long long>& indices);
         void pruneDeactivatedAquiferConnections(const std::vector<std::size_t>& deactivated_cells);
         void loadRestartAquifers(const RestartIO::RstAquifer& aquifers);
         // TODO: it is possible that the aquifer are opened through SCHEDULE and not specified in the SOLUTION section
         // For the ease of the implementation, we create inactive aquifer in the AquiferConfig.
         // At the moment, it only works for Constant Flux Aquifers(AQUFLUX) as indicated by the function name
         // When we know and decide to handle the same for AQUFETP and AQUCT, this part will be refactored
-        void appendAqufluxSchedule(const std::unordered_set<int>& ids);
+        void appendAqufluxSchedule(const std::unordered_set<long long>& ids);
 
         void loadRestartNetworkPressures(const RestartIO::RstNetwork& network);
         const std::optional<std::map<std::string, double> >& getRestartNetworkPressures() const { return this->m_restart_network_pressures; }

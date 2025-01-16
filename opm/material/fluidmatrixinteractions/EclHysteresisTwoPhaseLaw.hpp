@@ -53,7 +53,7 @@ public:
     enum { nonWettingPhaseIdx = Traits::nonWettingPhaseIdx };
 
     //! The number of fluid phases
-    static constexpr int numPhases = EffectiveLaw::numPhases;
+    static constexpr long long numPhases = EffectiveLaw::numPhases;
     static_assert(numPhases == 2,
                   "The endpoint scaling applies to the nested twophase laws, not to "
                   "the threephase one!");

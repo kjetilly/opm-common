@@ -51,7 +51,7 @@ namespace Opm
         /// Negative limits (including NoLimit) are interpreted as
         /// NoLimit, but the default constructor is the preferred way
         /// to obtain that behaviour.
-        explicit MessageLimiter(const int tag_limit)
+        explicit MessageLimiter(const long long tag_limit)
             : tag_limit_(tag_limit < 0 ? NoLimit : tag_limit),
               category_limits_({{Log::MessageType::Debug, NoLimit},
 		                {Log::MessageType::Note, NoLimit},
@@ -63,7 +63,7 @@ namespace Opm
         {
         }
 
-        MessageLimiter(const int tag_limit, const std::map<int64_t, int>& category_limits)
+        MessageLimiter(const long long tag_limit, const std::map<int64_t, long long>& category_limits)
             : tag_limit_(tag_limit < 0 ? NoLimit : tag_limit),
               category_limits_(category_limits)
         {
@@ -81,19 +81,19 @@ namespace Opm
         }
 
         /// The tag message limit (same for all tags).
-        int tagMessageLimit() const
+        long long tagMessageLimit() const
         {
             return tag_limit_;
         }
 
         /// The category message limits.
-        const std::map<int64_t, int>& categoryMessageLimits() const
+        const std::map<int64_t, long long>& categoryMessageLimits() const
         {
             return category_limits_;
         }
 
         /// The category message counts.
-        const std::map<int64_t, int>& categoryMessageCounts() const
+        const std::map<int64_t, long long>& categoryMessageCounts() const
         {
             return category_counts_;
         }
@@ -122,7 +122,7 @@ namespace Opm
                 auto it = tag_counts_.find(tag);
                 if (it != tag_counts_.end()) {
                     // Already encountered this tag. Increment its count.
-                    const int count = ++it->second;
+                    const long long count = ++it->second;
                     res = countBasedResponseTag(count);
                 } else {
                     // First encounter of this tag. Insert 1.
@@ -135,7 +135,7 @@ namespace Opm
             // towards the category limits.
             if (res == Response::PrintMessage) {
                 // We are *not* above the tag limit, consider category limit.
-                const int count = ++category_counts_[messageMask];
+                const long long count = ++category_counts_[messageMask];
                 if (category_limits_[messageMask] != NoLimit) {
                     res = countBasedResponseCategory(count, messageMask);
                 }
@@ -145,7 +145,7 @@ namespace Opm
         }
 
     private:
-        Response countBasedResponseTag(const int count) const
+        Response countBasedResponseTag(const long long count) const
         {
             if (count <= tag_limit_) {
                 return Response::PrintMessage;
@@ -157,9 +157,9 @@ namespace Opm
         }
 
 
-        Response countBasedResponseCategory(const int count, const int64_t messageMask) const
+        Response countBasedResponseCategory(const long long count, const int64_t messageMask) const
         {
-            const int limit = category_limits_.at(messageMask);
+            const long long limit = category_limits_.at(messageMask);
             if (count <= limit) {
                 return Response::PrintMessage;
             } else if (count == limit + 1) {
@@ -169,10 +169,10 @@ namespace Opm
             }
         }
 
-        int tag_limit_;
-        std::unordered_map<std::string, int> tag_counts_;
-        std::map<int64_t, int> category_limits_;
-        std::map<int64_t, int> category_counts_ = {{Log::MessageType::Note, 0},
+        long long tag_limit_;
+        std::unordered_map<std::string, long long> tag_counts_;
+        std::map<int64_t, long long> category_limits_;
+        std::map<int64_t, long long> category_counts_ = {{Log::MessageType::Note, 0},
                                                    {Log::MessageType::Info, 0},
                                                    {Log::MessageType::Warning, 0},
                                                    {Log::MessageType::Error, 0},

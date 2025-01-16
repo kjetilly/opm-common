@@ -76,11 +76,11 @@ bool operator==(const std::vector<T> & t1, const std::vector<T> & t2)
 }
 
 void write_header(std::ofstream& ofileH, const std::string& arrName,
-                  int size, const std::string& arrtype)
+                  long long size, const std::string& arrtype)
 {
 
-    int bhead = flipEndianInt(16);
-    int fsize = flipEndianInt(size);
+    long long bhead = flipEndianInt(16);
+    long long fsize = flipEndianInt(size);
 
     ofileH.write(reinterpret_cast<char*>(&bhead), sizeof(bhead));
     ofileH.write(arrName.c_str(), 8);
@@ -96,25 +96,25 @@ BOOST_AUTO_TEST_CASE(TestEclFile_X231) {
     std::string filename = "TEST.DAT";
     std::string arrName = "TESTX231";
 
-    std::vector<int> ivect(10);
+    std::vector<long long> ivect(10);
     std::iota(ivect.begin(), ivect.end(), -4);
 
     {
         std::ofstream ofileH;
         ofileH.open(filename, std::ios_base::binary);
 
-        int size = static_cast<int>((-1) * std::pow(2, 31) + 10);
+        long long size = static_cast<long long>((-1) * std::pow(2, 31) + 10);
 
         write_header(ofileH, arrName, -1, std::string("X231"));
         write_header(ofileH, arrName, size, std::string("INTE"));
 
-        int sizeData = ivect.size() * sizeof(int);
+        long long sizeData = ivect.size() * sizeof(long long);
         sizeData = flipEndianInt(sizeData);
 
         ofileH.write(reinterpret_cast<char*>(&sizeData), sizeof(sizeData));
 
         for (auto v : ivect) {
-            int fval = flipEndianInt(v);
+            long long fval = flipEndianInt(v);
             ofileH.write(reinterpret_cast<char*>(&fval), sizeof(fval));
         }
 
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(TestEclFile_X231) {
     }
 
     EclFile test1(filename);
-    auto array = test1.get<int>(arrName);
+    auto array = test1.get<long long>(arrName);
 
     for (size_t n = 0; n < 10; n++) {
         BOOST_CHECK_EQUAL(array[n], ivect[n]);
@@ -143,8 +143,8 @@ BOOST_AUTO_TEST_CASE(TestEclFile_BINARY) {
 
     // check that exeption is thrown when member function get is used with wrong type
 
-    BOOST_CHECK_THROW(std::vector<int> vect1=file1.get<int>(2) , std::runtime_error );
-    BOOST_CHECK_THROW(std::vector<int> vect1=file1.get<int>("PORV") , std::runtime_error );
+    BOOST_CHECK_THROW(std::vector<long long> vect1=file1.get<long long>(2) , std::runtime_error );
+    BOOST_CHECK_THROW(std::vector<long long> vect1=file1.get<long long>("PORV") , std::runtime_error );
 
     BOOST_CHECK_THROW(std::vector<float> vect1=file1.get<float>(0) , std::runtime_error );
     BOOST_CHECK_THROW(std::vector<float> vect1=file1.get<float>("ICON") , std::runtime_error );
@@ -165,8 +165,8 @@ BOOST_AUTO_TEST_CASE(TestEclFile_BINARY) {
 
     // test member functon get, use size of vector to confirm that vectror is ok
 
-    std::vector<int> vect1a=file1.get<int>(0);
-    std::vector<int> vect1b=file1.get<int>("ICON");
+    std::vector<long long> vect1a=file1.get<long long>(0);
+    std::vector<long long> vect1b=file1.get<long long>("ICON");
 
     BOOST_CHECK_EQUAL(vect1a.size(), 1875U);
     BOOST_CHECK_EQUAL(vect1b.size(), 1875U);
@@ -211,8 +211,8 @@ BOOST_AUTO_TEST_CASE(TestEclFile_FORMATTED) {
     EclFile file2(testFile2);
     file2.loadData();
 
-    std::vector<int> vect1a=file1.get<int>("ICON");
-    std::vector<int> vect1b=file2.get<int>("ICON");
+    std::vector<long long> vect1a=file1.get<long long>("ICON");
+    std::vector<long long> vect1b=file2.get<long long>("ICON");
 
     BOOST_CHECK_EQUAL(vect1a.size(), vect1b.size());
     BOOST_CHECK(vect1a == vect1b);
@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE(TestEcl_Write_binary) {
     EclFile file1(inputFile);
     file1.loadData();
 
-    std::vector<int> icon=file1.get<int>("ICON");
+    std::vector<long long> icon=file1.get<long long>("ICON");
     std::vector<float> porv=file1.get<float>("PORV");
     std::vector<double> xcon=file1.get<double>("XCON");
     std::vector<bool> logihead=file1.get<bool>("LOGIHEAD");
@@ -311,7 +311,7 @@ BOOST_AUTO_TEST_CASE(TestEcl_Write_formatted) {
 
     EclFile file1(inputFile, true);
 
-    std::vector<int> icon = file1.get<int>("ICON");
+    std::vector<long long> icon = file1.get<long long>("ICON");
     std::vector<float> porv = file1.get<float>("PORV");
     std::vector<double> xcon = file1.get<double>("XCON");
     std::vector<bool> logihead = file1.get<bool>("LOGIHEAD");
@@ -368,7 +368,7 @@ BOOST_AUTO_TEST_CASE(TestEcl_getList) {
     // use EclFile to read/open a binary file
     // Use API for class EclFile together with class EclOutput to write an
     // identical eclfile
-    // EclFile::getList(), EclFile::get<T>(int)
+    // EclFile::getList(), EclFile::get<T>(long long)
 
     EclFile file1(inputFile);
     file1.loadData();
@@ -378,13 +378,13 @@ BOOST_AUTO_TEST_CASE(TestEcl_getList) {
         EclOutput eclTest(testFile, false);
 
         auto arrayList = file1.getList();
-        int n=0;
+        long long n=0;
         for (auto array : arrayList) {
             std::string name = std::get<0>(array);
             eclArrType arrType = std::get<1>(array);
 
             if (arrType == INTE) {
-                std::vector<int> vect = file1.get<int>(n);
+                std::vector<long long> vect = file1.get<long long>(n);
                 eclTest.write(name, vect);
             } else if (arrType == REAL) {
                 std::vector<float> vect = file1.get<float>(n);

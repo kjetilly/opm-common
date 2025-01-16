@@ -230,7 +230,7 @@ namespace Opm {
         return nncs;
     }
 
-    void NumericalAquifers::postProcessConnections(const EclipseGrid& grid, const std::vector<int>& actnum) {
+    void NumericalAquifers::postProcessConnections(const EclipseGrid& grid, const std::vector<long long>& actnum) {
         for ([[maybe_unused]] auto& [id, aquifer] : this->m_aquifers) {
             aquifer.postProcessConnections(grid, actnum);
         }

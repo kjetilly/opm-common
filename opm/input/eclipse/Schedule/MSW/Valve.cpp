@@ -170,15 +170,15 @@ namespace Opm {
         return result;
     }
 
-    std::map<std::string, std::vector<std::pair<int, Valve>>>
+    std::map<std::string, std::vector<std::pair<long long, Valve>>>
     Valve::fromWSEGVALV(const DeckKeyword& keyword, const double udq_default)
     {
-        auto res = std::map<std::string, std::vector<std::pair<int, Valve>>>{};
+        auto res = std::map<std::string, std::vector<std::pair<long long, Valve>>>{};
 
         for (const DeckRecord& record : keyword) {
             const std::string well_name = record.getItem("WELL").getTrimmedString(0);
 
-            const int segment_number = record.getItem("SEGMENT_NUMBER").get<int>(0);
+            const long long segment_number = record.getItem("SEGMENT_NUMBER").get<long long>(0);
 
             res[well_name].emplace_back(std::piecewise_construct,
                                         std::forward_as_tuple(segment_number),
@@ -193,7 +193,7 @@ namespace Opm {
         return m_status;
     }
 
-    int Valve::ecl_status() const
+    long long Valve::ecl_status() const
     {
         return to_int(this->status());
     }

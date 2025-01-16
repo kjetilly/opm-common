@@ -129,8 +129,8 @@ public:
             m_specialMessages += 1;
     }
 
-    int m_defaultMessages;
-    int m_specialMessages;
+    long long m_defaultMessages;
+    long long m_specialMessages;
 };
 /*
   Testing that the logger frontend does not let unknown message types

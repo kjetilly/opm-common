@@ -88,7 +88,7 @@ namespace {
     }
 
     double ecl_sum_get_group_var(const EclIO::ESmry* smry,
-                                 const int           timeIdx,
+                                 const long long           timeIdx,
                                  const std::string&  groupname,
                                  const std::string&  variable)
     {
@@ -111,7 +111,7 @@ using i_cmode = Opm::Group::InjectionCMode;
  * conversion factor for whenever 'day' is the unit of measure, whereas we
  * expect input in SI units (seconds)
  */
-static const int day = 24 * 60 * 60;
+static const long long day = 24 * 60 * 60;
 
 data::Wells result_wells()
 {
@@ -287,13 +287,13 @@ BOOST_AUTO_TEST_CASE(group_keywords)
     BOOST_CHECK( ecl_sum_has_group_var( resp, "TEST", "GMCTP" ) );
 
     // Integer flag indicating current active group control
-    BOOST_CHECK_EQUAL( static_cast<int>(ecl_sum_get_group_var( resp, 1, "TEST", "GMCTP" )), 0 );
-    BOOST_CHECK_EQUAL( static_cast<int>(ecl_sum_get_group_var( resp, 1, "LOWER", "GMCTW" )), 3 );
-    BOOST_CHECK_EQUAL( static_cast<int>(ecl_sum_get_group_var( resp, 1, "LOWER", "GMCTP" )), 1 );
+    BOOST_CHECK_EQUAL( static_cast<long long>(ecl_sum_get_group_var( resp, 1, "TEST", "GMCTP" )), 0 );
+    BOOST_CHECK_EQUAL( static_cast<long long>(ecl_sum_get_group_var( resp, 1, "LOWER", "GMCTW" )), 3 );
+    BOOST_CHECK_EQUAL( static_cast<long long>(ecl_sum_get_group_var( resp, 1, "LOWER", "GMCTP" )), 1 );
 
-    BOOST_CHECK_EQUAL( static_cast<int>(ecl_sum_get_group_var( resp, 1, "UPPER", "GMCTP" )), 3 );
-    BOOST_CHECK_EQUAL( static_cast<int>(ecl_sum_get_group_var( resp, 1, "UPPER", "GMCTW" )), 4 );
-    BOOST_CHECK_EQUAL( static_cast<int>(ecl_sum_get_group_var( resp, 1, "UPPER", "GMCTG" )), 3 );
+    BOOST_CHECK_EQUAL( static_cast<long long>(ecl_sum_get_group_var( resp, 1, "UPPER", "GMCTP" )), 3 );
+    BOOST_CHECK_EQUAL( static_cast<long long>(ecl_sum_get_group_var( resp, 1, "UPPER", "GMCTW" )), 4 );
+    BOOST_CHECK_EQUAL( static_cast<long long>(ecl_sum_get_group_var( resp, 1, "UPPER", "GMCTG" )), 3 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

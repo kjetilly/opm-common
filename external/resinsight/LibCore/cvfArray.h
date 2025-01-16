@@ -132,7 +132,7 @@ private:
 
 
 // Only works for simple types that don't require copy operators.
-typedef Array<int>              IntArray;
+typedef Array<long long>              IntArray;
 typedef Array<uint>				UIntArray;
 typedef Array<ushort>			UShortArray;
 typedef Array<ubyte>			UByteArray;

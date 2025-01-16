@@ -36,7 +36,7 @@ namespace Opm
                                               const double f0, const double f1);
 
         static double handleTooManyIterations(const double x0,
-                                              const double x1, const int maxiter);
+                                              const double x1, const long long maxiter);
     };
 
 
@@ -45,7 +45,7 @@ namespace Opm
         static double handleBracketingFailure(const double x0, const double x1,
                                               const double f0, const double f1);
         static double handleTooManyIterations(const double x0,
-                                              const double x1, const int maxiter);
+                                              const double x1, const long long maxiter);
     };
 
 
@@ -57,7 +57,7 @@ namespace Opm
             return std::fabs(f0) < std::fabs(f1) ? x0 : x1;
         }
         static double handleTooManyIterations(const double x0,
-                                              const double x1, const int /*maxiter*/)
+                                              const double x1, const long long /*maxiter*/)
         {
             return 0.5*(x0 + x1);
         }
@@ -80,9 +80,9 @@ namespace Opm
         inline static double solve(const Functor& f,
                                    const double a,
                                    const double b,
-                                   const int max_iter,
+                                   const long long max_iter,
                                    const double tolerance,
-                                   int& iterations_used)
+                                   long long& iterations_used)
         {
             using namespace std;
             const double macheps = numeric_limits<double>::epsilon();
@@ -160,9 +160,9 @@ namespace Opm
                                    const double initial_guess,
                                    const double a,
                                    const double b,
-                                   const int max_iter,
+                                   const long long max_iter,
                                    const double tolerance,
-                                   int& iterations_used)
+                                   long long& iterations_used)
         {
             using namespace std;
             const double macheps = numeric_limits<double>::epsilon();
@@ -280,9 +280,9 @@ namespace Opm
         inline static double solve(const Functor& f,
                                    const double a,
                                    const double b,
-                                   const int max_iter,
+                                   const long long max_iter,
                                    const double tolerance,
-                                   int& iterations_used)
+                                   long long& iterations_used)
         {
             using namespace std;
             const double sqrt_half = std::sqrt(0.5);
@@ -390,10 +390,10 @@ namespace Opm
                             double& a,
                             double& b)
     {
-        const int max_iters = 100;
+        const long long max_iters = 100;
         double f0 = f(x0);
         double cur_dx = dx;
-        int i = 0;
+        long long i = 0;
         for (; i < max_iters; ++i) {
             double x = x0 + cur_dx;
             double f_new = f(x);

@@ -133,7 +133,7 @@ String::String(char c)
 //--------------------------------------------------------------------------------------------------
 /// Create a string from the given integer (using default formatting)
 //--------------------------------------------------------------------------------------------------
-String::String(int number)
+String::String(long long number)
 {
     std::wstringstream sstr;
     sstr << number;
@@ -474,7 +474,7 @@ CharArray String::toAscii() const
     size_t i;
     for(i = 0; i < numUnicodeChars; i++)
     {
-        unsigned int uc = m_string[i];
+        size_t uc = m_string[i];
         if (uc < 0xff)
         {
             ascii.push_back(static_cast<char>(uc));
@@ -518,13 +518,13 @@ std::wstring String::toStdWString() const
 CharArray String::toUtf8() const
 {
     // From http://www.codeguru.com/cpp/misc/misc/multi-lingualsupport/article.php/c10451
-    static const unsigned int MASKBITS      = 0x3F;
-    static const unsigned int MASKBYTE      = 0x80;
-    static const unsigned int MASK2BYTES    = 0xC0;
-    static const unsigned int MASK3BYTES    = 0xE0;
-    static const unsigned int MASK4BYTES    = 0xF0;
-    static const unsigned int MASK5BYTES    = 0xF8;
-    static const unsigned int MASK6BYTES    = 0xFC;
+    static const size_t MASKBITS      = 0x3F;
+    static const size_t MASKBYTE      = 0x80;
+    static const size_t MASK2BYTES    = 0xC0;
+    static const size_t MASK3BYTES    = 0xE0;
+    static const size_t MASK4BYTES    = 0xF0;
+    static const size_t MASK5BYTES    = 0xF8;
+    static const size_t MASK6BYTES    = 0xFC;
 
     size_t numUnicodeChars = m_string.size();
 
@@ -533,7 +533,7 @@ CharArray String::toUtf8() const
     size_t i;
     for(i = 0; i < numUnicodeChars; i++)
     {
-        unsigned int uc = m_string[i];
+        size_t uc = m_string[i];
 
         // 0xxxxxxx
         if (uc < 0x80)
@@ -617,13 +617,13 @@ cvf::String String::fromAscii(const char* str, size_t strSize)
 String String::fromUtf8(const char* utfStr)
 {
     // From http://www.codeguru.com/cpp/misc/misc/multi-lingualsupport/article.php/c10451
-    static const unsigned int MASKBITS      = 0x3F;
-    //static const unsigned int MASKBYTE      = 0x80;
-    static const unsigned int MASK2BYTES    = 0xC0;
-    static const unsigned int MASK3BYTES    = 0xE0;
-    static const unsigned int MASK4BYTES    = 0xF0;
-    static const unsigned int MASK5BYTES    = 0xF8;
-    static const unsigned int MASK6BYTES    = 0xFC;
+    static const size_t MASKBITS      = 0x3F;
+    //static const size_t MASKBYTE      = 0x80;
+    static const size_t MASK2BYTES    = 0xC0;
+    static const size_t MASK3BYTES    = 0xE0;
+    static const size_t MASK4BYTES    = 0xF0;
+    static const size_t MASK5BYTES    = 0xF8;
+    static const size_t MASK6BYTES    = 0xFC;
 
 
     size_t utfStringLength = System::strlen(utfStr);
@@ -639,7 +639,7 @@ String String::fromUtf8(const char* utfStr)
     while (i < utfStringLength)
     {
         // 4 byte unicode character
-        unsigned int unicodeChar = 0;
+        size_t unicodeChar = 0;
 
         // 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
         if ((utfStr[i] & MASK6BYTES) == MASK6BYTES)
@@ -701,7 +701,7 @@ String String::fromUtf8(const char* utfStr)
         else 
         {
             CVF_TIGHT_ASSERT(utfStr[i] >= 0);
-            unicodeChar = static_cast<unsigned int>(utfStr[i]);
+            unicodeChar = static_cast<size_t>(utfStr[i]);
             i += 1;
         }
 
@@ -731,7 +731,7 @@ const wchar_t* String::c_str() const
 /// 
 /// \return A string with the given number
 //--------------------------------------------------------------------------------------------------
-String String::number(float n, char format, int precision)
+String String::number(float n, char format, long long precision)
 {
     std::wstringstream sstr;
     
@@ -862,9 +862,9 @@ float String::toFloat(float defaultValue) const
 /// 
 /// \return  Returns the integer value found at the start of the string. 0 if an error occurred.
 //--------------------------------------------------------------------------------------------------
-int String::toInt(bool* ok) const
+long long String::toInt(bool* ok) const
 {
-    int val = 0;
+    long long val = 0;
     std::wstringstream stream(m_string);
     stream >> val;
 
@@ -894,10 +894,10 @@ int String::toInt(bool* ok) const
 /// \return  Returns the integer value found at the start of the string or defaultValue if the 
 ///          conversion was not possible.
 //--------------------------------------------------------------------------------------------------
-int String::toInt(int defaultValue) const
+long long String::toInt(long long defaultValue) const
 {
     bool ok = false;
-    int val = toInt(&ok);
+    long long val = toInt(&ok);
     if (ok)
     {
         return val;
@@ -1023,7 +1023,7 @@ int64_t String::toInt64(int64_t defaultValue) const
 /// 
 /// \return A string with the given number
 //--------------------------------------------------------------------------------------------------
-String String::number(double n, char format, int precision)
+String String::number(double n, char format, long long precision)
 {
     std::wstringstream sstr;
 
@@ -1145,9 +1145,9 @@ void String::replace(const String& before, const String& after)
 //--------------------------------------------------------------------------------------------------
 /// Convert a wchar_t to a single digit. Return -1 if not between 0-9
 //--------------------------------------------------------------------------------------------------
-int digitValue(const wchar_t& character)
+long long digitValue(const wchar_t& character)
 {
-    int val = character - '0';
+    long long val = character - '0';
     if (val < 0 || val > 9)
     {
         val = -1;
@@ -1160,9 +1160,9 @@ int digitValue(const wchar_t& character)
 // Local helper struct for storing found arg info
 struct ArgInfo
 {
-    int smallestArgIndex;           // lowest %x sequence number
-    int smallestArgCount;           // number of occurrences of the lowest #x sequence number
-    int totalArgLength;             // total length of %x sequences which will be replaced
+    long long smallestArgIndex;           // lowest %x sequence number
+    long long smallestArgCount;           // number of occurrences of the lowest #x sequence number
+    long long totalArgLength;             // total length of %x sequences which will be replaced
 };
 
 
@@ -1200,7 +1200,7 @@ static ArgInfo findSmallestArgs(const String &s)
             break;
         }
 
-        int argNumber = digitValue(*c);
+        long long argNumber = digitValue(*c);
 
         if (argNumber == -1)
         {
@@ -1209,7 +1209,7 @@ static ArgInfo findSmallestArgs(const String &s)
 
         ++c;
 
-        int secondArgDigit = digitValue(*c);
+        long long secondArgDigit = digitValue(*c);
 
         if (c != strEnd && secondArgDigit != -1) 
         {
@@ -1230,7 +1230,7 @@ static ArgInfo findSmallestArgs(const String &s)
         }
 
         ++argInfo.smallestArgCount;
-        argInfo.totalArgLength += static_cast<int>(c - argStart);
+        argInfo.totalArgLength += static_cast<long long>(c - argStart);
     }
 
     return argInfo;
@@ -1240,12 +1240,12 @@ static ArgInfo findSmallestArgs(const String &s)
 //--------------------------------------------------------------------------------------------------
 /// Return a string where the %x (where x=info.smallestArgIndex) is replaced with the given value
 //--------------------------------------------------------------------------------------------------
-static String replaceArgs(const String &s, const ArgInfo& info, int fieldWidth, const String& arg, const wchar_t& fillChar)
+static String replaceArgs(const String &s, const ArgInfo& info, long long fieldWidth, const String& arg, const wchar_t& fillChar)
 {
     const wchar_t* strBegin = s.c_str();
     const wchar_t* strEnd = strBegin + s.size();
 
-    unsigned int absFieldWidth = static_cast<unsigned int>(Math::abs(fieldWidth));
+    size_t absFieldWidth = static_cast<size_t>(Math::abs(fieldWidth));
     size_t resultLength = s.size() - info.totalArgLength + info.smallestArgCount*CVF_MAX(absFieldWidth, arg.size());
 
     std::wstring resultString;
@@ -1253,7 +1253,7 @@ static String replaceArgs(const String &s, const ArgInfo& info, int fieldWidth, 
     wchar_t* resultBuffer = &resultString[0];
     wchar_t* rc = resultBuffer;
     const wchar_t*  c = strBegin;
-    int repl_cnt = 0;
+    long long repl_cnt = 0;
 
     while (c != strEnd) 
     {
@@ -1266,7 +1266,7 @@ static String replaceArgs(const String &s, const ArgInfo& info, int fieldWidth, 
 
         const wchar_t* argStart = c++;
 
-        int argIdx = digitValue(*c);
+        long long argIdx = digitValue(*c);
 
         if (argIdx != -1) 
         {
@@ -1294,7 +1294,7 @@ static String replaceArgs(const String &s, const ArgInfo& info, int fieldWidth, 
             if (fieldWidth > 0) 
             { 
                 // left padded
-                unsigned int i;
+                size_t i;
                 for (i = 0; i < pad_chars; ++i)
                 {
                     *(rc++) = fillChar;;
@@ -1307,7 +1307,7 @@ static String replaceArgs(const String &s, const ArgInfo& info, int fieldWidth, 
             if (fieldWidth < 0) 
             {
                 // right padded
-                unsigned int i;
+                size_t i;
                 for (i = 0; i < pad_chars; ++i)
                 {
                     *(rc++) = fillChar;
@@ -1348,7 +1348,7 @@ static String replaceArgs(const String &s, const ArgInfo& info, int fieldWidth, 
 /// String test = String("Reading file %1 (%2 of %3)").arg(filename).arg(fileIndex + 1).arg(fileCount); 
 /// \endcode
 //--------------------------------------------------------------------------------------------------
-String String::arg(const String& a, int fieldWidth, const wchar_t& fillChar) const
+String String::arg(const String& a, long long fieldWidth, const wchar_t& fillChar) const
 {
     ArgInfo info = findSmallestArgs(*this);
 
@@ -1380,7 +1380,7 @@ String String::arg(const String& a, int fieldWidth, const wchar_t& fillChar) con
 /// String test = String("Reading file %1 (%2 of %3)").arg(filename).arg(fileIndex + 1).arg(fileCount); 
 /// \endcode
 //--------------------------------------------------------------------------------------------------
-String String::arg(char a, int fieldWidth, const wchar_t& fillChar) const
+String String::arg(char a, long long fieldWidth, const wchar_t& fillChar) const
 {
     return arg(String(a), fieldWidth, fillChar);
 }
@@ -1390,7 +1390,7 @@ String String::arg(char a, int fieldWidth, const wchar_t& fillChar) const
 /// Returns a copy of this string with the lowest numbered place marker (e.g. %1, %2,..%99) replaced 
 /// by the integer a.
 /// 
-/// \param a            The unsigned int value to insert at the lowest %x
+/// \param a            The size_t value to insert at the lowest %x
 /// \param fieldWidth   The minimal number of characters the argument will occupy. Positive for right
 ///                     aligned text, negative for left aligned text.
 /// \param fillChar     The character that will be inserted if the string representation of a is shorter 
@@ -1404,7 +1404,7 @@ String String::arg(char a, int fieldWidth, const wchar_t& fillChar) const
 /// String test = String("Reading file %1 (%2 of %3)").arg(filename).arg(fileIndex + 1).arg(fileCount); 
 /// \endcode
 //--------------------------------------------------------------------------------------------------
-String String::arg(uint a, int fieldWidth, const wchar_t& fillChar) const
+String String::arg(uint a, long long fieldWidth, const wchar_t& fillChar) const
 {
     return arg(String(a), fieldWidth, fillChar);
 }
@@ -1414,7 +1414,7 @@ String String::arg(uint a, int fieldWidth, const wchar_t& fillChar) const
 /// Returns a copy of this string with the lowest numbered place marker (e.g. %1, %2,..%99) replaced 
 /// by the integer a.
 /// 
-/// \param a            The int value to insert at the lowest %x
+/// \param a            The long long value to insert at the lowest %x
 /// \param fieldWidth   The minimal number of characters the argument will occupy. Positive for right
 ///                     aligned text, negative for left aligned text.
 /// \param fillChar     The character that will be inserted if the string representation of a is shorter 
@@ -1428,7 +1428,7 @@ String String::arg(uint a, int fieldWidth, const wchar_t& fillChar) const
 /// String test = String("Reading file %1 (%2 of %3)").arg(filename).arg(fileIndex + 1).arg(fileCount); 
 /// \endcode
 //--------------------------------------------------------------------------------------------------
-String String::arg(int a, int fieldWidth, const wchar_t& fillChar) const
+String String::arg(long long a, long long fieldWidth, const wchar_t& fillChar) const
 {
     return arg(static_cast<int64_t>(a), fieldWidth, fillChar);
 }
@@ -1452,7 +1452,7 @@ String String::arg(int a, int fieldWidth, const wchar_t& fillChar) const
 /// String test = String("Reading file %1 (%2 of %3)").arg(filename).arg(fileIndex + 1).arg(fileCount); 
 /// \endcode
 //--------------------------------------------------------------------------------------------------
-String String::arg(int64_t a, int fieldWidth, const wchar_t& fillChar) const
+String String::arg(int64_t a, long long fieldWidth, const wchar_t& fillChar) const
 {
     ArgInfo info = findSmallestArgs(*this);
     
@@ -1486,7 +1486,7 @@ String String::arg(int64_t a, int fieldWidth, const wchar_t& fillChar) const
 /// String test = String("Reading file %1 (%2 of %3)").arg(filename).arg(fileIndex + 1).arg(fileCount); 
 /// \endcode
 //--------------------------------------------------------------------------------------------------
-String String::arg(float a, int fieldWidth, char format, int precision, const wchar_t& fillChar) const
+String String::arg(float a, long long fieldWidth, char format, long long precision, const wchar_t& fillChar) const
 {
     ArgInfo info = findSmallestArgs(*this);
 
@@ -1520,7 +1520,7 @@ String String::arg(float a, int fieldWidth, char format, int precision, const wc
 /// String test = String("Reading file %1 (%2 of %3)").arg(filename).arg(fileIndex + 1).arg(fileCount); 
 /// \endcode
 //--------------------------------------------------------------------------------------------------
-String String::arg(double a, int fieldWidth, char format, int precision, const wchar_t& fillChar) const
+String String::arg(double a, long long fieldWidth, char format, long long precision, const wchar_t& fillChar) const
 {
     ArgInfo info = findSmallestArgs(*this);
 

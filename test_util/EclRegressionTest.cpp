@@ -275,7 +275,7 @@ void ECLRegressionTest::compareKeywords(const std::vector<std::string> &keywords
                       "\nKeywords not identical in " + reference);
         }
     } else {
-        int extraKeywordsFirstFile = 0;
+        long long extraKeywordsFirstFile = 0;
         for (auto& keyword : keywords1) {
             auto it1 = std::find(keywords2.begin(), keywords2.end(), keyword);
             if (it1 == keywords2.end()) {
@@ -327,7 +327,7 @@ void ECLRegressionTest::checkSpecificKeyword(std::vector<std::string>& keywords1
     }
 
     if (search1 != keywords1.end()) {
-        int ind = std::distance(keywords1.begin(), search1);
+        long long ind = std::distance(keywords1.begin(), search1);
         const eclArrType arrType = arrayType1[ind];
 
         if (search2 == keywords2.end()) {
@@ -453,9 +453,9 @@ void ECLRegressionTest::gridCompare()
 
         std::cout << "Active cells           " << " ... ";
 
-        for (int k = 0; k < dim1[2]; k++) {
-            for (int j=0; j < dim1[1]; j++) {
-                for (int i = 0; i < dim2[0]; i++) {
+        for (long long k = 0; k < dim1[2]; k++) {
+            for (long long j=0; j < dim1[1]; j++) {
+                for (long long i = 0; i < dim2[0]; i++) {
                     if (grid1->active_index(i,j,k) != grid2->active_index(i,j,k)) {
                         OPM_THROW(std::runtime_error,
                                   fmt::format("\nGrid1 and grid2 have different definition of active cells. "
@@ -478,14 +478,14 @@ void ECLRegressionTest::gridCompare()
         std::array<double,8> Y2 = {0.0};
         std::array<double,8> Z2 = {0.0};
 
-        for (int k = 0; k < dim1[2]; k++) {
-            for (int j = 0; j < dim1[1]; j++) {
-                for (int i = 0; i < dim1[0]; i++) {
+        for (long long k = 0; k < dim1[2]; k++) {
+            for (long long j = 0; j < dim1[1]; j++) {
+                for (long long i = 0; i < dim1[0]; i++) {
                     if (grid1->active_index(i,j,k) > -1) {
                         grid1->getCellCorners({i,j,k}, X1, Y1, Z1);
                         grid2->getCellCorners({i,j,k}, X2, Y2, Z2);
 
-                        for (int n = 0; n < 8; n++) {
+                        for (long long n = 0; n < 8; n++) {
                             Deviation devX = calculateDeviations(X1[n], X2[n]);
                             Deviation devY = calculateDeviations(Y1[n], Y2[n]);
                             Deviation devZ = calculateDeviations(Z1[n], Z2[n]);
@@ -535,15 +535,15 @@ void ECLRegressionTest::gridCompare()
         // check / compare NNC definitions
 
         if (grid1->hasKey("NNC1")) {
-            std::vector<int> NNC11 = grid1->get<int>("NNC1");
-            std::vector<int> NNC21 = grid1->get<int>("NNC2");
+            std::vector<long long> NNC11 = grid1->get<long long>("NNC1");
+            std::vector<long long> NNC21 = grid1->get<long long>("NNC2");
 
             if (!grid2->hasKey("NNC1")) {
                 OPM_THROW(std::runtime_error, "\nFirst Grid have NNC1 keyword but not second grid  ");
             }
 
-            std::vector<int> NNC12 = grid2->get<int>("NNC1");
-            std::vector<int> NNC22 = grid2->get<int>("NNC2");
+            std::vector<long long> NNC12 = grid2->get<long long>("NNC1");
+            std::vector<long long> NNC22 = grid2->get<long long>("NNC2");
 
             if (NNC11.size() != NNC12.size() || NNC21.size() != NNC22.size()) {
                 OPM_THROW(std::runtime_error,
@@ -666,7 +666,7 @@ void ECLRegressionTest::results_init()
                 if (it1 == keywords2.end() and acceptExtraKeywordsBoth) {
                     continue;
                 }
-                int ind2 = std::distance(keywords2.begin(),it1);
+                long long ind2 = std::distance(keywords2.begin(),it1);
 
                 if (arrayType1[i] != arrayType2[ind2]) {
                     printComparisonForKeywordLists(keywords1, keywords2, arrayType1, arrayType2);
@@ -684,8 +684,8 @@ void ECLRegressionTest::results_init()
                     std::cout << "Comparing " << keywords1[i] << " ... ";
 
                     if (arrayType1[i] == INTE) {
-                        auto vect1 = init1.get<int>(keywords1[i]);
-                        auto vect2 = init2.get<int>(keywords2[ind2]);
+                        auto vect1 = init1.get<long long>(keywords1[i]);
+                        auto vect2 = init2.get<long long>(keywords2[ind2]);
                         compareVectors(vect1, vect2, keywords1[i],reference);
                     } else if (arrayType1[i] == REAL) {
                         auto vect1 = init1.get<float>(keywords1[i]);
@@ -744,8 +744,8 @@ void ECLRegressionTest::results_rst()
         auto rst2 = std::make_shared<ERst>(fileName2);
         std::cout << "Loading restart file " << fileName2 << "  .... done\n" << std::endl;
 
-        std::vector<int> seqnums1 = rst1->listOfReportStepNumbers();
-        std::vector<int> seqnums2 = rst2->listOfReportStepNumbers();
+        std::vector<long long> seqnums1 = rst1->listOfReportStepNumbers();
+        std::vector<long long> seqnums2 = rst2->listOfReportStepNumbers();
 
         deviations.clear();
 
@@ -803,7 +803,7 @@ void ECLRegressionTest::results_rst()
             OPM_THROW(std::runtime_error, "\nRestart files not having the same report steps: ");
         }
 
-        for (int& seqn : seqnums1) {
+        for (long long& seqn : seqnums1) {
             std::cout << "\nUnified restart files, sequence  " << std::to_string(seqn) << "\n" << std::endl;
 
             std::string reference = "Restart, sequence "+std::to_string(seqn);
@@ -847,7 +847,7 @@ void ECLRegressionTest::results_rst()
 
                 keywords1 = keywords2 = keywords;
 
-                int nKeys = keywords.size();
+                long long nKeys = keywords.size();
                 arrayType1.assign(nKeys, REAL);
                 arrayType2.assign(nKeys, REAL);
             }
@@ -869,7 +869,7 @@ void ECLRegressionTest::results_rst()
                     if (it1 == keywords2.end() and acceptExtraKeywordsBoth) {
                         continue;
                     }
-                    int ind2 = std::distance(keywords2.begin(), it1);
+                    long long ind2 = std::distance(keywords2.begin(), it1);
 
                     if (arrayType1[i] != arrayType2[ind2]) {
                         printComparisonForKeywordLists(keywords1, keywords2, arrayType1, arrayType2);
@@ -889,8 +889,8 @@ void ECLRegressionTest::results_rst()
                         std::cout << "Comparing " << keywords1[i] << " ... ";
 
                         if (arrayType1[i] == INTE) {
-                            auto vect1 = rst1->getRestartData<int>(keywords1[i], seqn, 0);
-                            auto vect2 = rst2->getRestartData<int>(keywords2[ind2], seqn, 0);
+                            auto vect1 = rst1->getRestartData<long long>(keywords1[i], seqn, 0);
+                            auto vect2 = rst2->getRestartData<long long>(keywords2[ind2], seqn, 0);
                             compareVectors(vect1, vect2, keywords1[i], reference);
                         } else if (arrayType1[i] == REAL) {
                             auto vect1 = rst1->getRestartData<float>(keywords1[i], seqn, 0);
@@ -1002,7 +1002,7 @@ void ECLRegressionTest::results_smry()
 
             keywords1 = keywords2 = keywords;
 
-            int nKeys = keywords.size();
+            long long nKeys = keywords.size();
 
             arrayType1.assign(nKeys, REAL);
             arrayType2.assign(nKeys, REAL);
@@ -1147,7 +1147,7 @@ void ECLRegressionTest::results_rft()
             std::vector<std::string> rftList1;
             for (auto& report : rftReportList1) {
                 std::string well =  std::get<0>(report);
-                std::tuple<int, int, int> date =  std::get<1>(report);
+                std::tuple<long long, long long, long long> date =  std::get<1>(report);
                 std::string str1 = well +" (" + std::to_string(std::get<0>(date)) + "/" + std::to_string(std::get<1>(date)) + "/"  +   std::to_string(std::get<2>(date)) + ")";
                 rftList1.push_back(str1);
             }
@@ -1155,7 +1155,7 @@ void ECLRegressionTest::results_rft()
             std::vector<std::string> rftList2;
             for (auto& report : rftReportList2) {
                 std::string well =  std::get<0>(report);
-                std::tuple<int, int, int> date =  std::get<1>(report);
+                std::tuple<long long, long long, long long> date =  std::get<1>(report);
                 std::string str2 = well +" (" + std::to_string(std::get<0>(date)) + "/" + std::to_string(std::get<1>(date)) + "/"  +   std::to_string(std::get<2>(date)) + ")";
                 rftList2.push_back(str2);
             }
@@ -1167,7 +1167,7 @@ void ECLRegressionTest::results_rft()
 
         for (auto& report : rftReportList2) {
             std::string well =  std::get<0>(report);
-            std::tuple<int, int, int> date =  std::get<1>(report);
+            std::tuple<long long, long long, long long> date =  std::get<1>(report);
 
             std::string dateStr = std::to_string(std::get<0>(date)) + "/" + std::to_string(std::get<1>(date)) + "/" + std::to_string(std::get<2>(date));
 
@@ -1213,8 +1213,8 @@ void ECLRegressionTest::results_rft()
                         std::cout << "Comparing: " << keyword << " ... ";
 
                         if (arrayType == INTE) {
-                            auto vect1 = rft1.getRft<int>(keyword, well, date);
-                            auto vect2 = rft2.getRft<int>(keyword, well, date);
+                            auto vect1 = rft1.getRft<long long>(keyword, well, date);
+                            auto vect2 = rft2.getRft<long long>(keyword, well, date);
                             compareVectors(vect1, vect2, keyword, reference);
                         } else if (arrayType == REAL) {
                             auto vect1 = rft1.getRft<float>(keyword, well, date);
@@ -1260,7 +1260,7 @@ void ECLRegressionTest::printComparisonForKeywordLists(const std::vector<std::st
                                                        const std::vector<eclArrType>& arrayType1,
                                                        const std::vector<eclArrType>& arrayType2) const
 {
-    unsigned int maxLen = 0;
+    size_t maxLen = 0;
 
     std::vector<std::string> arrTypeStrList = {"INTE", "REAL", "DOUB", "CHAR", "LOGI", "MESS"};
 
@@ -1286,10 +1286,10 @@ void ECLRegressionTest::printComparisonForKeywordLists(const std::vector<std::st
 
     for (auto& it : commonList) {
         auto it1 = std::find(arrayList1.begin(), arrayList1.end(), it);
-        int ind1 = std::distance(arrayList1.begin(), it1);
+        long long ind1 = std::distance(arrayList1.begin(), it1);
 
         auto it2 = std::find(arrayList2.begin(), arrayList2.end(), it);
-        int ind2 = std::distance(arrayList2.begin(),it2);
+        long long ind2 = std::distance(arrayList2.begin(),it2);
 
         if (arrayType1[ind1] != arrayType2[ind2]) {
             std::cout << "\033[1;31m";
@@ -1353,7 +1353,7 @@ void ECLRegressionTest::printComparisonForKeywordLists(const std::vector<std::st
                                                        const std::vector<std::string>& arrayList2) const
 {
     std::set<std::string> commonList;
-    unsigned int maxLen = 0;
+    size_t maxLen = 0;
 
     for (auto& key : arrayList1) {
         commonList.insert(key);

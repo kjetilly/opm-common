@@ -172,7 +172,7 @@ public:
         m_output->flushStream();
     }
 
-    void writeC0nnArray(const std::string& name, const std::vector<std::string>& data, int element_size){
+    void writeC0nnArray(const std::string& name, const std::vector<std::string>& data, long long element_size){
         m_output->write(name, data, element_size);
         m_output->flushStream();
     }
@@ -193,7 +193,7 @@ npArray get_vector_index(Opm::EclIO::EclFile * file_ptr, std::size_t array_index
     auto array_type = std::get<1>(file_ptr->getList()[array_index]);
 
     if (array_type == Opm::EclIO::INTE)
-        return std::make_tuple (convert::numpy_array( file_ptr->get<int>(array_index)), array_type);
+        return std::make_tuple (convert::numpy_array( file_ptr->get<long long>(array_index)), array_type);
 
     if (array_type == Opm::EclIO::REAL)
         return std::make_tuple (convert::numpy_array( file_ptr->get<float>(array_index)), array_type);
@@ -248,7 +248,7 @@ npArray get_vector_occurrence(Opm::EclIO::EclFile * file_ptr, const std::string&
     return get_vector_index(file_ptr, array_index);
 }
 
-bool erst_contains(Opm::EclIO::ERst * file_ptr, std::tuple<std::string, int> keyword)
+bool erst_contains(Opm::EclIO::ERst * file_ptr, std::tuple<std::string, long long> keyword)
 {
     bool hasKeyAtReport = file_ptr->occurrence_count(std::get<0>(keyword), std::get<1>(keyword)) > 0 ? true : false;
     return hasKeyAtReport;
@@ -264,7 +264,7 @@ npArray get_erst_by_index(Opm::EclIO::ERst * file_ptr, size_t index, size_t rste
     auto array_type = std::get<1>(arrList[index]);
 
     if (array_type == Opm::EclIO::INTE)
-        return std::make_tuple (convert::numpy_array( file_ptr->getRestartData<int>(index, rstep)), array_type);
+        return std::make_tuple (convert::numpy_array( file_ptr->getRestartData<long long>(index, rstep)), array_type);
 
     if (array_type == Opm::EclIO::REAL)
         return std::make_tuple (convert::numpy_array( file_ptr->getRestartData<float>(index, rstep)), array_type);
@@ -295,13 +295,13 @@ npArray get_erst_vector(Opm::EclIO::ERst * file_ptr, const std::string& key, siz
 }
 
 std::tuple<std::array<double,8>, std::array<double,8>, std::array<double,8>>
-get_xyz_from_ijk(Opm::EclIO::EGrid * file_ptr, int i, int j, int k)
+get_xyz_from_ijk(Opm::EclIO::EGrid * file_ptr, long long i, long long j, long long k)
 {
     std::array<double,8> X = {0.0};
     std::array<double,8> Y = {0.0};
     std::array<double,8> Z = {0.0};
 
-    std::array<int, 3> ijk = {i, j, k};
+    std::array<long long, 3> ijk = {i, j, k};
 
     file_ptr->getCellCorners(ijk, X, Y, Z);
 
@@ -309,12 +309,12 @@ get_xyz_from_ijk(Opm::EclIO::EGrid * file_ptr, int i, int j, int k)
 }
 
 std::tuple<std::array<double,8>, std::array<double,8>, std::array<double,8>>
-get_xyz_from_ijk_mapaxes(Opm::EclIO::EGrid * file_ptr, int i, int j, int k, bool mapaxes)
+get_xyz_from_ijk_mapaxes(Opm::EclIO::EGrid * file_ptr, long long i, long long j, long long k, bool mapaxes)
 {
     auto xyz = get_xyz_from_ijk(file_ptr, i, j, k);
 
     if (file_ptr->with_mapaxes() && mapaxes){
-        for (int n = 0; n < 8; n++)
+        for (long long n = 0; n < 8; n++)
             file_ptr->mapaxes_transform(std::get<0>(xyz)[n], std::get<1>(xyz)[n]);
     }
 
@@ -322,26 +322,26 @@ get_xyz_from_ijk_mapaxes(Opm::EclIO::EGrid * file_ptr, int i, int j, int k, bool
 }
 
 std::tuple<std::array<double,8>, std::array<double,8>, std::array<double,8>>
-get_xyz_from_active_index(Opm::EclIO::EGrid * file_ptr, int actIndex)
+get_xyz_from_active_index(Opm::EclIO::EGrid * file_ptr, long long actIndex)
 {
-    std::array<int, 3> ijk = file_ptr->ijk_from_active_index(actIndex);
+    std::array<long long, 3> ijk = file_ptr->ijk_from_active_index(actIndex);
     return get_xyz_from_ijk(file_ptr, ijk[0], ijk[1], ijk[2]);
 }
 
 std::tuple<std::array<double,8>, std::array<double,8>, std::array<double,8>>
-get_xyz_from_active_index_mapaxes(Opm::EclIO::EGrid * file_ptr, int actIndex, bool mapaxes)
+get_xyz_from_active_index_mapaxes(Opm::EclIO::EGrid * file_ptr, long long actIndex, bool mapaxes)
 {
     auto xyz = get_xyz_from_active_index(file_ptr, actIndex);
 
     if (file_ptr->with_mapaxes() && mapaxes){
-        for (int n = 0; n < 8; n++)
+        for (long long n = 0; n < 8; n++)
             file_ptr->mapaxes_transform(std::get<0>(xyz)[n], std::get<1>(xyz)[n]);
     }
 
     return xyz;
 }
 
-py::array get_cellvolumes_mask(Opm::EclIO::EGrid * file_ptr, std::vector<int> mask)
+py::array get_cellvolumes_mask(Opm::EclIO::EGrid * file_ptr, std::vector<long long> mask)
 {
     size_t totCells = static_cast<size_t>(file_ptr->totalNumberOfCells());
     std::vector<double> celvol(totCells, 0.0);
@@ -365,21 +365,21 @@ py::array get_cellvolumes_mask(Opm::EclIO::EGrid * file_ptr, std::vector<int> ma
 
 py::array get_cellvolumes(Opm::EclIO::EGrid * file_ptr)
 {
-    int totCells = file_ptr->totalNumberOfCells();
-    std::vector<int> mask(totCells, 1);
+    long long totCells = file_ptr->totalNumberOfCells();
+    std::vector<long long> mask(totCells, 1);
 
     return get_cellvolumes_mask(file_ptr, mask);
 }
 
 npArray get_rft_vector_WellDate(Opm::EclIO::ERft * file_ptr,const std::string& name,
-                                  const std::string& well, int y, int m, int d)
+                                  const std::string& well, long long y, long long m, long long d)
 {
     auto arrList = file_ptr->listOfRftArrays(well, y, m, d);
     size_t array_index = get_array_index(arrList, name, 0);
     Opm::EclIO::eclArrType array_type = std::get<1>(arrList[array_index]);
 
     if (array_type == Opm::EclIO::INTE)
-        return std::make_tuple (convert::numpy_array( file_ptr->getRft<int>(name, well, y, m, d) ), array_type);
+        return std::make_tuple (convert::numpy_array( file_ptr->getRft<long long>(name, well, y, m, d) ), array_type);
 
     if (array_type == Opm::EclIO::REAL)
         return std::make_tuple (convert::numpy_array( file_ptr->getRft<float>(name, well, y, m, d) ), array_type);
@@ -396,14 +396,14 @@ npArray get_rft_vector_WellDate(Opm::EclIO::ERft * file_ptr,const std::string& n
     throw std::logic_error("Data type not supported");
 }
 
-npArray get_rft_vector_Index(Opm::EclIO::ERft * file_ptr,const std::string& name, int reportIndex)
+npArray get_rft_vector_Index(Opm::EclIO::ERft * file_ptr,const std::string& name, long long reportIndex)
 {
     auto arrList = file_ptr->listOfRftArrays(reportIndex);
     size_t array_index = get_array_index(arrList, name, 0);
     Opm::EclIO::eclArrType array_type = std::get<1>(arrList[array_index]);
 
     if (array_type == Opm::EclIO::INTE)
-        return std::make_tuple (convert::numpy_array( file_ptr->getRft<int>(name, reportIndex) ), array_type);
+        return std::make_tuple (convert::numpy_array( file_ptr->getRft<long long>(name, reportIndex) ), array_type);
 
     if (array_type == Opm::EclIO::REAL)
         return std::make_tuple (convert::numpy_array( file_ptr->getRft<float>(name, reportIndex) ), array_type);
@@ -470,9 +470,9 @@ void python::common::export_IO(py::module& m) {
         .def("count", &Opm::EclIO::ERst::occurrence_count)
         .def("__contains", &erst_contains)
         .def("arrays", (std::vector< std::tuple<std::string, Opm::EclIO::eclArrType, int64_t> >
-                        (Opm::EclIO::ERst::*)(int) ) &Opm::EclIO::ERst::listOfRstArrays)
+                        (Opm::EclIO::ERst::*)(long long) ) &Opm::EclIO::ERst::listOfRstArrays)
         .def("arrays", (std::vector< std::tuple<std::string, Opm::EclIO::eclArrType, int64_t> >
-                        (Opm::EclIO::ERst::*)(int, const std::string&) ) &Opm::EclIO::ERst::listOfRstArrays)
+                        (Opm::EclIO::ERst::*)(long long, const std::string&) ) &Opm::EclIO::ERst::listOfRstArrays)
         .def("__get_data", &get_erst_by_index)
         .def("__get_data", &get_erst_vector);
 
@@ -513,19 +513,19 @@ void python::common::export_IO(py::module& m) {
         .def_property_readonly("list_of_rfts", &Opm::EclIO::ERft::listOfRftReports)
 
         .def("__get_list_of_arrays", (std::vector< std::tuple<std::string, Opm::EclIO::eclArrType, int64_t> >
-                                      (Opm::EclIO::ERft::*)(int) const) &Opm::EclIO::ERft::listOfRftArrays)
+                                      (Opm::EclIO::ERft::*)(long long) const) &Opm::EclIO::ERft::listOfRftArrays)
 
         .def("__get_list_of_arrays", (std::vector< std::tuple<std::string, Opm::EclIO::eclArrType, int64_t> >
-                                      (Opm::EclIO::ERft::*)(const std::string&, int, int, int) const)
+                                      (Opm::EclIO::ERft::*)(const std::string&, long long, long long, long long) const)
              &Opm::EclIO::ERft::listOfRftArrays)
 
         .def("__get_data", &get_rft_vector_WellDate)
         .def("__get_data", &get_rft_vector_Index)
 
-        .def("__has_rft", (bool (Opm::EclIO::ERft::*)(const std::string&, int, int, int) const) &Opm::EclIO::ERft::hasRft)
-        .def("__has_array", (bool (Opm::EclIO::ERft::*)(const std::string&, int) const) &Opm::EclIO::ERft::hasArray)
+        .def("__has_rft", (bool (Opm::EclIO::ERft::*)(const std::string&, long long, long long, long long) const) &Opm::EclIO::ERft::hasRft)
+        .def("__has_array", (bool (Opm::EclIO::ERft::*)(const std::string&, long long) const) &Opm::EclIO::ERft::hasArray)
         .def("__has_array", (bool (Opm::EclIO::ERft::*)(const std::string&, const std::string&, const
-                             std::tuple<int,int,int>&) const) &Opm::EclIO::ERft::hasArray)
+                             std::tuple<long long,long long,long long>&) const) &Opm::EclIO::ERft::hasArray)
 
        .def("__len__", &Opm::EclIO::ERft::numberOfReports);
 
@@ -541,7 +541,7 @@ void python::common::export_IO(py::module& m) {
         .def("__write_logi_array", (void (EclOutputBind::*)(const std::string&,
                                   const std::vector<bool>&)) &EclOutputBind::writeArray)
         .def("__write_inte_array", (void (EclOutputBind::*)(const std::string&,
-                                  const std::vector<int>&)) &EclOutputBind::writeArray)
+                                  const std::vector<long long>&)) &EclOutputBind::writeArray)
         .def("__write_real_array", (void (EclOutputBind::*)(const std::string&,
                                   const std::vector<float>&)) &EclOutputBind::writeArray)
         .def("__write_doub_array", (void (EclOutputBind::*)(const std::string&,

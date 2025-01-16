@@ -46,16 +46,16 @@ using namespace Opm;
 
 BOOST_AUTO_TEST_CASE(construction_and_queries)
 {
-    const SparseVector<int> sv1;
+    const SparseVector<long long> sv1;
     BOOST_CHECK(sv1.empty());
     BOOST_CHECK_EQUAL(sv1.size(), 0);
     BOOST_CHECK_EQUAL(sv1.nonzeroSize(), 0);
 
-    const int size = 100;
-    const int num_elem = 9;
-    const int elem[num_elem] = { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-    const int indices[num_elem] = { 1, 2, 3, 5, 8, 13, 21, 34, 55 };
-    const SparseVector<int> sv2(size, elem, elem + num_elem, indices, indices + num_elem);
+    const long long size = 100;
+    const long long num_elem = 9;
+    const long long elem[num_elem] = { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+    const long long indices[num_elem] = { 1, 2, 3, 5, 8, 13, 21, 34, 55 };
+    const SparseVector<long long> sv2(size, elem, elem + num_elem, indices, indices + num_elem);
     BOOST_CHECK(!sv2.empty());
     BOOST_CHECK_EQUAL(sv2.size(), size);
     BOOST_CHECK_EQUAL(sv2.element(0), 0);
@@ -67,34 +67,34 @@ BOOST_AUTO_TEST_CASE(construction_and_queries)
     BOOST_CHECK_EQUAL(sv2.element(55), 1);
     BOOST_CHECK_EQUAL(sv2.element(99), 0);
     BOOST_CHECK_EQUAL(sv2.nonzeroSize(), num_elem);
-    for (int i = 0; i < num_elem; ++i) {
+    for (long long i = 0; i < num_elem; ++i) {
 	BOOST_CHECK_EQUAL(sv2.nonzeroElement(i), elem[i]);
     }
-    const SparseVector<int> sv2_again(size, elem, elem + num_elem, indices, indices + num_elem);
+    const SparseVector<long long> sv2_again(size, elem, elem + num_elem, indices, indices + num_elem);
     BOOST_CHECK(sv2 == sv2_again);
-    SparseVector<int> sv2_append(size, elem, elem + num_elem - 1, indices, indices + num_elem - 1);
+    SparseVector<long long> sv2_append(size, elem, elem + num_elem - 1, indices, indices + num_elem - 1);
     BOOST_CHECK_EQUAL(sv2_append.nonzeroSize(), num_elem - 1);
     sv2_append.addElement(elem[num_elem - 1], indices[num_elem - 1]);
     BOOST_CHECK(sv2 == sv2_append);
-    SparseVector<int> sv2_append2(size);
-    for (int i = 0; i < num_elem; ++i) {
+    SparseVector<long long> sv2_append2(size);
+    for (long long i = 0; i < num_elem; ++i) {
 	sv2_append2.addElement(elem[i], indices[i]);
     }
     BOOST_CHECK(sv2 == sv2_append2);
     sv2_append2.clear();
-    SparseVector<int> sv_empty;
+    SparseVector<long long> sv_empty;
     BOOST_CHECK(sv2_append2 == sv_empty);
 
     // Tests that only run in debug mode.
 #ifndef NDEBUG
     // One element too few.
-    BOOST_CHECK_THROW(const SparseVector<int> sv3(size, elem, elem + num_elem - 1, indices, indices + num_elem), std::exception);
+    BOOST_CHECK_THROW(const SparseVector<long long> sv3(size, elem, elem + num_elem - 1, indices, indices + num_elem), std::exception);
     // One element too many.
-    BOOST_CHECK_THROW(const SparseVector<int> sv4(size, elem, elem + num_elem, indices, indices + num_elem - 1), std::exception);
+    BOOST_CHECK_THROW(const SparseVector<long long> sv4(size, elem, elem + num_elem, indices, indices + num_elem - 1), std::exception);
     // Indices out of range.
-    BOOST_CHECK_THROW(const SparseVector<int> sv5(4, elem, elem + num_elem, indices, indices + num_elem), std::exception);
+    BOOST_CHECK_THROW(const SparseVector<long long> sv5(4, elem, elem + num_elem, indices, indices + num_elem), std::exception);
     // Indices not strictly increasing. Cheating by using the elements as indices.
-    BOOST_CHECK_THROW(const SparseVector<int> sv5(size, elem, elem + num_elem, elem, elem + num_elem), std::exception);
+    BOOST_CHECK_THROW(const SparseVector<long long> sv5(size, elem, elem + num_elem, elem, elem + num_elem), std::exception);
 
     // Do not ask for out of range indices.
     BOOST_CHECK_THROW(sv1.element(0), std::exception);

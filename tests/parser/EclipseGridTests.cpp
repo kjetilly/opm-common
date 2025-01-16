@@ -599,7 +599,7 @@ BOOST_AUTO_TEST_CASE(AllActiveExportActnum) {
     Opm::Deck deck = createOnlyTopDZCartGrid();
     Opm::EclipseGrid grid( deck );
 
-    std::vector<int> actnum = grid.getACTNUM();
+    std::vector<long long> actnum = grid.getACTNUM();
 
     BOOST_CHECK_EQUAL( 1000U , actnum.size());
 }
@@ -671,7 +671,7 @@ BOOST_AUTO_TEST_CASE(ResetACTNUM) {
     BOOST_CHECK_EQUAL( 1000U , grid.getNumActive());
     BOOST_CHECK_EQUAL( 1000U , grid.activeVolume().size());
 
-    std::vector<int> actnum(1000);
+    std::vector<long long> actnum(1000);
     actnum[0] = 1;
     actnum[2] = 1;
     actnum[4] = 1;
@@ -682,7 +682,7 @@ BOOST_AUTO_TEST_CASE(ResetACTNUM) {
     BOOST_CHECK_EQUAL( 4U , grid.getNumActive() );
     BOOST_CHECK_EQUAL( 4U , grid.activeVolume().size());
     {
-        std::vector<int> full(grid.getCartesianSize());
+        std::vector<long long> full(grid.getCartesianSize());
         std::iota(full.begin(), full.end(), 0);
 
         auto compressed = grid.compressedVector( full );
@@ -727,7 +727,7 @@ BOOST_AUTO_TEST_CASE(ResetACTNUM) {
 
     grid.resetACTNUM( actnum );
 
-    std::vector<int> actMap = grid.getActiveMap();
+    std::vector<long long> actMap = grid.getActiveMap();
 
     BOOST_CHECK_EQUAL(actMap.size(), 993U);
     BOOST_CHECK_THROW(grid.getGlobalIndex(993), std::out_of_range);
@@ -776,7 +776,7 @@ BOOST_AUTO_TEST_CASE(TestCP_example) {
     Opm::EclipseGrid grid( deck);
     BOOST_CHECK_EQUAL( 6U , grid.getNumActive());
 
-    std::vector<int> actnum(6, 0);
+    std::vector<long long> actnum(6, 0);
     actnum[0] = 1;
     actnum[2] = 1;
     actnum[4] = 1;
@@ -1395,7 +1395,7 @@ BOOST_AUTO_TEST_CASE(GridBoxActnum3) {
     const auto& grid = es.getInputGrid();
     BOOST_CHECK_EQUAL(grid.getNumActive(), std::size_t{23});
 
-    const auto expect = std::vector<int> {
+    const auto expect = std::vector<long long> {
         1, 1, 1, 1, 1,
         1, 1, 1, 1, 1,
         1, 1, 1, 1, 1,
@@ -1413,7 +1413,7 @@ BOOST_AUTO_TEST_CASE(GridBoxActnum4) {
     const auto& grid = es.getInputGrid();
     BOOST_CHECK_EQUAL(grid.getNumActive(), std::size_t{23});
 
-    const auto expect = std::vector<int> {
+    const auto expect = std::vector<long long> {
         1, 1, 1, 1, 1,
         1, 1, 1, 1, 1,
         1, 1, 1, 1, 1,
@@ -1431,7 +1431,7 @@ BOOST_AUTO_TEST_CASE(GridBoxActnum5) {
     const auto& grid = es.getInputGrid();
     BOOST_CHECK_EQUAL(grid.getNumActive(), std::size_t{23});
 
-    const auto expect = std::vector<int> {
+    const auto expect = std::vector<long long> {
         1, 1, 1, 1, 1,
         1, 1, 1, 1, 1,
         1, 1, 1, 1, 1,
@@ -1452,7 +1452,7 @@ BOOST_AUTO_TEST_CASE(GridActnumVia3D) {
     const auto& grid = es.getInputGrid();
     Opm::EclipseGrid grid2( grid );
 
-    std::vector<int> actnum = {1, 1, 0, 1, 1, 0, 1, 1};
+    std::vector<long long> actnum = {1, 1, 0, 1, 1, 0, 1, 1};
     Opm::EclipseGrid grid3( grid , actnum);
 
     BOOST_CHECK_NO_THROW(fp.get_int("ACTNUM"));
@@ -1496,7 +1496,7 @@ BOOST_AUTO_TEST_CASE(GridDimsDIMENS) {
 BOOST_AUTO_TEST_CASE(ProcessedCopy) {
     Opm::EclipseGrid gd(10,10,10);
     std::vector<double> zcorn;
-    std::vector<int> actnum;
+    std::vector<long long> actnum;
 
     zcorn = gd.getZCORN();
     actnum = gd.getACTNUM();
@@ -1530,9 +1530,9 @@ BOOST_AUTO_TEST_CASE(ProcessedCopy) {
 
 BOOST_AUTO_TEST_CASE(regularCartGrid) {
 
-    int nx = 3;
-    int ny = 4;
-    int nz = 5;
+    long long nx = 3;
+    long long ny = 4;
+    long long nz = 5;
 
     double dx = 25;
     double dy = 35;
@@ -1542,29 +1542,29 @@ BOOST_AUTO_TEST_CASE(regularCartGrid) {
 
     Opm::EclipseGrid grid(nx, ny, nz, dx, dy, dz);
 
-    std::array<int, 3> dims = grid.getNXYZ();
+    std::array<long long, 3> dims = grid.getNXYZ();
 
-    int nCells = dims[0]*dims[1]*dims[2];
+    long long nCells = dims[0]*dims[1]*dims[2];
 
-    for (int n=0; n<nCells; n++){
+    for (long long n=0; n<nCells; n++){
         BOOST_CHECK_CLOSE(grid.getCellVolume(n), ref_volume, 1e-12);
         BOOST_CHECK_CLOSE(grid.getCellThickness(n), 2.0, 1e-12);
     }
 
-    for (int k=0; k< dims[2]; k++){
+    for (long long k=0; k< dims[2]; k++){
         double ref_depth = k*dz + dz/2.0;
-        for (int j=0; j< dims[1]; j++){
-            for (int i=0; i< dims[0]; i++){
+        for (long long j=0; j< dims[1]; j++){
+            for (long long i=0; i< dims[0]; i++){
                 BOOST_CHECK_CLOSE(grid.getCellDepth(i,j,k), ref_depth, 1e-12);
             }
         }
     }
 
-    for (int k=0; k< dims[2]; k++){
+    for (long long k=0; k< dims[2]; k++){
         double ref_z = k*dz + dz/2.0;
-        for (int j=0; j< dims[1]; j++){
+        for (long long j=0; j< dims[1]; j++){
             double ref_y = j*dy + dy/2.0;
-            for (int i=0; i< dims[0]; i++){
+            for (long long i=0; i< dims[0]; i++){
                 double ref_x = i*dx + dx/2.0;
                 std::array<double, 3> cc = grid.getCellCenter(i, j, k);
                 BOOST_CHECK_CLOSE(cc[0], ref_x, 1e-12);
@@ -1577,9 +1577,9 @@ BOOST_AUTO_TEST_CASE(regularCartGrid) {
 
 BOOST_AUTO_TEST_CASE(ZcornMapper) {
 
-    int nx = 3;
-    int ny = 4;
-    int nz = 5;
+    long long nx = 3;
+    long long ny = 4;
+    long long nz = 5;
 
     Opm::EclipseGrid grid(nx, ny, nz);
     Opm::ZcornMapper zmp = grid.zcornMapper( );
@@ -1591,7 +1591,7 @@ BOOST_AUTO_TEST_CASE(ZcornMapper) {
 
     grid.fixupZCORN();
 
-    std::vector<int> actnum = grid.getACTNUM();
+    std::vector<long long> actnum = grid.getACTNUM();
     std::vector<double> zcorn = grid.getZCORN();
 
     zcorn[42] = zcorn[42] + 2.0;
@@ -1632,9 +1632,9 @@ BOOST_AUTO_TEST_CASE(ZcornMapper) {
 }
 
 BOOST_AUTO_TEST_CASE(MoveTest) {
-    int nx = 3;
-    int ny = 4;
-    int nz = 5;
+    long long nx = 3;
+    long long ny = 4;
+    long long nz = 5;
     Opm::EclipseGrid grid1(nx,ny,nz);
     Opm::EclipseGrid grid2( std::move( grid1 )); // grid2 should be move constructed from grid1
 
@@ -2516,18 +2516,18 @@ BOOST_AUTO_TEST_CASE(SAVE_METRIC_UNITS) {
         BOOST_CHECK(gridunits[0] == "METRES");
 
         BOOST_CHECK(file1.hasKey("NNCHEAD"));
-        const std::vector<int> nnchead = file1.get<int>("NNCHEAD");
+        const std::vector<long long> nnchead = file1.get<long long>("NNCHEAD");
 
-        BOOST_CHECK(nnchead[0] == static_cast<int>(nnc.input().size()));
+        BOOST_CHECK(nnchead[0] == static_cast<long long>(nnc.input().size()));
 
-        std::vector<int> ref_nnc1 = {6, 7, 8};
-        std::vector<int> ref_nnc2 = {26, 27, 28};
+        std::vector<long long> ref_nnc1 = {6, 7, 8};
+        std::vector<long long> ref_nnc2 = {26, 27, 28};
 
         BOOST_CHECK(file1.hasKey("NNC1"));
         BOOST_CHECK(file1.hasKey("NNC2"));
 
-        const std::vector<int> nnc1 = file1.get<int>("NNC1");
-        const std::vector<int> nnc2 = file1.get<int>("NNC2");
+        const std::vector<long long> nnc1 = file1.get<long long>("NNC1");
+        const std::vector<long long> nnc2 = file1.get<long long>("NNC2");
 
         BOOST_CHECK(nnc1.size() == nnc2.size());
 
@@ -2600,7 +2600,7 @@ BOOST_AUTO_TEST_CASE(CalcCellDims) {
     Opm::Deck deck = BAD_CP_GRID();
     Opm::EclipseGrid grid( deck );
 
-    std::array<int, 3> dims = grid.getNXYZ();
+    std::array<long long, 3> dims = grid.getNXYZ();
 
     size_t nCells = dims[0]*dims[1]*dims[2];
 
@@ -2633,9 +2633,9 @@ BOOST_AUTO_TEST_CASE(CalcCellDims) {
         BOOST_CHECK_CLOSE( grid.getCellDepth(n) , depth_ref[n], 1e-5 );
     }
 
-    for (int k = 0; k < dims[2]; k++) {
-        for (int j = 0; j < dims[1]; j++) {
-            for (int i = 0; i < dims[0]; i++) {
+    for (long long k = 0; k < dims[2]; k++) {
+        for (long long j = 0; j < dims[1]; j++) {
+            for (long long i = 0; i < dims[0]; i++) {
                 size_t globInd = i + j*dims[0] + k*dims[0]*dims[1];
                 BOOST_CHECK_CLOSE( grid.getCellThickness(i, j, k) , dz_ref[globInd], 1e-5 );
 
@@ -2692,14 +2692,14 @@ BOOST_AUTO_TEST_CASE(TESTCP_ACTNUM_UPDATE) {
     Opm::Parser parser;
     auto deck = parser.parseString( deckData) ;
 
-    std::vector<int> actInDeck = {0, 1, 1, 1, 0, 1};
-    std::vector<int> newAct = {1, 0, 0, 0, 1, 0};
+    std::vector<long long> actInDeck = {0, 1, 1, 1, 0, 1};
+    std::vector<long long> newAct = {1, 0, 0, 0, 1, 0};
 
     Opm::EclipseGrid grid1( deck);
     Opm::EclipseGrid grid2( deck, newAct.data());
 
-    std::vector<int> actGrid1 = grid1.getACTNUM();
-    std::vector<int> actGrid2 = grid2.getACTNUM();
+    std::vector<long long> actGrid1 = grid1.getACTNUM();
+    std::vector<long long> actGrid2 = grid2.getACTNUM();
 
     BOOST_CHECK( actGrid1.size() == actGrid2.size());
 
@@ -2761,8 +2761,8 @@ BOOST_AUTO_TEST_CASE(TESTCP_ACTNUM_AQUNUM) {
     const auto deck = parser.parseString( deckData) ;
     Opm::EclipseGrid grid( deck);
 
-    const std::vector<int>& grid_actnum = grid.getACTNUM();
-    const std::vector<int> desired_actnum = {1, 1, 1, 1, 0, 1};
+    const std::vector<long long>& grid_actnum = grid.getACTNUM();
+    const std::vector<long long> desired_actnum = {1, 1, 1, 1, 0, 1};
 
     BOOST_CHECK( grid_actnum.size() == desired_actnum.size() );
 
@@ -2832,7 +2832,7 @@ BOOST_AUTO_TEST_CASE(TEST_altGridConstructors) {
 
     Opm::EclipseGrid grid1( deck);
 
-    std::vector<int> actnum = grid1.getACTNUM();
+    std::vector<long long> actnum = grid1.getACTNUM();
     std::vector<double> zcorn = grid1.getZCORN();
 
     Opm::EclipseGrid grid2( grid1 , zcorn.data(), actnum);
@@ -2911,9 +2911,9 @@ BOOST_AUTO_TEST_CASE(TEST_getCellCenters) {
         { 9.410267880374e+00, 9.722198202980e+00, 4.996175000000e+00 }
     };
 
-    std::vector<int> actMap = grid1.getActiveMap();
+    std::vector<long long> actMap = grid1.getActiveMap();
 
-    int n = 0;
+    long long n = 0;
     for (auto ind : actMap) {
         std::array<double, 3> cellC = grid1.getCellCenter(ind);
         std::array<double, 3> cellD = grid1.getCellDims(ind);
@@ -2964,8 +2964,8 @@ BOOST_AUTO_TEST_CASE(TEST_constructFromEgrid) {
     Opm::EclipseGrid grid2( "SPE1CASE1.EGRID");
 
     // compare actnum
-    std::vector<int> actGrid1 = grid1.getACTNUM();
-    std::vector<int> actGrid2 = grid2.getACTNUM();
+    std::vector<long long> actGrid1 = grid1.getACTNUM();
+    std::vector<long long> actGrid2 = grid2.getACTNUM();
 
     BOOST_CHECK( actGrid1.size() == actGrid2.size() );
 
@@ -3064,8 +3064,8 @@ BOOST_AUTO_TEST_CASE(TEST_GDFILE_2) {
 
     Opm::Parser parser;
 
-    std::vector<int> ref_act_egrid = {1, 1, 1, 1, 0, 1, 0, 1};
-    std::vector<int> ref_act_deck3 = {1, 0, 1, 0, 1, 1, 1, 1};
+    std::vector<long long> ref_act_egrid = {1, 1, 1, 1, 0, 1, 0, 1};
+    std::vector<long long> ref_act_deck3 = {1, 0, 1, 0, 1, 1, 1, 1};
 
     // egrid file in si units, no conversion requied by grid constructor
     std::vector<double> refDepthGrid3a = {101.42292, 101.90941, 102.30995, 102.84644, 106.25719, 106.60616, 106.43174, 106.78071 };
@@ -3195,7 +3195,7 @@ BOOST_AUTO_TEST_CASE(TEST_GDFILE_2) {
         }
 
         // all cells are active, since ACTNUM not present
-        std::vector<int> actGrid1 = grid1.getACTNUM();
+        std::vector<long long> actGrid1 = grid1.getACTNUM();
         for (size_t n = 0; n < actGrid1.size(); n++) {
             BOOST_CHECK(actGrid1[n] == 1);
         }
@@ -3213,7 +3213,7 @@ BOOST_AUTO_TEST_CASE(TEST_GDFILE_2) {
         auto deck2 = parser.parseString(deckData2);
         Opm::EclipseGrid grid2(deck2);
 
-        std::vector<int> actGrid2 = grid2.getACTNUM();
+        std::vector<long long> actGrid2 = grid2.getACTNUM();
 
         // check that actnum is reset from gdfile
 
@@ -3242,7 +3242,7 @@ BOOST_AUTO_TEST_CASE(TEST_GDFILE_2) {
 
         // mapunits and mapaxes define in deck (only)
 
-        std::vector<int> actGrid3 = grid3a.getACTNUM();
+        std::vector<long long> actGrid3 = grid3a.getACTNUM();
 
         // check that actnum is reset from gdfile, ACTNUM input in deck
         // but before keyword GDFILE

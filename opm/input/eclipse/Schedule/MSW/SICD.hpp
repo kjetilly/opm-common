@@ -56,7 +56,7 @@ namespace Opm {
              double criticalValue,
              double widthTransitionRegion,
              double maxViscosityRatio,
-             int methodFlowScaling,
+             long long methodFlowScaling,
              const std::optional<double>& maxAbsoluteRate,
              ICDStatus status,
              double scalingFactor);
@@ -69,7 +69,7 @@ namespace Opm {
         // [
         //     "WELL1" : [<seg1, sicd1>, <seg2, sicd2> ...]
         //     ....
-        static std::map<std::string, std::vector<std::pair<int, SICD>>>
+        static std::map<std::string, std::vector<std::pair<long long, SICD>>>
         fromWSEGSICD(const DeckKeyword& wsegsicd);
 
         const std::optional<double>& maxAbsoluteRate() const;
@@ -81,11 +81,11 @@ namespace Opm {
         double criticalValue() const;
         double widthTransitionRegion() const;
         double maxViscosityRatio() const;
-        int methodFlowScaling() const;
+        long long methodFlowScaling() const;
 
         void updateScalingFactor(const double segment_length, const double completion_length);
         double scalingFactor() const;
-        int ecl_status() const;
+        long long ecl_status() const;
         bool operator==(const SICD& data) const;
 
         template<class Serializer>
@@ -112,7 +112,7 @@ namespace Opm {
         double m_critical_value { 0.0 };
         double m_width_transition_region { 0.0 };
         double m_max_viscosity_ratio { 0.0 };
-        int m_method_flow_scaling { 0 };
+        long long m_method_flow_scaling { 0 };
         std::optional<double> m_max_absolute_rate {};
         ICDStatus m_status { ICDStatus::SHUT };
 

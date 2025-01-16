@@ -229,9 +229,9 @@ namespace {
         void write(::Opm::EclIO::OutputStream::RFT& rftFile) const;
 
     private:
-        std::vector<int> i_;
-        std::vector<int> j_;
-        std::vector<int> k_;
+        std::vector<long long> i_;
+        std::vector<long long> j_;
+        std::vector<long long> k_;
 
         std::vector<Opm::EclIO::PaddedOutputString<8>> host_;
 
@@ -602,12 +602,12 @@ namespace {
                                    ConnPos                        connPos,
                                    const ::Opm::data::Connection& xcon);
 
-        void assignNextNeighbourID(const int id);
+        void assignNextNeighbourID(const long long id);
 
     private:
         PLTFlowRate flow_{};
 
-        std::vector<int> neighbour_id_{};
+        std::vector<long long> neighbour_id_{};
         std::vector<float> conn_depth_{};
         std::vector<float> conn_pressure_{};
         std::vector<float> trans_{};
@@ -709,11 +709,11 @@ namespace {
             const auto connIdx = std::distance(begin, connPos);
             std::advance(begin, connIdx - 1);
 
-            this->assignNextNeighbourID(static_cast<int>(begin->sort_value()) + 1);
+            this->assignNextNeighbourID(static_cast<long long>(begin->sort_value()) + 1);
         }
     }
 
-    void PLTRecord::assignNextNeighbourID(const int id)
+    void PLTRecord::assignNextNeighbourID(const long long id)
     {
         this->neighbour_id_.back() = id;
     }
@@ -723,32 +723,32 @@ namespace {
     class CSRIndexRelation
     {
     public:
-        using IndexRange = std::pair<std::vector<int>::const_iterator,
-                                     std::vector<int>::const_iterator>;
+        using IndexRange = std::pair<std::vector<long long>::const_iterator,
+                                     std::vector<long long>::const_iterator>;
 
         template <typename Cmp>
         void build(const std::size_t              size,
-                   const int                      minId,
-                   const std::function<int(int)>& binId,
+                   const long long                      minId,
+                   const std::function<std::common_type<long long>::type(long long)>& binId,
                    Cmp&&                          cmp);
 
-        int maxBinId() const { return this->maxId_; }
+        long long maxBinId() const { return this->maxId_; }
 
-        IndexRange bin(const int binId) const
+        IndexRange bin(const long long binId) const
         {
             this->verifyValid(binId);
 
             return { this->start(binId), this->start(binId + 1) };
         }
 
-        bool empty(const int binId) const
+        bool empty(const long long binId) const
         {
             this->verifyValid(binId);
 
             return this->start(binId) == this->start(binId + 1);
         }
 
-        std::optional<int> last(const int binId) const
+        std::optional<long long> last(const long long binId) const
         {
             this->verifyValid(binId);
 
@@ -761,24 +761,24 @@ namespace {
         }
 
     private:
-        int minId_{std::numeric_limits<int>::max()};
-        int maxId_{std::numeric_limits<int>::min()};
+        long long minId_{std::numeric_limits<long long>::max()};
+        long long maxId_{std::numeric_limits<long long>::min()};
 
-        std::vector<std::vector<int>::size_type> pos_{};
-        std::vector<int> ix_{};
+        std::vector<std::vector<long long>::size_type> pos_{};
+        std::vector<long long> ix_{};
 
-        std::vector<int>::const_iterator start(const int binId) const
+        std::vector<long long>::const_iterator start(const long long binId) const
         {
             return this->ix_.begin() + this->pos_[binId - this->minId_];
         }
 
-        bool valid(const int binId) const
+        bool valid(const long long binId) const
         {
             return (binId >= this->minId_)
                 && (binId <= this->maxId_);
         }
 
-        void verifyValid(const int binId) const
+        void verifyValid(const long long binId) const
         {
             if (this->valid(binId)) {
                 return;
@@ -793,8 +793,8 @@ namespace {
 
     template <typename Cmp>
     void CSRIndexRelation::build(const std::size_t              size,
-                                 const int                      minId,
-                                 const std::function<int(int)>& binId,
+                                 const long long                      minId,
+                                 const std::function<std::common_type<long long>::type(long long)>& binId,
                                  Cmp&&                          cmp)
     {
         if (size == std::size_t{0}) {
@@ -809,7 +809,7 @@ namespace {
         auto inconsistentId =
             std::adjacent_find(this->ix_.begin(),
                                this->ix_.end(),
-                [&binId](const int i1, const int i2)
+                [&binId](const long long i1, const long long i2)
             {
                 return binId(i1) > binId(i2);
             });
@@ -822,7 +822,7 @@ namespace {
 
         const auto binIdBounds =
             std::minmax_element(this->ix_.begin(), this->ix_.end(),
-                                [&binId](const int i1, const int i2)
+                                [&binId](const long long i1, const long long i2)
                                 { return binId(i1) < binId(i2); });
 
         if (binIdBounds.first != this->ix_.end()) {
@@ -854,7 +854,7 @@ namespace {
             : wellSegs_{ std::cref(wellSegs) }
         {}
 
-        bool operator()(const int i1, const int i2) const;
+        bool operator()(const long long i1, const long long i2) const;
 
     private:
         std::reference_wrapper<const ::Opm::WellSegments> wellSegs_;
@@ -866,7 +866,7 @@ namespace {
     // 2) i1 and i2 are on the same branch, but i1 is i2's outlet segment
     // 3) Neither are each other's outlet segments, but i1 is closer to the
     //    well head along the tubing.
-    bool OrderSegments::operator()(const int i1, const int i2) const
+    bool OrderSegments::operator()(const long long i1, const long long i2) const
     {
         const auto& s1 = this->wellSegs_.get()[i1];
         const auto& s2 = this->wellSegs_.get()[i2];
@@ -913,21 +913,21 @@ namespace {
                 , segOrderedBefore_{ wellSegs }
             {}
 
-            bool operator()(const int i1, const int i2) const;
+            bool operator()(const long long i1, const long long i2) const;
 
         private:
             std::reference_wrapper<const ::Opm::WellSegments>    wellSegs_;
             std::reference_wrapper<const ::Opm::WellConnections> wellConns_;
             OrderSegments segOrderedBefore_;
 
-            int segIdx(const int connIdx) const;
-            int segNum(const int connIdx) const;
-            int brnNum(const int segIx) const;
-            double connDistance(const int connIdx) const;
+            long long segIdx(const long long connIdx) const;
+            long long segNum(const long long connIdx) const;
+            long long brnNum(const long long segIx) const;
+            double connDistance(const long long connIdx) const;
         };
 
-        std::vector<int> segment_id_{};
-        std::vector<int> branch_id_{};
+        std::vector<long long> segment_id_{};
+        std::vector<long long> branch_id_{};
 
         std::vector<float> start_length_{};
         std::vector<float> end_length_{};
@@ -944,7 +944,7 @@ namespace {
         void initialiseSegmentConns(const ::Opm::WellSegments&    wellSegs,
                                     const ::Opm::WellConnections& wellConns);
 
-        int nextNeighbourConnection(ConnPos                       connPos,
+        long long nextNeighbourConnection(ConnPos                       connPos,
                                     const ::Opm::WellSegments&    wellSegs,
                                     const ::Opm::WellConnections& wellConns) const;
     };
@@ -1027,11 +1027,11 @@ namespace {
         const auto minSegNum = 1;
 
         this->segmentConns_.build(wellConns.size(), minSegNum,
-            [&wellConns](const int ix) { return wellConns[ix].segment(); },
+            [&wellConns](const long long ix) { return wellConns[ix].segment(); },
             OrderSegConns { wellSegs, wellConns });
     }
 
-    int PLTRecordMSW::nextNeighbourConnection(ConnPos                       connPos,
+    long long PLTRecordMSW::nextNeighbourConnection(ConnPos                       connPos,
                                               const ::Opm::WellSegments&    wellSegs,
                                               const ::Opm::WellConnections& wellConns) const
     {
@@ -1088,7 +1088,7 @@ namespace {
     // 1) i1's branch number is smaller than i2's branch number
     // 2) i1's segment is ordered before i2's segment on the same branch
     // 3) i1 is ordered before i2 on the same segment
-    bool PLTRecordMSW::OrderSegConns::operator()(const int i1, const int i2) const
+    bool PLTRecordMSW::OrderSegConns::operator()(const long long i1, const long long i2) const
     {
         const auto si1 = this->segIdx(i1);
         const auto si2 = this->segIdx(i2);
@@ -1112,22 +1112,22 @@ namespace {
         return this->connDistance(i1) < this->connDistance(i2);
     }
 
-    int PLTRecordMSW::OrderSegConns::segNum(const int connIdx) const
+    long long PLTRecordMSW::OrderSegConns::segNum(const long long connIdx) const
     {
         return this->wellConns_.get()[connIdx].segment();
     }
 
-    int PLTRecordMSW::OrderSegConns::segIdx(const int connIdx) const
+    long long PLTRecordMSW::OrderSegConns::segIdx(const long long connIdx) const
     {
         return this->wellSegs_.get().segmentNumberToIndex(this->segNum(connIdx));
     }
 
-    int PLTRecordMSW::OrderSegConns::brnNum(const int segIx) const
+    long long PLTRecordMSW::OrderSegConns::brnNum(const long long segIx) const
     {
         return this->wellSegs_.get()[segIx].branchNumber();
     }
 
-    double PLTRecordMSW::OrderSegConns::connDistance(const int connIdx) const
+    double PLTRecordMSW::OrderSegConns::connDistance(const long long connIdx) const
     {
         return this->wellConns_.get()[connIdx].perf_range()->second;
     }
@@ -1153,11 +1153,11 @@ namespace {
         PLTSegmentPhaseHoldupFraction holdup_fraction_{};
         PLTSegmentPhaseViscosity viscosity_{};
 
-        std::vector<int> neighbour_id_{};
-        std::vector<int> branch_id_{};
+        std::vector<long long> neighbour_id_{};
+        std::vector<long long> branch_id_{};
 
-        std::vector<int> branch_start_segment_{};
-        std::vector<int> branch_end_segment_{};
+        std::vector<long long> branch_start_segment_{};
+        std::vector<long long> branch_end_segment_{};
 
         std::vector<float> diameter_{};
         std::vector<float> depth_{};
@@ -1285,14 +1285,14 @@ namespace {
         const auto minBranchID = 1;
 
         branchSegments.build(wellSegs.size(), minBranchID,
-            [&wellSegs](const int ix) { return wellSegs[ix].branchNumber(); },
+            [&wellSegs](const long long ix) { return wellSegs[ix].branchNumber(); },
             OrderSegments { wellSegs });
 
         const auto maxBranchID = branchSegments.maxBinId();
         this->branch_start_segment_.assign(maxBranchID, 0);
         this->branch_end_segment_  .assign(maxBranchID, 0);
 
-        auto segNum = [&wellSegs](const int segIx) {
+        auto segNum = [&wellSegs](const long long segIx) {
             return wellSegs[segIx].segmentNumber();
         };
 
@@ -1701,7 +1701,7 @@ namespace {
             });
         }
 
-        rftFile.write("DATE", std::vector<int> {
+        rftFile.write("DATE", std::vector<long long> {
                 this->timeStamp_.day,   // 1..31
                 this->timeStamp_.month, // 1..12
                 this->timeStamp_.year,
@@ -1804,7 +1804,7 @@ namespace {
     }
 }
 
-void Opm::RftIO::write(const int                        reportStep,
+void Opm::RftIO::write(const long long                        reportStep,
                        const double                     elapsed,
                        const ::Opm::UnitSystem&         usys,
                        const ::Opm::EclipseGrid&        grid,

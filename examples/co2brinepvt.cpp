@@ -60,7 +60,7 @@ double densityBrine(const BrinePvt& brinePvt, const double p, const double T, co
 std::pair<double, double> moleFractionMutualSolubility(const double p, 
                                                        const double T, 
                                                        const double s,
-                                                       const int activityModel)
+                                                       const long long activityModel)
 {
     // Init. output
     double yH2O;
@@ -79,7 +79,7 @@ std::pair<double, double> moleFractionMutualSolubility(const double p,
 double moleFractionCO2inBrine(const double p, 
                               const double T, 
                               const double s,
-                              const int activityModel)
+                              const long long activityModel)
 {
     // Calculate mutual solubilities
     auto [xCO2, yH2O] = moleFractionMutualSolubility(p, T, s, activityModel);
@@ -90,7 +90,7 @@ double moleFractionCO2inBrine(const double p,
 double moleFractionBrineInCO2(const double p, 
                               const double T, 
                               const double s,
-                              const int activityModel)
+                              const long long activityModel)
 {
     // Calculate mutual solubilities
     auto [xCO2, yH2O] = moleFractionMutualSolubility(p, T, s, activityModel);
@@ -101,7 +101,7 @@ double moleFractionBrineInCO2(const double p,
 double molalityCO2inBrine(const double p, 
                           const double T, 
                           const double m_sal,
-                          const int activityModel)
+                          const long long activityModel)
 {
     // Mole fraction CO2 in brine
     const double MmNaCl = 58.44e-3; // molar mass of NaCl [kg/mol]
@@ -113,11 +113,11 @@ double molalityCO2inBrine(const double p,
 
 }
 
-int main(int argc, char **argv)
+long long main(long long argc, char **argv)
 {
 
     bool help = false;
-    for (int i = 1; i < argc; ++i) {
+    for (long long i = 1; i < argc; ++i) {
         std::string tmp = argv[i];
         help = help || (tmp  == "--h") || (tmp  == "--help");
     }
@@ -155,10 +155,10 @@ int main(int argc, char **argv)
     double molality = 0.0;
     double rs = 0.0;
     double rv = 0.0;
-    int activityModel = 1;
-    int thermalmixgas = 0;
-    int thermalmixliquid = 2;
-    int thermalmixsalt = 1;
+    long long activityModel = 1;
+    long long thermalmixgas = 0;
+    long long thermalmixliquid = 2;
+    long long thermalmixsalt = 1;
     if (argc > 5)
         molality = atof(argv[5]);
     if (argc > 6)

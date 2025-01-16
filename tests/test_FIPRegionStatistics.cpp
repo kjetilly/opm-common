@@ -63,7 +63,7 @@ TOPS
 2000 /
 PORO
  0.3 / -- Needed to derive #active cells => auto-generate FIPNUM
-)"), [](std::vector<int>&) {}
+)"), [](std::vector<long long>&) {}
     };
 
     BOOST_CHECK_EQUAL(fipStats.declaredMaximumRegionID(), 3);
@@ -103,7 +103,7 @@ REGIONS
 FIPNUM
 1 1 2 2 3
 3 3 4 2 1 /
-)"), [](std::vector<int>&) {}
+)"), [](std::vector<long long>&) {}
     };
 
     BOOST_CHECK_EQUAL(fipStats.declaredMaximumRegionID(), 3);
@@ -146,7 +146,7 @@ FIPABC
 FIPRE2
 1 1 1 1 1
 2 2 2 2 2 /
-)"), [](std::vector<int>&) {}
+)"), [](std::vector<long long>&) {}
     };
 
     BOOST_CHECK_EQUAL(fipStats.declaredMaximumRegionID(), 3);
@@ -193,7 +193,7 @@ TOPS
 2000 /
 PORO
  0.3 / -- Needed to derive #active cells => auto-generate FIPNUM
-)"), [](std::vector<int>& maxID)
+)"), [](std::vector<long long>& maxID)
      {
          std::fill(maxID.begin(), maxID.end(), 42);
      }
@@ -236,7 +236,7 @@ REGIONS
 FIPNUM
 1 1 2 2 3
 3 3 4 2 1 /
-)"), [](std::vector<int>& maxID)
+)"), [](std::vector<long long>& maxID)
      {
          maxID.front() = 6;
      }
@@ -282,7 +282,7 @@ FIPABC
 FIPRE2
 1 1 1 1 1
 2 2 2 2 2 /
-)"), [](std::vector<int>& maxID)
+)"), [](std::vector<long long>& maxID)
      {
          maxID[0] = 6;          // FIPABC
          // maxID[1] (FIPNUM) left untouched

@@ -62,7 +62,7 @@ public:
 
     explicit String(char c);
     
-    explicit String(int number);
+    explicit String(long long number);
     explicit String(int64_t number);
     explicit String(uint number);
     explicit String(float number);
@@ -105,28 +105,28 @@ public:
     size_t              size() const;
     void                resize(size_t size);
 
-    static String       number(float n, char format = 'g', int precision = -1);
-    static String       number(double n, char format = 'g', int precision = -1);
+    static String       number(float n, char format = 'g', long long precision = -1);
+    static String       number(double n, char format = 'g', long long precision = -1);
 
     double              toDouble(bool* ok = nullptr) const;
     double              toDouble(double defaultValue) const;
     float               toFloat(bool* ok = nullptr) const;
     float               toFloat(float defaultValue) const;
-    int                 toInt(bool* ok = nullptr) const;
-    int                 toInt(int defaultValue) const;
+    long long                 toInt(bool* ok = nullptr) const;
+    long long                 toInt(long long defaultValue) const;
     uint                toUInt(bool* ok = nullptr) const;
     uint                toUInt(uint defaultValue) const;
     int64_t             toInt64(bool* ok = nullptr) const;
     int64_t             toInt64(int64_t defaultValue) const;
 
-    String              arg(const String& a, int fieldWidth = 0, const wchar_t& fillChar = ' ') const;
-    String              arg(char a, int fieldWidth = 0, const wchar_t& fillChar = ' ') const;
+    String              arg(const String& a, long long fieldWidth = 0, const wchar_t& fillChar = ' ') const;
+    String              arg(char a, long long fieldWidth = 0, const wchar_t& fillChar = ' ') const;
 
-    String              arg(int a, int fieldWidth = 0, const wchar_t& fillChar = ' ') const;
-    String              arg(int64_t a, int fieldWidth = 0, const wchar_t& fillChar = ' ') const;
-    String              arg(uint a, int fieldWidth = 0, const wchar_t& fillChar = ' ') const;
-    String              arg(float a, int fieldWidth = 0, char format = 'g', int precision = -1, const wchar_t& fillChar = ' ') const;
-    String              arg(double a, int fieldWidth = 0, char format = 'g', int precision = -1, const wchar_t& fillChar = ' ') const;
+    String              arg(long long a, long long fieldWidth = 0, const wchar_t& fillChar = ' ') const;
+    String              arg(int64_t a, long long fieldWidth = 0, const wchar_t& fillChar = ' ') const;
+    String              arg(uint a, long long fieldWidth = 0, const wchar_t& fillChar = ' ') const;
+    String              arg(float a, long long fieldWidth = 0, char format = 'g', long long precision = -1, const wchar_t& fillChar = ' ') const;
+    String              arg(double a, long long fieldWidth = 0, char format = 'g', long long precision = -1, const wchar_t& fillChar = ' ') const;
 
     void                swap(String& other);
 

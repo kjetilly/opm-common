@@ -74,7 +74,7 @@ void Opm::RestartIO::RstUDQ::prepareValues()
 }
 
 void Opm::RestartIO::RstUDQ::
-addValue(const int entity, const int subEntity, const double value)
+addValue(const long long entity, const long long subEntity, const double value)
 {
     if (this->isScalar()) {
         throw std::logic_error {
@@ -194,7 +194,7 @@ Opm::UDQUpdate Opm::RestartIO::RstUDQ::currentUpdateStatus() const
         : UDQUpdate::OFF;
 }
 
-const std::vector<int>& Opm::RestartIO::RstUDQ::nameIndex() const
+const std::vector<long long>& Opm::RestartIO::RstUDQ::nameIndex() const
 {
     this->ensureValidNameIndex();
 
@@ -257,7 +257,7 @@ RstRecord::RstRecord(const UDAControl  c,
 {}
 
 namespace {
-    Opm::RestartIO::RstUDQActive::RstRecord::UDAKind udaKind(const int k)
+    Opm::RestartIO::RstUDQActive::RstRecord::UDAKind udaKind(const long long k)
     {
         using InKind  = Opm::RestartIO::Helpers::VectorItems::IUad::Value::UDAKind;
         using OutKind = Opm::RestartIO::RstUDQActive::RstRecord::UDAKind;
@@ -274,9 +274,9 @@ namespace {
 }
 
 Opm::RestartIO::RstUDQActive::
-RstUDQActive(const std::vector<int>& iuad_arg,
-             const std::vector<int>& iuap,
-             const std::vector<int>& igph)
+RstUDQActive(const std::vector<long long>& iuad_arg,
+             const std::vector<long long>& iuap,
+             const std::vector<long long>& igph)
     : wg_index { iuap }
 {
     using Ix = Opm::RestartIO::Helpers::VectorItems::IUad::index;
@@ -298,11 +298,11 @@ RstUDQActive(const std::vector<int>& iuad_arg,
 
     std::transform(this->wg_index.begin(), this->wg_index.end(),
                    this->wg_index.begin(),
-                   [](const int wgIdx) { return wgIdx - 1; });
+                   [](const long long wgIdx) { return wgIdx - 1; });
 
     this->ig_phase.assign(igph.size(), Phase::OIL);
     std::transform(igph.begin(), igph.end(), this->ig_phase.begin(),
-                   [](const int phase)
+                   [](const long long phase)
                    {
                        if (phase == 1) { return Phase::OIL;   }
                        if (phase == 2) { return Phase::WATER; }

@@ -56,9 +56,9 @@ SourceComponent component(const std::string& s) {
 
 using SOURCEKEY = ParserKeywords::SOURCE;
 Source::SourceCell::SourceCell(const DeckRecord& record) :
-    ijk({record.getItem<SOURCEKEY::I>().get<int>(0)-1,
-        record.getItem<SOURCEKEY::J>().get<int>(0)-1,
-        record.getItem<SOURCEKEY::K>().get<int>(0)-1}),
+    ijk({record.getItem<SOURCEKEY::I>().get<long long>(0)-1,
+        record.getItem<SOURCEKEY::J>().get<long long>(0)-1,
+        record.getItem<SOURCEKEY::K>().get<long long>(0)-1}),
     component(fromstring::component(record.getItem<SOURCEKEY::COMPONENT>().get<std::string>(0))),
     rate(record.getItem<SOURCEKEY::RATE>().getSIDouble(0)),
     hrate(std::nullopt),
@@ -97,7 +97,7 @@ bool Source::SourceCell::isSame(const Source::SourceCell& other) const {
            this->component == other.component;
 }
 
-bool Source::SourceCell::isSame(const std::pair<std::array<int, 3>, SourceComponent>& other) const {
+bool Source::SourceCell::isSame(const std::pair<std::array<long long, 3>, SourceComponent>& other) const {
     return this->ijk == other.first &&
            this->component == other.second;
 }
@@ -142,7 +142,7 @@ std::vector<Source::SourceCell>::const_iterator Source::end() const {
     return this->m_cells.end();
 }
 
-bool Source::hasSource(const std::array<int, 3>& input) const
+bool Source::hasSource(const std::array<long long, 3>& input) const
 {
     return std::any_of(m_cells.begin(), m_cells.end(),
                        [&input](const auto& source)
@@ -151,7 +151,7 @@ bool Source::hasSource(const std::array<int, 3>& input) const
                        });
 }
 
-double Source::rate(const std::pair<std::array<int, 3>, SourceComponent>& input) const
+double Source::rate(const std::pair<std::array<long long, 3>, SourceComponent>& input) const
 {
     const auto it = std::find_if(m_cells.begin(), m_cells.end(),
                                  [&input](const auto& source)
@@ -166,7 +166,7 @@ double Source::rate(const std::pair<std::array<int, 3>, SourceComponent>& input)
     return 0.0;
 }
 
-double Source::hrate(const std::pair<std::array<int, 3>, SourceComponent>& input) const
+double Source::hrate(const std::pair<std::array<long long, 3>, SourceComponent>& input) const
 {
     const auto it = std::find_if(m_cells.begin(), m_cells.end(),
                                  [&input](const auto& source)
@@ -181,7 +181,7 @@ double Source::hrate(const std::pair<std::array<int, 3>, SourceComponent>& input
     return 0.0;
 }
 
-bool Source::hasHrate(const std::pair<std::array<int, 3>, SourceComponent>& input) const
+bool Source::hasHrate(const std::pair<std::array<long long, 3>, SourceComponent>& input) const
 {
     const auto it = std::find_if(m_cells.begin(), m_cells.end(),
                                  [&input](const auto& source)
@@ -196,7 +196,7 @@ bool Source::hasHrate(const std::pair<std::array<int, 3>, SourceComponent>& inpu
     return false;
 }
 
-bool Source::hasTemperature(const std::pair<std::array<int, 3>, SourceComponent>& input) const
+bool Source::hasTemperature(const std::pair<std::array<long long, 3>, SourceComponent>& input) const
 {
     const auto it = std::find_if(m_cells.begin(), m_cells.end(),
                                  [&input](const auto& source)
@@ -211,7 +211,7 @@ bool Source::hasTemperature(const std::pair<std::array<int, 3>, SourceComponent>
     return false;
 }
 
-double Source::temperature(const std::pair<std::array<int, 3>, SourceComponent>& input) const
+double Source::temperature(const std::pair<std::array<long long, 3>, SourceComponent>& input) const
 {
     const auto it = std::find_if(m_cells.begin(), m_cells.end(),
                                  [&input](const auto& source)

@@ -39,26 +39,26 @@ namespace Opm { namespace RestartIO { namespace Helpers {
 class AggregateNetworkData
 {
 public:
-    explicit AggregateNetworkData(const std::vector<int>& inteHead);
+    explicit AggregateNetworkData(const std::vector<long long>& inteHead);
 
     void captureDeclaredNetworkData(const Opm::EclipseState&             es,
                                     const Opm::Schedule&                 sched,
                                     const Opm::UnitSystem&               units,
                                     const std::size_t                    lookup_step,
                                     const Opm::SummaryState&             sumState,
-                                    const std::vector<int>&              inteHead);
+                                    const std::vector<long long>&              inteHead);
 
-    const std::vector<int>& getINode() const
+    const std::vector<long long>& getINode() const
     {
         return this->iNode_.data();
     }
 
-    const std::vector<int>& getIBran() const
+    const std::vector<long long>& getIBran() const
     {
         return this->iBran_.data();
     }
 
-    const std::vector<int>& getINobr() const
+    const std::vector<long long>& getINobr() const
     {
         return this->iNobr_.data();
     }
@@ -83,13 +83,13 @@ public:
 
 private:
     /// Aggregate 'INODE' array (Integer) for all nodes
-    WindowedArray<int> iNode_;
+    WindowedArray<long long> iNode_;
 
     /// Aggregate 'IBRAN' array (Integer) for all branches
-    WindowedArray<int> iBran_;
+    WindowedArray<long long> iBran_;
 
     /// Aggregate 'INOBR' array (Integer) for all nodes
-    WindowedArray<int> iNobr_;
+    WindowedArray<long long> iNobr_;
 
     /// Aggregate 'RNODE' array (Real) for all nodes.
     WindowedArray<double> rNode_;
@@ -101,10 +101,10 @@ private:
     WindowedArray<EclIO::PaddedOutputString<8>> zNode_;
 
     /// Maximum number of wells in a group.
-    //int nWGMax_;
+    //long long nWGMax_;
 
     /// Maximum number of groups
-    //int nGMaxz_;
+    //long long nGMaxz_;
 };
 
 }}} // Opm::RestartIO::Helpers

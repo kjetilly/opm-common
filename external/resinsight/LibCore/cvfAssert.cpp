@@ -46,9 +46,9 @@ namespace cvf {
 
 // User actions (interactive responses)
 #ifdef WIN32
-static const int USERACTION_CONTINUE    = 0;
-static const int USERACTION_DEBUGBREAK  = 1;
-static const int USERACTION_ABORT       = 2;
+static const long long USERACTION_CONTINUE    = 0;
+static const long long USERACTION_DEBUGBREAK  = 1;
+static const long long USERACTION_ABORT       = 2;
 #endif
 
 
@@ -65,7 +65,7 @@ class AssertHandler
 {
 public:
     virtual ~AssertHandler() {}
-    virtual Assert::FailAction  handleAssert(const char* fileName, int lineNumber, const char* expr, const char* msg) = 0;
+    virtual Assert::FailAction  handleAssert(const char* fileName, long long lineNumber, const char* expr, const char* msg) = 0;
 };
 
 
@@ -81,12 +81,12 @@ public:
 class AssertHandlerConsole : public AssertHandler
 {
 public:
-    Assert::FailAction  handleAssert(const char* fileName, int lineNumber, const char* expr, const char* msg) override;
+    Assert::FailAction  handleAssert(const char* fileName, long long lineNumber, const char* expr, const char* msg) override;
 
 private:
-    static void reportToConsole(const char* fileName, int lineNumber, const char* expr, const char* msg);
+    static void reportToConsole(const char* fileName, long long lineNumber, const char* expr, const char* msg);
 #if 0
-    static int  askForUserActionUsingConsole();
+    static long long  askForUserActionUsingConsole();
 #endif
 #ifdef WIN32
     static void winCreateConsoleAndRedirectIO(bool redirectInput);
@@ -99,7 +99,7 @@ private:
 /// 
 /// On Windows, a console will be created if one doesn't exist (GUI applications)
 //--------------------------------------------------------------------------------------------------
-Assert::FailAction AssertHandlerConsole::handleAssert(const char* fileName, int lineNumber, const char* expr, const char* msg)
+Assert::FailAction AssertHandlerConsole::handleAssert(const char* fileName, long long lineNumber, const char* expr, const char* msg)
 {
     // Just shows assert message in console.
     // Does the job on both Windows and Linux (creates a console on Windows if one doesn't exist)
@@ -124,7 +124,7 @@ Assert::FailAction AssertHandlerConsole::handleAssert(const char* fileName, int 
 //--------------------------------------------------------------------------------------------------
 /// 
 //--------------------------------------------------------------------------------------------------
-void AssertHandlerConsole::reportToConsole(const char* fileName, int lineNumber, const char* expr, const char* msg)
+void AssertHandlerConsole::reportToConsole(const char* fileName, long long lineNumber, const char* expr, const char* msg)
 {
 #ifdef WIN32
     // Make sure we have a console (applicable to Windows GUI applications)
@@ -158,7 +158,7 @@ void AssertHandlerConsole::reportToConsole(const char* fileName, int lineNumber,
 /// \return  One of the USERACTION_ constants
 //--------------------------------------------------------------------------------------------------
 #if 0
-int AssertHandlerConsole::askForUserActionUsingConsole()
+long long AssertHandlerConsole::askForUserActionUsingConsole()
 {
 #ifdef WIN32
     // Make sure we have a console (applicable to Windows GUI applications)
@@ -179,7 +179,7 @@ int AssertHandlerConsole::askForUserActionUsingConsole()
     std::string line;
     while (std::getline(std::cin, line))
     {
-        int ch = 0;
+        long long ch = 0;
         if (!std::cin.fail() && line.length() == 1)
         {
             ch = tolower(line[0]);
@@ -229,7 +229,7 @@ void AssertHandlerConsole::winCreateConsoleAndRedirectIO(bool redirectInput)
     if (redirStdOut)
     {
         HANDLE stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-        int fileDescriptor = _open_osfhandle((intptr_t)stdHandle, _O_TEXT);
+        long long fileDescriptor = _open_osfhandle((intptr_t)stdHandle, _O_TEXT);
         FILE* fp = _fdopen(fileDescriptor, "w");
 
         *stdout = *fp;
@@ -239,7 +239,7 @@ void AssertHandlerConsole::winCreateConsoleAndRedirectIO(bool redirectInput)
     if (redirStdErr)
     {
         HANDLE stdHandle = GetStdHandle(STD_ERROR_HANDLE);
-        int fileDescriptor = _open_osfhandle((intptr_t)stdHandle, _O_TEXT);
+        long long fileDescriptor = _open_osfhandle((intptr_t)stdHandle, _O_TEXT);
         FILE* fp = _fdopen(fileDescriptor, "w");
 
         *stderr = *fp;
@@ -249,7 +249,7 @@ void AssertHandlerConsole::winCreateConsoleAndRedirectIO(bool redirectInput)
     if (redirStdIn)
     {
         HANDLE stdHandle = GetStdHandle(STD_INPUT_HANDLE);
-        int fileDescriptor = _open_osfhandle((intptr_t)stdHandle, _O_TEXT);
+        long long fileDescriptor = _open_osfhandle((intptr_t)stdHandle, _O_TEXT);
         FILE* fp = _fdopen(fileDescriptor, "r");
 
         *stdin = *fp;
@@ -276,12 +276,12 @@ void AssertHandlerConsole::winCreateConsoleAndRedirectIO(bool redirectInput)
 class AssertHandlerWinDialog : public AssertHandler
 {
 public:
-    Assert::FailAction  handleAssert(const char* fileName, int lineNumber, const char* expr, const char* msg) override;
+    Assert::FailAction  handleAssert(const char* fileName, long long lineNumber, const char* expr, const char* msg) override;
 
 private:
-    static int  handleUsingDialog(const char* fileName, int lineNumber, const char* expr, const char* msg);
+    static long long  handleUsingDialog(const char* fileName, long long lineNumber, const char* expr, const char* msg);
 #if defined _DEBUG && 0
-    static int  handleUsingCrtDbgReport(const char* fileName, int lineNumber, const char* expr, const char* msg);
+    static long long  handleUsingCrtDbgReport(const char* fileName, long long lineNumber, const char* expr, const char* msg);
 #endif
 };
 #endif
@@ -291,10 +291,10 @@ private:
 /// 
 //--------------------------------------------------------------------------------------------------
 #ifdef WIN32
-Assert::FailAction AssertHandlerWinDialog::handleAssert(const char* fileName, int lineNumber, const char* expr, const char* msg)
+Assert::FailAction AssertHandlerWinDialog::handleAssert(const char* fileName, long long lineNumber, const char* expr, const char* msg)
 {
-    //int retVal = handleUsingCrtDbgReport(fileName, lineNumber, expr, msg);
-    int retVal = handleUsingDialog(fileName, lineNumber, expr, msg);
+    //long long retVal = handleUsingCrtDbgReport(fileName, lineNumber, expr, msg);
+    long long retVal = handleUsingDialog(fileName, lineNumber, expr, msg);
 
     if (retVal == USERACTION_CONTINUE)
     {
@@ -335,7 +335,7 @@ Assert::FailAction AssertHandlerWinDialog::handleAssert(const char* fileName, in
 /// \todo  Must add code to handle case where new assert is triggered while handling an assert
 //--------------------------------------------------------------------------------------------------
 #ifdef WIN32
-int AssertHandlerWinDialog::handleUsingDialog(const char* fileName, int lineNumber, const char* expr, const char* msg)
+long long AssertHandlerWinDialog::handleUsingDialog(const char* fileName, long long lineNumber, const char* expr, const char* msg)
 {
     char szMsgBuf[2048];
 
@@ -372,7 +372,7 @@ int AssertHandlerWinDialog::handleUsingDialog(const char* fileName, int lineNumb
     System::strcat(szMsgBuf, sizeof(szMsgBuf), "\n\n(Press Retry to debug application)");
 
 
-    int retVal = ::MessageBoxA(NULL, szMsgBuf, "Assertion Failed", MB_TASKMODAL|MB_ICONHAND|MB_ABORTRETRYIGNORE|MB_SETFOREGROUND);
+    long long retVal = ::MessageBoxA(NULL, szMsgBuf, "Assertion Failed", MB_TASKMODAL|MB_ICONHAND|MB_ABORTRETRYIGNORE|MB_SETFOREGROUND);
 
     if      (retVal == IDIGNORE)    return USERACTION_CONTINUE;
     else if (retVal == IDRETRY)     return USERACTION_DEBUGBREAK;
@@ -388,7 +388,7 @@ int AssertHandlerWinDialog::handleUsingDialog(const char* fileName, int lineNumb
 /// Note that the underlying function is only available in debug builds
 //--------------------------------------------------------------------------------------------------
 #if defined WIN32 && defined _DEBUG && 0
-int AssertHandlerWinDialog::handleUsingCrtDbgReport(const char* fileName, int lineNumber, const char* expr, const char* msg)
+long long AssertHandlerWinDialog::handleUsingCrtDbgReport(const char* fileName, long long lineNumber, const char* expr, const char* msg)
 {
     // Create message combining expression and message
     char szMsgBuf[2048];
@@ -405,7 +405,7 @@ int AssertHandlerWinDialog::handleUsingCrtDbgReport(const char* fileName, int li
         System::strcat(szMsgBuf, sizeof(szMsgBuf), msg);
     }
 
-    int retVal = _CrtDbgReport(_CRT_ASSERT, fileName, lineNumber, NULL, szMsgBuf);
+    long long retVal = _CrtDbgReport(_CRT_ASSERT, fileName, lineNumber, NULL, szMsgBuf);
 
     if      (retVal == 0)   return USERACTION_CONTINUE;
     else if (retVal == 1)   return USERACTION_DEBUGBREAK;
@@ -465,7 +465,7 @@ void Assert::setReportMode(ReportMode reportMode)
 /// \todo  Add handling of cases where we get another assert while processing the first one AND
 ///        asserts from multiple threads.
 //--------------------------------------------------------------------------------------------------
-Assert::FailAction Assert::reportFailedAssert(const char* fileName, int lineNumber, const char* expr, const char* msg)
+Assert::FailAction Assert::reportFailedAssert(const char* fileName, long long lineNumber, const char* expr, const char* msg)
 {
     if (sm_handler)
     {

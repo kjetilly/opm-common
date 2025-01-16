@@ -94,7 +94,7 @@ private:
 
 typedef Rect<float>     Rectf;  ///< A rect with float components
 typedef Rect<double>    Rectd;  ///< A rect with double components
-typedef Rect<int>       Recti;  ///< A rect with integer components
+typedef Rect<long long>       Recti;  ///< A rect with integer components
 typedef Rect<uint>      Rectui; ///< A rect with unsigned integer components
 
 }

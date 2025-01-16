@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_SUITE(No_Self_Connections)
 BOOST_AUTO_TEST_SUITE(Untracked)
 
 namespace {
-    // Vertex = int, TrackCompressedIdx = false, PermitSelfConnections = false
+    // Vertex = long long, TrackCompressedIdx = false, PermitSelfConnections = false
     using CSRGraph = Opm::utility::CSRGraphFromCoordinates<>;
 }
 
@@ -507,8 +507,8 @@ BOOST_AUTO_TEST_SUITE_END()     // Untracked
 BOOST_AUTO_TEST_SUITE(Tracked)
 
 namespace {
-    // Vertex = int, TrackCompressedIdx = true, PermitSelfConnections = false
-    using CSRGraph = Opm::utility::CSRGraphFromCoordinates<int, true>;
+    // Vertex = long long, TrackCompressedIdx = true, PermitSelfConnections = false
+    using CSRGraph = Opm::utility::CSRGraphFromCoordinates<long long, true>;
 }
 
 BOOST_AUTO_TEST_CASE(Clear_Empty_is_Valid)
@@ -1244,7 +1244,7 @@ BOOST_AUTO_TEST_CASE(Linear_4x1x1_Symmetric_Multiple_Repeated)
             4, 5, 5, 4, 4,      // i = 2
         };
 
-        auto expect = std::vector<int>{};
+        auto expect = std::vector<long long>{};
         for (auto n = 0; n < nrep; ++n) {
             expect.insert(expect.end(), expect0.begin(), expect0.end());
         }
@@ -1369,7 +1369,7 @@ BOOST_AUTO_TEST_CASE(Linear_4x1x1_Symmetric_Multiple_Repeated_Add_3x1x1_Expand)
             6, 7, 8, 9, 10, 11,
         };
 
-        auto expect = std::vector<int>{};
+        auto expect = std::vector<long long>{};
         for (auto n = 0; n < nrep; ++n) {
             expect.insert(expect.end(), expect0.begin(), expect0.end());
         }
@@ -1458,8 +1458,8 @@ BOOST_AUTO_TEST_SUITE(Permit_Self_Connections)
 BOOST_AUTO_TEST_SUITE(Untracked)
 
 namespace {
-    // Vertex = int, TrackCompressedIdx = false, PermitSelfConnections = true
-    using CSRGraph = Opm::utility::CSRGraphFromCoordinates<int, false, true>;
+    // Vertex = long long, TrackCompressedIdx = false, PermitSelfConnections = true
+    using CSRGraph = Opm::utility::CSRGraphFromCoordinates<long long, false, true>;
 }
 
 BOOST_AUTO_TEST_CASE(Clear_Empty_is_Valid)
@@ -1944,8 +1944,8 @@ BOOST_AUTO_TEST_SUITE_END()     // Untracked
 BOOST_AUTO_TEST_SUITE(Tracked)
 
 namespace {
-    // Vertex = int, TrackCompressedIdx = true, PermitSelfConnections = true
-    using CSRGraph = Opm::utility::CSRGraphFromCoordinates<int, true, true>;
+    // Vertex = long long, TrackCompressedIdx = true, PermitSelfConnections = true
+    using CSRGraph = Opm::utility::CSRGraphFromCoordinates<long long, true, true>;
 }
 
 BOOST_AUTO_TEST_CASE(Clear_Empty_is_Valid)
@@ -2787,7 +2787,7 @@ BOOST_AUTO_TEST_CASE(Linear_4x1x1_Symmetric_Multiple_Repeated)
             0, 3, 6, 9,
         };
 
-        auto expect = std::vector<int>{};
+        auto expect = std::vector<long long>{};
         for (auto n = 0; n < nrep; ++n) {
             expect.insert(expect.end(), expect0.begin(), expect0.end());
         }
@@ -2923,7 +2923,7 @@ BOOST_AUTO_TEST_CASE(Linear_4x1x1_Symmetric_Multiple_Repeated_Add_3x1x1_Expand)
             10, 11, 13, 14, 16, 17,
         };
 
-        auto expect = std::vector<int>{};
+        auto expect = std::vector<long long>{};
         for (auto n = 0; n < nrep; ++n) {
             expect.insert(expect.end(), expect0.begin(), expect0.end());
         }

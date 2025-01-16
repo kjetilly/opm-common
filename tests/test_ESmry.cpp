@@ -137,11 +137,11 @@ void getRefSmryVect(std::vector <float> &time_ref, std::vector <float> &wgpr_pro
 
 }
 
-std::vector<float> getFrom(const std::vector<float> &ref_vect,int from){
+std::vector<float> getFrom(const std::vector<float> &ref_vect,long long from){
 
     std::vector<float> vect;
 
-    for (unsigned int i=from; i<ref_vect.size();i++){
+    for (size_t i=from; i<ref_vect.size();i++){
        vect.push_back(ref_vect[i]);
     }
 
@@ -170,37 +170,37 @@ BOOST_AUTO_TEST_CASE(TestESmry_1) {
 
     smryVect = smry1.get("WGPR:PROD");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], wgpr_prod_ref[i], 0.01);
     }
 
     smryVect = smry1.get("WBHP:PROD");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], wbhp_prod_ref[i], 0.01);
     }
 
     smryVect = smry1.get("WBHP:INJ");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], wbhp_inj_ref[i], 0.01);
     }
 
     smryVect = smry1.get("FGOR");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], fgor_ref[i], 0.01);
     }
 
     smryVect = smry1.get("BPR:1,1,1");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], bpr_111_ref[i], 0.01);
     }
 
     smryVect = smry1.get("BPR:10,10,3");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], bpr_10103_ref[i], 0.01);
     }
 
@@ -265,42 +265,42 @@ BOOST_AUTO_TEST_CASE(TestESmry_2) {
     smryVect = smry1.get("WGPR:PROD");
     std::vector<float> ref_rst60 = getFrom(wgpr_prod_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
     }
 
     smryVect = smry1.get("WBHP:PROD");
     ref_rst60 = getFrom(wbhp_prod_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
     }
 
     smryVect = smry1.get("WBHP:INJ");
     ref_rst60 = getFrom(wbhp_inj_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
     }
 
     smryVect = smry1.get("FGOR");
     ref_rst60 = getFrom(fgor_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
     }
 
     smryVect = smry1.get("BPR:1,1,1");
     ref_rst60 = getFrom(bpr_111_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
     }
 
     smryVect = smry1.get("BPR:10,10,3");
     ref_rst60 = getFrom(bpr_10103_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
     }
 
@@ -339,38 +339,38 @@ BOOST_AUTO_TEST_CASE(TestESmry_3) {
     BOOST_CHECK_EQUAL(smryVect==time_ref, true);
 
     smryVect = smry1.get("WGPR:PROD");
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], wgpr_prod_ref[i], 0.01);
     }
 
 
     smryVect = smry1.get("WBHP:PROD");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], wbhp_prod_ref[i], 0.01);
     }
 
     smryVect = smry1.get("WBHP:INJ");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], wbhp_inj_ref[i], 0.01);
     }
 
     smryVect = smry1.get("FGOR");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], fgor_ref[i], 0.01);
     }
 
     smryVect = smry1.get("BPR:1,1,1");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], bpr_111_ref[i], 0.01);
     }
 
     smryVect = smry1.get("BPR:10,10,3");
 
-    for (unsigned int i=0;i< smryVect.size();i++){
+    for (size_t i=0;i< smryVect.size();i++){
         BOOST_REQUIRE_CLOSE (smryVect[i], bpr_10103_ref[i], 0.01);
     }
 }
@@ -457,37 +457,37 @@ BOOST_AUTO_TEST_CASE(Test_all_available) {
 
     WorkArea work;
     {
-        const std::vector<int> nums (8, 0);
+        const std::vector<long long> nums (8, 0);
         Opm::EclIO::EclOutput smspec1("TMP1.SMSPEC", false);
-        smspec1.write<int>("INTEHEAD", {1,100});
+        smspec1.write<long long>("INTEHEAD", {1,100});
         std::vector<std::string> restart (9,"");
         smspec1.write("RESTART", restart);
-        smspec1.write<int>("DIMENS", {8, 13, 22, 11, 0, 0});
+        smspec1.write<long long>("DIMENS", {8, 13, 22, 11, 0, 0});
         smspec1.write("KEYWORDS", keywords);
         smspec1.write("WGNAMES", wgnames);
         smspec1.write("NUMS", nums);
         smspec1.write("UNITS", units);
-        smspec1.write<int>("STARTDAT", {1, 11, 2018, 0, 0, 0});
+        smspec1.write<long long>("STARTDAT", {1, 11, 2018, 0, 0, 0});
      };
 
     {
         Opm::EclIO::EclOutput smspec1("TMP1.UNSMRY", false);
 
-        smspec1.write<int>("SEQHDR", {1});
-        smspec1.write<int>("MINISTEP", {0});
+        smspec1.write<long long>("SEQHDR", {1});
+        smspec1.write<long long>("MINISTEP", {0});
         smspec1.write<float>("PARAMS", {1,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("SEQHDR", {2});
-        smspec1.write<int>("MINISTEP", {1});
+        smspec1.write<long long>("SEQHDR", {2});
+        smspec1.write<long long>("MINISTEP", {1});
         smspec1.write<float>("PARAMS", {2,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {2});
+        smspec1.write<long long>("MINISTEP", {2});
         smspec1.write<float>("PARAMS", {3,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {3});
+        smspec1.write<long long>("MINISTEP", {3});
         smspec1.write<float>("PARAMS", {4,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {4});
+        smspec1.write<long long>("MINISTEP", {4});
         smspec1.write<float>("PARAMS", {5,0,0,0,0,0,0,0});
      };
 
@@ -498,18 +498,18 @@ BOOST_AUTO_TEST_CASE(Test_all_available) {
     {
         Opm::EclIO::EclOutput smspec1("TMP1.UNSMRY", false);
 
-        smspec1.write<int>("SEQHDR", {1});
-        smspec1.write<int>("MINISTEP", {0});
+        smspec1.write<long long>("SEQHDR", {1});
+        smspec1.write<long long>("MINISTEP", {0});
         smspec1.write<float>("PARAMS", {1,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("SEQHDR", {1});
-        smspec1.write<int>("MINISTEP", {1});
+        smspec1.write<long long>("SEQHDR", {1});
+        smspec1.write<long long>("MINISTEP", {1});
         smspec1.write<float>("PARAMS", {2,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {3});
+        smspec1.write<long long>("MINISTEP", {3});
         smspec1.write<float>("PARAMS", {4,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {4});
+        smspec1.write<long long>("MINISTEP", {4});
         smspec1.write<float>("PARAMS", {5,0,0,0,0,0,0,0});
      };
 
@@ -529,73 +529,73 @@ BOOST_AUTO_TEST_CASE(Test_all_available_w_restart) {
     std::vector<std::string> units = { "DAYS", "YEARS", "SM3/SM3", "SM3/DAY",
         "BARSA", "BARSA", "SM3/DAY", "SM3/DAY"};
 
-    std::vector<int> nums (8, 0);
+    std::vector<long long> nums (8, 0);
 
     WorkArea work;
     {
         Opm::EclIO::EclOutput smspec1("BASE1.SMSPEC", false);
-        smspec1.write<int>("INTEHEAD", {1,100});
+        smspec1.write<long long>("INTEHEAD", {1,100});
         std::vector<std::string> restart (9,"");
         smspec1.write("RESTART", restart);
-        smspec1.write<int>("DIMENS", {8, 13, 22, 11, 0, 0});
+        smspec1.write<long long>("DIMENS", {8, 13, 22, 11, 0, 0});
         smspec1.write("KEYWORDS", keywords);
         smspec1.write("WGNAMES", wgnames);
         smspec1.write("NUMS", nums);
         smspec1.write("UNITS", units);
-        smspec1.write<int>("STARTDAT", {1, 11, 2018, 0, 0, 0});
+        smspec1.write<long long>("STARTDAT", {1, 11, 2018, 0, 0, 0});
     };
 
     {
         Opm::EclIO::EclOutput smspec1("RST2.SMSPEC", false);
-        smspec1.write<int>("INTEHEAD", {1,100});
+        smspec1.write<long long>("INTEHEAD", {1,100});
         std::vector<std::string> restart (9,"");
         restart[0]="BASE1";
 
         smspec1.write("RESTART", restart);
-        smspec1.write<int>("DIMENS", {8, 13, 22, 11, 0, 2});
+        smspec1.write<long long>("DIMENS", {8, 13, 22, 11, 0, 2});
         smspec1.write("KEYWORDS", keywords);
         smspec1.write("WGNAMES", wgnames);
         smspec1.write("NUMS", nums);
         smspec1.write("UNITS", units);
-        smspec1.write<int>("STARTDAT", {1, 11, 2018, 0, 0, 0});
+        smspec1.write<long long>("STARTDAT", {1, 11, 2018, 0, 0, 0});
     };
 
     {
         Opm::EclIO::EclOutput smspec1("BASE1.UNSMRY", false);
 
-        smspec1.write<int>("SEQHDR", {1});
-        smspec1.write<int>("MINISTEP", {0});
+        smspec1.write<long long>("SEQHDR", {1});
+        smspec1.write<long long>("MINISTEP", {0});
         smspec1.write<float>("PARAMS", {1,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("SEQHDR", {2});
-        smspec1.write<int>("MINISTEP", {1});
+        smspec1.write<long long>("SEQHDR", {2});
+        smspec1.write<long long>("MINISTEP", {1});
         smspec1.write<float>("PARAMS", {2,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {2});
+        smspec1.write<long long>("MINISTEP", {2});
         smspec1.write<float>("PARAMS", {3,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {3});
+        smspec1.write<long long>("MINISTEP", {3});
         smspec1.write<float>("PARAMS", {4,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {4});
+        smspec1.write<long long>("MINISTEP", {4});
         smspec1.write<float>("PARAMS", {5,0,0,0,0,0,0,0});
     };
 
     {
         Opm::EclIO::EclOutput smspec1("RST2.UNSMRY", false);
 
-        smspec1.write<int>("SEQHDR", {3});
-        smspec1.write<int>("MINISTEP", {0});
+        smspec1.write<long long>("SEQHDR", {3});
+        smspec1.write<long long>("MINISTEP", {0});
         smspec1.write<float>("PARAMS", {2.1,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("SEQHDR", {4});
-        smspec1.write<int>("MINISTEP", {1});
+        smspec1.write<long long>("SEQHDR", {4});
+        smspec1.write<long long>("MINISTEP", {1});
         smspec1.write<float>("PARAMS", {2.2,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {2});
+        smspec1.write<long long>("MINISTEP", {2});
         smspec1.write<float>("PARAMS", {2.3,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {3});
+        smspec1.write<long long>("MINISTEP", {3});
         smspec1.write<float>("PARAMS", {2.4,0,0,0,0,0,0,0});
     };
 
@@ -608,18 +608,18 @@ BOOST_AUTO_TEST_CASE(Test_all_available_w_restart) {
     {
         Opm::EclIO::EclOutput smspec1("BASE1.UNSMRY", false);
 
-        smspec1.write<int>("SEQHDR", {1});
-        smspec1.write<int>("MINISTEP", {0});
+        smspec1.write<long long>("SEQHDR", {1});
+        smspec1.write<long long>("MINISTEP", {0});
         smspec1.write<float>("PARAMS", {1,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("SEQHDR", {2});
-        smspec1.write<int>("MINISTEP", {1});
+        smspec1.write<long long>("SEQHDR", {2});
+        smspec1.write<long long>("MINISTEP", {1});
         smspec1.write<float>("PARAMS", {2,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {3});
+        smspec1.write<long long>("MINISTEP", {3});
         smspec1.write<float>("PARAMS", {4,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {4});
+        smspec1.write<long long>("MINISTEP", {4});
         smspec1.write<float>("PARAMS", {5,0,0,0,0,0,0,0});
     };
 
@@ -631,36 +631,36 @@ BOOST_AUTO_TEST_CASE(Test_all_available_w_restart) {
     {
         Opm::EclIO::EclOutput smspec1("BASE1.UNSMRY", false);
 
-        smspec1.write<int>("SEQHDR", {1});
-        smspec1.write<int>("MINISTEP", {0});
+        smspec1.write<long long>("SEQHDR", {1});
+        smspec1.write<long long>("MINISTEP", {0});
         smspec1.write<float>("PARAMS", {1,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("SEQHDR", {2});
-        smspec1.write<int>("MINISTEP", {1});
+        smspec1.write<long long>("SEQHDR", {2});
+        smspec1.write<long long>("MINISTEP", {1});
         smspec1.write<float>("PARAMS", {2,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {2});
+        smspec1.write<long long>("MINISTEP", {2});
         smspec1.write<float>("PARAMS", {3,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {3});
+        smspec1.write<long long>("MINISTEP", {3});
         smspec1.write<float>("PARAMS", {4,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {4});
+        smspec1.write<long long>("MINISTEP", {4});
         smspec1.write<float>("PARAMS", {5,0,0,0,0,0,0,0});
     };
 
     {
         Opm::EclIO::EclOutput smspec1("RST2.UNSMRY", false);
 
-        smspec1.write<int>("SEQHDR", {3});
-        smspec1.write<int>("MINISTEP", {0});
+        smspec1.write<long long>("SEQHDR", {3});
+        smspec1.write<long long>("MINISTEP", {0});
         smspec1.write<float>("PARAMS", {2.1,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("SEQHDR", {4});
-        smspec1.write<int>("MINISTEP", {1});
+        smspec1.write<long long>("SEQHDR", {4});
+        smspec1.write<long long>("MINISTEP", {1});
         smspec1.write<float>("PARAMS", {2.2,0,0,0,0,0,0,0});
 
-        smspec1.write<int>("MINISTEP", {3});
+        smspec1.write<long long>("MINISTEP", {3});
         smspec1.write<float>("PARAMS", {2.4,0,0,0,0,0,0,0});
     };
 

@@ -41,7 +41,7 @@ namespace Opm {
           UNIT_TYPE_INPUT  = 4
         };
 
-        enum class measure : int {
+        enum class measure : long long {
             identity,
             length,
             time,
@@ -91,7 +91,7 @@ namespace Opm {
             _count // New entries must be added *before* this
         };
 
-        explicit UnitSystem(int ecl_id);
+        explicit UnitSystem(long long ecl_id);
         explicit UnitSystem(UnitType unit = UnitType::UNIT_TYPE_METRIC);
         explicit UnitSystem(const std::string& deck_name);
 
@@ -99,7 +99,7 @@ namespace Opm {
 
         const std::string& getName() const;
         UnitType getType() const;
-        int ecl_id() const;
+        long long ecl_id() const;
 
         void addDimension(const std::string& dimension , const Dimension& dim);
         void addDimension(const std::string& dimension, double SIfactor, double SIoffset = 0.0);

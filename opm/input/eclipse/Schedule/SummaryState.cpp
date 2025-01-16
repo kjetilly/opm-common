@@ -189,7 +189,7 @@ namespace {
             variable, Opm::EclIO::SummaryNode::Category::Region
         };
 
-        node.number = static_cast<int>(region);
+        node.number = static_cast<long long>(region);
 
         if (! regSet.empty() && (regSet != "NUM") && (regSet != "FIPNUM")) {
             // Generate summary vector names of the forms

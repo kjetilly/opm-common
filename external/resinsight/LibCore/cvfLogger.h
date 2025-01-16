@@ -66,12 +66,12 @@ public:
     };
 
 public:
-    Logger(const String& loggerName, int logLevel, LogDestination* logDestination);
+    Logger(const String& loggerName, long long logLevel, LogDestination* logDestination);
     ~Logger() override;
 
     const String&   name() const;
-    int             level() const;
-    void            setLevel(int logLevel);
+    long long             level() const;
+    void            setLevel(long long logLevel);
     LogDestination* destination();
     void            setDestination(LogDestination* logDestination);
 
@@ -93,7 +93,7 @@ private:
 
 private:
     String              m_name;         // Logger name
-    int                 m_logLevel;     // Logging level, all messages with a level less than or equal to this level will be logged
+    long long                 m_logLevel;     // Logging level, all messages with a level less than or equal to this level will be logged
     ref<LogDestination> m_destination;
 
     CVF_DISABLE_COPY_AND_ASSIGN(Logger);

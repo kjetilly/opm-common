@@ -440,9 +440,9 @@ BOOST_AUTO_TEST_CASE(Initialize_Default) {
     ParserItem item2(std::string("ITEM1"), INT); item2.setDefault(88);
 
     BOOST_CHECK(!item1.hasDefault());
-    BOOST_CHECK_THROW(item1.getDefault< int >(), std::invalid_argument);
+    BOOST_CHECK_THROW(item1.getDefault< long long >(), std::invalid_argument);
     BOOST_CHECK(item2.hasDefault());
-    BOOST_CHECK_EQUAL(item2.getDefault< int >(), 88);
+    BOOST_CHECK_EQUAL(item2.getDefault< long long >(), 88);
 }
 
 
@@ -470,7 +470,7 @@ BOOST_AUTO_TEST_CASE(scan_PreMatureTerminator_defaultUsed) {
     const auto defaulted = itemInt.scan(rawRecord1, unit_system, unit_system);
 
     BOOST_CHECK(defaulted.defaultApplied(0));
-    BOOST_CHECK_EQUAL(defaulted.get< int >(0), 123);
+    BOOST_CHECK_EQUAL(defaulted.get< long long >(0), 123);
 }
 
 BOOST_AUTO_TEST_CASE(InitializeIntItem_setDescription_canReadBack) {
@@ -503,14 +503,14 @@ BOOST_AUTO_TEST_CASE(InitializeIntItem_FromJsonObject) {
     ParserItem item1( jsonConfig );
     BOOST_CHECK_EQUAL( "ITEM1" , item1.name() );
     BOOST_CHECK_EQUAL( ParserItem::item_size::ALL, item1.sizeType() );
-    BOOST_CHECK_THROW(item1.getDefault< int >(), std::invalid_argument);
+    BOOST_CHECK_THROW(item1.getDefault< long long >(), std::invalid_argument);
 }
 
 
 BOOST_AUTO_TEST_CASE(InitializeIntItem_FromJsonObject_withDefault) {
     Json::JsonObject jsonConfig("{\"name\": \"ITEM1\" , \"size_type\" : \"SINGLE\", \"default\" : 100, \"value_type\": \"INT\" }");
     ParserItem item1( jsonConfig );
-    BOOST_CHECK_EQUAL( 100 , item1.getDefault< int >() );
+    BOOST_CHECK_EQUAL( 100 , item1.getDefault< long long >() );
 }
 
 
@@ -680,9 +680,9 @@ BOOST_AUTO_TEST_CASE(Scan_All_CorrectIntSetInDeckItem) {
     UnitSystem unit_system;
     const auto deckIntItem = itemInt.scan(rawRecord, unit_system, unit_system);
     BOOST_CHECK_EQUAL(23U, deckIntItem.data_size());
-    BOOST_CHECK_EQUAL(77,  deckIntItem.get< int >(3));
-    BOOST_CHECK_EQUAL(1,   deckIntItem.get< int >(21));
-    BOOST_CHECK_EQUAL(25,  deckIntItem.get< int >(22));
+    BOOST_CHECK_EQUAL(77,  deckIntItem.get< long long >(3));
+    BOOST_CHECK_EQUAL(1,   deckIntItem.get< long long >(21));
+    BOOST_CHECK_EQUAL(25,  deckIntItem.get< long long >(22));
 }
 
 BOOST_AUTO_TEST_CASE(Scan_All_WithDefaults) {
@@ -698,8 +698,8 @@ BOOST_AUTO_TEST_CASE(Scan_All_WithDefaults) {
     BOOST_CHECK( deckIntItem.defaultApplied(1));
     BOOST_CHECK(!deckIntItem.defaultApplied(11));
     BOOST_CHECK(!deckIntItem.defaultApplied(21));
-    BOOST_CHECK_EQUAL(1,  deckIntItem.get< int >(20));
-    BOOST_CHECK_EQUAL(25, deckIntItem.get< int >(21));
+    BOOST_CHECK_EQUAL(1,  deckIntItem.get< long long >(20));
+    BOOST_CHECK_EQUAL(25, deckIntItem.get< long long >(21));
 }
 
 BOOST_AUTO_TEST_CASE(Scan_SINGLE_CorrectIntSetInDeckItem) {
@@ -708,7 +708,7 @@ BOOST_AUTO_TEST_CASE(Scan_SINGLE_CorrectIntSetInDeckItem) {
     RawRecord rawRecord("100 44.3 'Heisann'", KeywordLocation("KW", "File", 100) );
     UnitSystem unit_system;
     const auto deckIntItem = itemInt.scan(rawRecord, unit_system, unit_system);
-    BOOST_CHECK_EQUAL(100, deckIntItem.get< int >(0));
+    BOOST_CHECK_EQUAL(100, deckIntItem.get< long long >(0));
 }
 
 BOOST_AUTO_TEST_CASE(Scan_SeveralInts_CorrectIntsSetInDeckItem) {
@@ -719,13 +719,13 @@ BOOST_AUTO_TEST_CASE(Scan_SeveralInts_CorrectIntsSetInDeckItem) {
     RawRecord rawRecord( "100 443 338932 222.33 'Heisann' " , KeywordLocation("KW", "File", 100));
     UnitSystem unit_system;
     const auto deckIntItem1 = itemInt1.scan(rawRecord, unit_system, unit_system);
-    BOOST_CHECK_EQUAL(100, deckIntItem1.get< int >(0));
+    BOOST_CHECK_EQUAL(100, deckIntItem1.get< long long >(0));
 
     const auto deckIntItem2 = itemInt2.scan(rawRecord, unit_system, unit_system);
-    BOOST_CHECK_EQUAL(443, deckIntItem2.get< int >(0));
+    BOOST_CHECK_EQUAL(443, deckIntItem2.get< long long >(0));
 
     const auto deckIntItem3 = itemInt3.scan(rawRecord, unit_system, unit_system);
-    BOOST_CHECK_EQUAL(338932, deckIntItem3.get< int >(0));
+    BOOST_CHECK_EQUAL(338932, deckIntItem3.get< long long >(0));
 }
 
 
@@ -739,9 +739,9 @@ BOOST_AUTO_TEST_CASE(Scan_Multiplier_CorrectIntsSetInDeckItem) {
     UnitSystem unit_system;
     itemInt.setSizeType(ParserItem::item_size::ALL);
     const auto deckIntItem = itemInt.scan(rawRecord, unit_system, unit_system);
-    BOOST_CHECK_EQUAL(4, deckIntItem.get< int >(0));
-    BOOST_CHECK_EQUAL(4, deckIntItem.get< int >(1));
-    BOOST_CHECK_EQUAL(4, deckIntItem.get< int >(2));
+    BOOST_CHECK_EQUAL(4, deckIntItem.get< long long >(0));
+    BOOST_CHECK_EQUAL(4, deckIntItem.get< long long >(1));
+    BOOST_CHECK_EQUAL(4, deckIntItem.get< long long >(2));
 }
 
 BOOST_AUTO_TEST_CASE(Scan_StarNoMultiplier_ExceptionThrown) {
@@ -761,8 +761,8 @@ BOOST_AUTO_TEST_CASE(Scan_MultipleItems_CorrectIntsSetInDeckItem) {
     const auto deckIntItem1 = itemInt1.scan(rawRecord, unit_system, unit_system);
     const auto deckIntItem2 = itemInt2.scan(rawRecord, unit_system, unit_system);
 
-    BOOST_CHECK_EQUAL(10, deckIntItem1.get< int >(0));
-    BOOST_CHECK_EQUAL(20, deckIntItem2.get< int >(0));
+    BOOST_CHECK_EQUAL(10, deckIntItem1.get< long long >(0));
+    BOOST_CHECK_EQUAL(20, deckIntItem2.get< long long >(0));
 }
 
 BOOST_AUTO_TEST_CASE(Scan_MultipleDefault_CorrectIntsSetInDeckItem) {
@@ -774,8 +774,8 @@ BOOST_AUTO_TEST_CASE(Scan_MultipleDefault_CorrectIntsSetInDeckItem) {
     const auto deckIntItem1 = itemInt1.scan(rawRecord, unit_system, unit_system);
     const auto deckIntItem2 = itemInt2.scan(rawRecord, unit_system, unit_system);
 
-    BOOST_CHECK_EQUAL(10, deckIntItem1.get< int >(0));
-    BOOST_CHECK_EQUAL(20, deckIntItem2.get< int >(0));
+    BOOST_CHECK_EQUAL(10, deckIntItem1.get< long long >(0));
+    BOOST_CHECK_EQUAL(20, deckIntItem2.get< long long >(0));
 }
 
 BOOST_AUTO_TEST_CASE(Scan_MultipleWithMultiplier_CorrectIntsSetInDeckItem) {
@@ -787,8 +787,8 @@ BOOST_AUTO_TEST_CASE(Scan_MultipleWithMultiplier_CorrectIntsSetInDeckItem) {
     const auto deckIntItem1 = itemInt1.scan(rawRecord, unit_system, unit_system);
     const auto deckIntItem2 = itemInt2.scan(rawRecord, unit_system, unit_system);
 
-    BOOST_CHECK_EQUAL(30, deckIntItem1.get< int >(0));
-    BOOST_CHECK_EQUAL(30, deckIntItem2.get< int >(0));
+    BOOST_CHECK_EQUAL(30, deckIntItem1.get< long long >(0));
+    BOOST_CHECK_EQUAL(30, deckIntItem2.get< long long >(0));
 }
 
 BOOST_AUTO_TEST_CASE(Scan_MalformedMultiplier_Throw) {
@@ -816,8 +816,8 @@ BOOST_AUTO_TEST_CASE(Scan_MultipleWithMultiplierDefault_CorrectIntsSetInDeckItem
     const auto deckIntItem1 = itemInt1.scan(rawRecord, unit_system, unit_system);
     const auto deckIntItem2 = itemInt2.scan(rawRecord, unit_system, unit_system);
 
-    BOOST_CHECK_EQUAL(10, deckIntItem1.get< int >(0));
-    BOOST_CHECK_EQUAL(20, deckIntItem2.get< int >(0));
+    BOOST_CHECK_EQUAL(10, deckIntItem1.get< long long >(0));
+    BOOST_CHECK_EQUAL(20, deckIntItem2.get< long long >(0));
 }
 
 BOOST_AUTO_TEST_CASE(Scan_RawRecordErrorInRawData_ExceptionThrown) {
@@ -908,13 +908,13 @@ BOOST_AUTO_TEST_CASE(scan_all_withdefaults) {
     BOOST_CHECK( !deckItem.defaultApplied(20) );
     BOOST_CHECK( !deckItem.defaultApplied(29) );
 
-    BOOST_CHECK_THROW(deckItem.get< int >(30), std::out_of_range);
+    BOOST_CHECK_THROW(deckItem.get< long long >(30), std::out_of_range);
     BOOST_CHECK_THROW(deckItem.defaultApplied(30), std::out_of_range);
 
-    BOOST_CHECK_EQUAL(1, deckItem.get< int >(0));
-    BOOST_CHECK_EQUAL(1, deckItem.get< int >(9));
-    BOOST_CHECK_EQUAL(2, deckItem.get< int >(20));
-    BOOST_CHECK_EQUAL(2, deckItem.get< int >(29));
+    BOOST_CHECK_EQUAL(1, deckItem.get< long long >(0));
+    BOOST_CHECK_EQUAL(1, deckItem.get< long long >(9));
+    BOOST_CHECK_EQUAL(2, deckItem.get< long long >(20));
+    BOOST_CHECK_EQUAL(2, deckItem.get< long long >(29));
 }
 
 BOOST_AUTO_TEST_CASE(scan_single_dataCorrect) {
@@ -935,7 +935,7 @@ BOOST_AUTO_TEST_CASE(scan_singleWithMixedRecord_dataCorrect) {
     BOOST_CHECK_EQUAL("WELL1", deckItem.get< std::string >(0));
 }
 
-/******************String and int**********************/
+/******************String and long long**********************/
 BOOST_AUTO_TEST_CASE(scan_intsAndStrings_dataCorrect) {
     RawRecord rawRecord( "'WELL1' 2 2 2*3" , KeywordLocation("KW", "File", 100));
     UnitSystem unit_system;
@@ -946,10 +946,10 @@ BOOST_AUTO_TEST_CASE(scan_intsAndStrings_dataCorrect) {
     ParserItem itemSomeInts("SOMEINTS", INT);
     itemSomeInts.setSizeType( ParserItem::item_size::ALL );
     const auto deckItemInts = itemSomeInts.scan(rawRecord, unit_system, unit_system);
-    BOOST_CHECK_EQUAL(2, deckItemInts.get< int >(0));
-    BOOST_CHECK_EQUAL(2, deckItemInts.get< int >(1));
-    BOOST_CHECK_EQUAL(3, deckItemInts.get< int >(2));
-    BOOST_CHECK_EQUAL(3, deckItemInts.get< int >(3));
+    BOOST_CHECK_EQUAL(2, deckItemInts.get< long long >(0));
+    BOOST_CHECK_EQUAL(2, deckItemInts.get< long long >(1));
+    BOOST_CHECK_EQUAL(3, deckItemInts.get< long long >(2));
+    BOOST_CHECK_EQUAL(3, deckItemInts.get< long long >(3));
 }
 
 /*****************************************************************/
@@ -1279,7 +1279,7 @@ BOOST_AUTO_TEST_CASE(Parse_RawRecordTooFewItems) {
     BOOST_CHECK_NO_THROW(parserRecord.parse(parseContext, errors, rawRecord, unit_system, unit_system, location));
     auto record = parserRecord.parse(parseContext, errors , rawRecord, unit_system, unit_system, location);
     BOOST_CHECK_NO_THROW(record.getItem(2));
-    BOOST_CHECK_THROW(record.getItem(2).get< int >(0), std::invalid_argument);
+    BOOST_CHECK_THROW(record.getItem(2).get< long long >(0), std::invalid_argument);
 }
 
 
@@ -1497,7 +1497,7 @@ BOOST_AUTO_TEST_CASE(ConstructFromJsonObject_missingName_throws) {
 }
 
 /*
-  "items": [{"name" : "I" , "size_type" : "SINGLE" , "value_type" : "int"}]
+  "items": [{"name" : "I" , "size_type" : "SINGLE" , "value_type" : "long long"}]
 */
 BOOST_AUTO_TEST_CASE(ConstructFromJsonObject_invalidItems_throws) {
     Json::JsonObject jsonObject("{\"name\": \"BPR\", \"sections\":[\"SUMMARY\"], \"size\" : 100 , \"items\" : 100}");
@@ -2255,7 +2255,7 @@ PLAT-B 15 /
     BOOST_CHECK_EQUAL(record00.getItem(0).name(), "WELL");
     BOOST_CHECK_EQUAL(record00.getItem(0).get<std::string>(0), "PROD1");
     BOOST_CHECK(record00.getItem(1).getType() == type_tag::integer);
-    BOOST_CHECK_EQUAL(record00.getItem(1).get<int>(0), 0);
+    BOOST_CHECK_EQUAL(record00.getItem(1).get<long long>(0), 0);
 
     auto record01 = kw.getRecord(1);
     BOOST_CHECK_EQUAL(record01.getItem(0).name(), "TRACER");
@@ -2269,7 +2269,7 @@ PLAT-B 15 /
     BOOST_CHECK_EQUAL(record04.getItem(0).name(), "WELL");
     BOOST_CHECK_EQUAL(record04.getItem(0).get<std::string>(0), "PROD2");
     BOOST_CHECK(record04.getItem(1).getType() == type_tag::integer);
-    BOOST_CHECK_EQUAL(record04.getItem(1).get<int>(0), 5);
+    BOOST_CHECK_EQUAL(record04.getItem(1).get<long long>(0), 5);
 
     auto record08 = kw.getRecord(10);
     BOOST_CHECK_EQUAL(record08.getItem(0).name(), "TRACER");

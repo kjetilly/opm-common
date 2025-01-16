@@ -35,7 +35,7 @@ namespace Opm {
 
     public:
         using ThresholdPressureTable = std::vector<std::pair<bool,double>>;
-        using PressureTable = std::map<std::pair<int,int>,std::pair<bool,double>>;
+        using PressureTable = std::map<std::pair<long long,long long>,std::pair<bool,double>>;
 
         ThresholdPressure(bool restart,
                           const Deck& deck,
@@ -61,7 +61,7 @@ namespace Opm {
           r2; i.e. if the deck contains a THPRES record with regions
           r1 and r2.
         */
-        bool   hasRegionBarrier(int r1 , int r2) const;
+        bool   hasRegionBarrier(long long r1 , long long r2) const;
 
         /*
           Checks if a threshold presssure has been configured between
@@ -70,7 +70,7 @@ namespace Opm {
           been configured - or if THPRES record with ra and r2 has
           defaulted pressure.
         */
-        bool   hasThresholdPressure(int r1 , int r2) const;
+        bool   hasThresholdPressure(long long r1 , long long r2) const;
 
         /*
           Will return the threshold pressure between equilibration
@@ -79,10 +79,10 @@ namespace Opm {
           INTERNAL_ERROR_UNINITIALIZED_THPRES - check with
           hasThresholdPressure(r1,r2) first to be safe.
         */
-        double getThresholdPressure(int r1 , int r2) const;
+        double getThresholdPressure(long long r1 , long long r2) const;
 
         //! \brief Returns threshold pressure for a fault.
-        double getThresholdPressureFault(int idx) const;
+        double getThresholdPressureFault(long long idx) const;
 
         size_t ftSize() const;
         size_t size() const;
@@ -109,13 +109,13 @@ namespace Opm {
         bool m_active;
         bool m_restart;
         bool m_irreversible;
-        std::pair<int,int> makeIndex(int r1 , int r2) const;
-        void addPair(int r1 , int r2 , const std::pair<bool , double>& valuePair);
-        void addBarrier(int r1 , int r2);
-        void addBarrier(int r1 , int r2 , double p);
+        std::pair<long long,long long> makeIndex(long long r1 , long long r2) const;
+        void addPair(long long r1 , long long r2 , const std::pair<bool , double>& valuePair);
+        void addBarrier(long long r1 , long long r2);
+        void addBarrier(long long r1 , long long r2 , double p);
 
         std::vector<std::pair<bool,double>> m_thresholdPressureTable;
-        std::map<std::pair<int,int> , std::pair<bool , double> > m_pressureTable;
+        std::map<std::pair<long long,long long> , std::pair<bool , double> > m_pressureTable;
         std::vector<double> m_thresholdFaultTable;
     };
 } //namespace Opm

@@ -37,11 +37,11 @@ using Opm::EclIO::ESmry;
 using Opm::EclIO::EclOutput;
 
 void makeEgridFile(const std::string& fileName, const std::vector<float>& coord,
-                   const std::vector<float>& zcorn, const std::vector<int>& gridhead,
-                   const std::vector<int>& filehead,
+                   const std::vector<float>& zcorn, const std::vector<long long>& gridhead,
+                   const std::vector<long long>& filehead,
                    const std::vector<std::string>& gridunits,
-                   const std::vector<int>& actnum, const std::vector<int>& nnc1,
-                   const std::vector<int>& nnc2)
+                   const std::vector<long long>& actnum, const std::vector<long long>& nnc1,
+                   const std::vector<long long>& nnc2)
 {
     EclOutput eclTest(fileName, false);
 
@@ -54,10 +54,10 @@ void makeEgridFile(const std::string& fileName, const std::vector<float>& coord,
         eclTest.write("ACTNUM", actnum);
     }
 
-    eclTest.write("ENDGRID",std::vector<int>());
+    eclTest.write("ENDGRID",std::vector<long long>());
 
     if (!nnc1.empty() && !nnc2.empty()) {
-        std::vector<int> nnchead(10,0);
+        std::vector<long long> nnchead(10,0);
         nnchead[0] = nnc1.size();
 
         eclTest.write("NNCHEAD", nnchead);
@@ -67,10 +67,10 @@ void makeEgridFile(const std::string& fileName, const std::vector<float>& coord,
 }
 
 
-void makeInitFile(const std::string &fileName, std::vector<std::string> floatKeys, std::vector<std::vector<float>> floatData, std::vector<std::string> intKeys, std::vector<std::vector<int>> intData){
+void makeInitFile(const std::string &fileName, std::vector<std::string> floatKeys, std::vector<std::vector<float>> floatData, std::vector<std::string> intKeys, std::vector<std::vector<long long>> intData){
 
     std::vector<double> doubhead = {0.0,1,0,365,0.10000000149012E+00,0.15000000596046E+00,0.30000000000000E+01};
-    std::vector<int> intehead = {-957688424,201702,1,-2345,-2345,-2345,-2345,-2345,2,3,2,12,6,0,1,-2345,0,10,0,10,11,0,0,0,155,122,130,3,107,112,1,-2345,25,40,58,
+    std::vector<long long> intehead = {-957688424,201702,1,-2345,-2345,-2345,-2345,-2345,2,3,2,12,6,0,1,-2345,0,10,0,10,11,0,0,0,155,122,130,3,107,112,1,-2345,25,40,58,
                 -2345,107,112,180,5,0,1,18,24,10,7,2,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2000,0,0,0,1,0,0,0,0,0,1,10,0,0,12,1,25,1,-2345,-2345,
 	              8,8,3,4,2,3,2,1,100,0,6,0,-17,1,0,1,0,1,0,2,3,2,12,1,1,1,1,2,3,2,25,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,14,11,10,17,2,1,1,1,1,11,1,1,1,
                 1,1,1,98,122,0,0,0,0,0,0,1,10,4,5,9,0,6,8,8,12,1,25,1,-1073741823,-1073741823,-1073741823,-1073741823,0,1,1,1,22,126,10,1,1,1,1,22,
@@ -102,17 +102,17 @@ void makeInitFile(const std::string &fileName, std::vector<std::string> floatKey
 
 namespace VI = Opm::RestartIO::Helpers::VectorItems;
 
-void makeUnrstFile(const std::string &fileName, std::vector<int> seqnum,
-                   const std::vector<std::tuple<int,int,int>>& dates,
+void makeUnrstFile(const std::string &fileName, std::vector<long long> seqnum,
+                   const std::vector<std::tuple<long long,long long,long long>>& dates,
                    const std::vector<double>& time,
 		               const std::vector<bool>& logihead,
                    std::vector<double>& doubhead,
                    const std::vector<std::string>& zgrp,
-                   const std::vector<int>& iwel,
+                   const std::vector<long long>& iwel,
 		               const std::vector<std::string>& solutionNames,
                    const std::vector<std::vector<std::vector<float>>>& solutions)
 {
-    std::vector<int> intehead= {-957688424,201702,1,-2345,-2345,-2345,-2345,-2345,2,3,2,12,6,0,1,-2345,0,10,0,10,11,0,0,0,155,122,130,3,107,112,1,-2345,25,40,58,
+    std::vector<long long> intehead= {-957688424,201702,1,-2345,-2345,-2345,-2345,-2345,2,3,2,12,6,0,1,-2345,0,10,0,10,11,0,0,0,155,122,130,3,107,112,1,-2345,25,40,58,
                                 -2345,107,112,180,5,0,1,18,24,10,7,2,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2000,0,0,0,1,0,0,0,0,0,1,10,0,0,12,1,25,1,-2345,-2345,8,8,3,4,2,3,2,1,100};
 
     intehead.resize(411, 0);
@@ -121,7 +121,7 @@ void makeUnrstFile(const std::string &fileName, std::vector<int> seqnum,
     EclOutput eclTest(fileName, false);
 
     for (size_t i = 0; i < seqnum.size(); i++) {
-        std::vector<int> seqnumVect;
+        std::vector<long long> seqnumVect;
         seqnumVect.push_back(seqnum[i]);
 
         eclTest.write("SEQNUM", seqnumVect);
@@ -150,7 +150,7 @@ void makeUnrstFile(const std::string &fileName, std::vector<int> seqnum,
             std::size_t nsgrpz = intehead[VI::intehead::NSGRPZ];
             std::size_t nxgrpz = intehead[VI::intehead::NXGRPZ];
 
-            std::vector<int> igrp( num_groups * nigrpz );
+            std::vector<long long> igrp( num_groups * nigrpz );
             std::vector<float> sgrp( num_groups * nsgrpz );
             std::vector<double> xgrp( num_groups * nxgrpz );
 
@@ -179,7 +179,7 @@ void makeUnrstFile(const std::string &fileName, std::vector<int> seqnum,
             std::size_t nsconz = intehead[VI::intehead::NSCONZ];
             std::size_t nxconz = intehead[VI::intehead::NXCONZ];
 
-            std::vector<int> icon( num_connections * niconz );
+            std::vector<long long> icon( num_connections * niconz );
             std::vector<float> scon( num_connections * nsconz );
             std::vector<double> xcon( num_connections * nxconz );
 
@@ -201,16 +201,16 @@ void makeUnrstFile(const std::string &fileName, std::vector<int> seqnum,
 void makeSmryFile(const std::string &fileName,
                   const std::vector<std::string>& keywords,
                   const std::vector<std::string>& wgnames,
-                  const std::vector<int>& nums,
+                  const std::vector<long long>& nums,
                   const std::vector<std::string>& units,
                   const std::vector<std::vector<float>>& params)
 {
-    std::vector<int> intehead = {1,100};
+    std::vector<long long> intehead = {1,100};
     std::vector<std::string> restart = {"","","","","","","","",""};
-    std::vector<int> dimens = {-1, 2, 3, 1, 0, -1};
-    std::vector<int> startd= {1,1,2000,0,0,0};
+    std::vector<long long> dimens = {-1, 2, 3, 1, 0, -1};
+    std::vector<long long> startd= {1,1,2000,0,0,0};
 
-    std::vector<int> seqhdr = {0,4,5,6,7,8,9};
+    std::vector<long long> seqhdr = {0,4,5,6,7,8,9};
 
     dimens[0] = params[0].size();
 
@@ -225,24 +225,24 @@ void makeSmryFile(const std::string &fileName,
     eclSmspecTest.write("UNITS", units);
     eclSmspecTest.write("STARTDAT", startd);
 
-    int strL = fileName.size();
+    long long strL = fileName.size();
     std::string unsmryFilename = fileName.substr(0,strL-6)+"UNSMRY";
 
     EclOutput eclUnsmryTest(unsmryFilename, false);
 
-    int nSteps = params.size();
+    long long nSteps = params.size();
 
-    for (int i = 0; i < nSteps; i++) {
+    for (long long i = 0; i < nSteps; i++) {
         auto search = std::find(seqhdr.begin(), seqhdr.end(), i);
 
         if (search != seqhdr.end()) {
-            eclUnsmryTest.write<int>("SEQHDR", {1});
+            eclUnsmryTest.write<long long>("SEQHDR", {1});
         }
 
-        std::vector<int> ministep;
+        std::vector<long long> ministep;
         ministep.push_back(i);
 
-        eclUnsmryTest.write<int>("MINISTEP", {1});
+        eclUnsmryTest.write<long long>("MINISTEP", {1});
         eclUnsmryTest.write("PARAMS", params[i]);
     }
 }
@@ -250,27 +250,27 @@ void makeSmryFile(const std::string &fileName,
 
 void makeRftFile(const std::string &fileName,
                  const std::vector<float>& time,
-                 const std::vector<std::tuple<int, int, int>>& date,
+                 const std::vector<std::tuple<long long, long long, long long>>& date,
                  const std::vector<std::string>& wellN,
-                 const std::vector<std::vector<int>>& conipos,
-                 const std::vector<std::vector<int>>& conjpos,
-                 const std::vector<std::vector<int>>& conkpos,
+                 const std::vector<std::vector<long long>>& conipos,
+                 const std::vector<std::vector<long long>>& conjpos,
+                 const std::vector<std::vector<long long>>& conkpos,
                  const std::vector<std::vector<float>>& depth,
                  const std::vector<std::string>& solutionNames,
                  const std::vector<std::vector<std::vector<float>>>& solutions)
 {
     std::vector<std::string> welletc = {"  DAYS", "A-1H", "", " METRES", "  BARSA", "R", "STANDARD", " SM3/DAY", " SM3/DAY", " RM3/DAY", " M/SEC", "", "   CP", " KG/SM3", " KG/DAY ", "  KG/KG"};
 
-    int nRfts = time.size();
+    long long nRfts = time.size();
 
     EclOutput eclRftTest(fileName, false);
-    for (int i = 0; i < nRfts; i++){
+    for (long long i = 0; i < nRfts; i++){
         std::vector<float> timeVect;
         timeVect.push_back(time[i]);
 
         eclRftTest.write("TIME",timeVect);
 
-        std::vector<int> dateVect;
+        std::vector<long long> dateVect;
         dateVect.push_back(std::get<2>(date[i]));
         dateVect.push_back(std::get<1>(date[i]));
         dateVect.push_back(std::get<0>(date[i]));
@@ -310,12 +310,12 @@ BOOST_AUTO_TEST_CASE(gridCompare) {
 	   2011.7404,2011.7404,2013.4855,2012.6127,2014.358,2014.358,2016.1031,2012.6127,2014.358,2017.358,2019.1031,2015.2303,2016.9757,2019.9757,2021.7209,
 	   2015.2303,2016.9757,2019.9757,2021.7209,2017.8481,2019.5934,2022.5934,2024.3386};
 
-    std::vector<int> gridhead = {1,2,3,2,0,0};
-    std::vector<int> filehead = {3,0,0,0,0,0};
+    std::vector<long long> gridhead = {1,2,3,2,0,0};
+    std::vector<long long> filehead = {3,0,0,0,0,0};
 
-    std::vector<int> nnc1;
-    std::vector<int> nnc2;
-    std::vector<int> actnum;
+    std::vector<long long> nnc1;
+    std::vector<long long> nnc2;
+    std::vector<long long> actnum;
     WorkArea work;
 
     //-------------------------------------------------------------
@@ -403,8 +403,8 @@ BOOST_AUTO_TEST_CASE(gridCompare) {
     //-------------------------------------------------------------
     // test 5: add one nnc for TMP2, should fail
 
-    std::vector<int> nnc1_5=nnc1;
-    std::vector<int> nnc2_5=nnc2;
+    std::vector<long long> nnc1_5=nnc1;
+    std::vector<long long> nnc2_5=nnc2;
 
     nnc1_5.push_back(1);
     nnc2_5.push_back(12);
@@ -420,7 +420,7 @@ BOOST_AUTO_TEST_CASE(gridCompare) {
     //-------------------------------------------------------------
     // test 6: different definition of active cells in TMP2, should fail
 
-    std::vector<int> actnum6=actnum;
+    std::vector<long long> actnum6=actnum;
     actnum6[10]=0;
 
     makeEgridFile("TMP2.EGRID",coord, zcorn, gridhead, filehead, gridunits, actnum6, nnc1, nnc2);
@@ -435,20 +435,20 @@ BOOST_AUTO_TEST_CASE(gridCompare) {
 BOOST_AUTO_TEST_CASE(results_init_1) {
     WorkArea work;
 
-    std::vector<std::vector<int>> intData1;
+    std::vector<std::vector<long long>> intData1;
     std::vector<std::vector<float>> floatData1;
 
-    std::vector<std::vector<int>> intData2;
+    std::vector<std::vector<long long>> intData2;
     std::vector<std::vector<float>> floatData2;
 
     std::vector<float> permx1(12,1000.0);
     std::vector<float> porv1(12,1000.0);
-    std::vector<int> fipnum1(12,1);
+    std::vector<long long> fipnum1(12,1);
 
     std::vector<float> permx2(12,1000.0);
     std::vector<float> porv2(12,1000.0);
     std::vector<float> poro2(12,0.25);
-    std::vector<int> fipnum2(12,1);
+    std::vector<long long> fipnum2(12,1);
 
     // -- TMP1 vectors
 
@@ -514,19 +514,19 @@ BOOST_AUTO_TEST_CASE(results_init_1) {
 
 BOOST_AUTO_TEST_CASE(results_init_2) {
 
-    std::vector<std::vector<int>> intData1;
+    std::vector<std::vector<long long>> intData1;
     std::vector<std::vector<float>> floatData1;
 
-    std::vector<std::vector<int>> intData2;
+    std::vector<std::vector<long long>> intData2;
     std::vector<std::vector<float>> floatData2;
 
     std::vector<float> permx1(12,1000.0);
     std::vector<float> porv1(12,1000.0);
-    std::vector<int> fipnum1(12,1);
+    std::vector<long long> fipnum1(12,1);
 
     std::vector<float> permx2(12,1000.0);
     std::vector<float> porv2(12,1000.0);
-    std::vector<int> fipnum2(12,1);
+    std::vector<long long> fipnum2(12,1);
 
     WorkArea work;
     // ---------------------------------------------------------------------------
@@ -610,9 +610,9 @@ BOOST_AUTO_TEST_CASE(results_init_2) {
 
 BOOST_AUTO_TEST_CASE(results_unrst_1) {
     WorkArea work;
-    using Date = std::tuple<int, int, int>;
+    using Date = std::tuple<long long, long long, long long>;
 
-    std::vector<int> seqnum1 = {0,1,4,7};
+    std::vector<long long> seqnum1 = {0,1,4,7};
     std::vector<Date> dates1 = {
         Date{2000,1, 1},
         Date{2000,1,10},
@@ -632,7 +632,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_1) {
                                             {165,165.1,165.2,165.05,165.15,165.25},{168,168.1,168.2,168.05,168.15,168.25}};
 
     std::vector<std::string> zgrp1 = {"GRP1", "GRP2"};
-    std::vector<int> iwel1 = {1,4,6,8};
+    std::vector<long long> iwel1 = {1,4,6,8};
 
     std::vector<std::string> solutionNames1;
     std::vector<std::vector<std::vector<float>>> solutions1;
@@ -643,7 +643,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_1) {
 
 // -------------------------
 
-    std::vector<int> seqnum2 = {0,1,4,7};
+    std::vector<long long> seqnum2 = {0,1,4,7};
     std::vector<Date> dates2 = {
         Date{2000,1, 1},
         Date{2000,1,10},
@@ -665,7 +665,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_1) {
 
     std::vector<std::string> zgrp2 = {"GRP1", "GRP2"};
 
-    std::vector<int> iwel2 = {1,4,6,8};
+    std::vector<long long> iwel2 = {1,4,6,8};
 
     std::vector<std::string> solutionNames2;
     std::vector<std::vector<std::vector<float>>> solutions2;
@@ -738,9 +738,9 @@ BOOST_AUTO_TEST_CASE(results_unrst_1) {
 
 BOOST_AUTO_TEST_CASE(results_unrst_2) {
     WorkArea work;
-    using Date = std::tuple<int, int, int>;
+    using Date = std::tuple<long long, long long, long long>;
 
-    std::vector<int> seqnum1 = {0,1,4,7};
+    std::vector<long long> seqnum1 = {0,1,4,7};
     std::vector<Date> dates1 = {
         Date{2000,1, 1},
         Date{2000,1,10},
@@ -761,7 +761,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_2) {
                                             {165,165.1,165.2,165.05,165.15,165.25},{168,168.1,168.2,168.05,168.15,168.25}};
 
     std::vector<std::string> zgrp1 = {"GRP1", "GRP2"};
-    std::vector<int> iwel1 = {1,4,6,8};
+    std::vector<long long> iwel1 = {1,4,6,8};
 
     std::vector<std::string> solutionNames1;
     std::vector<std::vector<std::vector<float>>> solutions1;
@@ -774,7 +774,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_2) {
 
 // reportStepNumber #4 missing in second case
 
-    std::vector<int> seqnum2 = {0,1,7};
+    std::vector<long long> seqnum2 = {0,1,7};
     std::vector<Date> dates2 = {
         Date{2000,1, 1},
         Date{2000,1,10},
@@ -795,7 +795,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_2) {
 
     std::vector<std::string> zgrp2 = {"GRP1", "GRP2"};
 
-    std::vector<int> iwel2 = {1,4,6,8};
+    std::vector<long long> iwel2 = {1,4,6,8};
 
     std::vector<std::string> solutionNames2;
     std::vector<std::vector<std::vector<float>>> solutions2;
@@ -829,9 +829,9 @@ BOOST_AUTO_TEST_CASE(results_unrst_2) {
 
 BOOST_AUTO_TEST_CASE(results_unrst_3) {
     WorkArea work;
-    using Date = std::tuple<int, int, int>;
+    using Date = std::tuple<long long, long long, long long>;
 
-    std::vector<int> seqnum1 = {0,1,4,7};
+    std::vector<long long> seqnum1 = {0,1,4,7};
     std::vector<Date> dates1 = {
         Date{2000,1, 1},
         Date{2000,1,10},
@@ -851,7 +851,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_3) {
                                             {165,165.1,165.2,165.05,165.15,165.25},{168,168.1,168.2,168.05,168.15,168.25}};
 
     std::vector<std::string> zgrp1 = {"GRP1", "GRP2"};
-    std::vector<int> iwel1 = {1,4,6,8};
+    std::vector<long long> iwel1 = {1,4,6,8};
 
     std::vector<std::string> solutionNames1;
     std::vector<std::vector<std::vector<float>>> solutions1;
@@ -862,7 +862,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_3) {
 
 // -------------------------
 
-    std::vector<int> seqnum2 = {0,1,4,7};
+    std::vector<long long> seqnum2 = {0,1,4,7};
     std::vector<Date> dates2 = {
         Date{2000,1, 1},
         Date{2000,1,10},
@@ -883,7 +883,7 @@ BOOST_AUTO_TEST_CASE(results_unrst_3) {
 
     std::vector<std::string> zgrp2 = {"GRP1", "GRP2"};
 
-    std::vector<int> iwel2 = {1,4,6,8};
+    std::vector<long long> iwel2 = {1,4,6,8};
 
     std::vector<std::string> solutionNames2;
     std::vector<std::vector<std::vector<float>>> solutions2;
@@ -939,7 +939,7 @@ BOOST_AUTO_TEST_CASE(results_unsmry_1) {
     WorkArea work;
     std::vector<std::string> keywords1 = {"TIME", "YEARS", "FOPR", "FOPT", "WOPR", "WOPR", "WBHP", "WBHP", "ROIP"};
     std::vector<std::string> wgnames1 = {":+:+:+:+", ":+:+:+:+", "FIELD", "FIELD", "A-1H", "A-2H", "A-1H", "A-2H", ":+:+:+:+"};
-    std::vector<int> nums1 = {-32767, -32767, 0, 0, 1, 2, 1, 2, 1};
+    std::vector<long long> nums1 = {-32767, -32767, 0, 0, 1, 2, 1, 2, 1};
     std::vector<std::string> units1={"DAYS", "YEARS", "SM3/DAY", "SM3", "SM3/DAY", "SM3/DAY", "BARSA", "BARSA", "SM3"};
 
     std::vector<std::vector<float>> params1 = {{0,0,0,0,0,0,208.7515,0,56288.06},
@@ -955,7 +955,7 @@ BOOST_AUTO_TEST_CASE(results_unsmry_1) {
 
     std::vector<std::string> keywords2 = {"TIME", "YEARS", "FOPR", "FOPT", "WOPR", "WOPR", "WBHP", "WBHP", "ROIP"};
     std::vector<std::string> wgnames2 = {":+:+:+:+", ":+:+:+:+", "FIELD", "FIELD", "A-1H", "A-2H", "A-1H", "A-2H", ":+:+:+:+"};
-    std::vector<int> nums2 = {-32767, -32767, 0, 0, 1, 2, 1, 2, 1};
+    std::vector<long long> nums2 = {-32767, -32767, 0, 0, 1, 2, 1, 2, 1};
     std::vector<std::string> units2={"DAYS", "YEARS", "SM3/DAY", "SM3", "SM3/DAY", "SM3/DAY", "BARSA", "BARSA", "SM3"};
 
     std::vector<std::vector<float>> params2 = {{0,0,0,0,0,0,208.7515,0,56288.06},
@@ -1034,7 +1034,7 @@ BOOST_AUTO_TEST_CASE(results_unsmry_2) {
     WorkArea work;
     std::vector<std::string> keywords1 = {"TIME", "YEARS", "FOPR", "FOPT", "WOPR", "WOPR", "WBHP", "WBHP", "ROIP"};
     std::vector<std::string> wgnames1 = {":+:+:+:+", ":+:+:+:+", "FIELD", "FIELD", "A-1H", "A-2H", "A-1H", "A-2H", ":+:+:+:+"};
-    std::vector<int> nums1 = {-32767, -32767, 0, 0, 1, 2, 1, 2, 1};
+    std::vector<long long> nums1 = {-32767, -32767, 0, 0, 1, 2, 1, 2, 1};
     std::vector<std::string> units1={"DAYS", "YEARS", "SM3/DAY", "SM3", "SM3/DAY", "SM3/DAY", "BARSA", "BARSA", "SM3"};
 
     std::vector<std::vector<float>> params1 = {{0,0,0,0,0,0,208.7515,0,56288.06},
@@ -1050,7 +1050,7 @@ BOOST_AUTO_TEST_CASE(results_unsmry_2) {
 
     std::vector<std::string> keywords2 = {"TIME", "YEARS", "FOPR", "FOPT", "WOPR", "WOPR", "WBHP", "WBHP", "ROIP"};
     std::vector<std::string> wgnames2 = {":+:+:+:+", ":+:+:+:+", "FIELD", "FIELD", "A-1H", "A-2H", "A-1H", "A-2H", ":+:+:+:+"};
-    std::vector<int> nums2 = {-32767, -32767, 0, 0, 1, 2, 1, 2, 1};
+    std::vector<long long> nums2 = {-32767, -32767, 0, 0, 1, 2, 1, 2, 1};
     std::vector<std::string> units2={"DAYS", "YEARS", "SM3/DAY", "SM3", "SM3/DAY", "SM3/DAY", "BARSA", "BARSA", "SM3"};
 
     std::vector<std::vector<float>> params2 = {{0,0,0,0,0,0,208.7515,0,56288.06},
@@ -1110,7 +1110,7 @@ BOOST_AUTO_TEST_CASE(results_unsmry_3) {
 
 BOOST_AUTO_TEST_CASE(results_rft_1) {
     WorkArea work;
-    using Date = std::tuple<int, int, int>;
+    using Date = std::tuple<long long, long long, long long>;
 
     std::vector<float> time1 = {0.0, 40.0, 50.0};
     std::vector<Date> date1 = {
@@ -1120,9 +1120,9 @@ BOOST_AUTO_TEST_CASE(results_rft_1) {
     };
     std::vector<std::string> wellN1 = {"A-1H", "A-1H", "A-2H"};
 
-    std::vector<std::vector<int>> conipos1 = {{1,1},{1,1},{2,2}};
-    std::vector<std::vector<int>> conjpos1 = {{1,1},{1,1},{3,3}};
-    std::vector<std::vector<int>> conkpos1 = {{1,2},{1,2},{1,2}};
+    std::vector<std::vector<long long>> conipos1 = {{1,1},{1,1},{2,2}};
+    std::vector<std::vector<long long>> conjpos1 = {{1,1},{1,1},{3,3}};
+    std::vector<std::vector<long long>> conkpos1 = {{1,2},{1,2},{1,2}};
 
     std::vector<std::vector<float>> depth1 = {{2004.68,2009.67},{2004.68,2009.67},{2014.66, 2019.66}};
 
@@ -1147,9 +1147,9 @@ BOOST_AUTO_TEST_CASE(results_rft_1) {
     };
     std::vector<std::string> wellN2 = {"A-1H", "A-1H", "A-2H"};
 
-    std::vector<std::vector<int>> conipos2 = {{1,1},{1,1},{2,2}};
-    std::vector<std::vector<int>> conjpos2 = {{1,1},{1,1},{3,3}};
-    std::vector<std::vector<int>> conkpos2 = {{1,2},{1,2},{1,2}};
+    std::vector<std::vector<long long>> conipos2 = {{1,1},{1,1},{2,2}};
+    std::vector<std::vector<long long>> conjpos2 = {{1,1},{1,1},{3,3}};
+    std::vector<std::vector<long long>> conkpos2 = {{1,2},{1,2},{1,2}};
 
     std::vector<std::vector<float>> depth2 = {{2004.68,2009.67},{2004.68,2009.67},{2014.66, 2019.66}};
 
@@ -1172,9 +1172,9 @@ BOOST_AUTO_TEST_CASE(results_rft_1) {
     };
     std::vector<std::string> wellN3 = {"A-1H", "A-2H"};
 
-    std::vector<std::vector<int>> conipos3 = {{1,1},{2,2}};
-    std::vector<std::vector<int>> conjpos3 = {{1,1},{3,3}};
-    std::vector<std::vector<int>> conkpos3 = {{1,2},{1,2}};
+    std::vector<std::vector<long long>> conipos3 = {{1,1},{2,2}};
+    std::vector<std::vector<long long>> conjpos3 = {{1,1},{3,3}};
+    std::vector<std::vector<long long>> conkpos3 = {{1,2},{1,2}};
 
     std::vector<std::vector<float>> depth3 = {{2004.68,2009.67},{2014.66, 2019.66}};
 
@@ -1246,7 +1246,7 @@ BOOST_AUTO_TEST_CASE(results_rft_1) {
 
 BOOST_AUTO_TEST_CASE(results_rft_2) {
     WorkArea work;
-    using Date = std::tuple<int, int, int>;
+    using Date = std::tuple<long long, long long, long long>;
 
     std::vector<float> time1 = {0.0, 40.0, 50.0};
     std::vector<Date> date1 = {
@@ -1254,9 +1254,9 @@ BOOST_AUTO_TEST_CASE(results_rft_2) {
     };
     std::vector<std::string> wellN1 = {"A-1H", "A-1H", "A-2H"};
 
-    std::vector<std::vector<int>> conipos1 = {{1,1},{1,1},{2,2}};
-    std::vector<std::vector<int>> conjpos1 = {{1,1},{1,1},{3,3}};
-    std::vector<std::vector<int>> conkpos1 = {{1,2},{1,2},{1,2}};
+    std::vector<std::vector<long long>> conipos1 = {{1,1},{1,1},{2,2}};
+    std::vector<std::vector<long long>> conjpos1 = {{1,1},{1,1},{3,3}};
+    std::vector<std::vector<long long>> conkpos1 = {{1,2},{1,2},{1,2}};
 
     std::vector<std::vector<float>> depth1 = {{2004.68,2009.67},{2004.68,2009.67},{2014.66, 2019.66}};
 
@@ -1279,9 +1279,9 @@ BOOST_AUTO_TEST_CASE(results_rft_2) {
     };
     std::vector<std::string> wellN2 = {"A-1H", "A-1H", "A-2H"};
 
-    std::vector<std::vector<int>> conipos2 = {{1,1},{1,1},{2,2}};
-    std::vector<std::vector<int>> conjpos2 = {{1,1},{1,1},{3,3}};
-    std::vector<std::vector<int>> conkpos2 = {{1,2},{1,2},{1,2}};
+    std::vector<std::vector<long long>> conipos2 = {{1,1},{1,1},{2,2}};
+    std::vector<std::vector<long long>> conjpos2 = {{1,1},{1,1},{3,3}};
+    std::vector<std::vector<long long>> conkpos2 = {{1,2},{1,2},{1,2}};
 
     std::vector<std::vector<float>> depth2 = {{2004.68,2009.67},{2004.68,2009.67},{2014.66, 2019.66}};
 

@@ -38,13 +38,13 @@ namespace Opm {
 
     std::time_t advance(const std::time_t tp, const double sec);
     std::time_t makeUTCTime(std::tm timePoint);
-    const std::unordered_map<std::string , int>& eclipseMonthIndices();
-    const std::unordered_map<int, std::string>& eclipseMonthNames();
-    int eclipseMonth(const std::string& name);
+    const std::unordered_map<std::string , long long>& eclipseMonthIndices();
+    const std::unordered_map<long long, std::string>& eclipseMonthNames();
+    long long eclipseMonth(const std::string& name);
     bool valid_month(const std::string& month_name);
 
-    std::time_t mkdatetime(int in_year, int in_month, int in_day, int hour, int minute, int second);
-    std::time_t mkdate(int in_year, int in_month, int in_day);
+    std::time_t mkdatetime(long long in_year, long long in_month, long long in_day, long long hour, long long minute, long long second);
+    std::time_t mkdate(long long in_year, long long in_month, long long in_day);
     std::time_t portable_timegm(const std::tm* t);
     std::time_t timeFromEclipse(const DeckRecord &dateRecord);
     }
@@ -53,9 +53,9 @@ namespace Opm {
     {
     public:
         struct YMD {
-            int year{0};
-            int month{0};
-            int day{0};
+            long long year{0};
+            long long month{0};
+            long long day{0};
 
             bool operator==(const YMD& data) const
             {
@@ -77,29 +77,29 @@ namespace Opm {
 
         explicit TimeStampUTC(const std::time_t tp);
         explicit TimeStampUTC(const YMD& ymd);
-        TimeStampUTC(int year, int month, int day);
+        TimeStampUTC(long long year, long long month, long long day);
         TimeStampUTC(const YMD& ymd,
-                     int hour,
-                     int minutes,
-                     int seconds,
-                     int usec);
+                     long long hour,
+                     long long minutes,
+                     long long seconds,
+                     long long usec);
 
         TimeStampUTC& operator=(const std::time_t tp);
         bool operator==(const TimeStampUTC& data) const;
 
-        TimeStampUTC& hour(const int h);
-        TimeStampUTC& minutes(const int m);
-        TimeStampUTC& seconds(const int s);
-        TimeStampUTC& microseconds(const int us);
+        TimeStampUTC& hour(const long long h);
+        TimeStampUTC& minutes(const long long m);
+        TimeStampUTC& seconds(const long long s);
+        TimeStampUTC& microseconds(const long long us);
 
         const YMD& ymd() const { return ymd_; }
-        int year()         const { return this->ymd_.year;  }
-        int month()        const { return this->ymd_.month; }
-        int day()          const { return this->ymd_.day;   }
-        int hour()         const { return this->hour_;      }
-        int minutes()      const { return this->minutes_;   }
-        int seconds()      const { return this->seconds_;   }
-        int microseconds() const { return this->usec_;      }
+        long long year()         const { return this->ymd_.year;  }
+        long long month()        const { return this->ymd_.month; }
+        long long day()          const { return this->ymd_.day;   }
+        long long hour()         const { return this->hour_;      }
+        long long minutes()      const { return this->minutes_;   }
+        long long seconds()      const { return this->seconds_;   }
+        long long microseconds() const { return this->usec_;      }
 
         template<class Serializer>
         void serializeOp(Serializer& serializer)
@@ -114,10 +114,10 @@ namespace Opm {
     private:
 
         YMD ymd_{};
-        int hour_{0};
-        int minutes_{0};
-        int seconds_{0};
-        int usec_{0};
+        long long hour_{0};
+        long long minutes_{0};
+        long long seconds_{0};
+        long long usec_{0};
     };
 
     TimeStampUTC operator+(const TimeStampUTC& lhs, std::chrono::duration<double> delta);

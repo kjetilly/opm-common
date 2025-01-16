@@ -81,7 +81,7 @@ namespace Opm {
         // [
         //     "WELL1" : [<seg1, valv1>, <seg2, valv2> ...]
         //     ....
-        static std::map<std::string, std::vector<std::pair<int, Valve>>>
+        static std::map<std::string, std::vector<std::pair<long long, Valve>>>
         fromWSEGVALV(const DeckKeyword& keyword, const double udq_default = 0.0);
 
         // parameters for constriction pressure loss
@@ -98,7 +98,7 @@ namespace Opm {
 
         // Status: OPEN or SHUT
         ICDStatus status() const;
-        int ecl_status() const;
+        long long ecl_status() const;
 
         void setConMaxCrossArea(const double area);
 

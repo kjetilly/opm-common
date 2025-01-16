@@ -25,11 +25,11 @@ namespace {
             throw std::invalid_argument("Keyword '" + kw + "'is not of type double.");
     }
 
-    py::array_t<int> get_int_array(const FieldPropsManager& m, const std::string& kw) {
+    py::array_t<long long> get_int_array(const FieldPropsManager& m, const std::string& kw) {
         if (m.has_int(kw))
             return convert::numpy_array( m.get_int(kw) );
         else
-            throw std::invalid_argument("Keyword '" + kw + "'is not of type int.");
+            throw std::invalid_argument("Keyword '" + kw + "'is not of type long long.");
     }
 
 

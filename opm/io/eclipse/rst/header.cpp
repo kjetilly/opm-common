@@ -41,7 +41,7 @@ namespace Opm::RestartIO {
 
 RstHeader::RstHeader(const Runspec&             runspec_,
                      const Opm::UnitSystem&     unit_system,
-                     const std::vector<int>&    intehead,
+                     const std::vector<long long>&    intehead,
                      const std::vector<bool>&   logihead,
                      const std::vector<double>& doubhead) :
     runspec(runspec_),
@@ -165,7 +165,7 @@ RstHeader::restart_info() const
                           std::size_t(this->report_step));
 }
 
-int RstHeader::num_udq() const
+long long RstHeader::num_udq() const
 {
     return this->nfield_udq
         +  this->ngroup_udq

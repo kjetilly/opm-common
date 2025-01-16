@@ -28,6 +28,7 @@
 
 #include <algorithm>
 #include <ostream>
+#include <cstdint>
 
 namespace Opm {
 
@@ -105,8 +106,8 @@ namespace Opm {
                   switch( parser_item.dataType() ) {
                       case type_tag::integer:
                           {
-                              DeckItem deck_item(parser_item.name(), int());
-                              add_deckvalue<int>(std::move(deck_item), deck_record, parser_item, input_record, j);
+                              DeckItem deck_item(parser_item.name(),  std::common_type<long long>::type());
+                              add_deckvalue<long long>(std::move(deck_item), deck_record, parser_item, input_record, j);
                           }
                           break;
                       case type_tag::fdouble:
@@ -145,7 +146,7 @@ namespace Opm {
                                  deck_record, parser_item, input_record, j);
                          }
                          break;
-                      default: throw std::invalid_argument("For input to DeckKeyword '" + name() + ": unsupported type. (only support for string, double and int.)");
+                      default: throw std::invalid_argument("For input to DeckKeyword '" + name() + ": unsupported type. (only support for string, double and long long.)");
                   }
              }
 
@@ -154,7 +155,7 @@ namespace Opm {
         }
     }
 
-    DeckKeyword::DeckKeyword(const ParserKeyword& parserKeyword, const std::vector<int>& data) :
+    DeckKeyword::DeckKeyword(const ParserKeyword& parserKeyword, const std::vector<long long>& data) :
         DeckKeyword(parserKeyword)
     {
         if (!parserKeyword.isDataKeyword())
@@ -165,10 +166,10 @@ namespace Opm {
 
         setDataKeyword();
         if (parser_item.dataType() != type_tag::integer)
-            throw std::invalid_argument("Input to DeckKeyword '" + name() + "': cannot be std::vector<int>.");
+            throw std::invalid_argument("Input to DeckKeyword '" + name() + "': cannot be std::vector<long long>.");
 
-        DeckItem item(parser_item.name(), int() );
-        std::for_each(data.begin(), data.end(), [&item](const int val) { item.push_back(val); });
+        DeckItem item(parser_item.name(), std::common_type<long long>::type());
+        std::for_each(data.begin(), data.end(), [&item](const long long val) { item.push_back(val); });
 
         DeckRecord deck_record;
         deck_record.addItem( std::move(item) );
@@ -283,8 +284,8 @@ namespace Opm {
     }
 
 
-    const std::vector<int>& DeckKeyword::getIntData() const {
-        return this->getDataRecord().getDataItem().getData< int >();
+    const std::vector<long long>& DeckKeyword::getIntData() const {
+        return this->getDataRecord().getDataItem().getData< long long >();
     }
 
 

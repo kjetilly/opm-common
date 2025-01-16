@@ -44,7 +44,7 @@ void FieldPropsManager::deleteMINPVV() {
     this->fp->deleteMINPVV();
 }
 
-void FieldPropsManager::reset_actnum(const std::vector<int>& actnum) {
+void FieldPropsManager::reset_actnum(const std::vector<long long>& actnum) {
     this->fp->reset_actnum(actnum);
 }
 
@@ -73,10 +73,10 @@ const std::vector<T>* FieldPropsManager::try_get(const std::string& keyword) con
     return nullptr;
 }
 
-const Fieldprops::FieldData<int>&
+const Fieldprops::FieldData<long long>&
 FieldPropsManager::get_int_field_data(const std::string& keyword) const
 {
-    const auto& data = this->fp->try_get<int>(keyword);
+    const auto& data = this->fp->try_get<long long>(keyword);
     if (!data.valid())
         throw std::out_of_range("Invalid field data requested.");
     return data.field_data();
@@ -140,7 +140,7 @@ std::vector<std::string> FieldPropsManager::fip_regions() const
     return this->fp->fip_regions();
 }
 
-std::vector<int> FieldPropsManager::actnum() const {
+std::vector<long long> FieldPropsManager::actnum() const {
     return this->fp->actnum();
 }
 
@@ -185,7 +185,7 @@ void FieldPropsManager::prune_global_for_schedule_run()
 }
 
 
-void FieldPropsManager::set_active_indices(const std::vector<int>& indices)
+void FieldPropsManager::set_active_indices(const std::vector<long long>& indices)
 {
     fp->set_active_indices(indices);
 }
@@ -285,28 +285,28 @@ void apply_tran(const Fieldprops::TranCalculator&,
                 const std::unordered_map<std::string, Fieldprops::FieldData<double>>&,
                 const std::vector<std::size_t>&, std::vector<double>&);
 
-template bool FieldPropsManager::supported<int>(const std::string&);
+template bool FieldPropsManager::supported<long long>(const std::string&);
 template bool FieldPropsManager::supported<double>(const std::string&);
 
-template bool FieldPropsManager::has<int>(const std::string&) const;
+template bool FieldPropsManager::has<long long>(const std::string&) const;
 template bool FieldPropsManager::has<double>(const std::string&) const;
 
-template std::vector<bool> FieldPropsManager::defaulted<int>(const std::string&) const;
+template std::vector<bool> FieldPropsManager::defaulted<long long>(const std::string&) const;
 template std::vector<bool> FieldPropsManager::defaulted<double>(const std::string&) const;
 
-template std::vector<std::string> FieldPropsManager::keys<int>() const;
+template std::vector<std::string> FieldPropsManager::keys<long long>() const;
 template std::vector<std::string> FieldPropsManager::keys<double>() const;
 
-template std::vector<int> FieldPropsManager::get_global(const std::string& keyword) const;
+template std::vector<long long> FieldPropsManager::get_global(const std::string& keyword) const;
 template std::vector<double> FieldPropsManager::get_global(const std::string& keyword) const;
 
-template const std::vector<int>& FieldPropsManager::get(const std::string& keyword) const;
+template const std::vector<long long>& FieldPropsManager::get(const std::string& keyword) const;
 template const std::vector<double>& FieldPropsManager::get(const std::string& keyword) const;
 
-template std::vector<int> FieldPropsManager::get_copy(const std::string& keyword, bool global) const;
+template std::vector<long long> FieldPropsManager::get_copy(const std::string& keyword, bool global) const;
 template std::vector<double> FieldPropsManager::get_copy(const std::string& keyword, bool global) const;
 
-template const std::vector<int>* FieldPropsManager::try_get(const std::string& keyword) const;
+template const std::vector<long long>* FieldPropsManager::try_get(const std::string& keyword) const;
 template const std::vector<double>* FieldPropsManager::try_get(const std::string& keyword) const;
 
 } // namespace Opm

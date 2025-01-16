@@ -67,7 +67,7 @@ namespace {
     }
 
     void expectDate(const Opm::RestartIO::InteHEAD::TimePoint& tp,
-                    const int year, const int month, const int day)
+                    const long long year, const long long month, const long long day)
     {
         BOOST_CHECK_EQUAL(tp.year  , year);
         BOOST_CHECK_EQUAL(tp.month , month);
@@ -544,7 +544,7 @@ TSTEP
 
     auto checkDate = [start, &elapsed]
         (const std::vector<double>::size_type i,
-         const std::array<int, 3>&            expectYMD) -> void
+         const std::array<long long, 3>&            expectYMD) -> void
     {
         using ::Opm::RestartIO::getSimulationTimePoint;
 

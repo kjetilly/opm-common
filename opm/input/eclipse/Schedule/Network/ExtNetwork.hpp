@@ -51,8 +51,8 @@ public:
     std::vector<const Branch*> branches() const;
     std::optional<Branch> uptree_branch(const std::string& node) const;
     std::vector<std::string> node_names() const;
-    int NoOfBranches() const;
-    int NoOfNodes() const;
+    long long NoOfBranches() const;
+    long long NoOfNodes() const;
 
     bool operator==(const ExtNetwork& other) const;
     static ExtNetwork serializationTestObject();

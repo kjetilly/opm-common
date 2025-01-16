@@ -430,7 +430,7 @@ BOOST_AUTO_TEST_CASE(RestartTest)
 
     //         // Accept lower- and mixed-case month names.
     //         std::string monthname = uppercase(monthItem.get<std::string>(0));
-    //         auto date = asTimePoint( TimeStampUTC( yearItem.get<int>(0), TimeService::eclipseMonthIndices().at(monthname), dayItem.get<int>(0)));
+    //         auto date = asTimePoint( TimeStampUTC( yearItem.get<long long>(0), TimeService::eclipseMonthIndices().at(monthname), dayItem.get<long long>(0)));
 
     //         return date == tp;
     //     }

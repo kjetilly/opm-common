@@ -39,63 +39,63 @@ class ERst : public EclFile
 public:
     explicit ERst(const std::string& filename);
 
-    bool hasReportStepNumber(int number) const;
-    bool hasArray(const std::string& name, int number) const;
-    bool hasLGR(const std::string& gridname, int reportStepNumber) const;
+    bool hasReportStepNumber(long long number) const;
+    bool hasArray(const std::string& name, long long number) const;
+    bool hasLGR(const std::string& gridname, long long reportStepNumber) const;
 
-    void loadReportStepNumber(int number);
+    void loadReportStepNumber(long long number);
 
     template <typename T>
-    const std::vector<T>& getRestartData(const std::string& name, int reportStepNumber)
+    const std::vector<T>& getRestartData(const std::string& name, long long reportStepNumber)
     {
         return getRestartData<T>(name,reportStepNumber, 0);
     }
 
     template <typename T>
-    const std::vector<T>& getRestartData(const std::string& name, int reportStepNumber, int occurrence);
+    const std::vector<T>& getRestartData(const std::string& name, long long reportStepNumber, long long occurrence);
 
     template <typename T>
-    const std::vector<T>& getRestartData(int index, int reportStepNumber)
+    const std::vector<T>& getRestartData(long long index, long long reportStepNumber)
     {
         auto indRange = this->getIndexRange(reportStepNumber);
         return  this->get<T>(index + std::get<0>(indRange));
     }
 
     template <typename T>
-    const std::vector<T>& getRestartData(const std::string& name, int reportStepNumber, const std::string& lgr_name);
+    const std::vector<T>& getRestartData(const std::string& name, long long reportStepNumber, const std::string& lgr_name);
 
     template <typename T>
-    const std::vector<T>& getRestartData(int index, int reportStepNumber, const std::string& lgr_name);
+    const std::vector<T>& getRestartData(long long index, long long reportStepNumber, const std::string& lgr_name);
 
-    int occurrence_count(const std::string& name, int reportStepNumber) const;
+    long long occurrence_count(const std::string& name, long long reportStepNumber) const;
     size_t numberOfReportSteps() const { return seqnum.size(); };
 
-    const std::vector<int>& listOfReportStepNumbers() const { return seqnum; }
+    const std::vector<long long>& listOfReportStepNumbers() const { return seqnum; }
 
-    std::vector<EclEntry> listOfRstArrays(int reportStepNumber);
-    std::vector<EclEntry> listOfRstArrays(int reportStepNumber, const std::string& lgr_name);
+    std::vector<EclEntry> listOfRstArrays(long long reportStepNumber);
+    std::vector<EclEntry> listOfRstArrays(long long reportStepNumber, const std::string& lgr_name);
 
     friend class OutputStream::Restart;
 
 private:
-    int nReports;
-    std::vector<int> seqnum;                           // report step numbers, from SEQNUM array in restart file
-    mutable std::unordered_map<int,bool> reportLoaded;
-    std::map<int, std::pair<int,int>> arrIndexRange;   // mapping report step number to array indeces (start and end)
+    long long nReports;
+    std::vector<long long> seqnum;                           // report step numbers, from SEQNUM array in restart file
+    mutable std::unordered_map<long long,bool> reportLoaded;
+    std::map<long long, std::pair<long long,long long>> arrIndexRange;   // mapping report step number to array indeces (start and end)
     std::vector<std::vector<std::string>> lgr_names;                           // report step numbers, from SEQNUM array in restart file
 
     void initUnified();
-    void initSeparate(const int number);
+    void initSeparate(const long long number);
 
-    int get_start_index_lgrname(int number, const std::string& lgr_name);
+    long long get_start_index_lgrname(long long number, const std::string& lgr_name);
 
-    int getArrayIndex(const std::string& name, int seqnum, int occurrence);
-    int getArrayIndex(const std::string& name, int number, const std::string& lgr_name);
+    long long getArrayIndex(const std::string& name, long long seqnum, long long occurrence);
+    long long getArrayIndex(const std::string& name, long long number, const std::string& lgr_name);
 
-    std::tuple<int,int> getIndexRange(int reportStepNumber) const;
+    std::tuple<long long,long long> getIndexRange(long long reportStepNumber) const;
 
     std::streampos
-    restartStepWritePosition(const int seqnumValue) const;
+    restartStepWritePosition(const long long seqnumValue) const;
 
 };
 

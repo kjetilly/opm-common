@@ -287,7 +287,7 @@ public:
         // value is good, this should only take two to three
         // iterations...
         bool onProbation = false;
-        for (int i = 0; i < 20; ++i) {
+        for (long long i = 0; i < 20; ++i) {
             const Evaluation& f = RsTable.eval(pSat, /*extrapolate=*/true) - Rs;
             const Evaluation& fPrime = RsTable.evalDerivative(pSat, /*extrapolate=*/true);
 

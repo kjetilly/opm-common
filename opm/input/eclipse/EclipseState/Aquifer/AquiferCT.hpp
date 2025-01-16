@@ -51,9 +51,9 @@ namespace Opm {
 
             AQUCT_data() = default;
             AQUCT_data(const DeckRecord& record, const TableManager& tables);
-            AQUCT_data(const int aqID,
-                       const int infID,
-                       const int pvtID,
+            AQUCT_data(const long long aqID,
+                       const long long infID,
+                       const long long pvtID,
                        const double phi_aq_,
                        const double d0_,
                        const double C_t_,
@@ -64,9 +64,9 @@ namespace Opm {
                        const double p0_,
                        const double T0_);
 
-            int aquiferID{};
-            int inftableID{};
-            int pvttableID{};
+            long long aquiferID{};
+            long long inftableID{};
+            long long pvttableID{};
 
             double porosity{};
             double datum_depth{};
@@ -137,7 +137,7 @@ namespace Opm {
         const std::vector<AquiferCT::AQUCT_data>& data() const;
         bool operator==(const AquiferCT& other) const;
 
-        bool hasAquifer(const int aquID) const;
+        bool hasAquifer(const long long aquID) const;
 
         template<class Serializer>
         void serializeOp(Serializer& serializer)

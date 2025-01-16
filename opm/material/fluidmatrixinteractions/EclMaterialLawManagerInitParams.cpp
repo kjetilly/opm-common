@@ -53,7 +53,7 @@ InitParams(EclMaterialLawManager<Traits>& parent, const EclipseState& eclState, 
 template <class Traits>
 void
 EclMaterialLawManager<Traits>::InitParams::
-run(const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>&
+run(const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>&
     fieldPropIntOnLeafAssigner,
     const std::function<unsigned(unsigned)>& lookupIdxOnLevelZeroAssigner) {
     readUnscaledEpsPointsVectors_();
@@ -62,8 +62,8 @@ run(const std::function<std::vector<int>(const FieldPropsManager&, const std::st
     copySatnumArrays_(fieldPropIntOnLeafAssigner);
     initOilWaterScaledEpsInfo_();
     initMaterialLawParamVectors_();
-    std::vector<std::vector<int>*> satnumArray;
-    std::vector<std::vector<int>*> imbnumArray;
+    std::vector<std::vector<long long>*> satnumArray;
+    std::vector<std::vector<long long>*> imbnumArray;
     std::vector<std::vector<MaterialLawParams>*> mlpArray;
     initArrays_(satnumArray, imbnumArray, mlpArray);
     auto num_arrays = mlpArray.size();
@@ -93,7 +93,7 @@ run(const std::function<std::vector<int>(const FieldPropsManager&, const std::st
 template <class Traits>
 void
 EclMaterialLawManager<Traits>::InitParams::
-copySatnumArrays_(const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner)
+copySatnumArrays_(const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner)
 {
     copyIntArray_(this->parent_.krnumXArray_, "KRNUMX", fieldPropIntOnLeafAssigner);
     copyIntArray_(this->parent_.krnumYArray_, "KRNUMY", fieldPropIntOnLeafAssigner);
@@ -112,8 +112,8 @@ copySatnumArrays_(const std::function<std::vector<int>(const FieldPropsManager&,
 template <class Traits>
 void
 EclMaterialLawManager<Traits>::InitParams::
-copyIntArray_(std::vector<int>& dest, const std::string& keyword,
-              const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner)
+copyIntArray_(std::vector<long long>& dest, const std::string& keyword,
+              const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner)
 {
     if (this->eclState_.fieldProps().has_int(keyword)) {
         dest = fieldPropIntOnLeafAssigner(this->eclState_.fieldProps(), keyword, /*needsTranslation*/true);
@@ -123,9 +123,9 @@ copyIntArray_(std::vector<int>& dest, const std::string& keyword,
 template <class Traits>
 unsigned
 EclMaterialLawManager<Traits>::InitParams::
-imbRegion_(std::vector<int>& array, unsigned elemIdx)
+imbRegion_(std::vector<long long>& array, unsigned elemIdx)
 {
-    std::vector<int>& default_vec = this->parent_.imbnumRegionArray_;
+    std::vector<long long>& default_vec = this->parent_.imbnumRegionArray_;
     return satOrImbRegion_(array, default_vec, elemIdx);
 }
 
@@ -133,8 +133,8 @@ template <class Traits>
 void
 EclMaterialLawManager<Traits>::InitParams::
 initArrays_(
-        std::vector<std::vector<int>*>& satnumArray,
-        std::vector<std::vector<int>*>& imbnumArray,
+        std::vector<std::vector<long long>*>& satnumArray,
+        std::vector<std::vector<long long>*>& imbnumArray,
         std::vector<std::vector<MaterialLawParams>*>& mlpArray)
 {
     satnumArray.push_back(&this->parent_.satnumRegionArray_);
@@ -181,7 +181,7 @@ initOilWaterScaledEpsInfo_()
 template <class Traits>
 void
 EclMaterialLawManager<Traits>::InitParams::
-initSatnumRegionArray_(const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner)
+initSatnumRegionArray_(const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner)
 {
     // copy the SATNUM grid property. in some cases this is not necessary, but it
     // should not require much memory anyway...
@@ -315,18 +315,18 @@ readUnscaledEpsPoints_(Container& dest, std::shared_ptr<EclEpsConfig> config, Ec
 template <class Traits>
 unsigned
 EclMaterialLawManager<Traits>::InitParams::
-satRegion_(std::vector<int>& array, unsigned elemIdx)
+satRegion_(std::vector<long long>& array, unsigned elemIdx)
 {
-    std::vector<int>& default_vec = this->parent_.satnumRegionArray_;
+    std::vector<long long>& default_vec = this->parent_.satnumRegionArray_;
     return satOrImbRegion_(array, default_vec, elemIdx);
 }
 
 template <class Traits>
 unsigned
 EclMaterialLawManager<Traits>::InitParams::
-satOrImbRegion_(std::vector<int>& array, std::vector<int>& default_vec, unsigned elemIdx)
+satOrImbRegion_(std::vector<long long>& array, std::vector<long long>& default_vec, unsigned elemIdx)
 {
-    int value;
+    long long value;
     if (array.size() > 0) {
         value = array[elemIdx];
     }

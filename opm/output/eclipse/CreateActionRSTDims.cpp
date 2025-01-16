@@ -43,7 +43,7 @@ namespace {
 // (The max number of characters in an action statement / (8 - chars pr string)) * (max over actions of number of lines pr ACTIONX)
 std::size_t entriesPerZLACT(const Opm::Actdims& actdims, const Opm::Action::Actions& acts)
 {
-    int max_char_pr_line = actdims.max_characters();
+    long long max_char_pr_line = actdims.max_characters();
     std::size_t no_entries_pr_line = ((max_char_pr_line % 8) == 0) ? max_char_pr_line / 8 : (max_char_pr_line / 8) + 1;
     std::size_t no_entries = no_entries_pr_line * acts.max_input_lines();
 
@@ -53,7 +53,7 @@ std::size_t entriesPerZLACT(const Opm::Actdims& actdims, const Opm::Action::Acti
 // The max number of characters in an action statement * (max over actions of number of lines pr ACTIONX) / (8 - chars pr string)
 std::size_t entriesPerLine(const Opm::Actdims& actdims)
 {
-    int max_char_pr_line = actdims.max_characters();
+    long long max_char_pr_line = actdims.max_characters();
     std::size_t no_entries_pr_line = ((max_char_pr_line % 8) == 0) ? max_char_pr_line / 8 : (max_char_pr_line / 8) + 1;
 
     return no_entries_pr_line;
@@ -105,14 +105,14 @@ std::size_t Opm::RestartIO::Helpers::entriesPerSACT()
 
 
 
-std::vector<int>
+std::vector<long long>
 Opm::RestartIO::Helpers::
 createActionRSTDims(const Schedule&     sched,
                     const std::size_t   simStep)
 {
     const auto& acts = sched[simStep].actions();
     const auto& actdims = sched.runspec().actdims();
-    std::vector<int> action_rst_dims(9);
+    std::vector<long long> action_rst_dims(9);
 
     //No of Actionx keywords
     action_rst_dims[0] = acts.ecl_size();

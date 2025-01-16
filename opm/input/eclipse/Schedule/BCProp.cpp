@@ -92,7 +92,7 @@ BCComponent component(const std::string& s) {
 
 using BCKEY = ParserKeywords::BCPROP;
 BCProp::BCFace::BCFace(const DeckRecord& record) :
-    index(record.getItem<BCKEY::INDEX>().get<int>(0)),
+    index(record.getItem<BCKEY::INDEX>().get<long long>(0)),
     bctype(fromstring::bctype(record.getItem<BCKEY::TYPE>().get<std::string>(0))),
     bcmechtype(fromstring::bcmechtype(record.getItem<BCKEY::MECHTYPE>().get<std::string>(0))),
     component(fromstring::component(record.getItem<BCKEY::COMPONENT>().get<std::string>(0))),
@@ -135,15 +135,15 @@ BCProp::BCFace::BCFace(const DeckRecord& record) :
         allDefault = false;
     }
     if (const auto& P = record.getItem<BCKEY::FIXEDX>(); ! P.defaultApplied(0)) {
-        mechbcvaluetmp.fixeddir[0] = P.get<int>(0);
+        mechbcvaluetmp.fixeddir[0] = P.get<long long>(0);
         allDefault = false;
     }
     if (const auto& P = record.getItem<BCKEY::FIXEDY>(); ! P.defaultApplied(0)) {
-        mechbcvaluetmp.fixeddir[1] = P.get<int>(0);
+        mechbcvaluetmp.fixeddir[1] = P.get<long long>(0);
         allDefault = false;
     }
     if (const auto& P = record.getItem<BCKEY::FIXEDZ>(); ! P.defaultApplied(0)) {
-        mechbcvaluetmp.fixeddir[2] = P.get<int>(0);
+        mechbcvaluetmp.fixeddir[2] = P.get<long long>(0);
         allDefault = false;
     }
     if (!allDefault) {
@@ -218,7 +218,7 @@ std::vector<BCProp::BCFace>::const_iterator BCProp::end() const {
     return this->m_faces.end();
 }
 
-const BCProp::BCFace& BCProp::operator[](int index) const
+const BCProp::BCFace& BCProp::operator[](long long index) const
 {
     const auto it = std::find_if(m_faces.begin(), m_faces.end(),
                                 [index](const auto& bc)

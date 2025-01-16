@@ -56,7 +56,7 @@ bool close_at_tolerance(Scalar n1, Scalar n2, Scalar tolerance)
 }
 
 template<class Evaluation>
-Evaluation moleFractionToMolality(Evaluation& xlCO2, Evaluation& s, const int& activityModel)
+Evaluation moleFractionToMolality(Evaluation& xlCO2, Evaluation& s, const long long& activityModel)
 {
     Evaluation mCO2;
 
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Brine_CO2, Scalar, Types)
     // 1 = Rumpf et al. (1994) as given in Spycher & Pruess (2005)
     // 2 = Duan-Sun model as modified in Spycher & Pruess (2009)
     // 3 = Duan-Sun model as given in Spycher & Pruess (2005)
-    std::vector<int> activityModel = {1, 2, 3};
+    std::vector<long long> activityModel = {1, 2, 3};
 
     // Init pressure, temperature, and salinity variables
     std::vector<Evaluation> T = {303.15, 333.15, 363.15, 393.15};  // K
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BrineDensityWithCO2, Scalar, Types)
     // 1 = Rumpf et al. (1994) as given in Spycher & Pruess (2005)
     // 2 = Duan-Sun model as modified in Spycher & Pruess (2009)
     // 3 = Duan-Sun model as given in Spycher & Pruess (2005)
-    const int activityModel = 3;
+    const long long activityModel = 3;
 
     // Tolerance for Yan et al. (2011) data
     const Scalar tol_yan = 5e-3;

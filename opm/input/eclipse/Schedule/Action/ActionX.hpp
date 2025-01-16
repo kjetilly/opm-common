@@ -319,7 +319,7 @@ private:
     ///
     /// Note: Typically a small number in any real simulation run, so we
     /// might be able to use a (nominally) smaller data type here--e.g.,
-    /// unsigned int or maybe even unsigned char.
+    /// size_t or maybe even unsigned char.
     std::size_t m_id = 0;
 
     /// Sequence of keywords to execute when the action condition triggers.

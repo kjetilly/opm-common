@@ -28,7 +28,7 @@ namespace Opm {
 
     class PvdsTable : public SimpleTable {
     public:
-        PvdsTable( const DeckItem& item, const int tableID );
+        PvdsTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getPressureColumn() const;
         const TableColumn& getFormationFactorColumn() const;

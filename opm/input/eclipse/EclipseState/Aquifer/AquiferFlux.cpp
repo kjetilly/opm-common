@@ -25,7 +25,7 @@
 
 namespace Opm {
     SingleAquiferFlux::SingleAquiferFlux(const DeckRecord& record)
-    : id (record.getItem<ParserKeywords::AQUFLUX::AQUIFER_ID>().get<int>(0))
+    : id (record.getItem<ParserKeywords::AQUFLUX::AQUIFER_ID>().get<long long>(0))
     , flux(record.getItem<ParserKeywords::AQUFLUX::FLUX>().getSIDouble(0))
     , salt_concentration(record.getItem<ParserKeywords::AQUFLUX::SC_0>().getSIDouble(0))
     , active(true)
@@ -39,13 +39,13 @@ namespace Opm {
         }
     }
 
-    SingleAquiferFlux::SingleAquiferFlux(const int aquifer_id)
+    SingleAquiferFlux::SingleAquiferFlux(const long long aquifer_id)
     : id (aquifer_id)
     , active(false)
     {
     }
 
-    SingleAquiferFlux::SingleAquiferFlux(const int id_arg, const double flux_arg, const double sal,
+    SingleAquiferFlux::SingleAquiferFlux(const long long id_arg, const double flux_arg, const double sal,
                                          const bool active_arg, double temp, double pres)
        : id(id_arg)
        , flux(flux_arg)
@@ -69,7 +69,7 @@ namespace Opm {
         return result;
     }
 
-    void AquiferFlux::appendAqufluxSchedule(const std::unordered_set<int>& ids) {
+    void AquiferFlux::appendAqufluxSchedule(const std::unordered_set<long long>& ids) {
         for (const auto& id : ids) {
             if (this->m_aquifers.count(id) == 0) {
                 // we create an inactvie dummy aquflux aquifers,
@@ -99,7 +99,7 @@ namespace Opm {
         return this->m_aquifers == other.m_aquifers;
     }
 
-    bool AquiferFlux::hasAquifer(const int id) const {
+    bool AquiferFlux::hasAquifer(const long long id) const {
         return this->m_aquifers.count(id) > 0;
     }
 

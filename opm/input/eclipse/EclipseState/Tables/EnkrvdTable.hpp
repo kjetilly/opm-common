@@ -28,7 +28,7 @@ namespace Opm {
     class EnkrvdTable : public SimpleTable {
     public:
 
-        EnkrvdTable( const DeckItem& item, const int tableID );
+        EnkrvdTable( const DeckItem& item, const long long tableID );
 
 
         // using this method is strongly discouraged but the current endpoint scaling

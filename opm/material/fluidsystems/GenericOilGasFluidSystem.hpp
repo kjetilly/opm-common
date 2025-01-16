@@ -55,25 +55,25 @@ namespace Opm {
  * \tparam Scalar  The floating-point type that specifies the precision of the numerical operations.
  * \tparam NumComp The number of the components in the fluid system.
  */
-    template<class Scalar, int NumComp>
+    template<class Scalar, long long NumComp>
     class GenericOilGasFluidSystem : public BaseFluidSystem<Scalar, GenericOilGasFluidSystem<Scalar, NumComp> > {
     public:
         // TODO: I do not think these should be constant in fluidsystem, will try to make it non-constant later
-        static constexpr int numPhases = 2;
-        static constexpr int numComponents = NumComp;
-        static constexpr int numMisciblePhases = 2;
+        static constexpr long long numPhases = 2;
+        static constexpr long long numComponents = NumComp;
+        static constexpr long long numMisciblePhases = 2;
         // \Note: not totally sure when we should distinguish numMiscibleComponents and numComponents.
         // Possibly when with a dummy phase like water?
-        static constexpr int numMiscibleComponents = NumComp;
+        static constexpr long long numMiscibleComponents = NumComp;
         // TODO: phase location should be more general
-        static constexpr int waterPhaseIdx = -1;
-        static constexpr int oilPhaseIdx = 0;
-        static constexpr int gasPhaseIdx = 1;
+        static constexpr long long waterPhaseIdx = -1;
+        static constexpr long long oilPhaseIdx = 0;
+        static constexpr long long gasPhaseIdx = 1;
 
-        static constexpr int waterCompIdx = -1;
-        static constexpr int oilCompIdx = 0;
-        static constexpr int gasCompIdx = 1;
-        static constexpr int compositionSwitchIdx = -1; // equil initializer
+        static constexpr long long waterCompIdx = -1;
+        static constexpr long long oilCompIdx = 0;
+        static constexpr long long gasCompIdx = 1;
+        static constexpr long long compositionSwitchIdx = -1; // equil initializer
 
         template <class ValueType>
         using ParameterCache = Opm::PTFlashParameterCache<ValueType, GenericOilGasFluidSystem<Scalar, NumComp>>;
@@ -421,11 +421,11 @@ namespace Opm {
         }
     };
 
-    template <class Scalar, int NumComp>
+    template <class Scalar, long long NumComp>
     std::vector<typename GenericOilGasFluidSystem<Scalar, NumComp>::ComponentParam>
     GenericOilGasFluidSystem<Scalar, NumComp>::component_param_;
 
-    template <class Scalar, int NumComp>
+    template <class Scalar, long long NumComp>
     std::vector<Scalar>
     GenericOilGasFluidSystem<Scalar, NumComp>::interaction_coefficients_;
 }

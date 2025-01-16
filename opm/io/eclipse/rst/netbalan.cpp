@@ -36,12 +36,12 @@
 namespace VI = ::Opm::RestartIO::Helpers::VectorItems;
 
 namespace {
-    std::size_t maxBalanceIter(const std::vector<int>& intehead)
+    std::size_t maxBalanceIter(const std::vector<long long>& intehead)
     {
         return intehead[VI::intehead::NetbalMaxBalanceIter];
     }
 
-    std::size_t maxTHPIter(const std::vector<int>& intehead)
+    std::size_t maxTHPIter(const std::vector<long long>& intehead)
     {
         return intehead[VI::intehead::NetbalMaxTHPIter];
     }
@@ -104,7 +104,7 @@ namespace {
     }
 }
 
-Opm::RestartIO::RstNetbalan::RstNetbalan(const std::vector<int>&    intehead,
+Opm::RestartIO::RstNetbalan::RstNetbalan(const std::vector<long long>&    intehead,
                                          const std::vector<double>& doubhead,
                                          const UnitSystem&          usys)
     : calc_interval_              (calcInterval(doubhead, usys))

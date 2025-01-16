@@ -240,7 +240,7 @@ Opm::DatumDepth::UserDefined::serializationTestObject()
 }
 
 double
-Opm::DatumDepth::UserDefined::operator()(std::string_view rset, const int region) const
+Opm::DatumDepth::UserDefined::operator()(std::string_view rset, const long long region) const
 {
     auto canonicalRSet = normaliseRSetName(rset);
 

@@ -40,29 +40,29 @@ public:
                   const time_t start_time);
 
     void write(const std::vector<float>& ts_data,
-               int report_step,
+               long long report_step,
                bool is_final_summary);
 
 private:
-    static constexpr int m_min_write_interval = 15;  // at least 15 seconds between each write
+    static constexpr long long m_min_write_interval = 15;  // at least 15 seconds between each write
     std::chrono::time_point<std::chrono::system_clock> m_last_write;
 
     std::string m_outputFileName;
-    int m_nTimeSteps;
-    int m_nVect;
+    long long m_nTimeSteps;
+    long long m_nVect;
     bool m_fmt;
 
-    std::vector<int> m_start_date_vect;
+    std::vector<long long> m_start_date_vect;
     std::string m_restart_rootn;
-    int m_restart_step;
+    long long m_restart_step;
     std::vector<std::string> m_smry_keys;
     std::vector<std::string> m_smryUnits;
-    std::vector<int> m_rstep;
-    std::vector<int> m_tstep;
+    std::vector<long long> m_rstep;
+    std::vector<long long> m_tstep;
     std::vector<std::vector<float>> m_smrydata;
 
-    std::array<int, 3> ijk_from_global_index(const GridDims& dims,
-                                             int globInd) const;
+    std::array<long long, 3> ijk_from_global_index(const GridDims& dims,
+                                             long long globInd) const;
     std::vector<std::string> make_modified_keys(const std::vector<std::string>& valueKeys,
                                                 const GridDims& dims);
     bool rename_tmpfile(const std::string& tmp_fname);

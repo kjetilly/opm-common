@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(BoxNineArg) {
 
 BOOST_AUTO_TEST_CASE(TestKeywordBox2) {
     Opm::EclipseGrid grid(10,10,10);
-    std::vector<int> actnum(grid.getCartesianSize(), 1);
+    std::vector<long long> actnum(grid.getCartesianSize(), 1);
     actnum[0] = 0;
     grid.resetACTNUM(actnum);
 

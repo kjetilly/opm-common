@@ -45,7 +45,7 @@ struct ScheduleStatic
     UnitSystem m_unit_system;
     Runspec m_runspec;
     RSTConfig rst_config;
-    std::optional<int> output_interval;
+    std::optional<long long> output_interval;
     double sumthin{-1.0};
     bool rptonly{false};
     bool gaslift_opt_active{false};
@@ -62,7 +62,7 @@ struct ScheduleStatic
                    const ScheduleRestartInfo& restart_info,
                    const Deck& deck,
                    const Runspec& runspec,
-                   const std::optional<int>& output_interval_,
+                   const std::optional<long long>& output_interval_,
                    const ParseContext& parseContext,
                    ErrorGuard& errors,
                    const bool slave_mode);

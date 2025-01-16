@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(IteratorTest) {
     deck.addKeyword( DeckKeyword(parser.getKeyword("GRID")));
     DeckSection section(deck, "RUNSPEC");
 
-    int numberOfItems = 0;
+    long long numberOfItems = 0;
     for (auto iter=section.begin(); iter != section.end(); ++iter) {
         std::cout << iter->name() << std::endl;
         numberOfItems++;

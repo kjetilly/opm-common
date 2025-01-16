@@ -71,7 +71,7 @@ void verifyWellState(const std::string& rst_filename, const Opm::Schedule& sched
 
   */
   
-    int step = std::stoi( rst_filename.substr(rst_filename.size()-1)) -1;
+    long long step = std::stoi( rst_filename.substr(rst_filename.size()-1)) -1;
     Opm::EclIO::EclFile rstFile(rst_filename);
 
     std::vector<std::vector<std::string>> ref_wellList = {
@@ -81,17 +81,17 @@ void verifyWellState(const std::string& rst_filename, const Opm::Schedule& sched
         {"OP_1", "OP_2", "OP_3", "OP_4", "OP_5", "OP_6", "WI_1", "WI_2", "GI_1"}
     };
 
-    using T2 = std::tuple<int,int>;
-    using T3 = std::tuple<int,int,int>;
+    using T2 = std::tuple<long long,long long>;
+    using T3 = std::tuple<long long,long long,long long>;
 
-    std::vector<std::vector<std::tuple<int, int>>> ref_wellHead = {
+    std::vector<std::vector<std::tuple<long long, long long>>> ref_wellHead = {
         {},
         {T2{9,9}, T2{8,8}, T2{7,7}},
         {T2{9,9}, T2{8,8}, T2{7,7}, T2{2,2}, T2{5,4}, T2{8,2}},
         {T2{9,9}, T2{8,8}, T2{7,7}, T2{2,2}, T2{5,4}, T2{8,2}, T2{3,3}, T2{3,9}, T2{3,6}}
     };
 
-    std::vector<std::vector<std::vector<std::tuple<int, int, int>>>> ref_wellConn = {
+    std::vector<std::vector<std::vector<std::tuple<long long, long long, long long>>>> ref_wellConn = {
         {{{}}},  // <- timestep 0
         {   {T3{9,9,1},T3{9,9,2},T3{9,9,3},T3{9,9,4},T3{9,9,5},T3{9,9,6},T3{9,9,7},T3{9,9,8},T3{9,9,9},T3{9,9,10}}, // OP_1
             {T3{8,8,1},T3{8,8,2},T3{8,8,3},T3{8,7,3},T3{8,7,4},T3{8,7,5},T3{8,7,6}}, // OP_2
@@ -117,25 +117,25 @@ void verifyWellState(const std::string& rst_filename, const Opm::Schedule& sched
 
     };
 
-    std::vector<int> intehead = rstFile.get<int>("INTEHEAD");
+    std::vector<long long> intehead = rstFile.get<long long>("INTEHEAD");
     std::vector<std::string> zwel;
-    std::vector<int> iwel;
-    std::vector<int> icon;
+    std::vector<long long> iwel;
+    std::vector<long long> icon;
 
-    int ncwmax = intehead[17];
-    int niwelz = intehead[24];
-    int niconz = intehead[32];
+    long long ncwmax = intehead[17];
+    long long niwelz = intehead[24];
+    long long niconz = intehead[32];
 
     if (rstFile.hasKey("ZWEL")) {
         zwel = rstFile.get<std::string>("ZWEL");
     }
 
     if (rstFile.hasKey("IWEL")) {
-        iwel = rstFile.get<int>("IWEL");
+        iwel = rstFile.get<long long>("IWEL");
     }
 
     if (rstFile.hasKey("ICON")) {
-        icon = rstFile.get<int>("ICON");
+        icon = rstFile.get<long long>("ICON");
     }
 
     const auto& wellList = schedule.getWells(step);
@@ -159,7 +159,7 @@ void verifyWellState(const std::string& rst_filename, const Opm::Schedule& sched
         BOOST_CHECK_EQUAL(iwel[i*niwelz], sched_well2.getHeadI() +1 );
         BOOST_CHECK_EQUAL(iwel[i*niwelz + 1], sched_well2.getHeadJ() +1 );
 
-        int sched_wtype = -99;
+        long long sched_wtype = -99;
 
         if (sched_well2.isProducer()) {
             sched_wtype = 1;
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(EclipseWriteRestartWellInfo)
     const Opm::SummaryConfig summary_config( deck, schedule, es.fieldProps(), es.aquifer());
     const auto num_cells = grid.getCartesianSize();
     Opm::EclipseIO eclipseWriter(es,  grid , schedule, summary_config);
-    const int countTimeStep = schedule.size() - 1;
+    const long long countTimeStep = schedule.size() - 1;
     Opm::SummaryState st {
         Opm::TimeService::from_time_t(schedule.getStartTime()),
         schedule.back().udq().params().undefinedValue()
@@ -241,7 +241,7 @@ BOOST_AUTO_TEST_CASE(EclipseWriteRestartWellInfo)
     Opm::data::GroupAndNetworkValues group_nwrk;
     Opm::WellTestState wtest_state;
 
-    for(int timestep = 0; timestep <= countTimeStep; ++timestep) {
+    for(long long timestep = 0; timestep <= countTimeStep; ++timestep) {
         eclipseWriter.writeTimeStep( action_state,
                                      wtest_state,
                                      st,
@@ -252,13 +252,13 @@ BOOST_AUTO_TEST_CASE(EclipseWriteRestartWellInfo)
                                      Opm::RestartValue(solution, wells, group_nwrk, {}));
     }
 
-    for (int i=1; i <=4; i++) {
+    for (long long i=1; i <=4; i++) {
         verifyWellState("TESTBLACKOILSTATE3.X000" + std::to_string(i), schedule);
     }
 
     // cleaning up after test
 
-    for (int i=1; i <=4; i++) {
+    for (long long i=1; i <=4; i++) {
         std::string fileName = "TESTBLACKOILSTATE3.X000" + std::to_string(i);
         remove(fileName.c_str());
 

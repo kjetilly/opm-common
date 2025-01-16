@@ -53,7 +53,7 @@ class Summary
 public:
     using GlobalProcessParameters = std::map<std::string, double>;
     using RegionParameters = std::map<std::string, std::vector<double>>;
-    using BlockValues = std::map<std::pair<std::string, int>, double>;
+    using BlockValues = std::map<std::pair<std::string, long long>, double>;
     using InterRegFlowValues = std::unordered_map<std::string, data::InterRegFlowMap>;
 
     Summary(SummaryConfig&      sumcfg,
@@ -65,10 +65,10 @@ public:
 
     ~Summary();
 
-    void add_timestep(const SummaryState& st, const int report_step, bool isSubstep);
+    void add_timestep(const SummaryState& st, const long long report_step, bool isSubstep);
 
     void eval(SummaryState&                          summary_state,
-              const int                              report_step,
+              const long long                              report_step,
               const double                           secs_elapsed,
               const data::Wells&                     well_solution,
               const data::WellBlockAveragePressures& wbp,

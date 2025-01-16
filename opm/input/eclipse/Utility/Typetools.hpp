@@ -57,7 +57,7 @@ public:
 
 inline std::string tag_name( type_tag x ) {
     switch( x ) {
-        case type_tag::integer:     return "int";
+        case type_tag::integer:     return "long long";
         case type_tag::string:      return "std::string";
         case type_tag::raw_string:  return "RawString";
         case type_tag::fdouble:     return "double";
@@ -69,7 +69,7 @@ inline std::string tag_name( type_tag x ) {
 
 template< typename T > type_tag get_type();
 
-template<> inline type_tag get_type< int >() {
+template<> inline type_tag get_type< long long >() {
     return type_tag::integer;
 }
 

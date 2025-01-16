@@ -92,7 +92,7 @@ void pop_separator(std::deque<std::string>& lines) {
     lines.pop_front();
 }
 
-int make_num(const std::string& nums_string) {
+long long make_num(const std::string& nums_string) {
     if (nums_string.empty())
         return 0;
 
@@ -142,7 +142,7 @@ std::vector<double> make_multiplier(std::deque<std::string>& lines) {
 }
 
 double convert_wstat(const std::string& symbolic_wstat) {
-    static const std::unordered_map<std::string, int> wstat_map = {
+    static const std::unordered_map<std::string, long long> wstat_map = {
         {Opm::WStat::symbolic::UNKNOWN, Opm::WStat::numeric::UNKNOWN},
         {Opm::WStat::symbolic::PROD,    Opm::WStat::numeric::PROD},
         {Opm::WStat::symbolic::INJ,     Opm::WStat::numeric::INJ},

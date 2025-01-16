@@ -290,7 +290,7 @@ void BlackOilFluidSystem<Scalar,IndexTraits>::initEnd()
     }
 
 
-    int activePhaseIdx = 0;
+    long long activePhaseIdx = 0;
     for (unsigned phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
         if(phaseIsActive(phaseIdx)){
             canonicalToActivePhaseIdx_[phaseIdx] = activePhaseIdx;

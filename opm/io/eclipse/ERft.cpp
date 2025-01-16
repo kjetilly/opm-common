@@ -30,7 +30,7 @@ namespace Opm { namespace EclIO {
 ERft::ERft(const std::string &filename) : EclFile(filename)
 {
     loadData();
-    std::vector<int> first;
+    std::vector<long long> first;
 
     std::vector<std::string> wellName;
     std::vector<RftDate> dates;
@@ -47,7 +47,7 @@ ERft::ERft(const std::string &filename) : EclFile(filename)
         }
 
         if (name == "DATE") {
-            auto vect1 = get<int>(i);
+            auto vect1 = get<long long>(i);
             RftDate date(vect1[2],vect1[1],vect1[0]);
             dateList.insert(date);
             dates.push_back(date);
@@ -61,7 +61,7 @@ ERft::ERft(const std::string &filename) : EclFile(filename)
     }
 
     for (size_t i = 0; i < first.size(); i++) {
-        std::tuple<int,int> range;
+        std::tuple<long long,long long> range;
         if (i == first.size() - 1) {
             range = std::make_tuple(first[i], listOfArrays.size());
         } else {
@@ -88,22 +88,22 @@ bool ERft::hasRft(const std::string& wellName, const RftDate& date) const
 }
 
 
-bool ERft::hasRft(const std::string& wellName, int year, int month, int day) const
+bool ERft::hasRft(const std::string& wellName, long long year, long long month, long long day) const
 {
     RftDate date(year, month, day);
     return reportIndices.find({wellName,date}) != reportIndices.end();
 }
 
 
-int ERft::getReportIndex(const std::string& wellName, const RftDate& date) const
+long long ERft::getReportIndex(const std::string& wellName, const RftDate& date) const
 {
-    std::tuple<std::string,std::tuple<int,int,int>> wellDatePair(wellName, date);
+    std::tuple<std::string,std::tuple<long long,long long,long long>> wellDatePair(wellName, date);
     auto rIndIt = reportIndices.find(wellDatePair);
 
     if (rIndIt == reportIndices.end()) {
-        int y = std::get<0>(date);
-        int m = std::get<1>(date);
-        int d = std::get<2>(date);
+        long long y = std::get<0>(date);
+        long long m = std::get<1>(date);
+        long long d = std::get<2>(date);
 
         std::string dateStr=std::to_string(y) + "/" + std::to_string(m) + "/" + std::to_string(d);
         std::string message="RFT data not found for well  " + wellName + " at date: " + dateStr;
@@ -120,45 +120,45 @@ bool ERft::hasArray(const std::string& arrayName, const std::string& wellName,
     if (!hasRft(wellName, date))
         return false;
 
-    int reportInd = getReportIndex(wellName, date);
+    long long reportInd = getReportIndex(wellName, date);
 
     auto searchInd = arrIndexRange.find(reportInd);
 
-    int fromInd = std::get<0>(searchInd->second);
-    int toInd = std::get<1>(searchInd->second);
+    long long fromInd = std::get<0>(searchInd->second);
+    long long toInd = std::get<1>(searchInd->second);
 
     auto it = std::find(array_name.begin()+fromInd,array_name.begin()+toInd,arrayName);
     return it != array_name.begin() + toInd;
 }
 
 
-bool ERft::hasArray(const std::string& arrayName, int reportInd) const
+bool ERft::hasArray(const std::string& arrayName, long long reportInd) const
 {
     auto searchInd = arrIndexRange.find(reportInd);
 
-    int fromInd = std::get<0>(searchInd->second);
-    int toInd = std::get<1>(searchInd->second);
+    long long fromInd = std::get<0>(searchInd->second);
+    long long toInd = std::get<1>(searchInd->second);
 
     auto it = std::find(array_name.begin()+fromInd,array_name.begin()+toInd,arrayName);
     return it != array_name.begin() + toInd;
 }
 
 
-int ERft::getArrayIndex(const std::string& name, const std::string& wellName,
+long long ERft::getArrayIndex(const std::string& name, const std::string& wellName,
                         const RftDate& date) const
 {
-    int rInd= getReportIndex(wellName, date);
+    long long rInd= getReportIndex(wellName, date);
 
     auto searchInd = arrIndexRange.find(rInd);
 
-    int fromInd =std::get<0>(searchInd->second);
-    int toInd = std::get<1>(searchInd->second);
+    long long fromInd =std::get<0>(searchInd->second);
+    long long toInd = std::get<1>(searchInd->second);
     auto it=std::find(array_name.begin()+fromInd,array_name.begin()+toInd,name);
 
     if (std::distance(array_name.begin(),it) == toInd) {
-        int y = std::get<0>(date);
-        int m = std::get<1>(date);
-        int d = std::get<2>(date);
+        long long y = std::get<0>(date);
+        long long m = std::get<1>(date);
+        long long d = std::get<2>(date);
 
         std::string dateStr = std::to_string(y) + "/" + std::to_string(m) + "/" + std::to_string(d);
         std::string message = "Array " + name + " not found for RFT, well: " + wellName + " date: " + dateStr;
@@ -169,7 +169,7 @@ int ERft::getArrayIndex(const std::string& name, const std::string& wellName,
 }
 
 
-int ERft::getArrayIndex(const std::string& name, int reportIndex) const
+long long ERft::getArrayIndex(const std::string& name, long long reportIndex) const
 {
     if ((reportIndex < 0) || (reportIndex >= numReports)) {
         std::string message = "Report index " + std::to_string(reportIndex) + " not found in RFT file.";
@@ -177,8 +177,8 @@ int ERft::getArrayIndex(const std::string& name, int reportIndex) const
     }
 
     auto searchInd = arrIndexRange.find(reportIndex);
-    int fromInd =std::get<0>(searchInd->second);
-    int toInd = std::get<1>(searchInd->second);
+    long long fromInd =std::get<0>(searchInd->second);
+    long long toInd = std::get<1>(searchInd->second);
 
     auto it=std::find(array_name.begin() + fromInd,array_name.begin() + toInd,name);
 
@@ -195,7 +195,7 @@ template<> const std::vector<float>&
 ERft::getRft<float>(const std::string& name, const std::string &wellName,
                     const RftDate& date) const
 {
-    int arrInd = getArrayIndex(name, wellName, date);
+    long long arrInd = getArrayIndex(name, wellName, date);
 
     if (array_type[arrInd] != REAL) {
         std::string message = "Array " + name + " found in RFT file for selected date and well, but called with wrong type";
@@ -211,7 +211,7 @@ template<> const std::vector<double>&
 ERft::getRft<double>(const std::string& name, const std::string& wellName,
                      const RftDate& date) const
 {
-    int arrInd = getArrayIndex(name, wellName, date);
+    long long arrInd = getArrayIndex(name, wellName, date);
 
     if (array_type[arrInd] != DOUB) {
         std::string message = "Array " + name + " found in RFT file for selected date and well, but called with wrong type";
@@ -223,11 +223,11 @@ ERft::getRft<double>(const std::string& name, const std::string& wellName,
 }
 
 
-template<> const std::vector<int>&
-ERft::getRft<int>(const std::string& name, const std::string& wellName,
+template<> const std::vector<long long>&
+ERft::getRft<long long>(const std::string& name, const std::string& wellName,
                   const RftDate& date) const
 {
-    int arrInd = getArrayIndex(name, wellName, date);
+    long long arrInd = getArrayIndex(name, wellName, date);
 
     if (array_type[arrInd] != INTE) {
         std::string message = "Array " + name + " found in RFT file for selected date and well, but called with wrong type";
@@ -243,7 +243,7 @@ template<> const std::vector<bool>&
 ERft::getRft<bool>(const std::string& name, const std::string& wellName,
                    const RftDate& date) const
 {
-    int arrInd = getArrayIndex(name, wellName, date);
+    long long arrInd = getArrayIndex(name, wellName, date);
 
     if (array_type[arrInd] != LOGI) {
         std::string message = "Array " + name + " found in RFT file for selected date and well, but called with wrong type";
@@ -259,7 +259,7 @@ template<> const std::vector<std::string>&
 ERft::getRft<std::string>(const std::string& name, const std::string& wellName,
                           const RftDate& date) const
 {
-    int arrInd = getArrayIndex(name, wellName, date);
+    long long arrInd = getArrayIndex(name, wellName, date);
 
     if (array_type[arrInd] != CHAR) {
         std::string message = "Array " + name + " found in RFT file for selected date and well, but called with wrong type";
@@ -271,17 +271,17 @@ ERft::getRft<std::string>(const std::string& name, const std::string& wellName,
 }
 
 
-template<> const std::vector<int>&
-ERft::getRft<int>(const std::string& name, const std::string& wellName,
-                  int year, int month, int day) const
+template<> const std::vector<long long>&
+ERft::getRft<long long>(const std::string& name, const std::string& wellName,
+                  long long year, long long month, long long day) const
 {
-    return getRft<int>(name, wellName, RftDate{year, month, day});
+    return getRft<long long>(name, wellName, RftDate{year, month, day});
 }
 
 
 template<> const std::vector<float>&
 ERft::getRft<float>(const std::string& name, const std::string& wellName,
-                    int year, int month, int day) const
+                    long long year, long long month, long long day) const
 {
     return getRft<float>(name, wellName, RftDate{year, month, day});
 }
@@ -289,7 +289,7 @@ ERft::getRft<float>(const std::string& name, const std::string& wellName,
 
 template<> const std::vector<double>&
 ERft::getRft<double>(const std::string& name, const std::string& wellName,
-                     int year, int month, int day) const
+                     long long year, long long month, long long day) const
 {
     return getRft<double>(name, wellName, RftDate{year, month, day});
 }
@@ -297,7 +297,7 @@ ERft::getRft<double>(const std::string& name, const std::string& wellName,
 
 template<> const std::vector<std::string>&
 ERft::getRft<std::string>(const std::string& name, const std::string& wellName,
-                          int year, int month, int day) const
+                          long long year, long long month, long long day) const
 {
     return getRft<std::string>(name, wellName, RftDate{year, month, day});
 }
@@ -305,16 +305,16 @@ ERft::getRft<std::string>(const std::string& name, const std::string& wellName,
 
 template<> const std::vector<bool>&
 ERft::getRft<bool>(const std::string& name, const std::string& wellName,
-                   int year, int month, int day) const
+                   long long year, long long month, long long day) const
 {
     return getRft<bool>(name, wellName, RftDate{year, month, day});
 }
 
 
 template<> const std::vector<float>&
-ERft::getRft<float>(const std::string& name, int reportIndex) const
+ERft::getRft<float>(const std::string& name, long long reportIndex) const
 {
-    int arrInd = getArrayIndex(name, reportIndex);
+    long long arrInd = getArrayIndex(name, reportIndex);
 
     if (array_type[arrInd] != REAL) {
         std::string message = "Array " + name + " found in RFT file for selected report, but called with wrong type";
@@ -327,9 +327,9 @@ ERft::getRft<float>(const std::string& name, int reportIndex) const
 
 
 template<> const std::vector<double>&
-ERft::getRft<double>(const std::string& name, int reportIndex) const
+ERft::getRft<double>(const std::string& name, long long reportIndex) const
 {
-    int arrInd = getArrayIndex(name, reportIndex);
+    long long arrInd = getArrayIndex(name, reportIndex);
 
     if (array_type[arrInd] != DOUB) {
         std::string message = "Array " + name + " !!found in RFT file for selected report, but called with wrong type";
@@ -341,10 +341,10 @@ ERft::getRft<double>(const std::string& name, int reportIndex) const
 }
 
 
-template<> const std::vector<int>&
-ERft::getRft<int>(const std::string& name, int reportIndex) const
+template<> const std::vector<long long>&
+ERft::getRft<long long>(const std::string& name, long long reportIndex) const
 {
-    int arrInd = getArrayIndex(name, reportIndex);
+    long long arrInd = getArrayIndex(name, reportIndex);
 
     if (array_type[arrInd] != INTE) {
         std::string message = "Array " + name + " !!found in RFT file for selected report, but called with wrong type";
@@ -357,9 +357,9 @@ ERft::getRft<int>(const std::string& name, int reportIndex) const
 
 
 template<> const std::vector<bool>&
-ERft::getRft<bool>(const std::string& name, int reportIndex) const
+ERft::getRft<bool>(const std::string& name, long long reportIndex) const
 {
-    int arrInd = getArrayIndex(name, reportIndex);
+    long long arrInd = getArrayIndex(name, reportIndex);
 
     if (array_type[arrInd] != LOGI) {
         std::string message = "Array " + name + " !!found in RFT file for selected report, but called with wrong type";
@@ -372,9 +372,9 @@ ERft::getRft<bool>(const std::string& name, int reportIndex) const
 
 
 template<> const std::vector<std::string>&
-ERft::getRft<std::string>(const std::string& name, int reportIndex) const
+ERft::getRft<std::string>(const std::string& name, long long reportIndex) const
 {
-    int arrInd = getArrayIndex(name, reportIndex);
+    long long arrInd = getArrayIndex(name, reportIndex);
 
     if (array_type[arrInd] != CHAR) {
         std::string message = "Array " + name + " !!found in RFT file for selected report, but called with wrong type";
@@ -386,7 +386,7 @@ ERft::getRft<std::string>(const std::string& name, int reportIndex) const
 }
 
 
-std::vector<EclFile::EclEntry> ERft::listOfRftArrays(int reportIndex) const
+std::vector<EclFile::EclEntry> ERft::listOfRftArrays(long long reportIndex) const
 {
     if ((reportIndex < 0) || (reportIndex >= numReports)) {
         std::string message = "Report index " + std::to_string(reportIndex) + " not found in RFT file.";
@@ -396,7 +396,7 @@ std::vector<EclFile::EclEntry> ERft::listOfRftArrays(int reportIndex) const
     std::vector<EclEntry> list;
     auto searchInd = arrIndexRange.find(reportIndex);
 
-    for (int i = std::get<0>(searchInd->second); i < std::get<1>(searchInd->second); i++) {
+    for (long long i = std::get<0>(searchInd->second); i < std::get<1>(searchInd->second); i++) {
         list.emplace_back(array_name[i], array_type[i], array_size[i]);
     }
 
@@ -407,10 +407,10 @@ std::vector<EclFile::EclEntry> ERft::listOfRftArrays(const std::string& wellName
                                                      const RftDate& date) const
 {
     std::vector<EclEntry> list;
-    int rInd = getReportIndex(wellName, date);
+    long long rInd = getReportIndex(wellName, date);
 
     auto searchInd = arrIndexRange.find(rInd);
-    for (int i = std::get<0>(searchInd->second); i < std::get<1>(searchInd->second); i++) {
+    for (long long i = std::get<0>(searchInd->second); i < std::get<1>(searchInd->second); i++) {
         list.emplace_back(array_name[i], array_type[i], array_size[i]);
     }
 
@@ -419,7 +419,7 @@ std::vector<EclFile::EclEntry> ERft::listOfRftArrays(const std::string& wellName
 
 
 std::vector<EclFile::EclEntry> ERft::listOfRftArrays(const std::string& wellName,
-                                                     int year, int month, int day) const
+                                                     long long year, long long month, long long day) const
 {
     return listOfRftArrays(wellName, RftDate{year, month, day});
 }

@@ -48,7 +48,7 @@ public:
                          const Opm::SummaryState&  st,
                          const std::size_t         simStep);
 
-    const std::vector<int>& getIACT() const
+    const std::vector<long long>& getIACT() const
     {
         return this->iACT_.data();
     }
@@ -73,7 +73,7 @@ public:
         return this->zACN_.data();
     }
    
-    const std::vector<int>& getIACN() const
+    const std::vector<long long>& getIACN() const
     {
         return this->iACN_.data();
     }
@@ -85,7 +85,7 @@ public:
     }
 
 private:
-    AggregateActionxData(const std::vector<int>&   rst_dims,
+    AggregateActionxData(const std::vector<long long>&   rst_dims,
                          std::size_t               num_actions,
                          const Opm::Actdims&       actdims,
                          const Opm::Schedule&      sched,
@@ -94,7 +94,7 @@ private:
                          const std::size_t         simStep);
 
     /// Aggregate 'IACT' array (Integer) for all ACTIONX data  (9 integers pr UDQ)
-    WindowedArray<int> iACT_;
+    WindowedArray<long long> iACT_;
 
     /// Aggregate 'SACT' array (Integer) for all ACTIONX data  (5 integers pr ACTIONX - currently all zero - meaning unknown)
     WindowedArray<float> sACT_;
@@ -109,7 +109,7 @@ private:
     WindowedArray<EclIO::PaddedOutputString<8>> zACN_;
 
     /// Aggregate 'IACN' array (Integer) for all Actionx data  (length 26* the max number of conditoins pr Actionx * the number of Actionx kwords)
-    WindowedArray<int> iACN_;
+    WindowedArray<long long> iACN_;
 
     /// Aggregate 'SACN' array (double precision floating-point) for all Actionx data  (16 * max number of Actionx conditions)
     WindowedMatrix<double> sACN_;

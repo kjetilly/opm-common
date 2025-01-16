@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_SUITE(Default)
 BOOST_AUTO_TEST_CASE(testLocal) {
     std::size_t nx=2, ny = 3, nz=2;
     Opm::GridDims dims(nx, ny, nz);
-    std::vector<int> cells(9);
+    std::vector<long long> cells(9);
     std::set<std::array<std::size_t,3> > inactive;
     inactive.insert({0,0,0});
     inactive.insert({1,1,0});
@@ -75,8 +75,8 @@ BOOST_AUTO_TEST_CASE(testLocal) {
                 else
                 {
                     BOOST_CHECK(actnum[cartIndex] == 1);
-                    BOOST_CHECK(active.localCell(cartIndex) == (int)index);
-                    BOOST_CHECK(active.localCell(i,j,k) == (int)index);
+                    BOOST_CHECK(active.localCell(cartIndex) == (long long)index);
+                    BOOST_CHECK(active.localCell(i,j,k) == (long long)index);
                     BOOST_CHECK(active.cellActive(cartIndex));
                     BOOST_CHECK(active.cellActive(i, j, k));
                     ++index;

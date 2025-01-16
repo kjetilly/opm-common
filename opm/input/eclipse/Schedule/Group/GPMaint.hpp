@@ -69,7 +69,7 @@ public:
     double time_constant() const;
     double rate(State& state, double current_rate, double error, double dt) const;
     void resetState(State& state) const;
-    std::optional<std::pair<std::string, int>> region() const;
+    std::optional<std::pair<std::string, long long>> region() const;
     FlowTarget flow_target() const;
     bool operator==(const GPMaint& other) const;
     template<class Serializer>
@@ -88,7 +88,7 @@ private:
     static FlowTarget FlowTargetFromString(const std::string& stringvalue);
 
     FlowTarget m_flow_target{FlowTarget::RESV_GINJ};
-    int m_region_number{};
+    long long m_region_number{};
     std::string m_region_name{};
     double m_pressure_target{};
     double m_prop_constant{};

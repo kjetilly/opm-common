@@ -178,11 +178,11 @@ std::vector<const Branch*> ExtNetwork::branches() const {
     return branch_pointer;
 }
 
-int ExtNetwork::NoOfBranches() const {
+long long ExtNetwork::NoOfBranches() const {
     return this->m_branches.size();
 }
 
-int ExtNetwork::NoOfNodes() const {
+long long ExtNetwork::NoOfNodes() const {
     return this->m_nodes.size();
 }
 

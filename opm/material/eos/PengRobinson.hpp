@@ -189,7 +189,7 @@ public:
         Valgrind::CheckDefined(a3);
         Valgrind::CheckDefined(a4);
 
-        int numSol = cubicRoots(Z, a1, a2, a3, a4);
+        long long numSol = cubicRoots(Z, a1, a2, a3, a4);
         if (numSol == 3) {
             // the EOS has three intersections with the pressure,
             // i.e. the molar volume of gas is the largest one and the

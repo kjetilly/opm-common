@@ -32,8 +32,8 @@ BOOST_AUTO_TEST_SUITE(WriteOperations)
 
 BOOST_AUTO_TEST_CASE(EmptyArray)
 {
-    using Wa = Opm::RestartIO::Helpers::WindowedArray<int>;
-    using Wm = Opm::RestartIO::Helpers::WindowedMatrix<int>;
+    using Wa = Opm::RestartIO::Helpers::WindowedArray<long long>;
+    using Wm = Opm::RestartIO::Helpers::WindowedMatrix<long long>;
     BOOST_CHECK_NO_THROW( Wa( Wa::NumWindows{ 0 }, Wa::WindowSize{ 1 }) );
     BOOST_CHECK_NO_THROW( Wm( Wm::NumRows{ 0 }, Wm::NumCols{ 2 }, Wm::WindowSize{ 3 } ));
 
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(EmptyArray)
 
 BOOST_AUTO_TEST_CASE(Array)
 {
-    using Wa = Opm::RestartIO::Helpers::WindowedArray<int>;
+    using Wa = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
     auto wa = Wa{ Wa::NumWindows{ 5 }, Wa::WindowSize{ 7 } };
 
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(Array)
     BOOST_CHECK_EQUAL(wa.windowSize(), Wa::Idx{7});
 
     {
-        const auto expect = std::vector<int>{
+        const auto expect = std::vector<long long>{
           // 0   1   2   3   4   5   6
              0,  0,  0,  0,  0,  0,  0, // 0
             10, 10, 10, 10, 10, 10, 10, // 1
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(Array)
     }
 
     {
-        const auto expect = std::vector<int>{
+        const auto expect = std::vector<long long>{
           // 0    1    2    3    4    5    6
              0, - 3, - 6, - 9, -12, -15, -18, // 0
             10,   7,   4,   1, - 2, - 5, - 8, // 1
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(Array)
 
 BOOST_AUTO_TEST_CASE(Matrix)
 {
-    using Wm = Opm::RestartIO::Helpers::WindowedMatrix<int>;
+    using Wm = Opm::RestartIO::Helpers::WindowedMatrix<long long>;
 
     auto wm = Wm{ Wm::NumRows{ 3 }, Wm::NumCols{ 2 }, Wm::WindowSize{ 4 } };
 
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(Matrix)
     }
 
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
               0,   0,   0,   0,    10,  10,  10,  10,
             100, 100, 100, 100,   110, 110, 110, 110,
             200, 200, 200, 200,   210, 210, 210, 210,
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(Matrix)
     }
 
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
               0, - 13, - 26, - 39,       10, -  3, - 16, - 29,
             100,   87,   74,   61,      110,   97,   84,   71,
             200,  187,  174,  161,      210,  197,  184,  171,

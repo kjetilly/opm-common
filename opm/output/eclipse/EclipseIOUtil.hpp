@@ -11,7 +11,7 @@ namespace EclipseIOUtil
 
     template <typename T>
     void addToStripedData(const std::vector<T>& data, std::vector<T>& result, size_t offset, size_t stride) {
-        int dataindex = 0;
+        long long dataindex = 0;
         for (size_t index = offset; index < result.size(); index += stride) {
             result[index] = data[dataindex];
             ++dataindex;

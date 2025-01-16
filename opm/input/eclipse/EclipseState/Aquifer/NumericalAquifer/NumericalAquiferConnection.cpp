@@ -66,14 +66,14 @@ namespace Opm {
     using AQUCON = ParserKeywords::AQUCON;
     NumericalAquiferConnection::NumericalAquiferConnection(const size_t i, const size_t j, const size_t k,
                                                            const size_t global_index_in, const bool allow_connection_active, const DeckRecord& record)
-    : aquifer_id(record.getItem<AQUCON::ID>().get<int>(0))
+    : aquifer_id(record.getItem<AQUCON::ID>().get<long long>(0))
     , I(i)
     , J(j)
     , K(k)
     , global_index(global_index_in)
     , face_dir(FaceDir::FromString(record.getItem<AQUCON::CONNECT_FACE>().getTrimmedString(0)))
     , trans_multipler(record.getItem<AQUCON::TRANS_MULT>().get<double>(0))
-    , trans_option(record.getItem<AQUCON::TRANS_OPTION>().get<int>(0))
+    , trans_option(record.getItem<AQUCON::TRANS_OPTION>().get<long long>(0))
     , connect_active_cell(allow_connection_active)
     , ve_frac_relperm(record.getItem<AQUCON::VEFRAC>().get<double>(0))
     , ve_frac_cappress(record.getItem<AQUCON::VEFRACP>().get<double>(0))
@@ -85,12 +85,12 @@ namespace Opm {
     connectionsFromSingleRecord(const EclipseGrid& grid, const DeckRecord& record) {
         std::vector<NumericalAquiferConnection> cons;
 
-        const size_t i1 = record.getItem<AQUCON::I1>().get<int>(0) - 1;
-        const size_t j1 = record.getItem<AQUCON::J1>().get<int>(0) - 1;
-        const size_t k1 = record.getItem<AQUCON::K1>().get<int>(0) - 1;
-        const size_t i2 = record.getItem<AQUCON::I2>().get<int>(0) - 1;
-        const size_t j2 = record.getItem<AQUCON::J2>().get<int>(0) - 1;
-        const size_t k2 = record.getItem<AQUCON::K2>().get<int>(0) - 1;
+        const size_t i1 = record.getItem<AQUCON::I1>().get<long long>(0) - 1;
+        const size_t j1 = record.getItem<AQUCON::J1>().get<long long>(0) - 1;
+        const size_t k1 = record.getItem<AQUCON::K1>().get<long long>(0) - 1;
+        const size_t i2 = record.getItem<AQUCON::I2>().get<long long>(0) - 1;
+        const size_t j2 = record.getItem<AQUCON::J2>().get<long long>(0) - 1;
+        const size_t k2 = record.getItem<AQUCON::K2>().get<long long>(0) - 1;
 
         const bool allow_internal_cells = DeckItem::to_bool( record.getItem<AQUCON::ALLOW_INTERNAL_CELLS>().getTrimmedString(0) );
 

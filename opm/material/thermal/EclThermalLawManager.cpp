@@ -41,7 +41,7 @@ template<class Scalar, class FluidSystem>
 void EclThermalLawManager<Scalar,FluidSystem>::
 initParamsForElements(const EclipseState& eclState, size_t numElems,
                       const std::function<std::vector<double>(const FieldPropsManager&, const std::string&)>& fieldPropsDoubleOnLeafAssigner,
-                      const std::function<std::vector<unsigned int>(const FieldPropsManager&, const std::string&, bool)>&
+                      const std::function<std::vector<size_t>(const FieldPropsManager&, const std::string&, bool)>&
                       fieldPropsIntOnLeafAssigner)
 {
     const auto& fp = eclState.fieldProps();
@@ -145,7 +145,7 @@ initHeatcr_(const EclipseState& eclState, size_t numElems,
 template<class Scalar, class FluidSystem>
 void EclThermalLawManager<Scalar,FluidSystem>::
 initSpecrock_(const EclipseState& eclState,
-              const std::function<std::vector<unsigned int>(const FieldPropsManager&, const std::string&, bool)>& fieldPropsIntOnLeafAssigner)
+              const std::function<std::vector<size_t>(const FieldPropsManager&, const std::string&, bool)>& fieldPropsIntOnLeafAssigner)
 {
     solidEnergyApproach_ = EclSolidEnergyApproach::Specrock;
 

@@ -29,20 +29,21 @@
 #include <fstream>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #ifdef _MSC_VER
 #include <intrin.h>
 #endif
 
-int Opm::EclIO::flipEndianInt(int num)
+long long Opm::EclIO::flipEndianInt(long long num)
 {
 #ifdef _MSC_VER
-    unsigned int tmp = _byteswap_ulong(num);
-    return static_cast<int>(tmp);
+    size_t tmp = _byteswap_ulong(num);
+    return static_cast<long long>(tmp);
 #else
-    unsigned int tmp = __builtin_bswap32(num);
-    return static_cast<int>(tmp);
+    size_t tmp = __builtin_bswap32(num);
+    return static_cast<long long>(tmp);
 #endif
 }
 
@@ -112,7 +113,7 @@ bool Opm::EclIO::isFormatted(const std::string& filename)
 
 bool Opm::EclIO::isEOF(std::fstream* fileH)
 {
-    int num;
+    long long num;
     std::int64_t pos = fileH->tellg();
     fileH->read(reinterpret_cast<char*>(&num), sizeof(num));
 
@@ -124,12 +125,12 @@ bool Opm::EclIO::isEOF(std::fstream* fileH)
     }
 }
 
-int Opm::EclIO::combineSummaryNumbers(const int n1, const int n2)
+long long Opm::EclIO::combineSummaryNumbers(const long long n1, const long long n2)
 {
     return n1 + (1 << 15)*(n2 + 10);
 }
 
-std::tuple<int, int> Opm::EclIO::splitSummaryNumber(const int n)
+std::tuple<long long, long long> Opm::EclIO::splitSummaryNumber(const long long n)
 {
     const auto n1 =  n % (1 << 15);
     const auto n2 = (n / (1 << 15)) - 10;
@@ -137,9 +138,9 @@ std::tuple<int, int> Opm::EclIO::splitSummaryNumber(const int n)
     return { n1, n2 };
 }
 
-std::tuple<int, int> Opm::EclIO::block_size_data_binary(eclArrType arrType)
+std::tuple<long long, long long> Opm::EclIO::block_size_data_binary(eclArrType arrType)
 {
-    using BlockSizeTuple = std::tuple<int, int>;
+    using BlockSizeTuple = std::tuple<long long, long long>;
 
     switch (arrType) {
     case INTE:
@@ -170,9 +171,9 @@ std::tuple<int, int> Opm::EclIO::block_size_data_binary(eclArrType arrType)
 }
 
 
-std::tuple<int, int, int> Opm::EclIO::block_size_data_formatted(eclArrType arrType)
+std::tuple<long long, long long, long long> Opm::EclIO::block_size_data_formatted(eclArrType arrType)
 {
-    using BlockSizeTuple = std::tuple<int, int, int>;
+    using BlockSizeTuple = std::tuple<long long, long long, long long>;
 
     switch (arrType) {
     case INTE:
@@ -208,13 +209,13 @@ std::string Opm::EclIO::trimr(const std::string &str1)
     if (str1 == "        ") {
         return "";
     } else {
-        int p = str1.find_last_not_of(" ");
+        long long p = str1.find_last_not_of(" ");
 
         return str1.substr(0,p+1);
     }
 }
 
-std::uint64_t Opm::EclIO::sizeOnDiskBinary(std::int64_t num, Opm::EclIO::eclArrType arrType, int elementSize)
+std::uint64_t Opm::EclIO::sizeOnDiskBinary(std::int64_t num, Opm::EclIO::eclArrType arrType, long long elementSize)
 {
     std::uint64_t size = 0;
 
@@ -232,9 +233,9 @@ std::uint64_t Opm::EclIO::sizeOnDiskBinary(std::int64_t num, Opm::EclIO::eclArrT
                 std::get<0>(sizeData) = elementSize;
             }
 
-            int sizeOfElement = std::get<0>(sizeData);
-            int maxBlockSize = std::get<1>(sizeData);
-            int maxNumberOfElements = maxBlockSize / sizeOfElement;
+            long long sizeOfElement = std::get<0>(sizeData);
+            long long maxBlockSize = std::get<1>(sizeData);
+            long long maxNumberOfElements = maxBlockSize / sizeOfElement;
 
             auto numBlocks = static_cast<std::uint64_t>(num)/static_cast<std::uint64_t>(maxNumberOfElements);
             auto rest = static_cast<std::uint64_t>(num) - numBlocks*static_cast<std::uint64_t>(maxNumberOfElements);
@@ -254,7 +255,7 @@ std::uint64_t Opm::EclIO::sizeOnDiskBinary(std::int64_t num, Opm::EclIO::eclArrT
     return size;
 }
 
-std::uint64_t Opm::EclIO::sizeOnDiskFormatted(const std::int64_t num, Opm::EclIO::eclArrType arrType, int elementSize)
+std::uint64_t Opm::EclIO::sizeOnDiskFormatted(const std::int64_t num, Opm::EclIO::eclArrType arrType, long long elementSize)
 {
     std::uint64_t size = 0;
 
@@ -270,18 +271,18 @@ std::uint64_t Opm::EclIO::sizeOnDiskFormatted(const std::int64_t num, Opm::EclIO
             std::get<1>(sizeData) = 80 / std::get<2>(sizeData);
         }
 
-        int maxBlockSize = std::get<0>(sizeData);
-        int nColumns = std::get<1>(sizeData);
-        int columnWidth = std::get<2>(sizeData);
+        long long maxBlockSize = std::get<0>(sizeData);
+        long long nColumns = std::get<1>(sizeData);
+        long long columnWidth = std::get<2>(sizeData);
 
-        int nBlocks = num /maxBlockSize;
-        int sizeOfLastBlock = num %  maxBlockSize;
+        long long nBlocks = num /maxBlockSize;
+        long long sizeOfLastBlock = num %  maxBlockSize;
 
         size = 0;
 
         if (nBlocks > 0) {
-            int nLinesBlock = maxBlockSize / nColumns;
-            int rest = maxBlockSize % nColumns;
+            long long nLinesBlock = maxBlockSize / nColumns;
+            long long rest = maxBlockSize % nColumns;
 
             if (rest > 0) {
                 nLinesBlock++;
@@ -291,8 +292,8 @@ std::uint64_t Opm::EclIO::sizeOnDiskFormatted(const std::int64_t num, Opm::EclIO
             size = nBlocks * blockSize;
         }
 
-        int nLines = sizeOfLastBlock / nColumns;
-        int rest = sizeOfLastBlock % nColumns;
+        long long nLines = sizeOfLastBlock / nColumns;
+        long long rest = sizeOfLastBlock % nColumns;
 
         size = size + sizeOfLastBlock * columnWidth + nLines;
 
@@ -305,9 +306,9 @@ std::uint64_t Opm::EclIO::sizeOnDiskFormatted(const std::int64_t num, Opm::EclIO
 }
 
 void Opm::EclIO::readBinaryHeader(std::fstream& fileH, std::string& tmpStrName,
-                      int& tmpSize, std::string& tmpStrType)
+                      long long& tmpSize, std::string& tmpStrType)
 {
-    int bhead;
+    long long bhead;
 
     fileH.read(reinterpret_cast<char*>(&bhead), sizeof(bhead));
     bhead = Opm::EclIO::flipEndianInt(bhead);
@@ -334,17 +335,17 @@ void Opm::EclIO::readBinaryHeader(std::fstream& fileH, std::string& tmpStrName,
 }
 
 void Opm::EclIO::readBinaryHeader(std::fstream& fileH, std::string& arrName,
-                      std::int64_t& size, Opm::EclIO::eclArrType &arrType, int& elementSize)
+                      std::int64_t& size, Opm::EclIO::eclArrType &arrType, long long& elementSize)
 {
     std::string tmpStrName(8,' ');
     std::string tmpStrType(4,' ');
-    int tmpSize;
+    long long tmpSize;
 
     readBinaryHeader(fileH, tmpStrName, tmpSize, tmpStrType);
 
     if (tmpStrType == "X231"){
         std::string x231ArrayName = tmpStrName;
-        int x231exp = tmpSize * (-1);
+        long long x231exp = tmpSize * (-1);
 
         readBinaryHeader(fileH, tmpStrName, tmpSize, tmpStrType);
 
@@ -388,15 +389,15 @@ void Opm::EclIO::readBinaryHeader(std::fstream& fileH, std::string& arrName,
 
 
 void Opm::EclIO::readFormattedHeader(std::fstream& fileH, std::string& arrName,
-                         std::int64_t &num, Opm::EclIO::eclArrType &arrType, int& elementSize)
+                         std::int64_t &num, Opm::EclIO::eclArrType &arrType, long long& elementSize)
 {
     std::string line;
     std::getline(fileH,line);
 
-    int p1 = line.find_first_of("'");
-    int p2 = line.find_first_of("'",p1+1);
-    int p3 = line.find_first_of("'",p2+1);
-    int p4 = line.find_first_of("'",p3+1);
+    long long p1 = line.find_first_of("'");
+    long long p2 = line.find_first_of("'",p1+1);
+    long long p3 = line.find_first_of("'",p2+1);
+    long long p4 = line.find_first_of("'",p3+1);
 
     if (p1 == -1 || p2 == -1 || p3 == -1 || p4 == -1) {
         OPM_THROW(std::runtime_error, "Header name and type should be enclosed with '");
@@ -440,7 +441,7 @@ void Opm::EclIO::readFormattedHeader(std::fstream& fileH, std::string& arrName,
 
 template<typename T, typename T2>
 std::vector<T> Opm::EclIO::readBinaryArray(std::fstream& fileH, const std::int64_t size, Opm::EclIO::eclArrType type,
-                               std::function<T(T2)>& flip, int elementSize)
+                               std::function<T(T2)>& flip, long long elementSize)
 {
     std::vector<T> arr;
 
@@ -451,26 +452,26 @@ std::vector<T> Opm::EclIO::readBinaryArray(std::fstream& fileH, const std::int64
         std::get<0>(sizeData) = elementSize;
     }
 
-    const int sizeOfElement = std::get<0>(sizeData);
-    const int maxBlockSize = std::get<1>(sizeData);
-    const int maxNumberOfElements = maxBlockSize / sizeOfElement;
+    const long long sizeOfElement = std::get<0>(sizeData);
+    const long long maxBlockSize = std::get<1>(sizeData);
+    const long long maxNumberOfElements = maxBlockSize / sizeOfElement;
 
     arr.reserve(size);
 
     std::int64_t rest = size;
 
     while (rest > 0) {
-        int dhead;
+        long long dhead;
         fileH.read(reinterpret_cast<char*>(&dhead), sizeof(dhead));
         dhead = Opm::EclIO::flipEndianInt(dhead);
-        const int num = dhead / sizeOfElement;
+        const long long num = dhead / sizeOfElement;
 
         if ((num > maxNumberOfElements) || (num < 0)) {
             OPM_THROW(std::runtime_error, "Error reading binary data, inconsistent header data or incorrect number of elements");
         }
 
         if constexpr (std::is_same_v<T2, std::string>) {
-            for (int i = 0; i < num; i++) {
+            for (long long i = 0; i < num; i++) {
                 T2 value;
                 value.resize(sizeOfElement) ;
                 fileH.read(&value[0], sizeOfElement);
@@ -492,7 +493,7 @@ std::vector<T> Opm::EclIO::readBinaryArray(std::fstream& fileH, const std::int64
             OPM_THROW(std::runtime_error, message);
         }
 
-        int dtail;
+        long long dtail;
         fileH.read(reinterpret_cast<char*>(&dtail), sizeof(dtail));
         dtail = Opm::EclIO::flipEndianInt(dtail);
 
@@ -505,10 +506,10 @@ std::vector<T> Opm::EclIO::readBinaryArray(std::fstream& fileH, const std::int64
 }
 
 
-std::vector<int> Opm::EclIO::readBinaryInteArray(std::fstream &fileH, const std::int64_t size)
+std::vector<long long> Opm::EclIO::readBinaryInteArray(std::fstream &fileH, const std::int64_t size)
 {
-    std::function<int(int)> f = Opm::EclIO::flipEndianInt;
-    return readBinaryArray<int,int>(fileH, size, Opm::EclIO::INTE, f, sizeOfInte);
+    std::function<std::common_type<long long>::type( std::common_type<long long>::type)> f = Opm::EclIO::flipEndianInt;
+    return readBinaryArray<long long,long long>(fileH, size, Opm::EclIO::INTE, f, sizeOfInte);
 }
 
 
@@ -527,7 +528,7 @@ std::vector<double> Opm::EclIO::readBinaryDoubArray(std::fstream& fileH, const s
 
 std::vector<bool> Opm::EclIO::readBinaryLogiArray(std::fstream &fileH, const std::int64_t size)
 {
-    std::function<bool(unsigned int)> f = [](unsigned int intVal)
+    std::function<bool(size_t)> f = [](size_t intVal)
                                           {
                                               bool value = false;
                                               if (intVal == Opm::EclIO::true_value_ecl) {
@@ -542,16 +543,16 @@ std::vector<bool> Opm::EclIO::readBinaryLogiArray(std::fstream &fileH, const std
 
                                               return value;
                                           };
-    return readBinaryArray<bool,unsigned int>(fileH, size, Opm::EclIO::LOGI, f, sizeOfLogi);
+    return readBinaryArray<bool,size_t>(fileH, size, Opm::EclIO::LOGI, f, sizeOfLogi);
 }
 
-std::vector<unsigned int> Opm::EclIO::readBinaryRawLogiArray(std::fstream &fileH, const std::int64_t size)
+std::vector<size_t> Opm::EclIO::readBinaryRawLogiArray(std::fstream &fileH, const std::int64_t size)
 {
-    std::function<unsigned int(unsigned int)> f = [](unsigned int intVal)
+    std::function<size_t(size_t)> f = [](size_t intVal)
                                           {
                                               return intVal;
                                           };
-    return readBinaryArray<unsigned int, unsigned int>(fileH, size, Opm::EclIO::LOGI, f, sizeOfLogi);
+    return readBinaryArray<size_t, size_t>(fileH, size, Opm::EclIO::LOGI, f, sizeOfLogi);
 }
 
 
@@ -567,7 +568,7 @@ std::vector<std::string> Opm::EclIO::readBinaryCharArray(std::fstream& fileH, co
 }
 
 
-std::vector<std::string> Opm::EclIO::readBinaryC0nnArray(std::fstream& fileH, const std::int64_t size, int elementSize)
+std::vector<std::string> Opm::EclIO::readBinaryC0nnArray(std::fstream& fileH, const std::int64_t size, long long elementSize)
 {
     std::function<std::string(std::string)> f = [](const std::string& val)
                                           {
@@ -579,7 +580,7 @@ std::vector<std::string> Opm::EclIO::readBinaryC0nnArray(std::fstream& fileH, co
 
 
 template<typename T>
-std::vector<T> Opm::EclIO::readFormattedArray(const std::string& file_str, const int size, std::int64_t fromPos,
+std::vector<T> Opm::EclIO::readFormattedArray(const std::string& file_str, const long long size, std::int64_t fromPos,
                                  std::function<T(const std::string&)>& process)
 {
     std::vector<T> arr;
@@ -588,7 +589,7 @@ std::vector<T> Opm::EclIO::readFormattedArray(const std::string& file_str, const
 
     std::int64_t p1=fromPos;
 
-    for (int i=0; i< size; i++) {
+    for (long long i=0; i< size; i++) {
         p1 = file_str.find_first_not_of(' ',p1);
         std::int64_t p2 = file_str.find_first_of(' ', p1);
 
@@ -601,12 +602,12 @@ std::vector<T> Opm::EclIO::readFormattedArray(const std::string& file_str, const
 }
 
 
-std::vector<int> Opm::EclIO::readFormattedInteArray(const std::string& file_str, const std::int64_t size, std::int64_t fromPos)
+std::vector<long long> Opm::EclIO::readFormattedInteArray(const std::string& file_str, const std::int64_t size, std::int64_t fromPos)
 {
 
-    std::function<int(const std::string&)> f = [](const std::string& val)
+    std::function<std::common_type<long long>::type(const std::string&)> f = [](const std::string& val)
                                                {
-                                                   return std::stoi(val);
+                                                   return std::stoll(val);
                                                };
 
     return readFormattedArray(file_str, size, fromPos, f);
@@ -614,14 +615,14 @@ std::vector<int> Opm::EclIO::readFormattedInteArray(const std::string& file_str,
 
 
 std::vector<std::string> Opm::EclIO::readFormattedCharArray(const std::string& file_str, const std::int64_t size,
-                                                            std::int64_t fromPos, int elementSize)
+                                                            std::int64_t fromPos, long long elementSize)
 {
     std::vector<std::string> arr;
     arr.reserve(size);
 
     std::int64_t p1=fromPos;
 
-    for (int i=0; i< size; i++) {
+    for (long long i=0; i< size; i++) {
         p1 = file_str.find_first_of('\'',p1);
         std::string value = file_str.substr(p1 + 1, elementSize);
 

@@ -229,9 +229,9 @@ public:
     bool operator==(const RSTConfig& other) const;
 
     std::optional<bool> write_rst_file{};
-    std::map<std::string, int> keywords{};
-    std::optional<int> basic{};
-    std::optional<int> freq{};
+    std::map<std::string, long long> keywords{};
+    std::optional<long long> basic{};
+    std::optional<long long> freq{};
     bool save { false };
     bool compositional { false };
 
@@ -251,7 +251,7 @@ private:
                         const ParseContext& parse_context,
                         ErrorGuard& errors);
 
-    void update_schedule(const std::pair<std::optional<int>, std::optional<int>>& basic_freq);
+    void update_schedule(const std::pair<std::optional<long long>, std::optional<long long>>& basic_freq);
 };
 
 } // namespace Opm

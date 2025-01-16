@@ -340,7 +340,7 @@ public:
      * In the corner case that the function is constant within the given
      * interval, this method returns 3.
      */
-    int monotonic(Scalar x0, Scalar x1,
+    long long monotonic(Scalar x0, Scalar x1,
                   [[maybe_unused]] bool extrapolate = false) const
     {
         assert(x0 != x1);
@@ -351,7 +351,7 @@ public:
 
         assert(x0 < x1);
 
-        int r = 3;
+        long long r = 3;
         if (x0 < xMin()) {
             assert(extrapolate);
 
@@ -405,7 +405,7 @@ public:
      * \brief Same as monotonic(x0, x1), but with the entire range of the
      *        function as interval.
      */
-    int monotonic() const
+    long long monotonic() const
     { return monotonic(xMin(), xMax()); }
 
     /*!
@@ -524,7 +524,7 @@ private:
     // 1: function is monotonously increasing in the specified interval
     // 0: function is not monotonic in the specified interval
     // -1: function is monotonously decreasing in the specified interval
-    int updateMonotonicity_(size_t i, int& r) const
+    long long updateMonotonicity_(size_t i, long long& r) const
     {
         if (yValues_[i] < yValues_[i + 1]) {
             // monotonically increasing?

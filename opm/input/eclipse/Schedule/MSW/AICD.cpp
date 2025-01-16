@@ -82,7 +82,7 @@ AutoICD::AutoICD(const RestartIO::RstSegment& rstSegment)
 // [
 //     "WELL1" : [<seg1, aicd1>, <seg2, aicd2> ...]
 //     ....
-std::map<std::string, std::vector<std::pair<int, AutoICD>>>
+std::map<std::string, std::vector<std::pair<long long, AutoICD>>>
 AutoICD::fromWSEGAICD(const DeckKeyword& wsegaicd)
 {
     return fromWSEG<AutoICD>(wsegaicd);

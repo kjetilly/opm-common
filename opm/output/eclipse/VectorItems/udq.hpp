@@ -25,7 +25,7 @@
 namespace Opm::RestartIO::Helpers::VectorItems {
 
     namespace IUad {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             UDACode  = 0, // Integer code for keyword/item combination.
             UDQIndex = 1, // UDQ insertion index (one-based)
             Kind     = 2, // UDA Kind.  1 => Regular, 2 => Field.
@@ -37,7 +37,7 @@ namespace Opm::RestartIO::Helpers::VectorItems {
         };
 
         namespace Value {
-            enum UDAKind : int {
+            enum UDAKind : long long {
                 Regular = 1, // UDA applies to a well or a non-field group.
                 Field   = 2, // UDA applies to the field group.
             };

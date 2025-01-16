@@ -45,8 +45,8 @@ public:
 
     void loadData();                            // load all data
     void loadData(const std::string& arrName);         // load all arrays with array name equal to arrName
-    void loadData(int arrIndex);                // load data based on array indices in vector arrIndex
-    void loadData(const std::vector<int>& arrIndex);   // load data based on array indices in vector arrIndex
+    void loadData(long long arrIndex);                // load data based on array indices in vector arrIndex
+    void loadData(const std::vector<long long>& arrIndex);   // load data based on array indices in vector arrIndex
 
     void clearData()
     {
@@ -62,10 +62,10 @@ public:
     using EclEntry = std::tuple<std::string, eclArrType, std::int64_t>;
     std::vector<EclEntry> getList() const;
 
-    const std::vector<int>& getElementSizeList() const { return array_element_size; }
+    const std::vector<long long>& getElementSizeList() const { return array_element_size; }
 
     template <typename T>
-    const std::vector<T>& get(int arrIndex);
+    const std::vector<T>& get(long long arrIndex);
 
     template <typename T>
     const std::vector<T>& get(const std::string& name);
@@ -81,24 +81,24 @@ protected:
     bool formatted;
     std::string inputFilename;
 
-    std::unordered_map<int, std::vector<int>> inte_array;
-    std::unordered_map<int, std::vector<bool>> logi_array;
-    std::unordered_map<int, std::vector<double>> doub_array;
-    std::unordered_map<int, std::vector<float>> real_array;
-    std::unordered_map<int, std::vector<std::string>> char_array;
+    std::unordered_map<long long, std::vector<long long>> inte_array;
+    std::unordered_map<long long, std::vector<bool>> logi_array;
+    std::unordered_map<long long, std::vector<double>> doub_array;
+    std::unordered_map<long long, std::vector<float>> real_array;
+    std::unordered_map<long long, std::vector<std::string>> char_array;
 
     std::vector<std::string> array_name;
     std::vector<eclArrType> array_type;
     std::vector<std::int64_t> array_size;
-    std::vector<int> array_element_size;
+    std::vector<long long> array_element_size;
 
     std::vector<std::uint64_t> ifStreamPos;
 
-    std::map<std::string, int> array_index;
+    std::map<std::string, long long> array_index;
 
     template<class T>
-    const std::vector<T>& getImpl(int arrIndex, eclArrType type,
-                                  const std::unordered_map<int, std::vector<T>>& array,
+    const std::vector<T>& getImpl(long long arrIndex, eclArrType type,
+                                  const std::unordered_map<long long, std::vector<T>>& array,
                                   const std::string& typeStr);
 
     std::streampos
@@ -111,8 +111,8 @@ private:
     void loadFormattedArray(const std::string& fileStr, std::size_t arrIndex, std::int64_t fromPos);
     void load(bool preload);
 
-    std::vector<unsigned int> get_bin_logi_raw_values(int arrIndex) const;
-    std::vector<std::string> get_fmt_real_raw_str_values(int arrIndex) const;
+    std::vector<size_t> get_bin_logi_raw_values(long long arrIndex) const;
+    std::vector<std::string> get_fmt_real_raw_str_values(long long arrIndex) const;
 
 };
 

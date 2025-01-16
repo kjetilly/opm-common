@@ -131,7 +131,7 @@ RockConfig::RockConfig(const Deck& deck, const FieldPropsManager& fp)
             this->num_property = "ROCKNUM";
         }
 
-        this->num_tables = record.getItem<rockcomp::NTROCC>().get<int>(0);
+        this->num_tables = record.getItem<rockcomp::NTROCC>().get<long long>(0);
         this->hyst_mode = hysteresis(record.getItem<rockcomp::HYSTERESIS>().getTrimmedString(0));
         this->m_water_compaction = DeckItem::to_bool(record.getItem<rockcomp::WATER_COMPACTION>().getTrimmedString(0));
 

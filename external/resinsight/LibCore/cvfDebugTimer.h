@@ -78,7 +78,7 @@ private:
 private:
     Timer*      m_timer;            ///< The actual timer object to use
     String*     m_prefix;           ///< String to prefix all output
-    int         m_messageCount;     ///< Counts number of messages returned
+    long long         m_messageCount;     ///< Counts number of messages returned
 
     CVF_DISABLE_COPY_AND_ASSIGN(DebugTimer);
 };

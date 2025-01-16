@@ -34,7 +34,7 @@
 namespace Opm {
 namespace DenseAd {
 
-template <class ValueT, int numDerivs, unsigned staticSize>
+template <class ValueT, long long numDerivs, unsigned staticSize>
 OPM_HOST_DEVICE void printEvaluation(std::ostream& os,
                      const Evaluation<ValueT,numDerivs,staticSize>& eval,
                      bool withDer)
@@ -46,7 +46,7 @@ OPM_HOST_DEVICE void printEvaluation(std::ostream& os,
       os << " / d:";
 
       // print derivatives
-      for (int varIdx = 0; varIdx < eval.size(); ++varIdx) {
+      for (long long varIdx = 0; varIdx < eval.size(); ++varIdx) {
         os << " " << eval.derivative(varIdx);
       }
   }

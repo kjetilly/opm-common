@@ -61,16 +61,16 @@ namespace cvf {
 class AtomicCounter
 {
 public:
-    explicit AtomicCounter(int initialValue);
+    explicit AtomicCounter(long long initialValue);
     ~AtomicCounter();
 
-    operator int () const;
+    operator long long () const;
 
-    int operator ++ ();     // prefix
-    int operator ++ (int);  // postfix
+    long long operator ++ ();     // prefix
+    long long operator ++ (int);  // postfix
 
-    int operator -- ();     // prefix
-    int operator -- (int);  // postfix
+    long long operator -- ();     // prefix
+    long long operator -- (int);  // postfix
 
 private:
     
@@ -81,7 +81,7 @@ private:
 #elif defined(CVF_IOS) || defined(CVF_OSX)
     typedef int32_t ImplType;
 #else
-    typedef int ImplType;
+    typedef long long ImplType;
 #endif
 
     ImplType m_counter;

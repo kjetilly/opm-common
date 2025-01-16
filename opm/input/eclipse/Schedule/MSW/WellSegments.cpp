@@ -84,21 +84,21 @@ namespace Opm {
         return this->m_segments.empty();
     }
 
-    int WellSegments::maxSegmentID() const
+    long long WellSegments::maxSegmentID() const
     {
         return std::accumulate(this->m_segments.begin(),
                                this->m_segments.end(), 0,
-            [](const int maxID, const Segment& seg)
+            [](const long long maxID, const Segment& seg)
         {
             return std::max(maxID, seg.segmentNumber());
         });
     }
 
-    int WellSegments::maxBranchID() const
+    long long WellSegments::maxBranchID() const
     {
         return std::accumulate(this->m_segments.begin(),
                                this->m_segments.end(), 0,
-            [](const int maxID, const Segment& seg)
+            [](const long long maxID, const Segment& seg)
         {
             return std::max(maxID, seg.branchNumber());
         });
@@ -137,7 +137,7 @@ namespace Opm {
         return m_segments[idx];
     }
 
-    int WellSegments::segmentNumberToIndex(const int segment_number) const {
+    long long WellSegments::segmentNumberToIndex(const long long segment_number) const {
         const auto it = segment_number_to_index.find(segment_number);
         if (it != segment_number_to_index.end()) {
             return it->second;
@@ -153,7 +153,7 @@ namespace Opm {
         const auto segment_index = segmentNumberToIndex(segment_number);
         if (segment_index < 0) {
             // New segment object.
-            const auto new_index = static_cast<int>(this->size());
+            const auto new_index = static_cast<long long>(this->size());
             this->segment_number_to_index.insert_or_assign(segment_number, new_index);
             this->m_segments.push_back(new_segment);
         }
@@ -163,9 +163,9 @@ namespace Opm {
         }
     }
 
-    void WellSegments::addSegment(const int segment_number,
-                                  const int branch,
-                                  const int outlet_segment,
+    void WellSegments::addSegment(const long long segment_number,
+                                  const long long branch,
+                                  const long long outlet_segment,
                                   const double length,
                                   const double depth,
                                   const double internal_diameter,
@@ -241,8 +241,8 @@ namespace Opm {
         // get all the requisite information.
         for (size_t recordIndex = 1; recordIndex < welsegsKeyword.size(); ++recordIndex) {
             const auto& record = welsegsKeyword.getRecord(recordIndex);
-            const int segment1 = record.getItem("SEGMENT1").get<int>(0);
-            const int segment2 = record.getItem("SEGMENT2").get<int>(0);
+            const long long segment1 = record.getItem("SEGMENT1").get<long long>(0);
+            const long long segment2 = record.getItem("SEGMENT2").get<long long>(0);
             if (segment1 < 2) {
                 throw std::logic_error {
                     fmt::format("Illegal segment 1 number in WELSEGS\n"
@@ -265,7 +265,7 @@ namespace Opm {
                 };
             }
 
-            const int branch = record.getItem("BRANCH").get<int>(0);
+            const long long branch = record.getItem("BRANCH").get<long long>(0);
             if (branch < 1) {
                 throw std::logic_error {
                     fmt::format("Illegal branch number input "
@@ -306,13 +306,13 @@ namespace Opm {
             const auto node_X = record.getItem("LENGTH_X").getSIDouble(0);
             const auto node_Y = record.getItem("LENGTH_Y").getSIDouble(0);
 
-            for (int segment_number = segment1; segment_number <= segment2; ++segment_number) {
+            for (long long segment_number = segment1; segment_number <= segment2; ++segment_number) {
                 // For the first or the only segment in the range is the one
                 // specified in WELSEGS.  From the second segment in the
                 // range, the outlet segment is the previous segment in the
                 // range.
-                const int outlet_segment = (segment_number == segment1)
-                    ? record.getItem("JOIN_SEGMENT").get<int>(0)
+                const long long outlet_segment = (segment_number == segment1)
+                    ? record.getItem("JOIN_SEGMENT").get<long long>(0)
                     : segment_number - 1;
 
                 const auto data_ready = (length_depth_type != LengthDepth::INC)
@@ -326,21 +326,21 @@ namespace Opm {
         }
 
         for (const auto& segment : this->m_segments) {
-            const int outlet_segment = segment.outletSegment();
+            const long long outlet_segment = segment.outletSegment();
             if (outlet_segment <= 0) { // no outlet segment
                 continue;
             }
 
-            const int outlet_segment_index = segment_number_to_index[outlet_segment];
+            const long long outlet_segment_index = segment_number_to_index[outlet_segment];
             m_segments[outlet_segment_index].addInletSegment(segment.segmentNumber());
         }
 
         this->process(length_depth_type, depth_top, length_top);
     }
 
-    const Segment& WellSegments::getFromSegmentNumber(const int segment_number) const {
+    const Segment& WellSegments::getFromSegmentNumber(const long long segment_number) const {
         // the index of segment in the vector of segments
-        const int segment_index = segmentNumberToIndex(segment_number);
+        const long long segment_index = segmentNumberToIndex(segment_number);
         if (segment_index < 0) {
             throw std::runtime_error {
                 fmt::format("Unknown segment number {}", segment_number)
@@ -363,7 +363,7 @@ namespace Opm {
             throw std::logic_error {
                 fmt::format("Invalid length/depth type "
                             "{} in segment data structure",
-                            static_cast<int>(length_depth))
+                            static_cast<long long>(length_depth))
             };
         }
     }
@@ -382,9 +382,9 @@ namespace Opm {
                 continue;
             }
 
-            const int range_begin = current_index;
-            const int outlet_segment = m_segments[range_begin].outletSegment();
-            const int outlet_index = segmentNumberToIndex(outlet_segment);
+            const long long range_begin = current_index;
+            const long long outlet_segment = m_segments[range_begin].outletSegment();
+            const long long outlet_index = segmentNumberToIndex(outlet_segment);
 
             assert(m_segments[outlet_index].dataReady() == true);
 
@@ -400,7 +400,7 @@ namespace Opm {
             }
 
             // set the length and depth values in the range.
-            int number_segments = range_end - range_begin + 1;
+            long long number_segments = range_end - range_begin + 1;
             assert(number_segments > 1); //if only 1, the information should be complete
 
             const double length_outlet = m_segments[outlet_index].totalLength();
@@ -459,8 +459,8 @@ namespace Opm {
             assert(m_segments[i].dataReady());
             if (m_segments[i].volume() == invalid_value) {
                 const auto& old_segment = this->m_segments[i];
-                const int outlet_segment = m_segments[i].outletSegment();
-                const int outlet_index = segmentNumberToIndex(outlet_segment);
+                const long long outlet_segment = m_segments[i].outletSegment();
+                const long long outlet_index = segmentNumberToIndex(outlet_segment);
                 const double segment_length = m_segments[i].totalLength() - m_segments[outlet_index].totalLength();
                 const double segment_volume = m_segments[i].crossArea() * segment_length;
 
@@ -485,8 +485,8 @@ namespace Opm {
             }
 
             // Find its outlet segment
-            const int outlet_segment = m_segments[i_index].outletSegment();
-            const int outlet_index = segmentNumberToIndex(outlet_segment);
+            const long long outlet_segment = m_segments[i_index].outletSegment();
+            const long long outlet_index = segmentNumberToIndex(outlet_segment);
 
             // assert some information of the outlet_segment
             assert(outlet_index >= 0);
@@ -530,22 +530,22 @@ namespace Opm {
 
         while (current_index < size()) {
             // the branch number of the last segment that is done re-ordering
-            const int last_branch_number = m_segments[current_index-1].branchNumber();
+            const long long last_branch_number = m_segments[current_index-1].branchNumber();
             // the one need to be swapped to the current_index.
-            int target_segment_index= -1;
+            long long target_segment_index= -1;
 
             // looking for target_segment_index
             for (std::size_t i_index= current_index; i_index< size(); ++i_index) {
-                const int outlet_segment_number = m_segments[i_index].outletSegment();
-                const int outlet_segment_index = segmentNumberToIndex(outlet_segment_number);
+                const long long outlet_segment_number = m_segments[i_index].outletSegment();
+                const long long outlet_segment_index = segmentNumberToIndex(outlet_segment_number);
                 if (outlet_segment_index < 0) { // not found the outlet_segment in the done re-ordering segments
                     continue;
                 }
                 if (target_segment_index< 0) { // first time found a candidate
                     target_segment_index= i_index;
                 } else { // there is already a candidate, chosing the one with the same branch number with last_branch_number
-                    const int old_target_segment_index_branch = m_segments[target_segment_index].branchNumber();
-                    const int new_target_segment_index_branch = m_segments[i_index].branchNumber();
+                    const long long old_target_segment_index_branch = m_segments[target_segment_index].branchNumber();
+                    const long long new_target_segment_index_branch = m_segments[i_index].branchNumber();
                     if (new_target_segment_index_branch == last_branch_number) {
                         if (old_target_segment_index_branch != last_branch_number) {
                             target_segment_index= i_index;
@@ -560,11 +560,11 @@ namespace Opm {
                 throw std::logic_error("could not find candidate segment to swap in before the re-odering process get done !!\n");
             }
 
-            assert(target_segment_index >= static_cast<int>(current_index));
-            if (target_segment_index > static_cast<int>(current_index)) {
+            assert(target_segment_index >= static_cast<long long>(current_index));
+            if (target_segment_index > static_cast<long long>(current_index)) {
                 std::swap(m_segments[current_index], m_segments[target_segment_index]);
             }
-            const int segment_number = m_segments[current_index].segmentNumber();
+            const long long segment_number = m_segments[current_index].segmentNumber();
             segment_number_to_index[segment_number] = current_index;
             current_index++;
         }
@@ -582,7 +582,7 @@ namespace Opm {
                            rhs.segment_number_to_index.begin() );
     }
 
-    double WellSegments::segmentLength(const int segment_number) const {
+    double WellSegments::segmentLength(const long long segment_number) const {
         const Segment& segment = this->getFromSegmentNumber(segment_number);
         if (segment_number == 1) // top segment
             return segment.totalLength();
@@ -598,7 +598,7 @@ namespace Opm {
     }
 
 
-    double WellSegments::segmentDepthChange(const int segment_number) const {
+    double WellSegments::segmentDepthChange(const long long segment_number) const {
         const Segment& segment = getFromSegmentNumber(segment_number);
         if (segment_number == 1) // top segment
             return segment.depth();
@@ -609,17 +609,17 @@ namespace Opm {
     }
 
 
-    std::set<int> WellSegments::branches() const {
-        std::set<int> bset;
+    std::set<long long> WellSegments::branches() const {
+        std::set<long long> bset;
         for (const auto& segment : this->m_segments)
             bset.insert( segment.branchNumber() );
         return bset;
     }
 
 
-    std::vector<Segment> WellSegments::branchSegments(int branch) const {
+    std::vector<Segment> WellSegments::branchSegments(long long branch) const {
         std::vector<Segment> segments;
-        std::unordered_set<int> segment_set;
+        std::unordered_set<long long> segment_set;
         for (const auto& segment : this->m_segments) {
             if (segment.branchNumber() == branch) {
                 segments.push_back(segment);
@@ -646,14 +646,14 @@ namespace Opm {
         return segments;
     }
 
-    bool WellSegments::updateWSEGSICD(const std::vector<std::pair<int, SICD> >& sicd_pairs) {
+    bool WellSegments::updateWSEGSICD(const std::vector<std::pair<long long, SICD> >& sicd_pairs) {
         if (m_comp_pressure_drop == CompPressureDrop::H__) {
             const std::string msg = "to use spiral ICD segment you have to activate the frictional pressure drop calculation";
             throw std::runtime_error(msg);
         }
 
         for (const auto& pair_elem : sicd_pairs) {
-            const int segment_number = pair_elem.first;
+            const long long segment_number = pair_elem.first;
             const SICD& spiral_icd = pair_elem.second;
             Segment segment = this->getFromSegmentNumber(segment_number);
             segment.updateSpiralICD(spiral_icd);
@@ -663,7 +663,7 @@ namespace Opm {
         return true;
     }
 
-    bool WellSegments::updateWSEGVALV(const std::vector<std::pair<int, Valve> >& valve_pairs) {
+    bool WellSegments::updateWSEGVALV(const std::vector<std::pair<long long, Valve> >& valve_pairs) {
 
         if (m_comp_pressure_drop == CompPressureDrop::H__) {
             const std::string msg = "to use WSEGVALV segment you have to activate the frictional pressure drop calculation";
@@ -671,7 +671,7 @@ namespace Opm {
         }
 
         for (const auto& pair : valve_pairs) {
-            const int segment_number = pair.first;
+            const long long segment_number = pair.first;
             const Valve& valve = pair.second;
             Segment segment = this->getFromSegmentNumber(segment_number);
             const double segment_length = this->segmentLength(segment_number);
@@ -683,7 +683,7 @@ namespace Opm {
         return true;
     }
 
-    bool WellSegments::updateWSEGAICD(const std::vector<std::pair<int, AutoICD> >& aicd_pairs, const KeywordLocation& location) {
+    bool WellSegments::updateWSEGAICD(const std::vector<std::pair<long long, AutoICD> >& aicd_pairs, const KeywordLocation& location) {
         if (m_comp_pressure_drop == CompPressureDrop::H__) {
             const std::string msg = fmt::format("to use Autonomous ICD segment with keyword {} "
                                                 "at line {} in file {},\n"
@@ -693,7 +693,7 @@ namespace Opm {
         }
 
         for (const auto& pair_elem : aicd_pairs) {
-            const int segment_number = pair_elem.first;
+            const long long segment_number = pair_elem.first;
             const AutoICD& auto_icd = pair_elem.second;
             Segment segment = this->getFromSegmentNumber(segment_number);
             segment.updateAutoICD(auto_icd);

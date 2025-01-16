@@ -231,16 +231,16 @@ namespace {
 namespace Opm {
 
     WellConnections::WellConnections(const Connection::Order order,
-                                     const int               headIArg,
-                                     const int               headJArg)
+                                     const long long               headIArg,
+                                     const long long               headJArg)
         : m_ordering(order)
         , headI     (headIArg)
         , headJ     (headJArg)
     {}
 
     WellConnections::WellConnections(const Connection::Order        order,
-                                     const int                      headIArg,
-                                     const int                      headJArg,
+                                     const long long                      headIArg,
+                                     const long long                      headJArg,
                                      const std::vector<Connection>& connections)
         : m_ordering   (order)
         , headI        (headIArg)
@@ -313,38 +313,38 @@ namespace Opm {
         }
     }
 
-    void WellConnections::addConnection(const int i, const int j, const int k,
+    void WellConnections::addConnection(const long long i, const long long j, const long long k,
                                         const std::size_t                global_index,
-                                        const int                        complnum,
+                                        const long long                        complnum,
                                         const Connection::State          state,
                                         const double                     depth,
                                         const Connection::CTFProperties& ctf_props,
-                                        const int                        satTableId,
+                                        const long long                        satTableId,
                                         const Connection::Direction      direction,
                                         const Connection::CTFKind        ctf_kind,
                                         const std::size_t                seqIndex,
                                         const bool                       defaultSatTabId)
     {
-        const int conn_i = (i < 0) ? this->headI : i;
-        const int conn_j = (j < 0) ? this->headJ : j;
+        const long long conn_i = (i < 0) ? this->headI : i;
+        const long long conn_j = (j < 0) ? this->headJ : j;
 
         this->m_connections.emplace_back(conn_i, conn_j, k, global_index, complnum,
                                          state, direction, ctf_kind, satTableId,
                                          depth, ctf_props, seqIndex, defaultSatTabId);
     }
 
-    void WellConnections::addConnection(const int i, const int j, const int k,
+    void WellConnections::addConnection(const long long i, const long long j, const long long k,
                                         const std::size_t                global_index,
                                         const Connection::State          state,
                                         const double                     depth,
                                         const Connection::CTFProperties& ctf_props,
-                                        const int                        satTableId,
+                                        const long long                        satTableId,
                                         const Connection::Direction      direction,
                                         const Connection::CTFKind        ctf_kind,
                                         const std::size_t                seqIndex,
                                         const bool                       defaultSatTabId)
     {
-        const auto complnum = static_cast<int>(this->m_connections.size()) + 1;
+        const auto complnum = static_cast<long long>(this->m_connections.size()) + 1;
 
         this->addConnection(i, j, k, global_index, complnum, state,
                             depth, ctf_props,
@@ -359,15 +359,15 @@ namespace Opm {
                                       const KeywordLocation& location)
     {
         const auto& itemI = record.getItem("I");
-        const auto defaulted_I = itemI.defaultApplied(0) || (itemI.get<int>(0) == 0);
-        const auto I = !defaulted_I ? itemI.get<int>(0) - 1 : this->headI;
+        const auto defaulted_I = itemI.defaultApplied(0) || (itemI.get<long long>(0) == 0);
+        const auto I = !defaulted_I ? itemI.get<long long>(0) - 1 : this->headI;
 
         const auto& itemJ = record.getItem("J");
-        const auto defaulted_J = itemJ.defaultApplied(0) || (itemJ.get<int>(0) == 0);
-        const auto J = !defaulted_J ? itemJ.get<int>(0) - 1 : this->headJ;
+        const auto defaulted_J = itemJ.defaultApplied(0) || (itemJ.get<long long>(0) == 0);
+        const auto J = !defaulted_J ? itemJ.get<long long>(0) - 1 : this->headJ;
 
-        const auto K1 = record.getItem("K1").get<int>(0) - 1;
-        const auto K2 = record.getItem("K2").get<int>(0) - 1;
+        const auto K1 = record.getItem("K1").get<long long>(0) - 1;
+        const auto K2 = record.getItem("K2").get<long long>(0) - 1;
         const auto state = Connection::StateFromString(record.getItem("STATE").getTrimmedString(0));
 
         const auto& r0Item = record.getItem("PR");
@@ -380,10 +380,10 @@ namespace Opm {
         const auto skin_factor = record.getItem("SKIN").getSIDouble(0);
         const auto d_factor = record.getItem("D_FACTOR").getSIDouble(0);
 
-        int satTableId = -1;
+        long long satTableId = -1;
         bool defaultSatTable = true;
-        if (satTableIdItem.hasValue(0) && (satTableIdItem.get<int>(0) > 0)) {
-            satTableId = satTableIdItem.get<int>(0);
+        if (satTableIdItem.hasValue(0) && (satTableIdItem.get<long long>(0) > 0)) {
+            satTableId = satTableIdItem.get<long long>(0);
             defaultSatTable = false;
         }
 
@@ -402,7 +402,7 @@ namespace Opm {
         // placement so there's complete exposure (= 2\pi).
         const auto angle = 6.2831853071795864769252867665590057683943387987502116419498;
 
-        for (int k = K1; k <= K2; ++k) {
+        for (long long k = K1; k <= K2; ++k) {
             const auto& cell = grid.get_cell(I, J, k);
             if (!cell.is_active()) {
                 auto msg = fmt::format(R"(Problem with COMPDAT keyword
@@ -561,10 +561,10 @@ The cell ({},{},{}) in well {} is not active and the connection will be ignored)
         const auto& satTableIdItem = record.getItem("SAT_TABLE");
         const auto state = Connection::StateFromString(record.getItem("STATE").getTrimmedString(0));
 
-        int satTableId = -1;
+        long long satTableId = -1;
         bool defaultSatTable = true;
-        if (satTableIdItem.hasValue(0) && (satTableIdItem.get<int>(0) > 0)) {
-            satTableId = satTableIdItem.get<int>(0);
+        if (satTableIdItem.hasValue(0) && (satTableIdItem.get<long long>(0) > 0)) {
+            satTableId = satTableIdItem.get<long long>(0);
             defaultSatTable = false;
         }
 
@@ -846,7 +846,7 @@ CF and Kh items for well {} must both be specified or both defaulted/negative)",
     }
 
     const Connection&
-    WellConnections::getFromIJK(const int i, const int j, const int k) const
+    WellConnections::getFromIJK(const long long i, const long long j, const long long k) const
     {
         for (size_t ic = 0; ic < size(); ++ic) {
             if (get(ic).sameCoordinate(i, j, k)) {
@@ -871,7 +871,7 @@ CF and Kh items for well {} must both be specified or both defaulted/negative)",
         return *conn_iter;
     }
 
-    Connection& WellConnections::getFromIJK(const int i, const int j, const int k)
+    Connection& WellConnections::getFromIJK(const long long i, const long long j, const long long k)
     {
         for (size_t ic = 0; ic < size(); ++ic) {
             if (get(ic).sameCoordinate(i, j, k)) {
@@ -959,19 +959,19 @@ CF and Kh items for well {} must both be specified or both defaulted/negative)",
         }
     }
 
-    size_t WellConnections::findClosestConnection(int oi, int oj, double oz, size_t start_pos)
+    size_t WellConnections::findClosestConnection(long long oi, long long oj, double oz, size_t start_pos)
     {
         size_t closest = std::numeric_limits<size_t>::max();
-        int min_ijdist2 = std::numeric_limits<int>::max();
+        long long min_ijdist2 = std::numeric_limits<long long>::max();
         double min_zdiff = std::numeric_limits<double>::max();
         for (size_t pos = start_pos; pos < m_connections.size(); ++pos) {
             const auto& connection = m_connections[ pos ];
 
             const double depth = connection.depth();
-            const int ci = connection.getI();
-            const int cj = connection.getJ();
+            const long long ci = connection.getI();
+            const long long cj = connection.getJ();
             // Using square of distance to avoid non-integer arithmetics.
-            const int ijdist2 = (ci - oi) * (ci - oi) + (cj - oj) * (cj - oj);
+            const long long ijdist2 = (ci - oi) * (ci - oi) + (cj - oj) * (cj - oj);
             if (ijdist2 < min_ijdist2) {
                 min_ijdist2 = ijdist2;
                 min_zdiff = std::abs(depth - oz);
@@ -1021,7 +1021,7 @@ CF and Kh items for well {} must both be specified or both defaulted/negative)",
         m_connections.erase(new_end, m_connections.end());
     }
 
-    double WellConnections::segment_perf_length(int segment) const
+    double WellConnections::segment_perf_length(long long segment) const
     {
         double perf_length = 0;
         for (const auto& conn : this->m_connections) {
@@ -1034,12 +1034,12 @@ CF and Kh items for well {} must both be specified or both defaulted/negative)",
         return perf_length;
     }
 
-    int WellConnections::getHeadI() const
+    long long WellConnections::getHeadI() const
     {
         return this->headI;
     }
 
-    int WellConnections::getHeadJ() const
+    long long WellConnections::getHeadJ() const
     {
         return this->headJ;
     }
@@ -1049,7 +1049,7 @@ CF and Kh items for well {} must both be specified or both defaulted/negative)",
         return this->md;
     }
 
-    std::optional<int>
+    std::optional<long long>
     getCompletionNumberFromGlobalConnectionIndex(const WellConnections& connections,
                                                  const std::size_t      global_index)
     {

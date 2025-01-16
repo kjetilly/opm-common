@@ -39,7 +39,7 @@
 namespace {
     template <typename RstUDARecord>
     void loadRstWellUDAs(const RstUDARecord&                     record,
-                         const std::vector<int>&                 wgIndex,
+                         const std::vector<long long>&                 wgIndex,
                          const Opm::UDAValue&                    uda,
                          const std::vector<std::string>&         wellNames,
                          std::vector<Opm::UDQActive::RstRecord>& udaRecords)
@@ -53,7 +53,7 @@ namespace {
 
     template <typename RstUDARecord, typename WGIndexOp>
     void loadGroupRstUDA(const RstUDARecord&             record,
-                         const std::vector<int>&         wgIndex,
+                         const std::vector<long long>&         wgIndex,
                          const std::vector<std::string>& groupNames,
                          WGIndexOp&&                     wgIndexOp)
     {
@@ -73,7 +73,7 @@ namespace {
 
     template <typename RstUDARecord>
     void loadRstGroupProdUDAs(const RstUDARecord&                     record,
-                              const std::vector<int>&                 wgIndex,
+                              const std::vector<long long>&                 wgIndex,
                               const Opm::UDAValue&                    uda,
                               const std::vector<std::string>&         groupNames,
                               std::vector<Opm::UDQActive::RstRecord>& udaRecords)
@@ -89,7 +89,7 @@ namespace {
 
     template <typename RstUDARecord>
     void loadRstGroupInjUDAs(const RstUDARecord&                     record,
-                             const std::vector<int>&                 wgIndex,
+                             const std::vector<long long>&                 wgIndex,
                              const std::vector<Opm::Phase>&          igPhase,
                              const Opm::UDAValue&                    uda,
                              const std::vector<std::string>&         groupNames,
@@ -244,7 +244,7 @@ Opm::UDQActive::operator bool() const
 //
 //   6. The uda variable is a double, and the (wgname, control) combination
 //      has not been encountered before: return 0
-int Opm::UDQActive::update(const UDQConfig&   udq_config,
+long long Opm::UDQActive::update(const UDQConfig&   udq_config,
                            const UDAValue&    uda,
                            const std::string& wgname,
                            const UDAControl   control)

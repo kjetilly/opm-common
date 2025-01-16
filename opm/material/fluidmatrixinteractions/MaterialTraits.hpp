@@ -40,7 +40,7 @@ namespace Opm {
  *
  * This traits class is intended to be used by the NullMaterial
  */
-template <class ScalarT, int numPhasesV>
+template <class ScalarT, long long numPhasesV>
 class NullMaterialTraits
 {
 public:
@@ -48,7 +48,7 @@ public:
     using Scalar = ScalarT;
 
     //! The number of fluid phases
-    static constexpr int numPhases = numPhasesV;
+    static constexpr long long numPhases = numPhasesV;
 };
 
 /*!
@@ -56,7 +56,7 @@ public:
  *
  * \brief A generic traits class for two-phase material laws.
  */
-template <class ScalarT, int wettingPhaseIdxV, int nonWettingPhaseIdxV>
+template <class ScalarT, long long wettingPhaseIdxV, long long nonWettingPhaseIdxV>
 class TwoPhaseMaterialTraits
 {
 public:
@@ -64,13 +64,13 @@ public:
     using Scalar = ScalarT;
 
     //! The number of fluid phases
-    static constexpr int numPhases = 2;
+    static constexpr long long numPhases = 2;
 
     //! The index of the wetting phase
-    static constexpr int  wettingPhaseIdx = wettingPhaseIdxV;
+    static constexpr long long  wettingPhaseIdx = wettingPhaseIdxV;
 
     //! The index of the non-wetting phase
-    static constexpr int nonWettingPhaseIdx = nonWettingPhaseIdxV;
+    static constexpr long long nonWettingPhaseIdx = nonWettingPhaseIdxV;
 
     // some safety checks...
     static_assert(wettingPhaseIdx != nonWettingPhaseIdx,
@@ -82,7 +82,7 @@ public:
  *
  * \brief A generic traits class for three-phase material laws.
  */
-template <class ScalarT, int wettingPhaseIdxV, int nonWettingasPhaseIdxV, int gasPhaseIdxV>
+template <class ScalarT, long long wettingPhaseIdxV, long long nonWettingasPhaseIdxV, long long gasPhaseIdxV>
 class ThreePhaseMaterialTraits
 {
 public:
@@ -90,16 +90,16 @@ public:
     using Scalar = ScalarT;
 
     //! The number of fluid phases
-    static constexpr int numPhases = 3;
+    static constexpr long long numPhases = 3;
 
     //! The index of the wetting liquid phase
-    static constexpr int wettingPhaseIdx = wettingPhaseIdxV;
+    static constexpr long long wettingPhaseIdx = wettingPhaseIdxV;
 
     //! The index of the non-wetting liquid phase
-    static constexpr int nonWettingPhaseIdx = nonWettingasPhaseIdxV;
+    static constexpr long long nonWettingPhaseIdx = nonWettingasPhaseIdxV;
 
     //! The index of the gas phase (i.e., the least wetting phase)
-    static constexpr int gasPhaseIdx = gasPhaseIdxV;
+    static constexpr long long gasPhaseIdx = gasPhaseIdxV;
 
     // some safety checks...
     static_assert(0 <= wettingPhaseIdx && wettingPhaseIdx < numPhases,

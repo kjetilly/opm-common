@@ -66,7 +66,7 @@ public:
     void initParamsForElements(const EclipseState& eclState, size_t numElems,
                                const std::function<std::vector<double>(const FieldPropsManager&, const std::string&)>&
                                fieldPropDoubleOnLeafAssigner,
-                               const std::function<std::vector<unsigned int>(const FieldPropsManager&, const std::string&,
+                               const std::function<std::vector<size_t>(const FieldPropsManager&, const std::string&,
                                bool)>& fieldPropIntOnLeafAssigner);
 
     const SolidEnergyLawParams& solidEnergyLawParams(unsigned elemIdx) const;
@@ -85,7 +85,7 @@ private:
      * \brief Initialize the parameters for the solid energy law using using SPECROCK and friends.
      */
     void initSpecrock_(const EclipseState& eclState,
-                       const std::function<std::vector<unsigned int>(const FieldPropsManager&, const std::string&, bool)>&
+                       const std::function<std::vector<size_t>(const FieldPropsManager&, const std::string&, bool)>&
                        fieldPropIntOnLeafAssigner);
 
     /*!
@@ -116,7 +116,7 @@ private:
     EclThermalConductionApproach thermalConductivityApproach_ = EclThermalConductionApproach::Undefined;
     EclSolidEnergyApproach solidEnergyApproach_ = EclSolidEnergyApproach::Undefined;
 
-    std::vector<unsigned> elemToSatnumIdx_;
+    std::vector<size_t> elemToSatnumIdx_;
 
     std::vector<SolidEnergyLawParams> solidEnergyLawParams_;
     std::vector<ThermalConductionLawParams> thermalConductionLawParams_;

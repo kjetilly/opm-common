@@ -40,13 +40,13 @@ BOOST_AUTO_TEST_CASE(utility_functions)
     // Test isNondecreasing().
     using Opm::isNondecreasing;
     double xva1[] = { -1.0, 2.0, 2.2, 3.0, 5.0 };
-    const int numvals1 = sizeof(xva1)/sizeof(xva1[0]);
+    const long long numvals1 = sizeof(xva1)/sizeof(xva1[0]);
     BOOST_CHECK(isNondecreasing(xva1, xva1 + numvals1));
     double xva2[] = { -1.0, 2.0, 2.0, 2.0, 5.0 };
-    const int numvals2 = sizeof(xva2)/sizeof(xva2[0]);
+    const long long numvals2 = sizeof(xva2)/sizeof(xva2[0]);
     BOOST_CHECK(isNondecreasing(xva2, xva2 + numvals2));
     double xva3[] = { -1.0, 2.0, 1.9, 3.0, 5.0 };
-    const int numvals3 = sizeof(xva3)/sizeof(xva3[0]);
+    const long long numvals3 = sizeof(xva3)/sizeof(xva3[0]);
     BOOST_CHECK(!isNondecreasing(xva3, xva3 + numvals3));
 }
 
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(table_operations)
 {
     // Make a simple table.
     double xva[] = { -1.0, 2.0, 2.2, 3.0, 5.0 };
-    const int numvals = sizeof(xva)/sizeof(xva[0]);
+    const long long numvals = sizeof(xva)/sizeof(xva[0]);
     std::vector<double> xv(xva, xva + numvals);
     double yva[numvals] = { 1.0, 2.0, 3.0, 4.0, 2.0 };
     std::vector<double> yv(yva, yva + numvals);
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(table_operations)
     BOOST_CHECK(t1 == t1_copy2);
 
     // Check some evaluations.
-    for (int i = 0; i < numvals; ++i) {
+    for (long long i = 0; i < numvals; ++i) {
         BOOST_CHECK_EQUAL(t1(xv[i]), yv[i]);
     }
     BOOST_CHECK_CLOSE(t1(2.6), 3.5, 1e-13);
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(table_operations)
     t1.rescaleDomain(new_domain);
     BOOST_CHECK_EQUAL(t1.domain().first, new_domain.first);
     BOOST_CHECK_EQUAL(t1.domain().second, new_domain.second);
-    for (int i = 0; i < numvals; ++i) {
+    for (long long i = 0; i < numvals; ++i) {
         BOOST_CHECK_EQUAL(t1((xv[i] + 1.0)*20.0 - 100.0), yv[i]);
     }
     BOOST_CHECK_CLOSE(t1(0.0), 3.0, 1e-13);

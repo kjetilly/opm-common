@@ -83,10 +83,10 @@ Balance::Balance(const DeckKeyword& keyword)
     this->calc_interval = record.getItem<NB::TIME_INTERVAL>().getSIDouble(0);
     this->calc_mode = getNetworkBalancingMode(this->calc_interval);
     this->ptol = record.getItem<NB::PRESSURE_CONVERGENCE_LIMIT>().getSIDouble(0);
-    this->m_pressure_max_iter = record.getItem<NB::MAX_ITER>().get<int>(0);
+    this->m_pressure_max_iter = record.getItem<NB::MAX_ITER>().get<long long>(0);
 
     this->m_thp_tolerance = record.getItem<NB::THP_CONVERGENCE_LIMIT>().get<double>(0);
-    this->m_thp_max_iter = record.getItem<NB::MAX_ITER_THP>().get<int>(0);
+    this->m_thp_max_iter = record.getItem<NB::MAX_ITER_THP>().get<long long>(0);
 
     if (const auto& targBE = record.getItem<NB::TARGET_BALANCE_ERROR>(); !targBE.defaultApplied(0)) {
         this->target_branch_balance_error = targBE.getSIDouble(0);

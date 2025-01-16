@@ -93,7 +93,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
     namespace IGroup {
     // Observe that these value should not be used as ordinary indices into
     // the the IGRP vector, they should all be used as IGRP[NWGMAX + $index]
-    enum index : std::vector<int>::size_type {
+    enum index : std::vector<long long>::size_type {
         NoOfChildGroupsWells = 0,
         ProdActiveCMode = 1,
         ProdHighLevCtrl = 5,
@@ -117,7 +117,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
     };
 
     namespace Value {
-    enum GuideRateMode : int {
+    enum GuideRateMode : long long {
         None = 0,
         Oil = 1,
         Water = 2,
@@ -129,7 +129,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
         Comb = 9,
     };
 
-    enum GroupType : int {
+    enum GroupType : long long {
         WellGroup = 0,
         TreeGroup = 1,
     };

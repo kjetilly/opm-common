@@ -76,7 +76,7 @@ namespace {
         {
             const auto& grid_item = rec.getItem(0);
 
-            if (grid_item.get<int>(0) != 0) {
+            if (grid_item.get<long long>(0) != 0) {
                 std::cerr << "IOConfig: Reading GRIDFILE keyword from GRID section: "
                           << "Output of GRID file is not supported. "
                           << "Supported format: EGRID\n";
@@ -92,14 +92,14 @@ namespace {
         {
             const auto& egrid_item = rec.getItem(1);
 
-            return egrid_item.get<int>(0) == 1;
+            return egrid_item.get<long long>(0) == 1;
         }
     }
 
     bool normalize_case(std::string& s)
     {
-        int upper_count = 0;
-        int lower_count = 0;
+        long long upper_count = 0;
+        long long lower_count = 0;
 
         for (const auto& c : s) {
             upper_count += std::isupper(c);
@@ -262,7 +262,7 @@ namespace Opm {
     }
 
     std::string IOConfig::getRestartFileName(const std::string& restart_base,
-                                             const int          report_step,
+                                             const long long          report_step,
                                              const bool         output) const
     {
         const bool unified  = output ? getUNIFOUT() : getUNIFIN();
@@ -278,9 +278,9 @@ namespace Opm {
             const char* fmt_prefix   = "FGH";
             const char* unfmt_prefix = "XYZ";
 
-            const int cycle = 10 * 1000;
-            const int p_ix  = report_step / cycle;
-            const int n     = report_step % cycle;
+            const long long cycle = 10 * 1000;
+            const long long p_ix  = report_step / cycle;
+            const long long n     = report_step % cycle;
 
             os << (fmt_file ? fmt_prefix[p_ix] : unfmt_prefix[p_ix])
                << std::setw(4) << std::setfill('0') << n;

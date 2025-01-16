@@ -246,8 +246,8 @@ struct Test
         Scalar xMax = uTable.xMax();
         Scalar yMax = uTable.yMax();
 
-        for (int yMod = -1; yMod < 2; yMod += 2) {
-            for (int xMod = -1; xMod < 2; xMod += 2) {
+        for (long long yMod = -1; yMod < 2; yMod += 2) {
+            for (long long xMod = -1; xMod < 2; xMod += 2) {
                 Scalar x = xMin + xMod * tolerance;
                 Scalar y = yMin + yMod * tolerance;
                 BOOST_CHECK_MESSAGE(uTable.applies(x,y) == (xMod > 0 && yMod > 0),
@@ -257,8 +257,8 @@ struct Test
             }
         }
 
-        for (int xMod = -1; xMod < 2; xMod += 2) {
-            for (int yMod = -1; yMod < 2; yMod += 2) {
+        for (long long xMod = -1; xMod < 2; xMod += 2) {
+            for (long long yMod = -1; yMod < 2; yMod += 2) {
                 Scalar x = xMax + xMod * tolerance;
                 Scalar y = yMax + yMod * tolerance;
                 BOOST_CHECK_MESSAGE(uTable.applies(x,y) == (xMod < 0 && yMod < 0),

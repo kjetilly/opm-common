@@ -28,7 +28,7 @@ namespace Opm {
 
     class FoamadsTable : public SimpleTable {
         public:
-            FoamadsTable( const DeckItem& item, const int tableID );
+            FoamadsTable( const DeckItem& item, const long long tableID );
 
             const TableColumn& getFoamConcentrationColumn() const;
             const TableColumn& getAdsorbedFoamColumn() const;

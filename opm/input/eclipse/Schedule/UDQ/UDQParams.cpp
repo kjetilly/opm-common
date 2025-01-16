@@ -68,7 +68,7 @@ namespace Opm {
 
         if (deck.hasKeyword("UDQPARAM")) {
             const auto& record = deck["UDQPARAM"].back().getRecord(0);
-            random_seed = record.getItem("RANDOM_SEED").get<int>(0);
+            random_seed = record.getItem("RANDOM_SEED").get<long long>(0);
             value_range = record.getItem("RANGE").get<double>(0);
             undefined_value = record.getItem("UNDEFINED_VALUE").get<double>(0);
             cmp_eps = record.getItem("CMP_EPSILON").get<double>(0);
@@ -94,12 +94,12 @@ namespace Opm {
       able to ensure(?) that a restarted run gets the same sequence of random
       numbers as the original run.
     */
-    void UDQParams::reseedRNG(int seed) {
+    void UDQParams::reseedRNG(long long seed) {
         if (this->reseed_rng)
             this->m_true_rng.seed( seed );
     }
 
-    int UDQParams::rand_seed() const noexcept {
+    long long UDQParams::rand_seed() const noexcept {
         return this->random_seed;
     }
 

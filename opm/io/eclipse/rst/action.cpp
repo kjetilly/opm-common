@@ -30,8 +30,8 @@ namespace SACN = Helpers::VectorItems::SACN;
 namespace ZACN = Helpers::VectorItems::ZACN;
 
 
-RstAction::RstAction(const std::string& name_arg, int max_run_arg,
-                     int run_count_arg, double min_wait_arg,
+RstAction::RstAction(const std::string& name_arg, long long max_run_arg,
+                     long long run_count_arg, double min_wait_arg,
                      std::time_t start_time_arg, std::time_t last_run_arg,
                      const std::vector<RstAction::Condition>& conditions_arg)
     : name(name_arg)
@@ -72,7 +72,7 @@ RstAction::Quantity::Quantity(double value)
 
 
 
-RstAction::Condition::Condition(const std::string * zacn, const int * iacn, const double * sacn)
+RstAction::Condition::Condition(const std::string * zacn, const long long * iacn, const double * sacn)
     : logic(Action::logic_from_int(iacn[IACN::TerminalLogic]))
     , cmp_op(Action::comparator_from_int(iacn[IACN::Comparator]))
 {
@@ -86,7 +86,7 @@ RstAction::Condition::Condition(const std::string * zacn, const int * iacn, cons
 
     if (iacn[type_index] == IACN::Value::Month) {
         this->lhs = RstAction::Quantity("MNTH");
-        this->rhs = RstAction::Quantity(TimeService::eclipseMonthNames().at(static_cast<int>(rhs_value)));
+        this->rhs = RstAction::Quantity(TimeService::eclipseMonthNames().at(static_cast<long long>(rhs_value)));
         return;
     }
 
@@ -102,7 +102,7 @@ RstAction::Condition::Condition(const std::string * zacn, const int * iacn, cons
     this->right_paren = (iacn[IACN::Paren] == IACN::Value::Close);
 }
 
-bool RstAction::Condition::valid(const std::string * zacn, const int * iacn) {
+bool RstAction::Condition::valid(const std::string * zacn, const long long * iacn) {
     auto type_index = IACN::LHSQuantityType;
     if (iacn[type_index] == IACN::Value::Day)
         return true;

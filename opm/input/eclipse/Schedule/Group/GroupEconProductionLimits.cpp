@@ -42,7 +42,7 @@ namespace {
 namespace Opm {
 
 void GroupEconProductionLimits::add_group(
-        const int report_step, const std::string &group_name, const DeckRecord& record)
+        const long long report_step, const std::string &group_name, const DeckRecord& record)
 {
     // NOTE: report_step is needed when retrieving UDA values later.
     //  To get the correct UDQ config for the UDQ-undefined value
@@ -113,7 +113,7 @@ size_t GroupEconProductionLimits::size() const {
 
 /* Methods for inner class GEconGroup */
 
-GroupEconProductionLimits::GEconGroup::GEconGroup(const DeckRecord &record, const int report_step)
+GroupEconProductionLimits::GEconGroup::GEconGroup(const DeckRecord &record, const long long report_step)
     : m_min_oil_rate{record.getItem("MIN_OIL_RATE").get<UDAValue>(0)}
     , m_min_gas_rate{record.getItem("MIN_GAS_RATE").get<UDAValue>(0)}
     , m_max_water_cut{record.getItem("MAX_WCT").get<UDAValue>(0)}
@@ -121,7 +121,7 @@ GroupEconProductionLimits::GEconGroup::GEconGroup(const DeckRecord &record, cons
     , m_max_water_gas_ratio{record.getItem("MAX_WATER_GAS_RATIO").get<UDAValue>(0)}
     , m_workover{econWorkoverFromString(record.getItem("WORKOVER").getTrimmedString(0))}
     , m_end_run{false}
-    , m_max_open_wells{record.getItem("MAX_OPEN_WELLS").get<int>(0)}
+    , m_max_open_wells{record.getItem("MAX_OPEN_WELLS").get<long long>(0)}
     , m_report_step{report_step}
 {
     if (record.getItem("END_RUN").hasValue(0)) {
@@ -173,7 +173,7 @@ UDAValue GroupEconProductionLimits::GEconGroup::maxWaterGasRatio() const
     return m_max_water_gas_ratio;
 }
 
-int GroupEconProductionLimits::GEconGroup::maxOpenWells() const
+long long GroupEconProductionLimits::GEconGroup::maxOpenWells() const
 {
     return m_max_open_wells;
 }
@@ -200,7 +200,7 @@ bool GroupEconProductionLimits::GEconGroup::operator==(const GEconGroup& other) 
            this->m_max_open_wells == other.m_max_open_wells;
 }
 
-int GroupEconProductionLimits::GEconGroup::reportStep() const {
+long long GroupEconProductionLimits::GEconGroup::reportStep() const {
     return m_report_step;
 }
 
@@ -234,7 +234,7 @@ GroupEconProductionLimits::GEconGroupProp::GEconGroupProp(
         const double max_water_gas_ratio,
         EconWorkover workover,
         bool end_run,
-        int max_open_wells)
+        long long max_open_wells)
     : m_min_oil_rate{get_positive_value(min_oil_rate)}
     , m_min_gas_rate{get_positive_value(min_gas_rate)}
     , m_max_water_cut{get_positive_value(max_water_cut)}
@@ -271,7 +271,7 @@ std::optional<double> GroupEconProductionLimits::GEconGroupProp::maxGasOilRatio(
     return m_max_gas_oil_ratio;
 }
 
-int GroupEconProductionLimits::GEconGroupProp::maxOpenWells() const
+long long GroupEconProductionLimits::GEconGroupProp::maxOpenWells() const
 {
     return m_max_open_wells;
 }

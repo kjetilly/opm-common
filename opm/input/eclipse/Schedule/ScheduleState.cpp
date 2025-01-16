@@ -199,11 +199,11 @@ void ScheduleState::init_nupcol(Nupcol nupcol) {
     this->m_nupcol = std::move(nupcol);
 }
 
-void ScheduleState::update_nupcol(int nupcol) {
+void ScheduleState::update_nupcol(long long nupcol) {
     this->m_nupcol.update(nupcol);
 }
 
-int ScheduleState::nupcol() const {
+long long ScheduleState::nupcol() const {
     return this->m_nupcol.value();
 }
 
@@ -327,8 +327,8 @@ ScheduleState ScheduleState::serializationTestObject() {
     ts.m_sim_step = 123;
     ts.m_month_num = 12;
     ts.m_year_num = 66;
-    ts.vfpprod = map_member<int, VFPProdTable>::serializationTestObject();
-    ts.vfpinj = map_member<int, VFPInjTable>::serializationTestObject();
+    ts.vfpprod = map_member<long long, VFPProdTable>::serializationTestObject();
+    ts.vfpinj = map_member<long long, VFPInjTable>::serializationTestObject();
     ts.groups = map_member<std::string, Group>::serializationTestObject();
     ts.m_events = Events::serializationTestObject();
     ts.m_nupcol = Nupcol::serializationTestObject();

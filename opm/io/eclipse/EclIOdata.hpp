@@ -21,6 +21,7 @@
 #define OPM_IO_ECLIODATA_HPP
 
 #include <tuple>
+#include <cstddef>
 
 namespace Opm { namespace EclIO {
 
@@ -30,41 +31,41 @@ namespace Opm { namespace EclIO {
     };
 
     // named constants related to binary file format
-    const unsigned int true_value_ecl = 0xffffffff;
-    const unsigned int true_value_ix = 0x1000000;
-    const unsigned int false_value = 0x00000000;
+    const size_t true_value_ecl = 0xffffffff;
+    const size_t true_value_ix = 0x1000000;
+    const size_t false_value = 0x00000000;
 
 
-    const int sizeOfInte =  4;    // number of bytes pr integer (inte) element
-    const int sizeOfReal =  4;    // number of bytes pr float (real) element
-    const int sizeOfDoub =  8;    // number of bytes pr double (doub) element
-    const int sizeOfLogi =  4;    // number of bytes pr bool (logi) element
-    const int sizeOfChar =  8;    // number of bytes pr string (char) element
+    const long long sizeOfInte =  4;    // number of bytes pr integer (inte) element
+    const long long sizeOfReal =  4;    // number of bytes pr float (real) element
+    const long long sizeOfDoub =  8;    // number of bytes pr double (doub) element
+    const long long sizeOfLogi =  4;    // number of bytes pr bool (logi) element
+    const long long sizeOfChar =  8;    // number of bytes pr string (char) element
 
-    const int MaxBlockSizeInte = 4000;    // Maximum block size for INTE arrays in binary files
-    const int MaxBlockSizeReal = 4000;    // Maximum block size for REAL arrays in binary files
-    const int MaxBlockSizeDoub = 8000;    // Maximum block size for DOUB arrays in binary files
-    const int MaxBlockSizeLogi = 4000;    // Maximum block size for LOGI arrays in binary files
-    const int MaxBlockSizeChar =  840;    // Maximum block size for CHAR arrays in binary files
+    const long long MaxBlockSizeInte = 4000;    // Maximum block size for INTE arrays in binary files
+    const long long MaxBlockSizeReal = 4000;    // Maximum block size for REAL arrays in binary files
+    const long long MaxBlockSizeDoub = 8000;    // Maximum block size for DOUB arrays in binary files
+    const long long MaxBlockSizeLogi = 4000;    // Maximum block size for LOGI arrays in binary files
+    const long long MaxBlockSizeChar =  840;    // Maximum block size for CHAR arrays in binary files
 
     // named constants related to formatted file file format
-    const int MaxNumBlockInte = 1000;    // maximum number of Inte values in block => hard line shift
-    const int MaxNumBlockReal = 1000;    // maximum number of Real values in block => hard line shift
-    const int MaxNumBlockDoub = 1000;    // maximum number of Doub values in block => hard line shift
-    const int MaxNumBlockLogi = 1000;    // maximum number of Logi values in block => hard line shift
-    const int MaxNumBlockChar =  105;    // maximum number of Char values in block => hard line shift
+    const long long MaxNumBlockInte = 1000;    // maximum number of Inte values in block => hard line shift
+    const long long MaxNumBlockReal = 1000;    // maximum number of Real values in block => hard line shift
+    const long long MaxNumBlockDoub = 1000;    // maximum number of Doub values in block => hard line shift
+    const long long MaxNumBlockLogi = 1000;    // maximum number of Logi values in block => hard line shift
+    const long long MaxNumBlockChar =  105;    // maximum number of Char values in block => hard line shift
 
-    const int numColumnsInte = 6;        // number of columns for Inte values
-    const int numColumnsReal = 4;        // number of columns for Real values
-    const int numColumnsDoub = 3;        // number of columns for Doub values
-    const int numColumnsLogi = 25;       // number of columns for Logi values
-    const int numColumnsChar = 7;        // number of columns for Char values
+    const long long numColumnsInte = 6;        // number of columns for Inte values
+    const long long numColumnsReal = 4;        // number of columns for Real values
+    const long long numColumnsDoub = 3;        // number of columns for Doub values
+    const long long numColumnsLogi = 25;       // number of columns for Logi values
+    const long long numColumnsChar = 7;        // number of columns for Char values
 
-    const int columnWidthInte = 12;      // number of characters fore each Inte Element
-    const int columnWidthReal = 17;      // number of characters fore each Inte Element
-    const int columnWidthDoub = 23;      // number of characters fore each Inte Element
-    const int columnWidthLogi = 3;       // number of characters fore each Inte Element
-    const int columnWidthChar = 11;      // number of characters fore each Inte Element
+    const long long columnWidthInte = 12;      // number of characters fore each Inte Element
+    const long long columnWidthReal = 17;      // number of characters fore each Inte Element
+    const long long columnWidthDoub = 23;      // number of characters fore each Inte Element
+    const long long columnWidthLogi = 3;       // number of characters fore each Inte Element
+    const long long columnWidthChar = 11;      // number of characters fore each Inte Element
 
 }} // namespace Opm::EclIO
 

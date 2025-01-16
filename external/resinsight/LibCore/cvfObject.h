@@ -75,7 +75,7 @@ public:
 private:
 
 #if defined(CVF_USE_NON_THREADSAFE_REFERENCE_COUNT)
-    mutable int m_refCount;
+    mutable long long m_refCount;
 #elif defined(CVF_ATOMIC_COUNTER_CLASS_EXISTS)
     mutable AtomicCounter m_refCount;
 #else

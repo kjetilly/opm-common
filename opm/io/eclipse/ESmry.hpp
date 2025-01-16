@@ -34,9 +34,9 @@
 
 namespace Opm { namespace EclIO {
 
-using ArrSourceEntry = std::tuple<std::string, std::string, int, uint64_t>;
-using TimeStepEntry = std::tuple<int, int, uint64_t>;
-using RstEntry = std::tuple<std::string, int>;
+using ArrSourceEntry = std::tuple<std::string, std::string, long long, uint64_t>;
+using TimeStepEntry = std::tuple<long long, long long, uint64_t>;
+using RstEntry = std::tuple<std::string, long long>;
 
 class ESmry
 {
@@ -45,7 +45,7 @@ public:
     // input is smspec (or fsmspec file)
     explicit ESmry(const std::string& filename, bool loadBaseRunData=false);
 
-    int numberOfVectors() const { return nVect; }
+    long long numberOfVectors() const { return nVect; }
 
     bool hasKey(const std::string& key) const;
 
@@ -63,13 +63,13 @@ public:
     bool make_esmry_file();
 
     time_point startdate() const { return tp_startdat; }
-    const std::vector<int>& start_v() const { return start_vect; }
+    const std::vector<long long>& start_v() const { return start_vect; }
 
     const std::vector<std::string>& keywordList() const;
     std::vector<std::string> keywordList(const std::string& pattern) const;
     const std::vector<SummaryNode>& summaryNodeList() const;
 
-    int timestepIdxAtReportstepStart(const int reportStep) const;
+    long long timestepIdxAtReportstepStart(const long long reportStep) const;
 
     size_t numberOfTimeSteps() const { return nTstep; }
 
@@ -87,7 +87,7 @@ private:
     std::filesystem::path inputFileName;
     RstEntry restart_info;
 
-    int nI, nJ, nK, nSpecFiles;
+    long long nI, nJ, nK, nSpecFiles;
     bool fromSingleRun;
     size_t nVect, nTstep;
 
@@ -97,23 +97,23 @@ private:
     mutable std::vector<bool> vectorLoaded;
     std::vector<TimeStepEntry> timeStepList;
     std::vector<TimeStepEntry> miniStepList;
-    std::vector<std::map<int, int>> arrayPos;
+    std::vector<std::map<long long, long long>> arrayPos;
     std::vector<std::string> keyword;
-    std::map<std::string, int> keyword_index;
-    std::vector<int> nParamsSpecFile;
+    std::map<std::string, long long> keyword_index;
+    std::vector<long long> nParamsSpecFile;
 
     std::vector<std::vector<std::string>> keywordListSpecFile;
 
-    std::vector<int> seqIndex;
-    std::vector<int> mini_steps;
+    std::vector<long long> seqIndex;
+    std::vector<long long> mini_steps;
 
-    void ijk_from_global_index(int glob, int &i, int &j, int &k) const;
+    void ijk_from_global_index(long long glob, long long &i, long long &j, long long &k) const;
 
     std::vector<SummaryNode> summaryNodes;
     std::unordered_map<std::string, std::string> kwunits;
 
     time_point tp_startdat;
-    std::vector<int> start_vect;
+    std::vector<long long> start_vect;
 
     mutable double m_io_opening;
     mutable double m_io_loading;
@@ -127,7 +127,7 @@ private:
     void updatePathAndRootName(std::filesystem::path& dir, std::filesystem::path& rootN) const;
 
 
-    std::string makeKeyString(const std::string& keyword, const std::string& wgname, int num,
+    std::string makeKeyString(const std::string& keyword, const std::string& wgname, long long num,
                               const std::optional<Opm::EclIO::lgr_info> lgr_info) const;
 
     std::string unpackNumber(const SummaryNode&) const;
@@ -154,11 +154,11 @@ private:
     std::vector<std::tuple <std::string, uint64_t>>
     getListOfArrays(const std::string& filename, bool formatted);
 
-    std::vector<int> makeKeywPosVector(int speInd) const;
+    std::vector<long long> makeKeywPosVector(long long speInd) const;
     std::string read_string_from_disk(std::fstream& fileH, uint64_t size) const;
 
     void read_ministeps_from_disk();
-    int read_ministep_formatted(std::fstream& fileH);
+    long long read_ministep_formatted(std::fstream& fileH);
 };
 
 }} // namespace Opm::EclIO

@@ -153,7 +153,7 @@ public:
         if (n == size())
             return;
 
-        for (int diagIdx = 0; diagIdx < 3; ++ diagIdx)
+        for (long long diagIdx = 0; diagIdx < 3; ++ diagIdx)
             diag_[diagIdx].resize(n);
     }
 
@@ -759,7 +759,7 @@ private:
 
         // backward elimination
         x[n - 1] = bStar[n - 1]/mainDiag[n-1];
-        for (int i = static_cast<int>(n) - 2; i >= 0; --i) {
+        for (long long i = static_cast<long long>(n) - 2; i >= 0; --i) {
             unsigned iu = static_cast<unsigned>(i);
             x[iu] = (bStar[iu] - x[iu + 1]*upperDiag[iu+1] - x[n-1]*lastColumn[iu])/mainDiag[iu];
         }
@@ -798,7 +798,7 @@ private:
 
         // backward elimination
         x[n - 1] = bStar[n - 1]/mainDiag[n-1];
-        for (int i = static_cast<int>(n) - 2; i >= 0; --i) {
+        for (long long i = static_cast<long long>(n) - 2; i >= 0; --i) {
             unsigned iu = static_cast<unsigned>(i);
             x[iu] = (bStar[iu] - x[iu + 1]*upperDiag[iu+1])/mainDiag[iu];
         }

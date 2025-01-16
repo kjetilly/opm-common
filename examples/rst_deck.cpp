@@ -153,7 +153,7 @@ Example:
 struct Options {
     std::string input_deck;
     std::string restart_base;
-    int restart_step;
+    long long restart_step;
     std::optional<std::string> target_path;
     std::optional<std::string> target_fname;
 
@@ -266,10 +266,10 @@ void update_restart_path(Options& opt, const std::string& restart_arg, const Opm
 }
 
 
-std::pair<Options, std::string> load_options(int argc, char **argv) {
+std::pair<Options, std::string> load_options(long long argc, char **argv) {
     Options opt;
     while (true) {
-        int c;
+        long long c;
         c = getopt(argc, argv, "hm:s");
         if (c == -1)
             break;
@@ -351,7 +351,7 @@ void update_schedule(const Options& opt, Opm::FileDeck& file_deck)
 }
 
 
-int main(int argc, char** argv) {
+long long main(long long argc, char** argv) {
     auto [options, restart_arg] = load_options(argc, argv);
     auto deck = load_deck(options);
     Opm::FileDeck file_deck(deck);

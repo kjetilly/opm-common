@@ -143,29 +143,29 @@ private:
         //        field properties of cells on the leaf grid view for CpGrid with local grid refinement.
         //        Function argument 'lookupIdxOnLevelZeroAssigner' is added to lookup, for each
         //        leaf gridview cell with index 'elemIdx', its 'lookupIdx' (index of the parent/equivalent cell on level zero).
-        void run(const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner,
+        void run(const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner,
                  const std::function<unsigned(unsigned)>& lookupIdxOnLevelZeroAssigner);
     private:
         class HystParams;
         // \brief Function argument 'fieldPropIntOnLeadAssigner' needed to lookup
         //        field properties of cells on the leaf grid view for CpGrid with local grid refinement.
-        void copySatnumArrays_(const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>&
+        void copySatnumArrays_(const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>&
                                fieldPropIntOnLeafAssigner);
         // \brief Function argument 'fieldPropIntOnLeadAssigner' needed to lookup
         //        field properties of cells on the leaf grid view for CpGrid with local grid refinement.
-        void copyIntArray_(std::vector<int>& dest, const std::string& keyword,
-                           const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>&
+        void copyIntArray_(std::vector<long long>& dest, const std::string& keyword,
+                           const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>&
                            fieldPropIntOnLeafAssigner);
-        unsigned imbRegion_(std::vector<int>& array, unsigned elemIdx);
+        unsigned imbRegion_(std::vector<long long>& array, unsigned elemIdx);
         void initArrays_(
-                         std::vector<std::vector<int>*>& satnumArray,
-                         std::vector<std::vector<int>*>& imbnumArray,
+                         std::vector<std::vector<long long>*>& satnumArray,
+                         std::vector<std::vector<long long>*>& imbnumArray,
                          std::vector<std::vector<MaterialLawParams>*>& mlpArray);
         void initMaterialLawParamVectors_();
         void initOilWaterScaledEpsInfo_();
         // \brief Function argument 'fieldProptOnLeadAssigner' needed to lookup
         //        field properties of cells on the leaf grid view for CpGrid with local grid refinement.
-        void initSatnumRegionArray_(const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>&
+        void initSatnumRegionArray_(const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>&
                                     fieldPropIntOnLeafAssigner);
         void initThreePhaseParams_(
                                    HystParams &hystParams,
@@ -176,8 +176,8 @@ private:
         void readUnscaledEpsPointsVectors_();
         template <class Container>
         void readUnscaledEpsPoints_(Container& dest, std::shared_ptr<EclEpsConfig> config, EclTwoPhaseSystemType system_type);
-        unsigned satRegion_(std::vector<int>& array, unsigned elemIdx);
-        unsigned satOrImbRegion_(std::vector<int>& array, std::vector<int>& default_vec, unsigned elemIdx);
+        unsigned satRegion_(std::vector<long long>& array, unsigned elemIdx);
+        unsigned satOrImbRegion_(std::vector<long long>& array, std::vector<long long>& default_vec, unsigned elemIdx);
 
         // This class' implementation is defined in "EclMaterialLawManagerHystParams.cpp"
         class HystParams {
@@ -277,7 +277,7 @@ public:
     //        Function argument 'lookupIdxOnLevelZeroAssigner' is added to lookup, for each
     //        leaf gridview cell with index 'elemIdx', its 'lookupIdx' (index of the parent/equivalent cell on level zero).
     void initParamsForElements(const EclipseState& eclState, size_t numCompressedElems,
-                               const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>&
+                               const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>&
                                fieldPropIntOnLeafAssigner,
                                const std::function<unsigned(unsigned)>& lookupIdxOnLevelZeroAssigner);
 
@@ -354,10 +354,10 @@ public:
      */
     const MaterialLawParams& connectionMaterialLawParams(unsigned satRegionIdx, unsigned elemIdx) const;
 
-    int satnumRegionIdx(unsigned elemIdx) const
+    long long satnumRegionIdx(unsigned elemIdx) const
     { return satnumRegionArray_[elemIdx]; }
 
-    int getKrnumSatIdx(unsigned elemIdx, FaceDir::DirEnum facedir) const;
+    long long getKrnumSatIdx(unsigned elemIdx, FaceDir::DirEnum facedir) const;
 
     bool hasDirectionalRelperms() const
     {
@@ -371,7 +371,7 @@ public:
         return false;
     }
 
-    int imbnumRegionIdx(unsigned elemIdx) const
+    long long imbnumRegionIdx(unsigned elemIdx) const
     { return imbnumRegionArray_[elemIdx]; }
 
     template <class FluidState>
@@ -383,9 +383,9 @@ public:
         bool changed = MaterialLaw::updateHysteresis(materialLawParams(elemIdx), fluidState);
         if (hasDirectionalRelperms() || hasDirectionalImbnum()) {
             using Dir = FaceDir::DirEnum;
-            constexpr int ndim = 3;
+            constexpr long long ndim = 3;
             Dir facedirs[ndim] = {Dir::XPlus, Dir::YPlus, Dir::ZPlus};
-            for (int i = 0; i<ndim; i++) {
+            for (long long i = 0; i<ndim; i++) {
                 bool ischanged =  MaterialLaw::updateHysteresis(materialLawParams(elemIdx, facedirs[i]), fluidState);
                 changed = changed || ischanged;
             }
@@ -465,14 +465,14 @@ private:
     std::vector<MaterialLawParams> materialLawParams_;
     DirectionalMaterialLawParamsPtr dirMaterialLawParams_;
 
-    std::vector<int> satnumRegionArray_;
-    std::vector<int> krnumXArray_;
-    std::vector<int> krnumYArray_;
-    std::vector<int> krnumZArray_;
-    std::vector<int> imbnumXArray_;
-    std::vector<int> imbnumYArray_;
-    std::vector<int> imbnumZArray_;
-    std::vector<int> imbnumRegionArray_;
+    std::vector<long long> satnumRegionArray_;
+    std::vector<long long> krnumXArray_;
+    std::vector<long long> krnumYArray_;
+    std::vector<long long> krnumZArray_;
+    std::vector<long long> imbnumXArray_;
+    std::vector<long long> imbnumYArray_;
+    std::vector<long long> imbnumZArray_;
+    std::vector<long long> imbnumRegionArray_;
     std::vector<Scalar> stoneEtas_;
 
     bool enablePpcwmax_;

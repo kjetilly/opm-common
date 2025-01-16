@@ -37,9 +37,9 @@ namespace Opm
 namespace {
 
 std::optional<std::size_t> global_index(const EclipseGrid& grid, const DeckRecord& record, std::size_t item_offset) {
-    std::size_t i = static_cast<size_t>(record.getItem(0 + item_offset).get< int >(0)-1);
-    std::size_t j = static_cast<size_t>(record.getItem(1 + item_offset).get< int >(0)-1);
-    std::size_t k = static_cast<size_t>(record.getItem(2 + item_offset).get< int >(0)-1);
+    std::size_t i = static_cast<size_t>(record.getItem(0 + item_offset).get< long long >(0)-1);
+    std::size_t j = static_cast<size_t>(record.getItem(1 + item_offset).get< long long >(0)-1);
+    std::size_t k = static_cast<size_t>(record.getItem(2 + item_offset).get< long long >(0)-1);
 
     if (i >= grid.getNX())
         return {};

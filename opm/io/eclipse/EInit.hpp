@@ -37,8 +37,8 @@ public:
     std::vector<EclFile::EclEntry> list_arrays() const;
     std::vector<EclFile::EclEntry> list_arrays(const std::string& grid_name) const;
 
-    const std::array<int, 3>& grid_dimension(const std::string& grid_name = "global") const;
-    int activeCells(const std::string& grid_name = "global") const;
+    const std::array<long long, 3>& grid_dimension(const std::string& grid_name = "global") const;
+    long long activeCells(const std::string& grid_name = "global") const;
 
     bool hasLGR(const std::string& name) const;
 
@@ -54,19 +54,19 @@ protected:
     const std::vector<T>& ImplgetInitData(const std::string& name, const std::string& grid_name = "global");
 
 private:
-    std::array<int, 3> global_nijk;
-    std::vector<std::array<int, 3>> lgr_nijk;
+    std::array<long long, 3> global_nijk;
+    std::vector<std::array<long long, 3>> lgr_nijk;
 
-    int global_nactive;
-    std::vector<int> lgr_nactive;
+    long long global_nactive;
+    std::vector<long long> lgr_nactive;
 
     std::vector<std::string> lgr_names;
 
-    std::map<std::string,int> global_array_index;
-    std::vector<std::map<std::string,int>> lgr_array_index;
+    std::map<std::string,long long> global_array_index;
+    std::vector<std::map<std::string,long long>> lgr_array_index;
 
-    int get_array_index(const std::string& name, const std::string& grid_name) const;
-    int get_lgr_index(const std::string& grid_name) const;
+    long long get_array_index(const std::string& name, const std::string& grid_name) const;
+    long long get_lgr_index(const std::string& grid_name) const;
 };
 
 }} // namespace Opm::EclIO

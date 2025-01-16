@@ -102,7 +102,7 @@ double Inplace::get(const std::string&   region,
     if (phase_iter == region_iter->second.end()) {
         throw std::logic_error {
             fmt::format("No such phase: {}:{}",
-                        region, static_cast<int>(phase))
+                        region, static_cast<long long>(phase))
         };
     }
 
@@ -110,7 +110,7 @@ double Inplace::get(const std::string&   region,
     if (value_iter == phase_iter->second.end()) {
         throw std::logic_error {
             fmt::format("No such region id: {}:{}:{}",
-                        region, static_cast<int>(phase), region_id)
+                        region, static_cast<long long>(phase), region_id)
         };
     }
 
@@ -185,7 +185,7 @@ Inplace::get_vector(const std::string& region,
     if (phase_iter == region_iter->second.end()) {
         throw std::logic_error {
             fmt::format("Phase {} does not exist in region {}",
-                        static_cast<int>(phase), region)
+                        static_cast<long long>(phase), region)
         };
     }
 

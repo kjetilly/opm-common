@@ -61,13 +61,13 @@ namespace Opm {
 template <class Scalar, class FluidSystem>
 class PTFlash
 {
-    static constexpr int numPhases = FluidSystem::numPhases;
-    static constexpr int numComponents = FluidSystem::numComponents;
+    static constexpr long long numPhases = FluidSystem::numPhases;
+    static constexpr long long numComponents = FluidSystem::numComponents;
     enum { oilPhaseIdx = FluidSystem::oilPhaseIdx};
     enum { gasPhaseIdx = FluidSystem::gasPhaseIdx};
-    static constexpr int numMiscibleComponents = FluidSystem::numMiscibleComponents;
-    static constexpr int numMisciblePhases = FluidSystem::numMisciblePhases; //oil, gas
-    static constexpr int numEq = numMisciblePhases + numMisciblePhases * numMiscibleComponents;
+    static constexpr long long numMiscibleComponents = FluidSystem::numMiscibleComponents;
+    static constexpr long long numMisciblePhases = FluidSystem::numMisciblePhases; //oil, gas
+    static constexpr long long numEq = numMisciblePhases + numMisciblePhases * numMiscibleComponents;
 
 public:
     /*!
@@ -79,7 +79,7 @@ public:
                       const Dune::FieldVector<typename FluidState::Scalar, numComponents>& z,
                       const std::string& twoPhaseMethod,
                       Scalar /*tolerance = -1.*/,
-                      int verbosity = 0)
+                      long long verbosity = 0)
     {
 
         using InputEval = typename FluidState::Scalar;
@@ -87,7 +87,7 @@ public:
 
         // K and L from previous timestep (wilson and -1 initially)
         ComponentVector K;
-        for(int compIdx = 0; compIdx < numComponents; ++compIdx) {
+        for(long long compIdx = 0; compIdx < numComponents; ++compIdx) {
             K[compIdx] = fluid_state.K(compIdx);
         }
         InputEval L;
@@ -159,7 +159,7 @@ public:
 
         // the flash solution process were performed in scalar form, after the flash calculation finishes,
         // ensure that things in fluid_state_scalar is transformed to fluid_state
-        for (int compIdx=0; compIdx<numComponents; ++compIdx){
+        for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 const auto x_i = fluid_state_scalar.moleFraction(oilPhaseIdx, compIdx);
                 fluid_state.setMoleFraction(oilPhaseIdx, compIdx, x_i);
                 const auto y_i = fluid_state_scalar.moleFraction(gasPhaseIdx, compIdx);
@@ -196,16 +196,16 @@ public:
     }
 
     template <class Vector>
-    static typename Vector::field_type solveRachfordRice_g_(const Vector& K, const Vector& z, int verbosity)
+    static typename Vector::field_type solveRachfordRice_g_(const Vector& K, const Vector& z, long long verbosity)
     {
         // Find min and max K. Have to do a laborious for loop to avoid water component (where K=0)
         // TODO: Replace loop with Dune::min_value() and Dune::max_value() when water component is properly handled
         using field_type = typename Vector::field_type;
         constexpr field_type tol = 1e-12;
-        constexpr int itmax = 10000;
+        constexpr long long itmax = 10000;
         field_type Kmin = K[0];
         field_type Kmax = K[0];
-        for (int compIdx = 1; compIdx < numComponents; ++compIdx){
+        for (long long compIdx = 1; compIdx < numComponents; ++compIdx){
             if (K[compIdx] < Kmin)
                 Kmin = K[compIdx];
             else if (K[compIdx] >= Kmax)
@@ -222,11 +222,11 @@ public:
             std::cout << std::setw(10) << "Iteration" << std::setw(16) << "abs(step)" << std::setw(16) << "V" << std::endl;
         }
         // Newton-Raphson loop
-        for (int iteration = 1; iteration < itmax; ++iteration) {
+        for (long long iteration = 1; iteration < itmax; ++iteration) {
             // Calculate function and derivative values
             field_type denum = 0.0;
             field_type r = 0.0;
-            for (int compIdx = 0; compIdx < numComponents; ++compIdx){
+            for (long long compIdx = 0; compIdx < numComponents; ++compIdx){
                 auto dK = K[compIdx] - 1.0;
                 auto a = z[compIdx] * dK;
                 auto b = (1 + V * dK);
@@ -283,7 +283,7 @@ public:
 
     template <class Vector>
     static typename Vector::field_type bisection_g_(const Vector& K, typename Vector::field_type Lmin,
-                                                    typename Vector::field_type Lmax, const Vector& z, int verbosity)
+                                                    typename Vector::field_type Lmax, const Vector& z, long long verbosity)
     {
         // Calculate for g(Lmin) for first comparison with gMid = g(L)
         typename Vector::field_type gLmin = rachfordRice_g_(K, Lmin, z);
@@ -293,7 +293,7 @@ public:
                 std::cout << std::setw(10) << "Iteration" << std::setw(16) << "g(Lmid)" << std::setw(16) << "L" << std::endl;
         }
 
-        constexpr int max_it = 10000;
+        constexpr long long max_it = 10000;
 
         auto closeLmaxLmin = [](double max_v, double min_v) {
             return Opm::abs(max_v - min_v) / 2. < 1e-10;
@@ -304,7 +304,7 @@ public:
         if (closeLmaxLmin(Lmax, Lmin) ){
             throw std::runtime_error(fmt::format("Strange bisection with Lmax {} and Lmin {}?", Lmax, Lmin));
         }
-        for (int iteration = 0; iteration < max_it; ++iteration){
+        for (long long iteration = 0; iteration < max_it; ++iteration){
             // New midpoint
             auto L = (Lmin + Lmax) / 2;
             auto gMid = rachfordRice_g_(K, L, z);
@@ -332,11 +332,11 @@ public:
     }
 
     template <class Vector, class FlashFluidState>
-    static typename Vector::field_type li_single_phase_label_(const FlashFluidState& fluid_state, const Vector& z, int verbosity)
+    static typename Vector::field_type li_single_phase_label_(const FlashFluidState& fluid_state, const Vector& z, long long verbosity)
     {
         // Calculate intermediate sum
         typename Vector::field_type sumVz = 0.0;
-        for (int compIdx=0; compIdx<numComponents; ++compIdx){
+        for (long long compIdx=0; compIdx<numComponents; ++compIdx){
             // Get component information
             const auto& V_crit = FluidSystem::criticalVolume(compIdx);
 
@@ -346,7 +346,7 @@ public:
 
         // Calculate approximate (pseudo) critical temperature using Li's method
         typename Vector::field_type Tc_est = 0.0;
-        for (int compIdx=0; compIdx<numComponents; ++compIdx){
+        for (long long compIdx=0; compIdx<numComponents; ++compIdx){
             // Get component information
             const auto& V_crit = FluidSystem::criticalVolume(compIdx);
             const auto& T_crit = FluidSystem::criticalTemperature(compIdx);
@@ -384,7 +384,7 @@ public:
     }
 
     template <class FlashFluidState, class ComponentVector>
-    static void phaseStabilityTest_(bool& isStable, ComponentVector& K, FlashFluidState& fluid_state, const ComponentVector& z, int verbosity)
+    static void phaseStabilityTest_(bool& isStable, ComponentVector& K, FlashFluidState& fluid_state, const ComponentVector& z, long long verbosity)
     {
         // Declarations
         bool isTrivialL, isTrivialV;
@@ -412,14 +412,14 @@ public:
         if (isStable) {
             // Single phase, i.e. phase composition is equivalent to the global composition
             // Update fluid_state with mole fraction
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 fluid_state.setMoleFraction(gasPhaseIdx, compIdx, z[compIdx]);
                 fluid_state.setMoleFraction(oilPhaseIdx, compIdx, z[compIdx]);
             }
         }
         // If not stable: use the mole fractions from Michelsen's test to update K
         else {
-            for (int compIdx = 0; compIdx<numComponents; ++compIdx) {
+            for (long long compIdx = 0; compIdx<numComponents; ++compIdx) {
                 K[compIdx] = y[compIdx] / x[compIdx];
             }
         }
@@ -428,7 +428,7 @@ public:
 protected:
 
     template <class FlashFluidState>
-    static typename FlashFluidState::Scalar wilsonK_(const FlashFluidState& fluid_state, int compIdx)
+    static typename FlashFluidState::Scalar wilsonK_(const FlashFluidState& fluid_state, long long compIdx)
     {
         const auto& acf = FluidSystem::acentricFactor(compIdx);
         const auto& T_crit = FluidSystem::criticalTemperature(compIdx);
@@ -444,7 +444,7 @@ protected:
     static typename Vector::field_type rachfordRice_g_(const Vector& K, typename Vector::field_type L, const Vector& z)
     {
         typename Vector::field_type g=0;
-        for (int compIdx=0; compIdx<numComponents; ++compIdx){
+        for (long long compIdx=0; compIdx<numComponents; ++compIdx){
             g += (z[compIdx]*(K[compIdx]-1))/(K[compIdx]-L*(K[compIdx]-1));
         }
         return g;
@@ -454,7 +454,7 @@ protected:
     static typename Vector::field_type rachfordRice_dg_dL_(const Vector& K, const typename Vector::field_type L, const Vector& z)
     {
         typename Vector::field_type dg=0;
-        for (int compIdx=0; compIdx<numComponents; ++compIdx){
+        for (long long compIdx=0; compIdx<numComponents; ++compIdx){
             dg += (z[compIdx]*(K[compIdx]-1)*(K[compIdx]-1))/((K[compIdx]-L*(K[compIdx]-1))*(K[compIdx]-L*(K[compIdx]-1)));
         }
         return dg;
@@ -462,7 +462,7 @@ protected:
 
     template <class FlashFluidState, class ComponentVector>
     static void checkStability_(const FlashFluidState& fluid_state, bool& isTrivial, ComponentVector& K, ComponentVector& xy_loc,
-                                typename FlashFluidState::Scalar& S_loc, const ComponentVector& z, bool isGas, int verbosity)
+                                typename FlashFluidState::Scalar& S_loc, const ComponentVector& z, bool isGas, long long verbosity)
     {
         using FlashEval = typename FlashFluidState::Scalar;
         using PengRobinsonMixture = typename Opm::PengRobinsonMixture<Scalar, FluidSystem>;
@@ -478,33 +478,33 @@ protected:
 
         // Michelsens stability test.
         // Make two fake phases "inside" one phase and check for positive volume
-        for (int i = 0; i < 20000; ++i) {
+        for (long long i = 0; i < 20000; ++i) {
             S_loc = 0.0;
             if (isGas) {
-                for (int compIdx=0; compIdx<numComponents; ++compIdx){
+                for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                     xy_loc[compIdx] = K[compIdx] * z[compIdx];
                     S_loc += xy_loc[compIdx];
                 }
-                for (int compIdx=0; compIdx<numComponents; ++compIdx){
+                for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                     xy_loc[compIdx] /= S_loc;
                     fluid_state_fake.setMoleFraction(gasPhaseIdx, compIdx, xy_loc[compIdx]);
                 }
             }
             else {
-                for (int compIdx=0; compIdx<numComponents; ++compIdx){
+                for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                     xy_loc[compIdx] = z[compIdx]/K[compIdx];
                     S_loc += xy_loc[compIdx];
                 }
-                for (int compIdx=0; compIdx<numComponents; ++compIdx){
+                for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                     xy_loc[compIdx] /= S_loc;
                     fluid_state_fake.setMoleFraction(oilPhaseIdx, compIdx, xy_loc[compIdx]);
                 }
             }
 
-            int phaseIdx = (isGas ? static_cast<int>(gasPhaseIdx) : static_cast<int>(oilPhaseIdx));
-            int phaseIdx2 = (isGas ? static_cast<int>(oilPhaseIdx) : static_cast<int>(gasPhaseIdx));
+            long long phaseIdx = (isGas ? static_cast<long long>(gasPhaseIdx) : static_cast<long long>(oilPhaseIdx));
+            long long phaseIdx2 = (isGas ? static_cast<long long>(oilPhaseIdx) : static_cast<long long>(gasPhaseIdx));
             // TODO: not sure the following makes sense
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 fluid_state_global.setMoleFraction(phaseIdx2, compIdx, z[compIdx]);
             }
 
@@ -515,7 +515,7 @@ protected:
             paramCache_global.updatePhase(fluid_state_global, phaseIdx2);
 
             //fugacity for fake phases each component
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 auto phiFake = PengRobinsonMixture::computeFugacityCoefficient(fluid_state_fake, paramCache_fake, phaseIdx, compIdx);
                 auto phiGlobal = PengRobinsonMixture::computeFugacityCoefficient(fluid_state_global, paramCache_global, phaseIdx2, compIdx);
 
@@ -525,7 +525,7 @@ protected:
 
 
             ComponentVector R;
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 if (isGas){
                     auto fug_fake = fluid_state_fake.fugacity(phaseIdx, compIdx);
                     auto fug_global = fluid_state_global.fugacity(phaseIdx2, compIdx);
@@ -540,12 +540,12 @@ protected:
                 }
             }
 
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 K[compIdx] *= R[compIdx];
             }
             Scalar R_norm = 0.0;
             Scalar K_norm = 0.0;
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 auto a = Opm::getValue(R[compIdx]) - 1.0;
                 auto b = Opm::log(Opm::getValue(K[compIdx]));
                 R_norm += a*a;
@@ -576,7 +576,7 @@ protected:
         ComponentVector y;
         typename FlashFluidState::Scalar sumx=0;
         typename FlashFluidState::Scalar sumy=0;
-        for (int compIdx=0; compIdx<numComponents; ++compIdx){
+        for (long long compIdx=0; compIdx<numComponents; ++compIdx){
             x[compIdx] = z[compIdx]/(L + (1-L)*K[compIdx]);
             sumx += x[compIdx];
             y[compIdx] = (K[compIdx]*z[compIdx])/(L + (1-L)*K[compIdx]);
@@ -585,7 +585,7 @@ protected:
         x /= sumx;
         y /= sumy;
 
-        for (int compIdx=0; compIdx<numComponents; ++compIdx){
+        for (long long compIdx=0; compIdx<numComponents; ++compIdx){
             fluid_state.setMoleFraction(oilPhaseIdx, compIdx, x[compIdx]);
             fluid_state.setMoleFraction(gasPhaseIdx, compIdx, y[compIdx]);
         }
@@ -597,7 +597,7 @@ protected:
                           ComponentVector& K_scalar,
                           typename FluidState::Scalar& L_scalar,
                           FluidState& fluid_state_scalar,
-                          int verbosity = 0) {
+                          long long verbosity = 0) {
         if (verbosity >= 1) {
             std::cout << "Cell is two-phase! Solve Rachford-Rice with initial K = [" << K_scalar << "]" << std::endl;
         }
@@ -633,7 +633,7 @@ protected:
     template <class FlashFluidState, class ComponentVector>
     static bool newtonComposition_(ComponentVector& K, typename FlashFluidState::Scalar& L,
                                    FlashFluidState& fluid_state, const ComponentVector& z,
-                                   int verbosity)
+                                   long long verbosity)
     {
         // Note: due to the need for inverse flash update for derivatives, the following two can be different
         // Looking for a good way to organize them
@@ -654,14 +654,14 @@ protected:
         if (verbosity >= 1) {
             std::cout << " the current L is " << Opm::getValue(L) << std::endl;
             std::cout << "Initial guess: x = [";
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 if (compIdx < numComponents - 1)
                     std::cout << fluid_state.moleFraction(oilPhaseIdx, compIdx) << " ";
                 else
                     std::cout << fluid_state.moleFraction(oilPhaseIdx, compIdx);
             }
             std::cout << "], y = [";
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 if (compIdx < numComponents - 1)
                     std::cout << fluid_state.moleFraction(gasPhaseIdx, compIdx) << " ";
                 else
@@ -1129,10 +1129,10 @@ protected:
     // TODO: or use typename FlashFluidState::Scalar
     template <class FlashFluidState, class ComponentVector>
     static bool successiveSubstitutionComposition_(ComponentVector& K, typename ComponentVector::field_type& L, FlashFluidState& fluid_state, const ComponentVector& z,
-                                                   const bool newton_afterwards, const int verbosity)
+                                                   const bool newton_afterwards, const long long verbosity)
     {
         // Determine max. iterations based on if it will be used as a standalone flash or as a pre-process to Newton (or other) method.
-        const int maxIterations = newton_afterwards ? 5 : 100;
+        const long long maxIterations = newton_afterwards ? 5 : 100;
 
         // Store cout format before manipulation
         std::ios_base::fmtflags f(std::cout.flags());
@@ -1143,23 +1143,23 @@ protected:
 
         if (verbosity == 2 || verbosity == 4) {
             // Print header
-            int fugWidth = (numComponents * 12)/2;
-            int convWidth = fugWidth + 7;
+            long long fugWidth = (numComponents * 12)/2;
+            long long convWidth = fugWidth + 7;
             std::cout << std::setw(10) << "Iteration" << std::setw(fugWidth) << "fL/fV" << std::setw(convWidth) << "norm2(fL/fv-1)" << std::endl;
         }
         //
         // Successive substitution loop
         //
-        for (int i=0; i < maxIterations; ++i){
+        for (long long i=0; i < maxIterations; ++i){
             // Compute (normalized) liquid and vapor mole fractions
             computeLiquidVapor_(fluid_state, L, K, z);
 
             // Calculate fugacity coefficient
             using ParamCache = typename FluidSystem::template ParameterCache<typename FlashFluidState::Scalar>;
             ParamCache paramCache;
-            for (int phaseIdx=0; phaseIdx<numPhases; ++phaseIdx){
+            for (long long phaseIdx=0; phaseIdx<numPhases; ++phaseIdx){
                 paramCache.updatePhase(fluid_state, phaseIdx);
-                for (int compIdx=0; compIdx<numComponents; ++compIdx){
+                for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                     auto phi = FluidSystem::fugacityCoefficient(fluid_state, paramCache, phaseIdx, compIdx);
                     fluid_state.setFugacityCoefficient(phaseIdx, compIdx, phi);
                 }
@@ -1168,16 +1168,16 @@ protected:
             // Calculate fugacity ratio
             ComponentVector newFugRatio;
             ComponentVector convFugRatio;
-            for (int compIdx=0; compIdx<numComponents; ++compIdx){
+            for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                 newFugRatio[compIdx] = fluid_state.fugacity(oilPhaseIdx, compIdx)/fluid_state.fugacity(gasPhaseIdx, compIdx);
                 convFugRatio[compIdx] = newFugRatio[compIdx] - 1.0;
             }
 
             // Print iteration info
             if (verbosity >= 2) {
-                int prec = 5;
-                int fugWidth = (prec + 3);
-                int convWidth = prec + 9;
+                long long prec = 5;
+                long long fugWidth = (prec + 3);
+                long long convWidth = prec + 9;
                 std::cout << std::defaultfloat;
                 std::cout << std::fixed;
                 std::cout << std::setw(5) << i;
@@ -1197,7 +1197,7 @@ protected:
                 if (verbosity >= 1) {
                     std::cout << "Solution converged to the following result :" << std::endl;
                     std::cout << "x = [";
-                    for (int compIdx = 0; compIdx < numComponents; ++compIdx) {
+                    for (long long compIdx = 0; compIdx < numComponents; ++compIdx) {
                         if (compIdx < numComponents - 1)
                             std::cout << fluid_state.moleFraction(oilPhaseIdx, compIdx) << " ";
                         else
@@ -1205,7 +1205,7 @@ protected:
                     }
                     std::cout << "]" << std::endl;
                     std::cout << "y = [";
-                    for (int compIdx = 0; compIdx < numComponents; ++compIdx) {
+                    for (long long compIdx = 0; compIdx < numComponents; ++compIdx) {
                         if (compIdx < numComponents - 1)
                             std::cout << fluid_state.moleFraction(gasPhaseIdx, compIdx) << " ";
                         else
@@ -1221,7 +1221,7 @@ protected:
             //  If convergence is not met, K is updated in a successive substitution manner
             else {
                 // Update K
-                for (int compIdx=0; compIdx<numComponents; ++compIdx){
+                for (long long compIdx=0; compIdx<numComponents; ++compIdx){
                     K[compIdx] *= newFugRatio[compIdx];
                 }
 

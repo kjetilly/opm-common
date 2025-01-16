@@ -370,7 +370,7 @@ void handleWPIMULT(HandlerContext& handlerContext)
         return std::all_of(wpimult.begin() + 2, wpimult.end(),
             [](const DeckItem& item)
             {
-                return item.defaultApplied(0) || (item.get<int>(0) < 0);
+                return item.defaultApplied(0) || (item.get<long long>(0) < 0);
             });
     };
 
@@ -548,7 +548,7 @@ void handleWTMULT(HandlerContext& handlerContext)
             };
         }
 
-        const auto num = record.getItem<ParserKeywords::WTMULT::NUM>().get<int>(0);
+        const auto num = record.getItem<ParserKeywords::WTMULT::NUM>().get<long long>(0);
         if (num != 1) {
             throw OpmInputError {
                 "Only NUM=1 is supported in WTMULT keyword",

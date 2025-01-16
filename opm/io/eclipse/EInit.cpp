@@ -74,7 +74,7 @@ EInit::EInit(const std::string &filename) : EclFile(filename)
 }
 
 
-int EInit::get_array_index(const std::string& name, const std::string& grid_name) const
+long long EInit::get_array_index(const std::string& name, const std::string& grid_name) const
 {
     if (grid_name == "global"){
         if (global_array_index.count(name) == 0)
@@ -84,7 +84,7 @@ int EInit::get_array_index(const std::string& name, const std::string& grid_name
 
     } else {
 
-        int lgr_index = get_lgr_index(grid_name);
+        long long lgr_index = get_lgr_index(grid_name);
 
         if (lgr_array_index[lgr_index].count(name) == 0)
             OPM_THROW(std::invalid_argument, "Map key '" + name + "' not found in lgr_array_index");
@@ -93,7 +93,7 @@ int EInit::get_array_index(const std::string& name, const std::string& grid_name
     }
 }
 
-int EInit::activeCells(const std::string& grid_name) const
+long long EInit::activeCells(const std::string& grid_name) const
 {
     if (grid_name == "global")
         return global_nactive;
@@ -101,7 +101,7 @@ int EInit::activeCells(const std::string& grid_name) const
         return lgr_nactive[get_lgr_index(grid_name)];
 }
 
-const std::array<int, 3>& EInit::grid_dimension(const std::string& grid_name) const
+const std::array<long long, 3>& EInit::grid_dimension(const std::string& grid_name) const
 {
     if (grid_name == "global")
         return global_nijk;
@@ -116,7 +116,7 @@ bool EInit::hasLGR(const std::string& name) const{
         return true;
 }
 
-int EInit::get_lgr_index(const std::string& grid_name) const
+long long EInit::get_lgr_index(const std::string& grid_name) const
 {
     auto it = std::find(lgr_names.begin(), lgr_names.end(), grid_name);
 
@@ -132,11 +132,11 @@ std::vector<EclFile::EclEntry> EInit::list_arrays(const std::string& grid_name) 
 {
     std::vector<EclEntry> array_list;
 
-    int lgr_index = this->get_lgr_index(grid_name);
+    long long lgr_index = this->get_lgr_index(grid_name);
 
     for (auto const& x : lgr_array_index[lgr_index])
     {
-        int ind = x.second;
+        long long ind = x.second;
         array_list.push_back(std::make_tuple(array_name[ind], array_type[ind], array_size[ind]));
     }
 
@@ -149,7 +149,7 @@ std::vector<EclFile::EclEntry> EInit::list_arrays() const
 
     for (auto const& x : global_array_index)
     {
-        int ind = x.second;
+        long long ind = x.second;
         array_list.push_back(std::make_tuple(array_name[ind], array_type[ind], array_size[ind]));
     }
 
@@ -159,9 +159,9 @@ std::vector<EclFile::EclEntry> EInit::list_arrays() const
 template <typename T>
 const std::vector<T>& EInit::ImplgetInitData(const std::string& name, const std::string& grid_name)
 {
-    int arr_ind = get_array_index(name, grid_name);
+    long long arr_ind = get_array_index(name, grid_name);
 
-    if constexpr (std::is_same_v<T, int>)
+    if constexpr (std::is_same_v<T, long long>)
             return getImpl(arr_ind, INTE, inte_array, "integer");
 
     if constexpr (std::is_same_v<T, float>)
@@ -187,7 +187,7 @@ const std::vector<T>& EInit::ImplgetInitData(const std::string& name, const std:
     OPM_THROW(std::runtime_error, "type not supported");
 }
 
-template const std::vector<int>& EInit::ImplgetInitData(const std::string& name, const std::string& grid_name);
+template const std::vector<long long>& EInit::ImplgetInitData(const std::string& name, const std::string& grid_name);
 template const std::vector<float>& EInit::ImplgetInitData(const std::string& name, const std::string& grid_name);
 template const std::vector<double>& EInit::ImplgetInitData(const std::string& name, const std::string& grid_name);
 template const std::vector<bool>& EInit::ImplgetInitData(const std::string& name, const std::string& grid_name);

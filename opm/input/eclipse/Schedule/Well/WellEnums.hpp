@@ -37,7 +37,7 @@ enum class WellStatus {
   of which controls are present, i.e. the 2^n structure must
   be intact.
 */
-enum class WellInjectorCMode : int{
+enum class WellInjectorCMode : int {
     RATE =  1 ,
     RESV =  2 ,
     BHP  =  4 ,
@@ -112,7 +112,7 @@ std::ostream& operator<<(std::ostream& os, const WellInjectorCMode& cm);
 
 std::string WellProducerCMode2String(WellProducerCMode enumValue);
 WellProducerCMode WellProducerCModeFromString(const std::string& stringValue);
-WellProducerCMode WellProducerCModeFromInt(const int intValue);
+WellProducerCMode WellProducerCModeFromInt(const long long intValue);
 std::ostream& operator<<(std::ostream& os, const WellProducerCMode& cm);
 
 std::string WellWELTARGCMode2String(WellWELTARGCMode cmode);

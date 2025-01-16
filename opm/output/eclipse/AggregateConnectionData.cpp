@@ -48,12 +48,12 @@ namespace VI = Opm::RestartIO::Helpers::VectorItems;
 // ---------------------------------------------------------------------
 
 namespace {
-    std::size_t numWells(const std::vector<int>& inteHead)
+    std::size_t numWells(const std::vector<long long>& inteHead)
     {
         return inteHead[VI::intehead::NWELLS];
     }
 
-    std::size_t maxNumConn(const std::vector<int>& inteHead)
+    std::size_t maxNumConn(const std::vector<long long>& inteHead)
     {
         return inteHead[VI::intehead::NCWMAX];
     }
@@ -98,15 +98,15 @@ namespace {
     }
 
     namespace IConn {
-        std::size_t entriesPerConn(const std::vector<int>& inteHead)
+        std::size_t entriesPerConn(const std::vector<long long>& inteHead)
         {
             return inteHead[VI::intehead::NICONZ];
         }
 
-        Opm::RestartIO::Helpers::WindowedMatrix<int>
-        allocate(const std::vector<int>& inteHead)
+        Opm::RestartIO::Helpers::WindowedMatrix<long long>
+        allocate(const std::vector<long long>& inteHead)
         {
-            using WM = Opm::RestartIO::Helpers::WindowedMatrix<int>;
+            using WM = Opm::RestartIO::Helpers::WindowedMatrix<long long>;
 
             return WM {
                 WM::NumRows   { numWells(inteHead) },
@@ -143,20 +143,20 @@ namespace {
             iConn[Ix::ComplNum] = conn.complnum();
             //iConn[Ix::ComplNum] = iConn[Ix::SeqIndex];
 
-            iConn[Ix::ConnDir] = static_cast<int>(conn.dir());
+            iConn[Ix::ConnDir] = static_cast<long long>(conn.dir());
             iConn[Ix::Segment] = conn.attachedToSegment()
                 ? conn.segment() : 0;
         }
     } // IConn
 
     namespace SConn {
-        std::size_t entriesPerConn(const std::vector<int>& inteHead)
+        std::size_t entriesPerConn(const std::vector<long long>& inteHead)
         {
             return inteHead[VI::intehead::NSCONZ];
         }
 
         Opm::RestartIO::Helpers::WindowedMatrix<float>
-        allocate(const std::vector<int>& inteHead)
+        allocate(const std::vector<long long>& inteHead)
         {
             using WM = Opm::RestartIO::Helpers::WindowedMatrix<float>;
 
@@ -247,13 +247,13 @@ namespace {
     } // SConn
 
     namespace XConn {
-        std::size_t entriesPerConn(const std::vector<int>& inteHead)
+        std::size_t entriesPerConn(const std::vector<long long>& inteHead)
         {
             return inteHead[VI::intehead::NXCONZ];
         }
 
         Opm::RestartIO::Helpers::WindowedMatrix<double>
-        allocate(const std::vector<int>& inteHead)
+        allocate(const std::vector<long long>& inteHead)
         {
             using WM = Opm::RestartIO::Helpers::WindowedMatrix<double>;
 
@@ -327,7 +327,7 @@ namespace {
 } // Anonymous
 
 Opm::RestartIO::Helpers::AggregateConnectionData::
-AggregateConnectionData(const std::vector<int>& inteHead)
+AggregateConnectionData(const std::vector<long long>& inteHead)
     : iConn_(IConn::allocate(inteHead))
     , sConn_(SConn::allocate(inteHead))
     , xConn_(XConn::allocate(inteHead))

@@ -39,7 +39,7 @@ enum class Phase {
     // If you add more entries to this enum, remember to update NUM_PHASES_IN_ENUM below.
 };
 
-constexpr int NUM_PHASES_IN_ENUM = static_cast<int>(Phase::ZFRACTION) + 1;  // Used to get correct size of the bitset in class Phases.
+constexpr long long NUM_PHASES_IN_ENUM = static_cast<long long>(Phase::ZFRACTION) + 1;  // Used to get correct size of the bitset in class Phases.
 
 Phase get_phase( const std::string& );
 std::ostream& operator<<( std::ostream&, const Phase& );

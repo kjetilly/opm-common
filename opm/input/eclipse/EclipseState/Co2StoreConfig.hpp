@@ -57,7 +57,7 @@ class Deck;
     const std::vector<EzrokhiTable>& getViscaqaTables() const;
     
     double salinity() const;
-    int actco2s() const;
+    long long actco2s() const;
 
     template<class Serializer>
     void serializeOp(Serializer& serializer)
@@ -83,13 +83,13 @@ class Deck;
     LiquidMixingType string2enumLiquid(const std::string& input) const;
     GasMixingType string2enumGas(const std::string& input) const;
     
-    std::map<std::string, int> cnames;
+    std::map<std::string, long long> cnames;
     std::vector<EzrokhiTable> denaqa_tables;
     std::vector<EzrokhiTable> viscaqa_tables;
     double salt {0.0};
     static constexpr double MmNaCl = 58.44e-3;
     static constexpr double MmH2O = 18e-3;
-    int activityModel {3};
+    long long activityModel {3};
   };
 }
 

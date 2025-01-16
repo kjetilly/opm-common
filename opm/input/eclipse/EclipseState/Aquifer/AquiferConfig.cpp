@@ -110,12 +110,12 @@ const AquiferFlux& AquiferConfig::aquflux() const {
     return this->aquiferflux;
 }
 
-bool AquiferConfig::hasAquifer(const int aquID) const {
+bool AquiferConfig::hasAquifer(const long long aquID) const {
     return this->hasAnalyticalAquifer(aquID) ||
            numerical_aquifers.hasAquifer(aquID);
 }
 
-bool AquiferConfig::hasAnalyticalAquifer(const int aquID) const {
+bool AquiferConfig::hasAnalyticalAquifer(const long long aquID) const {
     return aquifetp.hasAquifer(aquID) ||
            aquiferct.hasAquifer(aquID) ||
            aquiferflux.hasAquifer(aquID);
@@ -139,15 +139,15 @@ bool AquiferConfig::hasAnalyticalAquifer() const {
         || (this->aquiferflux.size() > std::size_t{0});
 }
 
-void AquiferConfig::appendAqufluxSchedule(const std::unordered_set<int>& ids) {
+void AquiferConfig::appendAqufluxSchedule(const std::unordered_set<long long>& ids) {
     this->aquiferflux.appendAqufluxSchedule(ids);
 }
 
 } // end of namespace Opm
 
-std::vector<int> Opm::analyticAquiferIDs(const AquiferConfig& cfg)
+std::vector<long long> Opm::analyticAquiferIDs(const AquiferConfig& cfg)
 {
-    auto aquiferIDs = std::vector<int>{};
+    auto aquiferIDs = std::vector<long long>{};
 
     if (! cfg.hasAnalyticalAquifer())
         return aquiferIDs;
@@ -166,9 +166,9 @@ std::vector<int> Opm::analyticAquiferIDs(const AquiferConfig& cfg)
     return aquiferIDs;
 }
 
-std::vector<int> Opm::numericAquiferIDs(const AquiferConfig& cfg)
+std::vector<long long> Opm::numericAquiferIDs(const AquiferConfig& cfg)
 {
-    auto aquiferIDs = std::vector<int>{};
+    auto aquiferIDs = std::vector<long long>{};
 
     if (! cfg.hasNumericalAquifer())
         return aquiferIDs;
@@ -176,7 +176,7 @@ std::vector<int> Opm::numericAquiferIDs(const AquiferConfig& cfg)
     const auto& aqunum = cfg.numericalAquifers();
 
     std::transform(aqunum.aquifers().begin(), aqunum.aquifers().end(), std::back_inserter(aquiferIDs),
-                   [](const auto& aquifer) { return static_cast<int>(aquifer.first); });
+                   [](const auto& aquifer) { return static_cast<long long>(aquifer.first); });
 
     std::sort(aquiferIDs.begin(), aquiferIDs.end());
 

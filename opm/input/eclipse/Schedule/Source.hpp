@@ -45,7 +45,7 @@ class Source
 public:
     struct SourceCell
     {
-        std::array<int, 3> ijk{};
+        std::array<long long, 3> ijk{};
         SourceComponent component{SourceComponent::NONE};
         double rate{};
         std::optional<double> hrate{};
@@ -58,7 +58,7 @@ public:
 
         bool operator==(const SourceCell& other) const;
         bool isSame(const SourceCell& other) const;
-        bool isSame(const std::pair<std::array<int, 3>, SourceComponent>& other) const;
+        bool isSame(const std::pair<std::array<long long, 3>, SourceComponent>& other) const;
 
         template<class Serializer>
         void serializeOp(Serializer& serializer)
@@ -80,12 +80,12 @@ public:
     std::vector<SourceCell>::const_iterator end() const;
     bool operator==(const Source& other) const;
 
-    double rate(const std::pair<std::array<int, 3>, SourceComponent>& input ) const;
-    double hrate(const std::pair<std::array<int, 3>, SourceComponent>& input ) const;
-    double temperature(const std::pair<std::array<int, 3>, SourceComponent>& input) const;
-    bool hasHrate(const std::pair<std::array<int, 3>, SourceComponent>& input) const;
-    bool hasTemperature(const std::pair<std::array<int, 3>, SourceComponent>& input) const;
-    bool hasSource(const std::array<int, 3>& input) const;
+    double rate(const std::pair<std::array<long long, 3>, SourceComponent>& input ) const;
+    double hrate(const std::pair<std::array<long long, 3>, SourceComponent>& input ) const;
+    double temperature(const std::pair<std::array<long long, 3>, SourceComponent>& input) const;
+    bool hasHrate(const std::pair<std::array<long long, 3>, SourceComponent>& input) const;
+    bool hasTemperature(const std::pair<std::array<long long, 3>, SourceComponent>& input) const;
+    bool hasSource(const std::array<long long, 3>& input) const;
 
     void updateSource(const DeckRecord& record);
 

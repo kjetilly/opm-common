@@ -68,13 +68,13 @@ namespace VI = ::Opm::RestartIO::Helpers::VectorItems;
 namespace {
 
     // maximum number of groups
-    std::size_t ngmaxz(const std::vector<int>& inteHead)
+    std::size_t ngmaxz(const std::vector<long long>& inteHead)
     {
         return inteHead[20];
     }
 
     // maximum number of wells
-    std::size_t nwmaxz(const std::vector<int>& inteHead)
+    std::size_t nwmaxz(const std::vector<long long>& inteHead)
     {
         return inteHead[163];
     }
@@ -153,7 +153,7 @@ namespace {
 
     // function to return index number of last binary token not inside
     // bracket that is ending the expression
-    int numOperators(const std::vector<Opm::UDQToken>& modTokens)
+    long long numOperators(const std::vector<Opm::UDQToken>& modTokens)
     {
         return std::count_if(modTokens.begin(), modTokens.end(),
                              [](const auto& token)
@@ -164,9 +164,9 @@ namespace {
     }
 
     // function to return the precedence of the current operator/function
-    int opFuncPrec(const Opm::UDQTokenType token)
+    long long opFuncPrec(const Opm::UDQTokenType token)
     {
-        int prec = 0;
+        long long prec = 0;
         if (isTokenTypeFunc(token)) prec = 6;
         if (Opm::UDQ::cmpFunc(token)) prec = 5;
         if (isTokenTypeBinaryPowOp(token)) prec = 4;
@@ -180,7 +180,7 @@ namespace {
     {
         std::vector<Opm::UDQToken> highestLevOperators;
         std::map<std::size_t, std::vector<Opm::UDQToken>> substitutedTokens;
-        int noleadingOpenPar;
+        long long noleadingOpenPar;
         bool leadChangeSign;
     };
 
@@ -192,7 +192,7 @@ namespace {
 
     substOuterParentheses
     substitute_outer_parenthesis(const std::vector<Opm::UDQToken>& modTokens,
-                                 int                               noLeadOpenPar,
+                                 long long                               noLeadOpenPar,
                                  bool                              leadChgSgn)
     {
         std::map <std::size_t, std::vector<Opm::UDQToken>> substTok;
@@ -331,10 +331,10 @@ namespace {
     // "top" of the parse tree (AST - abstract syntax tree) i.e. the
     // location of the lowest precedence operator relative to the total set
     // of operators, functions and open-/close - parenthesis
-    int define_type(const std::vector<Opm::UDQToken>& tokens)
+    long long define_type(const std::vector<Opm::UDQToken>& tokens)
     {
-        int def_type = 0;
-        int noLeadOpenPar = 0;
+        long long def_type = 0;
+        long long noLeadOpenPar = 0;
         bool leadChgSgn = false;
 
         //
@@ -345,14 +345,14 @@ namespace {
         //
         // loop over high level operators to find operator with lowest precedence and highest index
 
-        int curPrec  = 100;
+        long long curPrec  = 100;
         std::size_t indLowestPrecOper = 0;
         for (std::size_t ind = 0; ind < expr.highestLevOperators.size(); ++ind) {
             if ((expr.highestLevOperators[ind].type() != Opm::UDQTokenType::ecl_expr) &&
                 (expr.highestLevOperators[ind].type() != Opm::UDQTokenType::comp_expr) &&
                 (expr.highestLevOperators[ind].type() != Opm::UDQTokenType::number))
             {
-                const int tmpPrec = opFuncPrec(expr.highestLevOperators[ind].type());
+                const long long tmpPrec = opFuncPrec(expr.highestLevOperators[ind].type());
                 if (tmpPrec <= curPrec) {
                     curPrec = tmpPrec;
                     indLowestPrecOper = ind;
@@ -412,10 +412,10 @@ namespace {
     }
 
     template <typename T>
-    std::pair<bool, int>
+    std::pair<bool, long long>
     findInVector(const std::vector<T>& vecOfElements, const T& element)
     {
-        std::pair<bool, int> result;
+        std::pair<bool, long long> result;
 
         // Find given element in vector
         auto it = std::find(vecOfElements.begin(), vecOfElements.end(), element);
@@ -434,10 +434,10 @@ namespace {
 
     namespace iUdq {
 
-        Opm::RestartIO::Helpers::WindowedArray<int>
+        Opm::RestartIO::Helpers::WindowedArray<long long>
         allocate(const Opm::UDQDims& udqDims)
         {
-            using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
             return WV {
                 WV::NumWindows{ std::max(udqDims.totalNumUDQs(), std::size_t{1}) },
@@ -597,14 +597,14 @@ namespace {
 
     namespace iGph {
 
-        std::vector<int>
+        std::vector<long long>
         phaseVector(const Opm::Schedule&    sched,
                     const std::size_t       simStep,
-                    const std::vector<int>& inteHead)
+                    const std::vector<long long>& inteHead)
         {
-            auto inj_phase = std::vector<int>(ngmaxz(inteHead), 0);
+            auto inj_phase = std::vector<long long>(ngmaxz(inteHead), 0);
 
-            auto update_phase = [](const int phase, const int new_phase) {
+            auto update_phase = [](const long long phase, const long long new_phase) {
                 if (phase == 0) {
                     return new_phase;
                 }
@@ -648,13 +648,13 @@ namespace {
 
     namespace iUap {
 
-        std::vector<int>
+        std::vector<long long>
         data(const Opm::ScheduleState&                       sched,
              const std::vector<Opm::UDQActive::InputRecord>& iuap)
         {
             // Construct the current list of well or group sequence numbers
             // to output the IUAP array.
-            auto wg_no = std::vector<int>{};
+            auto wg_no = std::vector<long long>{};
 
             for (const auto& udaRecord : iuap) {
                 switch (Opm::UDQ::keyword(udaRecord.control)) {
@@ -879,7 +879,7 @@ Opm::RestartIO::Helpers::AggregateUDQData::
 captureDeclaredUDQData(const Schedule&         sched,
                        const std::size_t       simStep,
                        const UDQState&         udq_state,
-                       const std::vector<int>& inteHead)
+                       const std::vector<long long>& inteHead)
 {
     const auto udqInput = sched.getUDQConfig(simStep).input();
 
@@ -922,14 +922,14 @@ captureDeclaredUDQData(const Schedule&         sched,
 void
 Opm::RestartIO::Helpers::AggregateUDQData::
 collectUserDefinedQuantities(const std::vector<UDQInput>& udqInput,
-                             const std::vector<int>&      inteHead)
+                             const std::vector<long long>&      inteHead)
 {
     const auto expectNumUDQ = inteHead[VI::intehead::NO_WELL_UDQS]
         + inteHead[VI::intehead::NO_GROUP_UDQS]
         + inteHead[VI::intehead::NO_FIELD_UDQS]
         + inteHead[VI::intehead::NO_SEG_UDQS];
 
-    int cnt = 0;
+    long long cnt = 0;
     for (const auto& udq_input : udqInput) {
         const auto udq_index = udq_input.index.insert_index;
 
@@ -958,7 +958,7 @@ void
 Opm::RestartIO::Helpers::AggregateUDQData::
 collectUserDefinedArguments(const Schedule&         sched,
                             const std::size_t       simStep,
-                            const std::vector<int>& inteHead)
+                            const std::vector<long long>& inteHead)
 {
     const auto& udq_active = sched[simStep].udq_active();
     if (! udq_active) {
@@ -987,11 +987,11 @@ void
 Opm::RestartIO::Helpers::AggregateUDQData::
 collectFieldUDQValues(const std::vector<UDQInput>& udqInput,
                       const UDQState&              udq_state,
-                      const int                    expectNumFieldUDQs)
+                      const long long                    expectNumFieldUDQs)
 {
     auto ix = std::size_t {0};
 
-    int cnt = 0;
+    long long cnt = 0;
     for (const auto& udq_input : udqInput) {
         if (udq_input.var_type() == UDQVarType::FIELD_VAR) {
             auto dudf = (*this->dUDF_)[ix];
@@ -1018,11 +1018,11 @@ collectGroupUDQValues(const std::vector<UDQInput>&     udqInput,
                       const UDQState&                  udqState,
                       const std::size_t                ngmax,
                       const std::vector<const Group*>& groups,
-                      const int                        expectedNumGroupUDQs)
+                      const long long                        expectedNumGroupUDQs)
 {
     auto ix = std::size_t{0};
 
-    int cnt = 0;
+    long long cnt = 0;
     for (const auto& udq_input : udqInput) {
         if (udq_input.var_type() == UDQVarType::GROUP_VAR) {
             auto dudg = (*this->dUDG_)[ix];
@@ -1084,11 +1084,11 @@ collectWellUDQValues(const std::vector<UDQInput>&    udqInput,
                      const UDQState&                 udqState,
                      const std::size_t               nwmax,
                      const std::vector<std::string>& wells,
-                     const int                       expectedNumWellUDQs)
+                     const long long                       expectedNumWellUDQs)
 {
     auto ix = std::size_t {0};
 
-    int cnt = 0;
+    long long cnt = 0;
     for (const auto& udq_input : udqInput) {
         if (udq_input.var_type() == UDQVarType::WELL_VAR) {
             auto dudw = (*this->dUDW_)[ix];
@@ -1124,7 +1124,7 @@ collectIUAD(const UDQActive& udqActive, const std::size_t expectNumIUAD)
         return;
     }
 
-    using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+    using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
     this->iUAD_.emplace(WV::NumWindows{ expectNumIUAD },
                         WV::WindowSize{ Opm::UDQDims::entriesPerIUAD() });
@@ -1141,7 +1141,7 @@ collectIUAD(const UDQActive& udqActive, const std::size_t expectNumIUAD)
 
 void
 Opm::RestartIO::Helpers::AggregateUDQData::
-collectIUAP(const std::vector<int>& wgIndex,
+collectIUAP(const std::vector<long long>& wgIndex,
             const std::size_t       expectNumIUAP)
 {
     if (wgIndex.size() != expectNumIUAP) {
@@ -1152,7 +1152,7 @@ collectIUAP(const std::vector<int>& wgIndex,
         return;
     }
 
-    using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+    using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
     this->iUAP_.emplace(WV::NumWindows{ 1 }, WV::WindowSize{ expectNumIUAP });
 
@@ -1161,7 +1161,7 @@ collectIUAP(const std::vector<int>& wgIndex,
 
 void
 Opm::RestartIO::Helpers::AggregateUDQData::
-collectIGPH(const std::vector<int>& phase_vector,
+collectIGPH(const std::vector<long long>& phase_vector,
             const std::size_t       expectNumIGPH)
 {
     if (phase_vector.size() != expectNumIGPH) {
@@ -1172,7 +1172,7 @@ collectIGPH(const std::vector<int>& phase_vector,
         return;
     }
 
-    using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+    using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
     this->iGPH_.emplace(WV::NumWindows{ 1 }, WV::WindowSize{ expectNumIGPH });
 

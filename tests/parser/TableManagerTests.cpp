@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE( CreateTablesWithJFunc ) {
         for (size_t c_idx = 0; c_idx < t.numColumns(); c_idx++) {
             const auto& col = t.getColumn(c_idx);
             for (size_t i = 0; i < col.size(); i++) {
-                int idx = c_idx + i*3;
+                long long idx = c_idx + i*3;
                 BOOST_CHECK_CLOSE( col[i], swfnDataVerbatim[idx], epsilon());
             }
         }

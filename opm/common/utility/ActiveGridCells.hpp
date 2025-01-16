@@ -40,8 +40,8 @@ public:
     /// \param globalCell Pointer to first entry of contiguous
     ///        array mapping local index to cartesian one.
     /// \param nc The number of cells of a grid.
-    ActiveGridCells(std::array<int, 3> xyz,
-                    const int* globalCell, std::size_t nc);
+    ActiveGridCells(std::array<long long, 3> xyz,
+                    const long long* globalCell, std::size_t nc);
 
     /// \brief Constructs mapping of active cells.
     /// \param nx Number of cells in x
@@ -51,31 +51,31 @@ public:
     ///        array mapping local index to cartesian one.
     /// \param nc The number of cells of a grid.
     ActiveGridCells(std::size_t nx, std::size_t ny, std::size_t nz,
-                    const int* globalCell, std::size_t nc);
+                    const long long* globalCell, std::size_t nc);
 
     bool cellActive(std::size_t i, std::size_t j, std::size_t k) const;
 
     bool cellActive(std::size_t cartesianIndex) const;
 
-    std::vector<int> actNum() const;
+    std::vector<long long> actNum() const;
 
     /// \brief Get the local index of a cell
     /// \param cartesianIndex The cartesian index of the cell
     /// \return The local index or -1 if the cell is inactive
-    int localCell(std::size_t cartesianIndex) const;
+    long long localCell(std::size_t cartesianIndex) const;
     
     /// \brief Get the local index of a cell
     /// \param i The index in the i direction
     /// \param j The index in the j direction
     /// \param k The index in the k direction
     /// \return The local index or -1 if the cell is inactive
-    int localCell(std::size_t i, std::size_t j, std::size_t k) const;
+    long long localCell(std::size_t i, std::size_t j, std::size_t k) const;
 
 protected:
     /// \brief Maps the cartesian index to a compressed local index.
     ///
     /// nonactive cells are marked with -1.
-    std::vector<int> localCell_;
+    std::vector<long long> localCell_;
 };
 } // end namespace Opm
 #endif //  ACTIVEGRIDCELLS_HPP

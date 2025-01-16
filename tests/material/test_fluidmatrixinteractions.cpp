@@ -85,7 +85,7 @@ void testGenericApi()
 {
     while (0) {
         // ensure the presence of the required values
-        static constexpr int numPhases = MaterialLaw::numPhases;
+        static constexpr long long numPhases = MaterialLaw::numPhases;
 
         // check for the presence of the is*Dependent values
         [[maybe_unused]] static constexpr bool isSaturationDependent = MaterialLaw::isSaturationDependent;
@@ -143,7 +143,7 @@ void testTwoPhaseApi()
     using Scalar = typename MaterialLaw::Scalar;
 
     while (0) {
-        static constexpr int numPhases = MaterialLaw::numPhases;
+        static constexpr long long numPhases = MaterialLaw::numPhases;
         static_assert(numPhases == 2,
                       "The number of fluid phases for a twophase "
                       "capillary pressure law must be 2");
@@ -151,8 +151,8 @@ void testTwoPhaseApi()
                       "This material law is expected to implement "
                       "the two-phase API!");
 
-        [[maybe_unused]] static constexpr int wettingPhaseIdx = MaterialLaw::wettingPhaseIdx;
-        [[maybe_unused]] static constexpr int nonWettingPhaseIdx = MaterialLaw::nonWettingPhaseIdx;
+        [[maybe_unused]] static constexpr long long wettingPhaseIdx = MaterialLaw::wettingPhaseIdx;
+        [[maybe_unused]] static constexpr long long nonWettingPhaseIdx = MaterialLaw::nonWettingPhaseIdx;
 
         // make sure the two-phase specific methods are present
         const FluidState fs;
@@ -194,7 +194,7 @@ void testTwoPhaseSatApi()
                       "Capillary pressure laws which implement the twophase saturation only "
                       "API cannot be dependent on the phase compositions!");
 
-         [[maybe_unused]] static constexpr int numPhases = MaterialLaw::numPhases;
+         [[maybe_unused]] static constexpr long long numPhases = MaterialLaw::numPhases;
 
         // make sure the two-phase specific methods are present
         const typename MaterialLaw::Params params;
@@ -223,14 +223,14 @@ void testThreePhaseApi()
     using Scalar = typename MaterialLaw::Scalar;
 
     while (0) {
-        static constexpr int numPhases = MaterialLaw::numPhases;
+        static constexpr long long numPhases = MaterialLaw::numPhases;
         static_assert(numPhases == 3,
                       "The number of fluid phases for a threephase "
                       "capillary pressure law must be 3");
 
-        [[maybe_unused]] static constexpr int wettingPhaseIdx = MaterialLaw::wettingPhaseIdx;
-        [[maybe_unused]] static constexpr int nonWettingPhaseIdx = MaterialLaw::nonWettingPhaseIdx;
-        [[maybe_unused]] static constexpr int gasPhaseIdx = MaterialLaw::gasPhaseIdx;
+        [[maybe_unused]] static constexpr long long wettingPhaseIdx = MaterialLaw::wettingPhaseIdx;
+        [[maybe_unused]] static constexpr long long nonWettingPhaseIdx = MaterialLaw::nonWettingPhaseIdx;
+        [[maybe_unused]] static constexpr long long gasPhaseIdx = MaterialLaw::gasPhaseIdx;
 
         // make sure the two-phase specific methods are present
         const FluidState fs;

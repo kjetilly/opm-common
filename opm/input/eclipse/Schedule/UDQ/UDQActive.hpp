@@ -200,7 +200,7 @@ public:
         UDAControl control;
 
         /// Restart file integer representation of \c control.
-        int uda_code{};
+        long long uda_code{};
 
         /// Name of well/group affected by this UDA.
         ///
@@ -338,7 +338,7 @@ public:
     ///
     /// \return Whether or not internal data structures were altered.  One
     /// (1) if changes were made, and zero (0) otherwise.
-    int update(const UDQConfig&   udq_config,
+    long long update(const UDQConfig&   udq_config,
                const UDAValue&    uda,
                const std::string& wgname,
                const UDAControl   control);

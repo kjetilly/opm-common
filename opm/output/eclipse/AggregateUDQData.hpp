@@ -49,15 +49,15 @@ public:
     void captureDeclaredUDQData(const Schedule&         sched,
                                 const std::size_t       simStep,
                                 const UDQState&         udqState,
-                                const std::vector<int>& inteHead);
+                                const std::vector<long long>& inteHead);
 
-    const std::vector<int>& getIUDQ() const
+    const std::vector<long long>& getIUDQ() const
     {
         return this->iUDQ_.data();
     }
 
     /// Retrieve UDA descriptive data.  Nullopt if no UDAs in use.
-    const std::optional<WindowedArray<int>>& getIUAD() const
+    const std::optional<WindowedArray<long long>>& getIUAD() const
     {
         return this->iUAD_;
     }
@@ -74,13 +74,13 @@ public:
 
     /// Retrive group level injection phase UDAs.  Nullopt if no injection
     /// phase is described by a UDA for any groups.
-    const std::optional<WindowedArray<int>>& getIGPH() const
+    const std::optional<WindowedArray<long long>>& getIGPH() const
     {
         return this->iGPH_;
     }
 
     /// Associate well/group IDs for IUAD.  Nullopt if no UDAs in use.
-    const std::optional<WindowedArray<int>>& getIUAP() const
+    const std::optional<WindowedArray<long long>>& getIUAP() const
     {
         return this->iUAP_;
     }
@@ -113,13 +113,13 @@ private:
     /// Aggregate 'IUDQ' array (Integer) for all UDQ data
     ///
     /// 3 integers pr UDQ.
-    WindowedArray<int> iUDQ_;
+    WindowedArray<long long> iUDQ_;
 
     /// Aggregate 'IUAD' array (Integer) for all UDQ data
     ///
     /// 5 integers pr UDQ that is used for various well and group controls.
     /// Nullopt if no UDAs.
-    std::optional<WindowedArray<int>> iUAD_{};
+    std::optional<WindowedArray<long long>> iUAD_{};
 
     /// Aggregate 'ZUDN' array (Character) for all UDQ data.
     ///
@@ -135,12 +135,12 @@ private:
     ///
     /// 3 - zeroes - as of current understanding.  Nullopt if no injection
     /// phase is determined by a UDA for any group.
-    std::optional<WindowedArray<int>> iGPH_{};
+    std::optional<WindowedArray<long long>> iGPH_{};
 
     /// Aggregate 'IUAP' array for all UDQ data
     ///
     /// 1 integer pr UDQ constraint used.  Nullopt if no UDAs.
-    std::optional<WindowedArray<int>> iUAP_{};
+    std::optional<WindowedArray<long long>> iUAP_{};
 
     /// Numeric values of field level UDQs.
     ///
@@ -167,21 +167,21 @@ private:
     std::optional<WindowedArray<double>> dUDW_{};
 
     void collectUserDefinedQuantities(const std::vector<UDQInput>& udqInput,
-                                      const std::vector<int>&      inteHead);
+                                      const std::vector<long long>&      inteHead);
 
     void collectUserDefinedArguments(const Schedule&         sched,
                                      const std::size_t       simStep,
-                                     const std::vector<int>& inteHead);
+                                     const std::vector<long long>& inteHead);
 
     void collectFieldUDQValues(const std::vector<UDQInput>& udqInput,
                                const UDQState&              udq_state,
-                               const int                    expectNumFieldUDQs);
+                               const long long                    expectNumFieldUDQs);
 
     void collectGroupUDQValues(const std::vector<UDQInput>&     udqInput,
                                const UDQState&                  udqState,
                                const std::size_t                ngmax,
                                const std::vector<const Group*>& groups,
-                               const int                        expectedNumGroupUDQs);
+                               const long long                        expectedNumGroupUDQs);
 
     void collectSegmentUDQValues(const std::vector<UDQInput>&    udqInput,
                                  const UDQState&                 udqState,
@@ -191,7 +191,7 @@ private:
                               const UDQState&                 udqState,
                               const std::size_t               nwmax,
                               const std::vector<std::string>& wells,
-                              const int                       expectedNumWellUDQs);
+                              const long long                       expectedNumWellUDQs);
 
     /// Form IUAD array for runs featuring UDAs
     ///
@@ -208,7 +208,7 @@ private:
     ///
     /// \param[in] expectNumIUAP Expected IUAP size.  For consistency
     /// checking.
-    void collectIUAP(const std::vector<int>& wgIndex,
+    void collectIUAP(const std::vector<long long>& wgIndex,
                      const std::size_t       expectNumIUAP);
 
     /// Form IGPH group level injection phase array for runs featuring UDAs.
@@ -218,7 +218,7 @@ private:
     ///
     /// \param[in] expectNumIGPH Expected IGPH size.  For consistency
     /// checking.
-    void collectIGPH(const std::vector<int>& phase_vector,
+    void collectIGPH(const std::vector<long long>& phase_vector,
                      const std::size_t       expectNumIGPH);
 };
 

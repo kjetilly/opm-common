@@ -53,7 +53,7 @@ class Trace
 public:
     static void show(const String& message);
     static void show(const char* format, ...);
-    static void showFileLineNumber(const String& file, int line, const String& message);
+    static void showFileLineNumber(const String& file, long long line, const String& message);
 
 private:
     static void showTraceOutput(const String& text, bool addNewLine);

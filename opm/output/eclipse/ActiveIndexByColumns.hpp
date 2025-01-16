@@ -47,14 +47,14 @@ public:
     /// \param[in] getIJK Call-back routine for retrieving the Cartesian
     ///    (I,J,K) tuple of an active cell index.
     explicit ActiveIndexByColumns(const std::size_t                                           numActive,
-                                  const std::array<int, 3>&                                   cartDims,
-                                  const std::function<std::array<int, 3>(const std::size_t)>& getIJK);
+                                  const std::array<long long, 3>&                                   cartDims,
+                                  const std::function<std::array<long long, 3>(const std::size_t)>& getIJK);
 
     /// Map active index in natural order to active index in columnar order.
     ///
-    /// The output code needs return type \c int here, so use that instead
+    /// The output code needs return type \c long long here, so use that instead
     /// of \code std::size_t \endcode.
-    int getColumnarActiveIndex(const std::size_t naturalActiveIndex) const
+    long long getColumnarActiveIndex(const std::size_t naturalActiveIndex) const
     {
         assert ((naturalActiveIndex < this->natural2columnar_.size())
                 && "Natural active cell index out of bounds");
@@ -63,7 +63,7 @@ public:
     }
 
 private:
-    std::vector<int> natural2columnar_;
+    std::vector<long long> natural2columnar_;
 };
 
 /// Build natural->columnar active cell index mapping from an EclipseGrid instance.

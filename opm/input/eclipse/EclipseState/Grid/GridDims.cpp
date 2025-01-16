@@ -41,7 +41,7 @@ namespace Opm {
         : m_nx(0), m_ny(0), m_nz(0)
     {}
 
-    GridDims::GridDims(const std::array<int, 3>& xyz)
+    GridDims::GridDims(const std::array<long long, 3>& xyz)
         : GridDims(xyz[0], xyz[1], xyz[2])
     {}
 
@@ -79,7 +79,7 @@ namespace Opm {
     std::size_t GridDims::getNY() const { return this->m_ny; }
     std::size_t GridDims::getNZ() const { return this->m_nz; }
 
-    std::size_t GridDims::operator[](int dim) const
+    std::size_t GridDims::operator[](long long dim) const
     {
         switch (dim) {
         case 0: return this->getNX();
@@ -91,12 +91,12 @@ namespace Opm {
         }
     }
 
-    std::array<int, 3> GridDims::getNXYZ() const
+    std::array<long long, 3> GridDims::getNXYZ() const
     {
         return {
-            static_cast<int>(this->getNX()),
-            static_cast<int>(this->getNY()),
-            static_cast<int>(this->getNZ())
+            static_cast<long long>(this->getNX()),
+            static_cast<long long>(this->getNY()),
+            static_cast<long long>(this->getNZ())
         };
     }
 
@@ -108,10 +108,10 @@ namespace Opm {
         return i + this->getNX()*(j + k*this->getNY());
     }
 
-    std::array<int, 3>
+    std::array<long long, 3>
     GridDims::getIJK(std::size_t globalIndex) const
     {
-        auto ijk = std::array<int, 3>{};
+        auto ijk = std::array<long long, 3>{};
 
         ijk[0] = globalIndex % this->getNX();  globalIndex /= this->getNX();
         ijk[1] = globalIndex % this->getNY();  globalIndex /= this->getNY();
@@ -142,13 +142,13 @@ namespace Opm {
     }
 
     // keyword must be DIMENS or SPECGRID
-    inline std::array<int, 3> readDims(const DeckKeyword& keyword)
+    inline std::array<long long, 3> readDims(const DeckKeyword& keyword)
     {
         const auto& record = keyword.getRecord(0);
         return {
-            record.getItem("NX").get<int>(0),
-            record.getItem("NY").get<int>(0),
-            record.getItem("NZ").get<int>(0)
+            record.getItem("NX").get<long long>(0),
+            record.getItem("NY").get<long long>(0),
+            record.getItem("NZ").get<long long>(0)
         };
     }
 

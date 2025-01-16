@@ -33,7 +33,7 @@ namespace Opm {
         const std::string endinclude = "ENDINC";
         const std::string paths = "PATHS";
         const std::string pyinput = "PYINPUT";
-        const unsigned int maxKeywordLength = 8;
+        const size_t maxKeywordLength = 8;
 
         /* The lookup uses some bit-tricks to achieve branchless lookup in the
          * table. It has a robustness weakness because all input characters
@@ -64,7 +64,7 @@ namespace Opm {
              * ch is SOH (ASCII 1), space, comma, \r, \n, \t, \v or \f => true
              * else false
              */
-            constexpr bool operator()( int ch ) const {
+            constexpr bool operator()( long long ch ) const {
                 return sep_table[ ch & 0x7f ];
             }
         };
@@ -85,7 +85,7 @@ namespace Opm {
              * ch is ' or " => true
              * else false
              */
-            constexpr bool operator()( int ch ) const {
+            constexpr bool operator()( long long ch ) const {
                 return q_table[ ch & 0x7f ];
             }
         };

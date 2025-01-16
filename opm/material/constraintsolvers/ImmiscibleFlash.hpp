@@ -71,8 +71,8 @@ namespace Opm {
 template <class Scalar, class FluidSystem>
 class ImmiscibleFlash
 {
-    static const int numPhases = FluidSystem::numPhases;
-    static const int numComponents = FluidSystem::numComponents;
+    static const long long numPhases = FluidSystem::numPhases;
+    static const long long numComponents = FluidSystem::numComponents;
     static_assert(numPhases == numComponents,
                   "Immiscibility assumes that the number of phases"
                   " is equal to the number of components");
@@ -82,7 +82,7 @@ class ImmiscibleFlash
         S0PvIdx = 1
     };
 
-    static const int numEq = numPhases;
+    static const long long numEq = numPhases;
 
 public:
     /*!

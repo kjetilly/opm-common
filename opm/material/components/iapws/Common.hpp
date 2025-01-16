@@ -117,10 +117,10 @@ public:
 
         Evaluation tmp, tmp2, tmp3 = 1;
         Evaluation muBar = 0;
-        for (int i = 0; i <= 5; ++i) {
+        for (long long i = 0; i <= 5; ++i) {
             tmp = 0;
             tmp2 = 1;
-            for (int j = 0; j <= 6; ++j) {
+            for (long long j = 0; j <= 6; ++j) {
                 tmp += Hij[i][j]*tmp2;
                 tmp2 *= (rhoBar - 1);
             };
@@ -137,7 +137,7 @@ public:
         };
 
         tmp = 0, tmp2 = 1;
-        for (int i = 0; i < 4; ++i) {
+        for (long long i = 0; i < 4; ++i) {
             tmp += H[i]/tmp2;
             tmp2 *= TBar;
         };
@@ -183,7 +183,7 @@ public:
         static const Scalar thcond_d2 = 0.0118520 ;
         static const Scalar thcond_d3 = 0.00169937 ;
         static const Scalar thcond_d4 = -1.0200 ;
-        static const int thcond_a_count = 4;
+        static const long long thcond_a_count = 4;
         static const Scalar thcond_a[thcond_a_count] = {
             0.0102811
             ,0.0299621
@@ -199,7 +199,7 @@ public:
         Evaluation Tpow = Troot;
         Evaluation lam = 0;
 
-        for(int k = 0; k < thcond_a_count; ++k) {
+        for(long long k = 0; k < thcond_a_count; ++k) {
             lam += thcond_a[k] * Tpow;
             Tpow *= Tbar;
         }

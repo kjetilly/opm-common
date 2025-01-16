@@ -25,13 +25,13 @@ namespace Opm {
 
 namespace WStat {
 namespace numeric {
-constexpr int UNKNOWN = 0;
-constexpr int PROD    = 1;
-constexpr int INJ     = 2;
-constexpr int SHUT    = 3;
-constexpr int STOP    = 4;
-constexpr int PSHUT   = 5;
-constexpr int PSTOP   = 6;
+constexpr long long UNKNOWN = 0;
+constexpr long long PROD    = 1;
+constexpr long long INJ     = 2;
+constexpr long long SHUT    = 3;
+constexpr long long STOP    = 4;
+constexpr long long PSHUT   = 5;
+constexpr long long PSTOP   = 6;
 }
 
 namespace symbolic {

@@ -137,7 +137,7 @@ initFromState(const EclipseState& eclState)
 template<class TraitsT>
 void EclMaterialLawManager<TraitsT>::
 initParamsForElements(const EclipseState& eclState, size_t numCompressedElems,
-                      const std::function<std::vector<int>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner,
+                      const std::function<std::vector<long long>(const FieldPropsManager&, const std::string&, bool)>& fieldPropIntOnLeafAssigner,
                       const std::function<unsigned(unsigned)>& lookupIdxOnLevelZeroAssigner)
 {
     InitParams initParams {*this, eclState, numCompressedElems};
@@ -194,7 +194,7 @@ applySwatinit(unsigned elemIdx,
 
     // Limit max. capillary pressure with PPCWMAX
     bool newSwatInit = false;
-    int satRegionIdx = satnumRegionIdx(elemIdx);
+    long long satRegionIdx = satnumRegionIdx(elemIdx);
     if (enablePpcwmax() && (newMaxPcow > maxAllowPc_[satRegionIdx])) {
         // Two options in PPCWMAX to modify connate Sw or not.  In both cases, init. Sw needs to be
         // re-calculated (done in opm-simulators)
@@ -329,11 +329,11 @@ connectionMaterialLawParams(unsigned satRegionIdx, unsigned elemIdx) const
 }
 
 template<class TraitsT>
-int EclMaterialLawManager<TraitsT>::
+long long EclMaterialLawManager<TraitsT>::
 getKrnumSatIdx(unsigned elemIdx, FaceDir::DirEnum facedir) const
 {
     using Dir = FaceDir::DirEnum;
-    const std::vector<int>* array = nullptr;
+    const std::vector<long long>* array = nullptr;
     switch(facedir) {
     case Dir::XPlus:
       array = &krnumXArray_;
@@ -493,7 +493,7 @@ readGlobalThreePhaseOptions_(const Runspec& runspec)
     bool oilEnabled = runspec.phases().active(Phase::OIL);
     bool waterEnabled = runspec.phases().active(Phase::WATER);
 
-    int numEnabled =
+    long long numEnabled =
         (gasEnabled?1:0)
         + (oilEnabled?1:0)
         + (waterEnabled?1:0);

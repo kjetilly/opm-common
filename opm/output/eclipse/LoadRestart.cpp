@@ -108,7 +108,7 @@ public:
     explicit UDQVectors(std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
         : rstView_{ std::move(rst_view) }
     {
-        const auto& intehead = this->rstView_->getKeyword<int>("INTEHEAD");
+        const auto& intehead = this->rstView_->getKeyword<long long>("INTEHEAD");
 
         this->maxNumMsWells_  = intehead[VI::intehead::NSWLMX];
         this->maxNumSegments_ = intehead[VI::intehead::NSEGMX];
@@ -180,16 +180,16 @@ public:
         typename std::vector<T>::const_iterator
     >;
 
-    explicit WellVectors(const std::vector<int>&                      intehead,
+    explicit WellVectors(const std::vector<long long>&                      intehead,
                          std::shared_ptr<Opm::EclIO::RestartFileView> rst_view);
 
     bool hasDefinedWellValues() const;
     bool hasDefinedConnectionValues() const;
 
-    Window<int>    iwel(const std::size_t wellID) const;
+    Window<long long>    iwel(const std::size_t wellID) const;
     Window<double> xwel(const std::size_t wellID) const;
 
-    Window<int>
+    Window<long long>
     icon(const std::size_t wellID, const std::size_t connID) const;
 
     Window<double>
@@ -205,7 +205,7 @@ private:
     std::shared_ptr<Opm::EclIO::RestartFileView> rstView_;
 };
 
-WellVectors::WellVectors(const std::vector<int>&                      intehead,
+WellVectors::WellVectors(const std::vector<long long>&                      intehead,
                          std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
     : maxConnPerWell_(intehead[VI::intehead::NCWMAX])
     , numIWelElem_   (intehead[VI::intehead::NIWELZ])
@@ -217,17 +217,17 @@ WellVectors::WellVectors(const std::vector<int>&                      intehead,
 
 bool WellVectors::hasDefinedWellValues() const
 {
-    return this->rstView_->hasKeyword<int>   ("IWEL")
+    return this->rstView_->hasKeyword<long long>   ("IWEL")
         && this->rstView_->hasKeyword<double>("XWEL");
 }
 
 bool WellVectors::hasDefinedConnectionValues() const
 {
-    return this->rstView_->hasKeyword<int>   ("ICON")
+    return this->rstView_->hasKeyword<long long>   ("ICON")
         && this->rstView_->hasKeyword<double>("XCON");
 }
 
-WellVectors::Window<int>
+WellVectors::Window<long long>
 WellVectors::iwel(const std::size_t wellID) const
 {
     if (! this->hasDefinedWellValues()) {
@@ -236,7 +236,7 @@ WellVectors::iwel(const std::size_t wellID) const
         };
     }
 
-    return getDataWindow(this->rstView_->getKeyword<int>("IWEL"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("IWEL"),
                          this->numIWelElem_, wellID);
 }
 
@@ -253,7 +253,7 @@ WellVectors::xwel(const std::size_t wellID) const
                          this->numXWelElem_, wellID);
 }
 
-WellVectors::Window<int>
+WellVectors::Window<long long>
 WellVectors::icon(const std::size_t wellID, const std::size_t connID) const
 {
     if (! this->hasDefinedConnectionValues()) {
@@ -262,7 +262,7 @@ WellVectors::icon(const std::size_t wellID, const std::size_t connID) const
         };
     }
 
-    return getDataWindow(this->rstView_->getKeyword<int>("ICON"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("ICON"),
                          this->numIConElem_, wellID, connID,
                          this->maxConnPerWell_);
 }
@@ -291,14 +291,14 @@ public:
         typename std::vector<T>::const_iterator
     >;
 
-    explicit GroupVectors(const std::vector<int>&                      intehead,
+    explicit GroupVectors(const std::vector<long long>&                      intehead,
                           std::shared_ptr<Opm::EclIO::RestartFileView> rst_view);
 
     bool hasDefinedValues() const;
 
     std::size_t maxGroups() const;
 
-    Window<int>    igrp(const std::size_t groupID) const;
+    Window<long long>    igrp(const std::size_t groupID) const;
     Window<double> xgrp(const std::size_t groupID) const;
 
 private:
@@ -309,7 +309,7 @@ private:
     std::shared_ptr<Opm::EclIO::RestartFileView> rstView_;
 };
 
-GroupVectors::GroupVectors(const std::vector<int>&                      intehead,
+GroupVectors::GroupVectors(const std::vector<long long>&                      intehead,
                            std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
     : maxNumGroups_(intehead[VI::intehead::NGMAXZ] - 1) // -FIELD
     , numIGrpElem_ (intehead[VI::intehead::NIGRPZ])
@@ -319,7 +319,7 @@ GroupVectors::GroupVectors(const std::vector<int>&                      intehead
 
 bool GroupVectors::hasDefinedValues() const
 {
-    return this->rstView_->hasKeyword<int>   ("IGRP")
+    return this->rstView_->hasKeyword<long long>   ("IGRP")
         && this->rstView_->hasKeyword<double>("XGRP");
 }
 
@@ -328,7 +328,7 @@ std::size_t GroupVectors::maxGroups() const
     return this->maxNumGroups_;
 }
 
-GroupVectors::Window<int>
+GroupVectors::Window<long long>
 GroupVectors::igrp(const std::size_t groupID) const
 {
     if (! this->hasDefinedValues()) {
@@ -337,7 +337,7 @@ GroupVectors::igrp(const std::size_t groupID) const
         };
     }
 
-    return getDataWindow(this->rstView_->getKeyword<int>("IGRP"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("IGRP"),
                          this->numIGrpElem_, groupID);
 }
 
@@ -364,12 +364,12 @@ public:
         typename std::vector<T>::const_iterator
     >;
 
-    explicit SegmentVectors(const std::vector<int>&                      intehead,
+    explicit SegmentVectors(const std::vector<long long>&                      intehead,
                             std::shared_ptr<Opm::EclIO::RestartFileView> rst_view);
 
     bool hasDefinedValues() const;
 
-    Window<int>
+    Window<long long>
     iseg(const std::size_t mswID, const std::size_t segID) const;
 
     Window<double>
@@ -383,7 +383,7 @@ private:
     std::shared_ptr<Opm::EclIO::RestartFileView> rstView_;
 };
 
-SegmentVectors::SegmentVectors(const std::vector<int>&                      intehead,
+SegmentVectors::SegmentVectors(const std::vector<long long>&                      intehead,
                                std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
     : maxSegPerWell_(intehead[VI::intehead::NSEGMX])
     , numISegElm_   (intehead[VI::intehead::NISEGZ])
@@ -393,11 +393,11 @@ SegmentVectors::SegmentVectors(const std::vector<int>&                      inte
 
 bool SegmentVectors::hasDefinedValues() const
 {
-    return this->rstView_->hasKeyword<int>   ("ISEG")
+    return this->rstView_->hasKeyword<long long>   ("ISEG")
         && this->rstView_->hasKeyword<double>("RSEG");
 }
 
-SegmentVectors::Window<int>
+SegmentVectors::Window<long long>
 SegmentVectors::iseg(const std::size_t mswID, const std::size_t segID) const
 {
     if (! this->hasDefinedValues()) {
@@ -406,7 +406,7 @@ SegmentVectors::iseg(const std::size_t mswID, const std::size_t segID) const
         };
     }
 
-    return getDataWindow(this->rstView_->getKeyword<int>("ISEG"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("ISEG"),
                          this->numISegElm_, mswID, segID,
                          this->maxSegPerWell_);
 }
@@ -435,7 +435,7 @@ public:
         typename std::vector<T>::const_iterator
     >;
 
-    explicit AquiferVectors(const std::vector<int>&                      intehead,
+    explicit AquiferVectors(const std::vector<long long>&                      intehead,
                             std::shared_ptr<Opm::EclIO::RestartFileView> rst_view);
 
     bool hasDefinedValues() const;
@@ -444,11 +444,11 @@ public:
     std::size_t maxAnalyticAquiferID() const;
     std::size_t numRecordsForNumericAquifers() const;
 
-    Window<int>    iaaq(const std::size_t aquiferID) const;
+    Window<long long>    iaaq(const std::size_t aquiferID) const;
     Window<float>  saaq(const std::size_t aquiferID) const;
     Window<double> xaaq(const std::size_t aquiferID) const;
 
-    Window<int>    iaqn(const std::size_t recordID) const;
+    Window<long long>    iaqn(const std::size_t recordID) const;
     Window<double> raqn(const std::size_t recordID) const;
 
 private:
@@ -463,7 +463,7 @@ private:
     std::shared_ptr<Opm::EclIO::RestartFileView> rstView_;
 };
 
-AquiferVectors::AquiferVectors(const std::vector<int>&                      intehead,
+AquiferVectors::AquiferVectors(const std::vector<long long>&                      intehead,
                                std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
     : maxAnalyticAquiferID_        (intehead[VI::intehead::MAX_ANALYTIC_AQUIFERS])
     , numRecordsForNumericAquifers_(intehead[VI::intehead::NUM_AQUNUM_RECORDS])
@@ -477,14 +477,14 @@ AquiferVectors::AquiferVectors(const std::vector<int>&                      inte
 
 bool AquiferVectors::hasDefinedValues() const
 {
-    return this->rstView_->hasKeyword<int>   ("IAAQ")
+    return this->rstView_->hasKeyword<long long>   ("IAAQ")
         && this->rstView_->hasKeyword<float> ("SAAQ")
         && this->rstView_->hasKeyword<double>("XAAQ");
 }
 
 bool AquiferVectors::hasDefinedNumericAquiferValues() const
 {
-    return this->rstView_->hasKeyword<int>   ("IAQN")
+    return this->rstView_->hasKeyword<long long>   ("IAQN")
         && this->rstView_->hasKeyword<double>("RAQN");
 }
 
@@ -497,7 +497,7 @@ std::size_t AquiferVectors::numRecordsForNumericAquifers() const
     return this->numRecordsForNumericAquifers_;
 }
 
-AquiferVectors::Window<int>
+AquiferVectors::Window<long long>
 AquiferVectors::iaaq(const std::size_t aquiferID) const
 {
     if (! this->hasDefinedValues()) {
@@ -506,7 +506,7 @@ AquiferVectors::iaaq(const std::size_t aquiferID) const
         };
     }
 
-    return getDataWindow(this->rstView_->getKeyword<int>("IAAQ"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("IAAQ"),
                          this->numIntAnalyticAquiferElm_, aquiferID);
 }
 
@@ -536,7 +536,7 @@ AquiferVectors::xaaq(const std::size_t aquiferID) const
                          this->numDoubleAnalyticAquiferElm_, aquiferID);
 }
 
-AquiferVectors::Window<int>
+AquiferVectors::Window<long long>
 AquiferVectors::iaqn(const std::size_t recordID) const
 {
     if (! this->hasDefinedNumericAquiferValues()) {
@@ -545,7 +545,7 @@ AquiferVectors::iaqn(const std::size_t recordID) const
         };
     }
 
-    return getDataWindow(this->rstView_->getKeyword<int>("IAQN"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("IAQN"),
                          this->numIntNumericAquiferElm_, recordID);
 }
 
@@ -661,7 +661,7 @@ namespace {
 
     Opm::data::Solution
     restoreSOLUTION(const std::vector<Opm::RestartKey>& solution_keys,
-                    const int                           numcells,
+                    const long long                           numcells,
                     const Opm::EclIO::RestartFileView&  rst_view)
     {
         Opm::data::Solution sol(/* init_si = */ false);
@@ -840,7 +840,7 @@ namespace {
         }
     }
 
-    ::Opm::Well::ProducerCMode producerControlMode(const int curr)
+    ::Opm::Well::ProducerCMode producerControlMode(const long long curr)
     {
         using PMode = ::Opm::Well::ProducerCMode;
         using Ctrl  = VI::IWell::Value::WellCtrlMode;
@@ -862,7 +862,7 @@ namespace {
     }
 
     ::Opm::Well::InjectorCMode
-    injectorControlMode(const int curr, const int itype)
+    injectorControlMode(const long long curr, const long long itype)
     {
         using IMode = ::Opm::Well::InjectorCMode;
         using Ctrl  = VI::IWell::Value::WellCtrlMode;
@@ -1072,7 +1072,7 @@ namespace {
             const auto& segSet = well.getSegments();
 
             if ((mswID > 0) && (numSeg > 0) &&
-                (static_cast<int>(segSet.size()) == numSeg))
+                (static_cast<long long>(segSet.size()) == numSeg))
             {
                 restoreSegmentQuantities(mswID - 1, segSet, usys,
                                          phases, segData, xw);
@@ -1165,7 +1165,7 @@ namespace {
     }
 
     Opm::data::AquiferType
-    determineAquiferType(const AquiferVectors::Window<int>& iaaq)
+    determineAquiferType(const AquiferVectors::Window<long long>& iaaq)
     {
         using MType = Opm::RestartIO::Helpers::VectorItems::
             IAnalyticAquifer::Value::ModelType;
@@ -1217,9 +1217,9 @@ namespace {
         const auto saaq = aquiferData.saaq(aquiferID);
         const auto xaaq = aquiferData.xaaq(aquiferID);
 
-        auto& aqData = aquifers[1 + static_cast<int>(aquiferID)];
+        auto& aqData = aquifers[1 + static_cast<long long>(aquiferID)];
 
-        aqData.aquiferID = 1 + static_cast<int>(aquiferID);
+        aqData.aquiferID = 1 + static_cast<long long>(aquiferID);
         aqData.pressure  = units.to_si(M::pressure, xaaq[Ix::Pressure]);
         aqData.volume    = units.to_si(M::liquid_surface_volume,
                                        xaaq[Ix::ProdVolume]);
@@ -1601,7 +1601,7 @@ namespace Opm { namespace RestartIO  {
 
     RestartValue
     load(const std::string&             filename,
-         int                            report_step,
+         long long                            report_step,
          Action::State&                 /*  action_state  */,
          SummaryState&                  summary_state,
          const std::vector<RestartKey>& solution_keys,

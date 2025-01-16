@@ -31,7 +31,7 @@
 namespace VI = ::Opm::RestartIO::Helpers::VectorItems;
 
 Opm::UDQDims::UDQDims(const UDQConfig&        config,
-                      const std::vector<int>& inteHead)
+                      const std::vector<long long>& inteHead)
     : totalNumUDQs_ { config.size() }
     , intehead_     { std::cref(inteHead) }
 {}
@@ -140,7 +140,7 @@ void Opm::UDQDims::collectDimensions() const
     (*this->dimensionData_)[12] = this->numFieldUDQs();
 }
 
-std::size_t Opm::UDQDims::intehead(const std::vector<int>::size_type i) const
+std::size_t Opm::UDQDims::intehead(const std::vector<long long>::size_type i) const
 {
     return this->intehead_.get()[i];
 }

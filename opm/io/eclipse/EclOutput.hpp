@@ -46,9 +46,9 @@ public:
                const std::vector<T>& data)
     {
         eclArrType arrType = MESS;
-        int element_size = 4;
+        long long element_size = 4;
 
-        if (typeid(T) == typeid(int))
+        if (typeid(T) == typeid(long long))
             arrType = INTE;
         else if (typeid(T) == typeid(float))
             arrType = REAL;
@@ -77,7 +77,7 @@ public:
     // when this function is used array type will be assumed C0NN (not CHAR).
     // Also in cases where element size is 8 or less, element size will be 8.
 
-    void write(const std::string& name, const std::vector<std::string>& data, int element_size);
+    void write(const std::string& name, const std::vector<std::string>& data, long long element_size);
 
     void message(const std::string& msg);
     void flushStream();
@@ -88,20 +88,20 @@ public:
     friend class OutputStream::SummarySpecification;
 
 private:
-    void writeBinaryHeader(const std::string& arrName, int64_t size, eclArrType arrType, int element_size);
+    void writeBinaryHeader(const std::string& arrName, int64_t size, eclArrType arrType, long long element_size);
 
     template <typename T>
     void writeBinaryArray(const std::vector<T>& data);
 
-    void writeBinaryCharArray(const std::vector<std::string>& data, int element_size);
+    void writeBinaryCharArray(const std::vector<std::string>& data, long long element_size);
     void writeBinaryCharArray(const std::vector<PaddedOutputString<8>>& data);
 
-    void writeFormattedHeader(const std::string& arrName, int size, eclArrType arrType, int element_size);
+    void writeFormattedHeader(const std::string& arrName, long long size, eclArrType arrType, long long element_size);
 
     template <typename T>
     void writeFormattedArray(const std::vector<T>& data);
 
-    void writeFormattedCharArray(const std::vector<std::string>& data, int element_size);
+    void writeFormattedCharArray(const std::vector<std::string>& data, long long element_size);
     void writeFormattedCharArray(const std::vector<PaddedOutputString<8>>& data);
 
     void writeArrayType(const eclArrType arrType);

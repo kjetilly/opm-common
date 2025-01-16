@@ -1968,7 +1968,7 @@ DRSDTR
     size_t currentStep = 1;
     const auto& ovap = schedule[currentStep].oilvap();
     auto unitSystem =  UnitSystem::newMETRIC();
-    for (int i = 0; i < 3; ++i) {
+    for (long long i = 0; i < 3; ++i) {
         double value = unitSystem.to_si( UnitSystem::measure::gas_surface_rate, i );
         BOOST_CHECK_EQUAL(value, ovap.getMaxDRSDT(i));
         BOOST_CHECK_EQUAL(true,   ovap.getOption(i));
@@ -2075,7 +2075,7 @@ DATES             -- 1
 )";
 
     const auto& schedule = make_schedule(input);
-    for (int i = 0; i < 2; ++i) {
+    for (long long i = 0; i < 2; ++i) {
         const OilVaporizationProperties& ovap = schedule[i].oilvap();
         BOOST_CHECK(ovap.getType() == OilVaporizationProperties::OilVaporization::VAPPARS);
         double vap1 =  ovap.vap1();
@@ -3641,7 +3641,7 @@ BOOST_AUTO_TEST_CASE(FilterCompletions2) {
     FieldPropsManager fp( deck, Phases{true, true, true}, grid1, table);
     Runspec runspec (deck);
     Schedule schedule(deck, grid1, fp, runspec, python);
-    std::vector<int> actnum = grid1.getACTNUM();
+    std::vector<long long> actnum = grid1.getACTNUM();
 
     {
         const auto& c1_1 = schedule.getWell("OP_1", 1).getConnections();
@@ -3651,7 +3651,7 @@ BOOST_AUTO_TEST_CASE(FilterCompletions2) {
     }
     actnum[grid1.getGlobalIndex(8,8,1)] = 0;
     {
-        std::vector<int> globalCell(grid1.getNumActive());
+        std::vector<long long> globalCell(grid1.getNumActive());
         for(std::size_t i = 0; i < grid1.getNumActive(); ++i)
             if (actnum[grid1.getGlobalIndex(i)])
                 globalCell[i] = grid1.getGlobalIndex(i);
@@ -5297,16 +5297,16 @@ END
 
 namespace {
 
-bool compare_dates(const time_point& t, int year, int month, int day) {
+bool compare_dates(const time_point& t, long long year, long long month, long long day) {
     return t == TimeService::from_time_t( asTimeT( TimeStampUTC(year, month, day)));
 }
 
-bool compare_dates(const time_point& t, const std::array<int, 3>& ymd)
+bool compare_dates(const time_point& t, const std::array<long long, 3>& ymd)
 {
     return compare_dates(t, ymd[0], ymd[1], ymd[2]);
 }
 
-std::string dates_msg(const time_point& t, std::array<int,3>& ymd) {
+std::string dates_msg(const time_point& t, std::array<long long,3>& ymd) {
     auto ts = TimeStampUTC( std::chrono::system_clock::to_time_t(t) );
     return fmt::format("Different dates: {}-{}-{} != {}-{}-{}", ts.year(), ts.month(), ts.day(), ymd[0], ymd[1], ymd[2]);
 }
@@ -5366,7 +5366,7 @@ BOOST_AUTO_TEST_CASE(ScheduleDeckTest) {
 
         std::vector<std::string> first_kw = {"WELSPECS", "WTEST", "SUMTHIN", "WCONINJH", "WELOPEN", "WCONINJH"};
         std::vector<std::string> last_kw = {"WTEST", "WCONHIST", "WCONPROD", "WCONINJH", "WELOPEN", "WCONINJH"};
-        std::vector<std::array<int,3>> start_time = {{2007, 5, 10},
+        std::vector<std::array<long long,3>> start_time = {{2007, 5, 10},
                                                      {2007, 6, 10},
                                                      {2007, 7, 10},
                                                      {2007, 8, 10},

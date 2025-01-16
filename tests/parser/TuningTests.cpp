@@ -179,27 +179,27 @@ BOOST_AUTO_TEST_CASE(TuningTest) {
       double THIONX_default = tuning.THIONX;
       BOOST_CHECK_CLOSE(THIONX_default, 0.01, diff);
 
-      int TRWGHT_default = tuning.TRWGHT;
+      long long TRWGHT_default = tuning.TRWGHT;
       BOOST_CHECK_EQUAL(TRWGHT_default, 1);
 
 
       /********* Record 3 ************/
-      int NEWTMX_default = tuning.NEWTMX;
+      long long NEWTMX_default = tuning.NEWTMX;
       BOOST_CHECK_EQUAL(NEWTMX_default, 12);
 
-      int NEWTMN_default = tuning.NEWTMN;
+      long long NEWTMN_default = tuning.NEWTMN;
       BOOST_CHECK_EQUAL(NEWTMN_default, 1);
 
-      int LITMAX_default = tuning.LITMAX;
+      long long LITMAX_default = tuning.LITMAX;
       BOOST_CHECK_EQUAL(LITMAX_default, 25);
 
-      int LITMIN_default = tuning.LITMIN;
+      long long LITMIN_default = tuning.LITMIN;
       BOOST_CHECK_EQUAL(LITMIN_default, 1);
 
-      int MXWSIT_default = tuning.MXWSIT;
+      long long MXWSIT_default = tuning.MXWSIT;
       BOOST_CHECK_EQUAL(MXWSIT_default, 8);
 
-      int MXWPIT_default = tuning.MXWPIT;
+      long long MXWPIT_default = tuning.MXWPIT;
       BOOST_CHECK_EQUAL(MXWPIT_default, 8);
 
       double DDPLIM_default = tuning.DDPLIM;
@@ -296,26 +296,26 @@ BOOST_AUTO_TEST_CASE(TuningTest) {
       double THIONX = tuning.THIONX;
       BOOST_CHECK_CLOSE(THIONX, 0.02, diff);
 
-      int TRWGHT = tuning.TRWGHT;
+      long long TRWGHT = tuning.TRWGHT;
       BOOST_CHECK_EQUAL(TRWGHT, 2);
 
       /********* Record 3 ***********/
-      int NEWTMX = tuning.NEWTMX;
+      long long NEWTMX = tuning.NEWTMX;
       BOOST_CHECK_EQUAL(NEWTMX, 13);
 
-      int NEWTMN = tuning.NEWTMN;
+      long long NEWTMN = tuning.NEWTMN;
       BOOST_CHECK_EQUAL(NEWTMN, 2);
 
-      int LITMAX = tuning.LITMAX;
+      long long LITMAX = tuning.LITMAX;
       BOOST_CHECK_EQUAL(LITMAX, 26);
 
-      int LITMIN = tuning.LITMIN;
+      long long LITMIN = tuning.LITMIN;
       BOOST_CHECK_EQUAL(LITMIN, 2);
 
-      int MXWSIT = tuning.MXWSIT;
+      long long MXWSIT = tuning.MXWSIT;
       BOOST_CHECK_EQUAL(MXWSIT, 9);
 
-      int MXWPIT = tuning.MXWPIT;
+      long long MXWPIT = tuning.MXWPIT;
       BOOST_CHECK_EQUAL(MXWPIT, 9);
 
       double DDPLIM = tuning.DDPLIM;
@@ -374,7 +374,7 @@ BOOST_AUTO_TEST_CASE(TuningTest) {
       double TRGTTE = tuning.TRGTTE;
       BOOST_CHECK_CLOSE(TRGTTE, 0.2, diff);
 
-      int NEWTMX = tuning.NEWTMX;
+      long long NEWTMX = tuning.NEWTMX;
       BOOST_CHECK_EQUAL(NEWTMX, 13);     
 
   }

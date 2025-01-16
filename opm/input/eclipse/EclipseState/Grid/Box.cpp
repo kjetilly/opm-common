@@ -32,7 +32,7 @@
 
 namespace {
 
-    void assert_dims(const int len, const int l1, const int l2)
+    void assert_dims(const long long len, const long long l1, const long long l2)
     {
         if (len <= 0) {
             throw std::invalid_argument {
@@ -62,13 +62,13 @@ namespace {
     }
 
     bool update_default(const Opm::DeckItem& item,
-                        int&                 value)
+                        long long&                 value)
     {
         if (item.defaultApplied(0)) {
             return true;
         }
 
-        value = item.get<int>(0) - 1;
+        value = item.get<long long>(0) - 1;
         return false;
     }
 }
@@ -88,9 +88,9 @@ namespace Opm
     Box::Box(const GridDims& gridDims,
              IsActive        isActive,
              ActiveIdx       activeIdx,
-             const int i1, const int i2,
-             const int j1, const int j2,
-             const int k1, const int k2)
+             const long long i1, const long long i2,
+             const long long j1, const long long j2,
+             const long long k1, const long long k2)
         : m_globalGridDims_ (gridDims)
         , m_globalIsActive_ (std::move(isActive))
         , m_globalActiveIdx_(std::move(activeIdx))
@@ -102,18 +102,18 @@ namespace Opm
     {
         auto default_count = 0;
 
-        int i1 = 0;
-        int i2 = this->m_globalGridDims_.getNX() - 1;
+        long long i1 = 0;
+        long long i2 = this->m_globalGridDims_.getNX() - 1;
         default_count += update_default(deckRecord.getItem<ParserKeywords::BOX::I1>(), i1);
         default_count += update_default(deckRecord.getItem<ParserKeywords::BOX::I2>(), i2);
 
-        int j1 = 0;
-        int j2 = this->m_globalGridDims_.getNY() - 1;
+        long long j1 = 0;
+        long long j2 = this->m_globalGridDims_.getNY() - 1;
         default_count += update_default(deckRecord.getItem<ParserKeywords::BOX::J1>(), j1);
         default_count += update_default(deckRecord.getItem<ParserKeywords::BOX::J2>(), j2);
 
-        int k1 = 0;
-        int k2 = this->m_globalGridDims_.getNZ() - 1;
+        long long k1 = 0;
+        long long k2 = this->m_globalGridDims_.getNZ() - 1;
         default_count += update_default(deckRecord.getItem<ParserKeywords::BOX::K1>(), k1);
         default_count += update_default(deckRecord.getItem<ParserKeywords::BOX::K2>(), k2);
 
@@ -129,9 +129,9 @@ namespace Opm
                    0, this->m_globalGridDims_.getNZ() - 1);
     }
 
-    void Box::init(const int i1, const int i2,
-                   const int j1, const int j2,
-                   const int k1, const int k2)
+    void Box::init(const long long i1, const long long i2,
+                   const long long j1, const long long j2,
+                   const long long k1, const long long k2)
     {
         assert_dims(this->m_globalGridDims_.getNX(), i1, i2);
         assert_dims(this->m_globalGridDims_.getNY(), j1, j2);
@@ -210,35 +210,35 @@ namespace Opm
         return *this == other;
     }
 
-    int Box::lower(int dim) const {
+    long long Box::lower(long long dim) const {
         return m_offset[dim];
     }
 
-    int Box::upper(int dim) const {
+    long long Box::upper(long long dim) const {
         return m_offset[dim] + m_dims[dim] - 1;
     }
 
-    int Box::I1() const {
+    long long Box::I1() const {
         return lower(0);
     }
 
-    int Box::I2() const {
+    long long Box::I2() const {
         return upper(0);
     }
 
-    int Box::J1() const {
+    long long Box::J1() const {
         return lower(1);
     }
 
-    int Box::J2() const {
+    long long Box::J2() const {
         return upper(1);
     }
 
-    int Box::K1() const {
+    long long Box::K1() const {
         return lower(2);
     }
 
-    int Box::K2() const {
+    long long Box::K2() const {
         return upper(2);
     }
 

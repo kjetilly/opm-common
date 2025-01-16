@@ -65,9 +65,9 @@ public:
     };
     static const std::string ExceedAction2String( ExceedAction enumValue );
     static ExceedAction ExceedActionFromString( const std::string& stringValue );
-    static ExceedAction ExceedActionFromInt(const int value);
+    static ExceedAction ExceedActionFromInt(const long long value);
 
-    enum class InjectionCMode  : int {
+    enum class InjectionCMode  : long long {
         NONE = 0,
         RATE = 1,
         RESV = 2,
@@ -78,10 +78,10 @@ public:
     };
     static const std::string InjectionCMode2String( InjectionCMode enumValue );
     static InjectionCMode InjectionCModeFromString( const std::string& stringValue );
-    static InjectionCMode InjectionCModeFromInt(int ecl_int);
-    static int            InjectionCMode2Int(InjectionCMode enumValue);
+    static InjectionCMode InjectionCModeFromInt(long long ecl_int);
+    static long long            InjectionCMode2Int(InjectionCMode enumValue);
 
-    enum class ProductionCMode : int {
+    enum class ProductionCMode : long long {
         NONE = 0,
         ORAT = 1,
         WRAT = 2,
@@ -94,8 +94,8 @@ public:
     };
     static const std::string ProductionCMode2String( ProductionCMode enumValue );
     static ProductionCMode ProductionCModeFromString( const std::string& stringValue );
-    static ProductionCMode ProductionCModeFromInt(int ecl_int);
-    static int             ProductionCMode2Int(Group::ProductionCMode cmode);
+    static ProductionCMode ProductionCModeFromInt(long long ecl_int);
+    static long long             ProductionCMode2Int(Group::ProductionCMode cmode);
 
     enum class GuideRateProdTarget {
         OIL = 0,
@@ -112,7 +112,7 @@ public:
         NO_GUIDE_RATE = 11
     };
     static GuideRateProdTarget GuideRateProdTargetFromString( const std::string& stringValue );
-    static GuideRateProdTarget GuideRateProdTargetFromInt(int ecl_id);
+    static GuideRateProdTarget GuideRateProdTargetFromInt(long long ecl_id);
 
     enum class GuideRateInjTarget {
         RATE = 1,
@@ -122,8 +122,8 @@ public:
         NO_GUIDE_RATE = 5
     };
     static GuideRateInjTarget GuideRateInjTargetFromString( const std::string& stringValue );
-    static GuideRateInjTarget GuideRateInjTargetFromInt(int ecl_id);
-    static int                GuideRateInjTargetToInt(GuideRateInjTarget target);
+    static GuideRateInjTarget GuideRateInjTargetFromInt(long long ecl_id);
+    static long long                GuideRateInjTargetToInt(GuideRateInjTarget target);
 
     struct GroupInjectionProperties
     {
@@ -146,7 +146,7 @@ public:
 
         static GroupInjectionProperties serializationTestObject();
 
-        int injection_controls = 0;
+        long long injection_controls = 0;
         bool operator==(const GroupInjectionProperties& other) const;
         bool operator!=(const GroupInjectionProperties& other) const;
         bool updateUDQActive(const UDQConfig& udq_config, UDQActive& active) const;
@@ -205,7 +205,7 @@ public:
         double resv_max_rate;
         double target_reinj_fraction;
         double target_void_fraction;
-        int injection_controls = 0;
+        long long injection_controls = 0;
         std::string reinj_group;
         std::string voidage_group;
         double guide_rate;
@@ -230,7 +230,7 @@ public:
         bool available_group_control = true;
         static GroupProductionProperties serializationTestObject();
 
-        int production_controls = 0;
+        long long production_controls = 0;
         bool operator==(const GroupProductionProperties& other) const;
         bool operator!=(const GroupProductionProperties& other) const;
         bool updateUDQActive(const UDQConfig& udq_config, UDQActive& active) const;
@@ -265,7 +265,7 @@ public:
         double guide_rate;
         GuideRateProdTarget guide_rate_def = GuideRateProdTarget::NO_GUIDE_RATE;
         double resv_target = 0;
-        int production_controls = 0;
+        long long production_controls = 0;
     };
 
     Group();

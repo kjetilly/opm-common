@@ -121,8 +121,8 @@ private:
 template <class Scalar, class FluidSystem, class Evaluation = Scalar>
 class MiscibleMultiPhaseComposition
 {
-    static const int numPhases = FluidSystem::numPhases;
-    static const int numComponents = FluidSystem::numComponents;
+    static const long long numPhases = FluidSystem::numPhases;
+    static const long long numComponents = FluidSystem::numComponents;
 
     typedef MathToolbox<Evaluation> Toolbox;
 
@@ -158,7 +158,7 @@ public:
     template <class FluidState, class ParameterCache>
     static void solve(FluidState& fluidState,
                       ParameterCache& paramCache,
-                      int phasePresence,
+                      long long phasePresence,
                       const MMPCAuxConstraint<Evaluation>* auxConstraints,
                       unsigned numAuxConstraints,
                       bool setViscosity,
@@ -193,7 +193,7 @@ public:
 
         // create the linear system of equations which defines the
         // mole fractions
-        static const int numEq = numComponents*numPhases;
+        static const long long numEq = numComponents*numPhases;
         Dune::FieldMatrix<Evaluation, numEq, numEq> M(0.0);
         Dune::FieldVector<Evaluation, numEq> x(0.0);
         Dune::FieldVector<Evaluation, numEq> b(0.0);

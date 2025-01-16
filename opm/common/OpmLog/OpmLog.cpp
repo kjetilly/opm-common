@@ -42,8 +42,8 @@ namespace Opm {
 
     bool OpmLog::stdoutIsTerminal()
     {
-        const int errno_save = errno; // For playing nice with C error handling.
-        const int file_descriptor = fileno(stdout);
+        const long long errno_save = errno; // For playing nice with C error handling.
+        const long long file_descriptor = fileno(stdout);
         if (file_descriptor == -1) {
             // stdout is an invalid stream
             errno = errno_save;
@@ -207,7 +207,7 @@ namespace Opm {
 
     void OpmLog::setupSimpleDefaultLogging(const bool use_prefix,
                                            const bool use_color_coding,
-                                           const int message_limit)
+                                           const long long message_limit)
     {
          std::shared_ptr<StreamLog> streamLog = std::make_shared<StreamLog>(std::cout, Log::DefaultMessageTypes);
          OpmLog::addBackend( "SimpleDefaultLog", streamLog);

@@ -280,7 +280,7 @@ namespace Opm { namespace data {
         void writeMap(const std::map<std::string, ValueType>& map,
                       MessageBufferType&                      buffer) const
         {
-            const unsigned int size = map.size();
+            const size_t size = map.size();
             buffer.write(size);
 
             for (const auto& [name, elm] : map) {
@@ -293,7 +293,7 @@ namespace Opm { namespace data {
         void readMap(MessageBufferType&                buffer,
                      std::map<std::string, ValueType>& map)
         {
-            unsigned int size;
+            size_t size;
             buffer.read(size);
 
             for (std::size_t i = 0; i < size; ++i) {

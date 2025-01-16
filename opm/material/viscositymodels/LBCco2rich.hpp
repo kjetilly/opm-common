@@ -120,7 +120,7 @@ public:
                                    0.0093324};
 
             LhsEval sumLBC = 0.0;
-            for (int i = 0; i < 5; ++i) {
+            for (long long i = 0; i < 5; ++i) {
                 sumLBC += Opm::pow(rho_r,i)*LBC[i];
             }
 

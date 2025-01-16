@@ -37,9 +37,9 @@ namespace Opm {
 
         static InitConfig serializationTestObject();
 
-        void setRestart( const std::string& root, int step);
+        void setRestart( const std::string& root, long long step);
         bool restartRequested() const;
-        int getRestartStep() const;
+        long long getRestartStep() const;
         const std::string& getRestartRootName() const;
         const std::string& getRestartRootNameInput() const;
 
@@ -86,7 +86,7 @@ namespace Opm {
         bool m_gravity = true;
 
         bool m_restartRequested = false;
-        int m_restartStep = 0;
+        long long m_restartStep = 0;
         std::string m_restartRootName;
         std::string m_restartRootNameInput;
     };

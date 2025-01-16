@@ -50,11 +50,11 @@ namespace Opm {
     class KeywordSize {
     public:
         KeywordSize();
-        KeywordSize(const std::string& in_keyword, const std::string& in_item, int in_shift);
+        KeywordSize(const std::string& in_keyword, const std::string& in_item, long long in_shift);
         KeywordSize(const std::string& in_keyword, const std::string& in_item);
-        KeywordSize(const std::string& in_keyword, const std::string& in_item, bool table_collection, int in_shift);
+        KeywordSize(const std::string& in_keyword, const std::string& in_item, bool table_collection, long long in_shift);
 
-        KeywordSize(std::size_t min_size, const std::string& in_keyword, const std::string& in_item, bool table_collection, int in_shift);
+        KeywordSize(std::size_t min_size, const std::string& in_keyword, const std::string& in_item, bool table_collection, long long in_shift);
         explicit KeywordSize(ParserKeywordSizeEnum size_type);
         explicit KeywordSize(std::size_t fixed_size);
         KeywordSize(std::size_t fixed_size, bool code);
@@ -63,18 +63,18 @@ namespace Opm {
         bool table_collection() const;
         ParserKeywordSizeEnum size_type() const;
         bool code() const;
-        int size_shift() const;
+        long long size_shift() const;
         const std::string& keyword() const;
         const std::string& item() const;
         std::optional<std::size_t> min_size() const;
-        void min_size(int s);
+        void min_size(long long s);
         const std::optional<std::variant<std::size_t, std::pair<std::string, std::string>>>& max_size() const;
         std::string construct() const;
 
         bool operator==(const KeywordSize& ) const;
         bool operator!=(const KeywordSize& other) const;
     private:
-        int shift{0};
+        long long shift{0};
         bool is_table_collection{false};
         ParserKeywordSizeEnum m_size_type;
         std::optional<std::size_t> m_min_size;
@@ -88,7 +88,7 @@ namespace Opm {
         explicit ParserKeyword(const std::string& name);
         explicit ParserKeyword(const Json::JsonObject& jsonConfig);
 
-        void initSizeKeyword( const std::string& sizeKeyword, const std::string& sizeItem, bool table_collection, int size_shift);
+        void initSizeKeyword( const std::string& sizeKeyword, const std::string& sizeItem, bool table_collection, long long size_shift);
 
 
         static bool validInternalName(const std::string& name);

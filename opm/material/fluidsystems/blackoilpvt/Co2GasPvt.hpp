@@ -71,8 +71,8 @@ public:
     Co2GasPvt() = default;
 
     Co2GasPvt(const ContainerT& salinity,
-              int activityModel = 3,
-              int thermalMixingModel = 1,
+              long long activityModel = 3,
+              long long thermalMixingModel = 1,
               Scalar T_ref = 288.71, //(273.15 + 15.56)
               Scalar P_ref = 101325);
 
@@ -82,7 +82,7 @@ public:
               const ContainerT& salinity,
               bool enableEzrokhiDensity,
               bool enableVaporization,
-              int activityModel,
+              long long activityModel,
               Co2StoreConfig::GasMixingType gastype)
         : brineReferenceDensity_(brineReferenceDensity)
         , gasReferenceDensity_(gasReferenceDensity)
@@ -126,12 +126,12 @@ public:
     /*!
     * \brief Set activity coefficient model for salt in solubility model
     */
-    OPM_HOST_DEVICE void setActivityModelSalt(int activityModel);
+    OPM_HOST_DEVICE void setActivityModelSalt(long long activityModel);
 
    /*!
     * \brief Set thermal mixing model for co2 in brine
     */
-    OPM_HOST_DEVICE void setThermalMixingModel(int thermalMixingModel);
+    OPM_HOST_DEVICE void setThermalMixingModel(long long thermalMixingModel);
 
     /*!
      * \brief Finish initializing the co2 phase PVT properties.
@@ -340,7 +340,7 @@ public:
     OPM_HOST_DEVICE bool getEnableVaporization() const
     { return enableVaporization_; }
 
-    OPM_HOST_DEVICE int getActivityModel() const
+    OPM_HOST_DEVICE long long getActivityModel() const
     { return activityModel_; }
 
     OPM_HOST_DEVICE Co2StoreConfig::GasMixingType getGasType() const
@@ -441,7 +441,7 @@ private:
     ContainerT ezrokhiDenNaClCoeff_{};
     bool enableEzrokhiDensity_ = false;
     bool enableVaporization_ = true;
-    int activityModel_{};
+    long long activityModel_{};
     Co2StoreConfig::GasMixingType gastype_{};
     Params co2Tables;
 };

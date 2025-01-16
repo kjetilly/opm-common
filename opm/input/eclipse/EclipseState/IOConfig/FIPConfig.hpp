@@ -86,7 +86,7 @@ private:
     void parseRPT(const RPTConfig& rptConfig);
 
     //! \brief Bitset holding enable status for fields
-    std::bitset<static_cast<int>(OutputField::NUM_FIP_REPORT)> m_flags = {};
+    std::bitset<static_cast<long long>(OutputField::NUM_FIP_REPORT)> m_flags = {};
 };
 
 } //namespace Opm

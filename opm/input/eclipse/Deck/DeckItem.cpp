@@ -38,9 +38,9 @@ std::vector< T >& DeckItem::value_ref() {
 }
 
 template<>
-const std::vector< int >& DeckItem::value_ref< int >() const {
-    if( this->type != get_type< int >() )
-        throw std::invalid_argument( "DeckItem::value_ref<int> Item of wrong type. this->type: " + tag_name(this->type) + " " + this->name());
+const std::vector< long long >& DeckItem::value_ref< long long >() const {
+    if( this->type != get_type< long long >() )
+        throw std::invalid_argument( "DeckItem::value_ref<long long> Item of wrong type. this->type: " + tag_name(this->type) + " " + this->name());
 
     return this->ival;
 }
@@ -78,8 +78,8 @@ const std::vector< UDAValue >& DeckItem::value_ref< UDAValue >() const {
 }
 
 
-DeckItem::DeckItem( const std::string& nm, int) :
-    type( get_type< int >() ),
+DeckItem::DeckItem( const std::string& nm, long long) :
+    type( get_type< long long >() ),
     item_name( nm )
 {
 }
@@ -191,7 +191,7 @@ UDAValue DeckItem::get( size_t index ) const {
 }
 
 template <>
-void DeckItem::shrink_to_fit<int>() {
+void DeckItem::shrink_to_fit<long long>() {
     this->ival.shrink_to_fit();
 }
 
@@ -215,7 +215,7 @@ void DeckItem::push( T x ) {
     this->value_status.push_back( value::status::deck_value );
 }
 
-void DeckItem::push_back( int x ) {
+void DeckItem::push_back( long long x ) {
     this->push( x );
 }
 
@@ -243,7 +243,7 @@ void DeckItem::push( T x, size_t n ) {
     this->value_status.insert( this->value_status.end(), n, value::status::deck_value );
 }
 
-void DeckItem::push_back( int x, size_t n ) {
+void DeckItem::push_back( long long x, size_t n ) {
     this->push( x, n );
 }
 
@@ -270,7 +270,7 @@ void DeckItem::push_default( T x, std::size_t n ) {
     this->value_status.insert( this->value_status.end(), n, value::status::valid_default );
 }
 
-void DeckItem::push_backDefault( int x, std::size_t n ) {
+void DeckItem::push_backDefault( long long x, std::size_t n ) {
     this->push_default( x, n );
 }
 
@@ -533,18 +533,18 @@ void DeckItem::reserve_additionalRawString(std::size_t n)
  * updated with changes in DeckItem so that code is emitted.
  */
 
-template int DeckItem::get< int >( size_t ) const;
+template long long DeckItem::get< long long >( size_t ) const;
 template double DeckItem::get< double >( size_t ) const;
 template std::string DeckItem::get< std::string >( size_t ) const;
 template RawString DeckItem::get< RawString >( size_t ) const;
 
-template void DeckItem::push_backDummyDefault<int>( std::size_t );
+template void DeckItem::push_backDummyDefault<long long>( std::size_t );
 template void DeckItem::push_backDummyDefault<double>( std::size_t );
 template void DeckItem::push_backDummyDefault<std::string>( std::size_t );
 template void DeckItem::push_backDummyDefault<RawString>( std::size_t );
 template void DeckItem::push_backDummyDefault<UDAValue>( std::size_t );
 
-template const std::vector< int >& DeckItem::getData< int >() const;
+template const std::vector< long long >& DeckItem::getData< long long >() const;
 template const std::vector< UDAValue >& DeckItem::getData< UDAValue >() const;
 template const std::vector< std::string >& DeckItem::getData< std::string >() const;
 template const std::vector<RawString>& DeckItem::getData<RawString>() const;

@@ -67,12 +67,12 @@ namespace Opm {
             VectorItems::IWell::Value::WVfpExp;
 
         this->m_explicit = rst_well.thp_lookup_procedure_vfptable == Value::Lookup::Explicit;
-        this->m_shut = rst_well.close_if_thp_stabilised == static_cast<int>(Value::CloseStabilised::Yes);
+        this->m_shut = rst_well.close_if_thp_stabilised == static_cast<long long>(Value::CloseStabilised::Yes);
 
-        if (rst_well.prevent_thpctrl_if_unstable == static_cast<int>(Value::PreventTHP::Yes1)) {
+        if (rst_well.prevent_thpctrl_if_unstable == static_cast<long long>(Value::PreventTHP::Yes1)) {
             this->m_prevent = Prevent::ReportFirst;
         }
-        else if (rst_well.prevent_thpctrl_if_unstable == static_cast<int>(Value::PreventTHP::Yes2)) {
+        else if (rst_well.prevent_thpctrl_if_unstable == static_cast<long long>(Value::PreventTHP::Yes2)) {
             this->m_prevent = Prevent::ReportEvery;
         }
         else {

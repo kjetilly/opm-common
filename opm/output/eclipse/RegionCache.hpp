@@ -47,13 +47,13 @@ namespace Opm { namespace out {
                         const Schedule&              schedule);
 
         const std::vector<std::pair<std::string, std::size_t>>&
-        connections(const std::string& region_name, int region_id) const;
+        connections(const std::string& region_name, long long region_id) const;
 
         // A well is assigned to the region_id of its first connection.
-        std::vector<std::string> wells(const std::string& region_name, int region_id) const;
+        std::vector<std::string> wells(const std::string& region_name, long long region_id) const;
 
     private:
-        using RegID = std::pair<std::string, int>;            // { Region set, region ID }
+        using RegID = std::pair<std::string, long long>;            // { Region set, region ID }
         using WellConn = std::pair<std::string, std::size_t>; // { Well name, cell ID }
 
         std::vector<WellConn> connections_empty{};

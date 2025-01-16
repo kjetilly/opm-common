@@ -330,7 +330,7 @@ RwgsaltTable::operator==(const RwgsaltTable& data) const
     return static_cast<const PvtxTable&>(*this) == static_cast<const PvtxTable&>(data);
 }
 
-SpecheatTable::SpecheatTable(const DeckItem& item, const int tableID)
+SpecheatTable::SpecheatTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("TEMPERATURE", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("CV_OIL", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -364,7 +364,7 @@ SpecheatTable::getCvGasColumn() const
     return SimpleTable::getColumn(3);
 }
 
-SpecrockTable::SpecrockTable(const DeckItem& item, const int tableID)
+SpecrockTable::SpecrockTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("TEMPERATURE", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("CV_ROCK", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -384,7 +384,7 @@ SpecrockTable::getCvRockColumn() const
     return SimpleTable::getColumn(1);
 }
 
-SwofTable::SwofTable(const DeckItem& item, const bool jfunc, const int tableID)
+SwofTable::SwofTable(const DeckItem& item, const bool jfunc, const long long tableID)
 {
 
     m_schema.addColumn(ColumnSchema("SW", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
@@ -428,7 +428,7 @@ SwofTable::getJFuncColumn() const
     return SimpleTable::getColumn(3);
 }
 
-SgwfnTable::SgwfnTable(const DeckItem& item, const int tableID)
+SgwfnTable::SgwfnTable(const DeckItem& item, const long long tableID)
 {
 
     m_schema.addColumn(ColumnSchema("SG", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
@@ -463,7 +463,7 @@ SgwfnTable::getPcgwColumn() const
     return SimpleTable::getColumn(3);
 }
 
-SgofTable::SgofTable(const DeckItem& item, const bool jfunc, const int tableID)
+SgofTable::SgofTable(const DeckItem& item, const bool jfunc, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SG", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRG", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -506,7 +506,7 @@ SgofTable::getJFuncColumn() const
     return SimpleTable::getColumn(3);
 }
 
-SlgofTable::SlgofTable(const DeckItem& item, const bool jfunc, const int tableID)
+SlgofTable::SlgofTable(const DeckItem& item, const bool jfunc, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SL", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRG", Table::DECREASING, Table::DEFAULT_LINEAR));
@@ -553,7 +553,7 @@ SlgofTable::getJFuncColumn() const
     return SimpleTable::getColumn(3);
 }
 
-Sof2Table::Sof2Table(const DeckItem& item, const int tableID)
+Sof2Table::Sof2Table(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SO", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRO", Table::INCREASING, Table::DEFAULT_LINEAR));
@@ -573,7 +573,7 @@ Sof2Table::getKroColumn() const
     return SimpleTable::getColumn(1);
 }
 
-Sof3Table::Sof3Table(const DeckItem& item, const int tableID)
+Sof3Table::Sof3Table(const DeckItem& item, const long long tableID)
 {
 
     m_schema.addColumn(ColumnSchema("SO", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
@@ -602,7 +602,7 @@ Sof3Table::getKrogColumn() const
     return SimpleTable::getColumn(2);
 }
 
-PvdgTable::PvdgTable(const DeckItem& item, const int tableID)
+PvdgTable::PvdgTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("P", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("BG", Table::STRICTLY_DECREASING, Table::DEFAULT_LINEAR));
@@ -630,7 +630,7 @@ PvdgTable::getViscosityColumn() const
     return SimpleTable::getColumn(2);
 }
 
-PvdoTable::PvdoTable(const DeckItem& item, const int tableID)
+PvdoTable::PvdoTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("P", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("BO", Table::STRICTLY_DECREASING, Table::DEFAULT_LINEAR));
@@ -658,7 +658,7 @@ PvdoTable::getViscosityColumn() const
     return SimpleTable::getColumn(2);
 }
 
-SwfnTable::SwfnTable(const DeckItem& item, const bool jfunc, const int tableID)
+SwfnTable::SwfnTable(const DeckItem& item, const bool jfunc, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SW", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRW", Table::INCREASING, Table::DEFAULT_LINEAR));
@@ -695,7 +695,7 @@ SwfnTable::getJFuncColumn() const
 }
 
 
-SgfnTable::SgfnTable(const DeckItem& item, const bool jfunc, const int tableID)
+SgfnTable::SgfnTable(const DeckItem& item, const bool jfunc, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SG", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRG", Table::INCREASING, Table::DEFAULT_LINEAR));
@@ -732,7 +732,7 @@ SgfnTable::getJFuncColumn() const
     return SimpleTable::getColumn(2);
 }
 
-GsfTable::GsfTable(const DeckItem& item, const int tableID)
+GsfTable::GsfTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SG", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRG", Table::INCREASING, Table::DEFAULT_LINEAR));
@@ -760,7 +760,7 @@ GsfTable::getPcgwColumn() const
     return SimpleTable::getColumn(2);
 }
 
-WsfTable::WsfTable(const DeckItem& item, const int tableID)
+WsfTable::WsfTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SW", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRW", Table::INCREASING, Table::DEFAULT_LINEAR));
@@ -781,7 +781,7 @@ WsfTable::getKrwColumn() const
     return SimpleTable::getColumn(1);
 }
 
-SsfnTable::SsfnTable(const DeckItem& item, const int tableID)
+SsfnTable::SsfnTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SolventFraction", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("GasRelPermMultiplier", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
@@ -808,7 +808,7 @@ SsfnTable::getSolventRelPermMultiplierColumn() const
     return SimpleTable::getColumn(2);
 }
 
-PvdsTable::PvdsTable(const DeckItem& item, const int tableID)
+PvdsTable::PvdsTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("P", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("BG", Table::STRICTLY_DECREASING, Table::DEFAULT_LINEAR));
@@ -835,7 +835,7 @@ PvdsTable::getViscosityColumn() const
     return SimpleTable::getColumn(2);
 }
 
-PlyadsTable::PlyadsTable(const DeckItem& item, const int tableID)
+PlyadsTable::PlyadsTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("PolymerConcentration", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("AdsorbedPolymer", Table::INCREASING, Table::DEFAULT_NONE));
@@ -856,7 +856,7 @@ PlyadsTable::getAdsorbedPolymerColumn() const
     return SimpleTable::getColumn(1);
 }
 
-FoamadsTable::FoamadsTable(const DeckItem& item, const int tableID)
+FoamadsTable::FoamadsTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("FoamConcentration", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("AdsorbedFoam", Table::INCREASING, Table::DEFAULT_NONE));
@@ -876,7 +876,7 @@ FoamadsTable::getAdsorbedFoamColumn() const
     return SimpleTable::getColumn(1);
 }
 
-FoammobTable::FoammobTable(const DeckItem& item, const int tableID)
+FoammobTable::FoammobTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("FoamConcentration", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("MobilityMultiplier", Table::DECREASING, Table::DEFAULT_NONE));
@@ -967,7 +967,7 @@ PlyrockTable::getMaxAdsorbtionColumn() const
     return SimpleTable::getColumn(4);
 }
 
-PlyviscTable::PlyviscTable(const DeckItem& item, const int tableID)
+PlyviscTable::PlyviscTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("PolymerConcentration", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("ViscosityMultiplier", Table::INCREASING, Table::DEFAULT_NONE));
@@ -986,7 +986,7 @@ PlyviscTable::getViscosityMultiplierColumn() const
     return SimpleTable::getColumn(1);
 }
 
-PlydhflfTable::PlydhflfTable(const DeckItem& item, const int tableID)
+PlydhflfTable::PlydhflfTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("Temperature", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("PolymerHalflife", Table::STRICTLY_DECREASING, Table::DEFAULT_NONE));
@@ -1131,7 +1131,7 @@ PlyshlogTable::operator==(const PlyshlogTable& data) const
         && m_hasRefSalinity == data.m_hasRefSalinity && m_hasRefTemperature == data.m_hasRefTemperature;
 }
 
-OilvisctTable::OilvisctTable(const DeckItem& item, const int tableID)
+OilvisctTable::OilvisctTable(const DeckItem& item, const long long tableID)
 {
 
     m_schema.addColumn(ColumnSchema("Temperature", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
@@ -1151,7 +1151,7 @@ OilvisctTable::getOilViscosityColumn() const
     return SimpleTable::getColumn(1);
 }
 
-WatvisctTable::WatvisctTable(const DeckItem& item, const int tableID)
+WatvisctTable::WatvisctTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("Temperature", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("Viscosity", Table::DECREASING, Table::DEFAULT_NONE));
@@ -1171,7 +1171,7 @@ WatvisctTable::getWaterViscosityColumn() const
     return SimpleTable::getColumn(1);
 }
 
-GasvisctTable::GasvisctTable(const DeckItem& item, const int tableID)
+GasvisctTable::GasvisctTable(const DeckItem& item, const long long tableID)
 {
 
     m_schema.addColumn(ColumnSchema("Temperature", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
@@ -1191,7 +1191,7 @@ GasvisctTable::getGasViscosityColumn() const
     return SimpleTable::getColumn(1);
 }
 
-RtempvdTable::RtempvdTable(const DeckItem& item, const int tableID)
+RtempvdTable::RtempvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("Depth", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("Temperature", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1211,7 +1211,7 @@ RtempvdTable::getTemperatureColumn() const
     return SimpleTable::getColumn(1);
 }
 
-RocktabTable::RocktabTable(const DeckItem& item, bool isDirectional, bool hasStressOption, const int tableID)
+RocktabTable::RocktabTable(const DeckItem& item, bool isDirectional, bool hasStressOption, const long long tableID)
     : m_isDirectional(isDirectional)
 {
 
@@ -1291,7 +1291,7 @@ RocktabTable::operator==(const RocktabTable& data) const
     return this->SimpleTable::operator==(data) && m_isDirectional == data.m_isDirectional;
 }
 
-RsvdTable::RsvdTable(const DeckItem& item, const int tableID)
+RsvdTable::RsvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("RS", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1311,7 +1311,7 @@ RsvdTable::getRsColumn() const
     return SimpleTable::getColumn(1);
 }
 
-RvvdTable::RvvdTable(const DeckItem& item, const int tableID)
+RvvdTable::RvvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("RV", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -1330,7 +1330,7 @@ RvvdTable::getRvColumn() const
     return SimpleTable::getColumn(1);
 }
 
-RvwvdTable::RvwvdTable(const DeckItem& item, const int tableID)
+RvwvdTable::RvwvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("RVWVD", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -1349,7 +1349,7 @@ RvwvdTable::getRvwvdColumn() const
     return SimpleTable::getColumn(1);
 }
 
-PbvdTable::PbvdTable(const DeckItem& item, const int tableID)
+PbvdTable::PbvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("PBUB", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1369,7 +1369,7 @@ PbvdTable::getPbubColumn() const
     return SimpleTable::getColumn(1);
 }
 
-PdvdTable::PdvdTable(const DeckItem& item, const int tableID)
+PdvdTable::PdvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("PDEW", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1389,7 +1389,7 @@ PdvdTable::getPdewColumn() const
     return SimpleTable::getColumn(1);
 }
 
-SaltvdTable::SaltvdTable(const DeckItem& item, const int tableID)
+SaltvdTable::SaltvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("SALT", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1409,7 +1409,7 @@ SaltvdTable::getSaltColumn() const
     return SimpleTable::getColumn(1);
 }
 
-SaltpvdTable::SaltpvdTable(const DeckItem& item, const int tableID)
+SaltpvdTable::SaltpvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("SALTP", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1430,7 +1430,7 @@ SaltpvdTable::getSaltpColumn() const
 }
 
 
-SaltsolTable::SaltsolTable(const DeckItem& item, const int tableID)
+SaltsolTable::SaltsolTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SALTSOLUBILITY", Table::RANDOM, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("SALTDENSITY", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1451,7 +1451,7 @@ SaltsolTable::getSaltdenColumn() const
 }
 
 
-PermfactTable::PermfactTable(const DeckItem& item, const int tableID)
+PermfactTable::PermfactTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("POROSITYCHANGE", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("PERMEABILITYMULTIPLIER", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1471,7 +1471,7 @@ PermfactTable::getPermeabilityMultiplierColumn() const
     return SimpleTable::getColumn(1);
 }
 
-PcfactTable::PcfactTable(const DeckItem& item, const int tableID)
+PcfactTable::PcfactTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("POROSITYCHANGE", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("PCMULTIPLIER", Table::RANDOM, Table::DEFAULT_NONE));
@@ -1491,7 +1491,7 @@ PcfactTable::getPcMultiplierColumn() const
     return SimpleTable::getColumn(1);
 }
 
-AqutabTable::AqutabTable(const DeckItem& item, const int tableID)
+AqutabTable::AqutabTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("TD", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("PD", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -1510,7 +1510,7 @@ AqutabTable::getPressureColumn() const
     return SimpleTable::getColumn(1);
 }
 
-EnkrvdTable::EnkrvdTable(const DeckItem& item, const int tableID)
+EnkrvdTable::EnkrvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRWMAX", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -1572,7 +1572,7 @@ EnkrvdTable::getKrocritwColumn() const
     return SimpleTable::getColumn(7);
 }
 
-EnptvdTable::EnptvdTable(const DeckItem& item, const int tableID)
+EnptvdTable::EnptvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("SWCO", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -1641,7 +1641,7 @@ EnptvdTable::getSogcritColumn() const
     return SimpleTable::getColumn(8);
 }
 
-ImkrvdTable::ImkrvdTable(const DeckItem& item, const int tableID)
+ImkrvdTable::ImkrvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("KRWMAX", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -1704,7 +1704,7 @@ ImkrvdTable::getKrocritwColumn() const
 }
 
 
-ImptvdTable::ImptvdTable(const DeckItem& item, const int tableID)
+ImptvdTable::ImptvdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("SWCO", Table::RANDOM, Table::DEFAULT_LINEAR));
@@ -1773,7 +1773,7 @@ ImptvdTable::getSogcritColumn() const
     return SimpleTable::getColumn(8);
 }
 
-SorwmisTable::SorwmisTable(const DeckItem& item, const int tableID)
+SorwmisTable::SorwmisTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("WaterSaturation", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("MiscibleResidualOilSaturation", Table::INCREASING, Table::DEFAULT_NONE));
@@ -1793,7 +1793,7 @@ SorwmisTable::getMiscibleResidualOilColumn() const
     return SimpleTable::getColumn(1);
 }
 
-SgcwmisTable::SgcwmisTable(const DeckItem& item, const int tableID)
+SgcwmisTable::SgcwmisTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("WaterSaturation", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("MiscibleResidualGasSaturation", Table::INCREASING, Table::DEFAULT_NONE));
@@ -1812,7 +1812,7 @@ SgcwmisTable::getMiscibleResidualGasColumn() const
     return SimpleTable::getColumn(1);
 }
 
-MiscTable::MiscTable(const DeckItem& item, const int tableID)
+MiscTable::MiscTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("SolventFraction", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("Miscibility", Table::INCREASING, Table::DEFAULT_NONE));
@@ -1832,7 +1832,7 @@ MiscTable::getMiscibilityColumn() const
 }
 
 
-PmiscTable::PmiscTable(const DeckItem& item, const int tableID)
+PmiscTable::PmiscTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("OilPhasePressure", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("Miscibility", Table::INCREASING, Table::DEFAULT_NONE));
@@ -1851,7 +1851,7 @@ PmiscTable::getMiscibilityColumn() const
     return SimpleTable::getColumn(1);
 }
 
-TlpmixpaTable::TlpmixpaTable(const DeckItem& item, const int tableID)
+TlpmixpaTable::TlpmixpaTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("OilPhasePressure", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("Miscibility", Table::INCREASING, Table::DEFAULT_NONE));
@@ -1870,7 +1870,7 @@ TlpmixpaTable::getMiscibilityColumn() const
     return SimpleTable::getColumn(1);
 }
 
-MsfnTable::MsfnTable(const DeckItem& item, const int tableID)
+MsfnTable::MsfnTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("GasPhaseFraction", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("GasSolventRelpermMultiplier", Table::INCREASING, Table::DEFAULT_NONE));
@@ -1900,7 +1900,7 @@ MsfnTable::getOilRelpermMultiplierColumn() const
     return SimpleTable::getColumn(2);
 }
 
-RockwnodTable::RockwnodTable(const DeckItem& item, const int tableID)
+RockwnodTable::RockwnodTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("Saturation", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     SimpleTable::init("ROCKWNOD", item, tableID);
@@ -1912,7 +1912,7 @@ RockwnodTable::getSaturationColumn() const
     return SimpleTable::getColumn(0);
 }
 
-OverburdTable::OverburdTable(const DeckItem& item, const int tableID)
+OverburdTable::OverburdTable(const DeckItem& item, const long long tableID)
 {
     m_schema.addColumn(ColumnSchema("Depth", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(ColumnSchema("OverburdenPressure", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
@@ -1931,7 +1931,7 @@ OverburdTable::getOverburdenPressureColumn() const
     return SimpleTable::getColumn(1);
 }
 
-TracerVdTable::TracerVdTable(const Opm::DeckItem& item, double inv_volume, const int tableID)
+TracerVdTable::TracerVdTable(const Opm::DeckItem& item, double inv_volume, const long long tableID)
 {
     m_schema.addColumn(Opm::ColumnSchema("DEPTH", Table::STRICTLY_INCREASING, Table::DEFAULT_NONE));
     m_schema.addColumn(Opm::ColumnSchema("TRACER_CONCENTRATION", Table::RANDOM, Table::DEFAULT_NONE));

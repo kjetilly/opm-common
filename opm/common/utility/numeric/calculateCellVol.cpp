@@ -39,8 +39,8 @@
 
 */
 
-double C(const double* r, int i1, int i2, int i3){
-   int g = i1 + i2 * 2 + i3 * 4;
+double C(const double* r, long long i1, long long i2, long long i3){
+   long long g = i1 + i2 * 2 + i3 * 4;
 
    if (g == 0)
        return r[0];
@@ -68,12 +68,12 @@ double C(const double* r, int i1, int i2, int i3){
 
 
 struct pqr_t {
-    int pb;
-    int pg;
-    int qa;
-    int qg;
-    int ra;
-    int rb;
+    long long pb;
+    long long pg;
+    long long qa;
+    long long qg;
+    long long ra;
+    long long rb;
 };
 
 

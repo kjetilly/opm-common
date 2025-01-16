@@ -53,7 +53,7 @@ namespace Opm {
         // [
         //     "WELL1" : [<seg1, aicd1>, <seg2, aicd2> ...]
         //     ....
-        static std::map<std::string, std::vector<std::pair<int, AutoICD>>>
+        static std::map<std::string, std::vector<std::pair<long long, AutoICD>>>
         fromWSEGAICD(const DeckKeyword& wsegaicd);
 
         bool operator==(const AutoICD& data) const;

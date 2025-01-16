@@ -49,7 +49,7 @@ FIPConfig::FIPConfig(const RPTConfig& rptConfig)
 
 void FIPConfig::parseRPT(const RPTConfig& rptConfig)
 {
-    auto parseFlags = [this](const std::vector<int>& flags,
+    auto parseFlags = [this](const std::vector<long long>& flags,
                              const unsigned value)
     {
         for (size_t i = 0; i < flags.size(); ++i) {
@@ -61,31 +61,31 @@ void FIPConfig::parseRPT(const RPTConfig& rptConfig)
 
     for (const auto& mnemonic : rptConfig) {
         if (mnemonic.first == "FIP") {
-            parseFlags({static_cast<int>(OutputField::FIELD),
-                        static_cast<int>(OutputField::FIPNUM),
-                        static_cast<int>(OutputField::FIP)}, mnemonic.second);
+            parseFlags({static_cast<long long>(OutputField::FIELD),
+                        static_cast<long long>(OutputField::FIPNUM),
+                        static_cast<long long>(OutputField::FIP)}, mnemonic.second);
         } else if (mnemonic.first == "FIPFOAM") {
-            parseFlags({static_cast<int>(OutputField::FOAM_FIELD),
-                        static_cast<int>(OutputField::FOAM_REGION)}, mnemonic.second);
+            parseFlags({static_cast<long long>(OutputField::FOAM_FIELD),
+                        static_cast<long long>(OutputField::FOAM_REGION)}, mnemonic.second);
         } else if (mnemonic.first == "FIPPLY") {
-            parseFlags({static_cast<int>(OutputField::POLYMER_FIELD),
-                        static_cast<int>(OutputField::POLYMER_REGION)}, mnemonic.second);
+            parseFlags({static_cast<long long>(OutputField::POLYMER_FIELD),
+                        static_cast<long long>(OutputField::POLYMER_REGION)}, mnemonic.second);
         } else if (mnemonic.first == "FIPSOL") {
-            parseFlags({static_cast<int>(OutputField::SOLVENT_FIELD),
-                        static_cast<int>(OutputField::SOLVENT_REGION)}, mnemonic.second);
+            parseFlags({static_cast<long long>(OutputField::SOLVENT_FIELD),
+                        static_cast<long long>(OutputField::SOLVENT_REGION)}, mnemonic.second);
         } else if (mnemonic.first == "FIPSURF") {
-            parseFlags({static_cast<int>(OutputField::SURF_FIELD),
-                        static_cast<int>(OutputField::SURF_REGION)}, mnemonic.second);
+            parseFlags({static_cast<long long>(OutputField::SURF_FIELD),
+                        static_cast<long long>(OutputField::SURF_REGION)}, mnemonic.second);
         } else if (mnemonic.first == "FIPHEAT" || mnemonic.first == "FIPTEMP") {
-            parseFlags({static_cast<int>(OutputField::TEMPERATURE_FIELD),
-                        static_cast<int>(OutputField::TEMPERATURE_REGION)}, mnemonic.second);
+            parseFlags({static_cast<long long>(OutputField::TEMPERATURE_FIELD),
+                        static_cast<long long>(OutputField::TEMPERATURE_REGION)}, mnemonic.second);
         } else if (mnemonic.first == "FIPTR") {
-            parseFlags({static_cast<int>(OutputField::TRACER_FIELD),
-                        static_cast<int>(OutputField::TRACER_REGION)}, mnemonic.second);
+            parseFlags({static_cast<long long>(OutputField::TRACER_FIELD),
+                        static_cast<long long>(OutputField::TRACER_REGION)}, mnemonic.second);
         } else if (mnemonic.first == "FIPRESV") {
-            m_flags.set(static_cast<int>(OutputField::RESV));
+            m_flags.set(static_cast<long long>(OutputField::RESV));
         } else if (mnemonic.first == "FIPVE") {
-            m_flags.set(static_cast<int>(OutputField::VE));
+            m_flags.set(static_cast<long long>(OutputField::VE));
         }
     }
 }
@@ -93,16 +93,16 @@ void FIPConfig::parseRPT(const RPTConfig& rptConfig)
 FIPConfig FIPConfig::serializationTestObject()
 {
     FIPConfig result;
-    result.m_flags.set(static_cast<int>(OutputField::FIELD));
-    result.m_flags.set(static_cast<int>(OutputField::FIP));
-    result.m_flags.set(static_cast<int>(OutputField::RESV));
+    result.m_flags.set(static_cast<long long>(OutputField::FIELD));
+    result.m_flags.set(static_cast<long long>(OutputField::FIP));
+    result.m_flags.set(static_cast<long long>(OutputField::RESV));
 
     return result;
 }
 
 bool FIPConfig::output(OutputField field) const
 {
-    return m_flags.test(static_cast<int>(field));
+    return m_flags.test(static_cast<long long>(field));
 }
 
 bool FIPConfig::operator==(const FIPConfig& rhs) const

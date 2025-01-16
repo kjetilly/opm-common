@@ -63,7 +63,7 @@ namespace Opm {
         ///   complete model.
         explicit FIPRegionStatistics(const std::size_t                      declaredMaxRegID,
                                      const FieldPropsManager&               fldPropsMgr,
-                                     std::function<void(std::vector<int>&)> computeGlobalMax);
+                                     std::function<void(std::vector<long long>&)> computeGlobalMax);
 
         /// Equality predicate
         ///
@@ -77,7 +77,7 @@ namespace Opm {
         /// Retrieve model's declared maximum fluid-in-place region ID.
         ///
         /// \return Constructor argument \c declaredMaxRegID
-        int declaredMaximumRegionID() const
+        long long declaredMaximumRegionID() const
         {
             return this->minimumMaximumRegionID_;
         }
@@ -100,7 +100,7 @@ namespace Opm {
         /// \return Model's global maximum region ID in \p regionSet.
         ///   Negative value (-1) if \p regionSet is not a known region set
         ///   name.
-        int maximumRegionID(std::string_view regionSet) const;
+        long long maximumRegionID(std::string_view regionSet) const;
 
         /// Serialisation operator
         ///
@@ -118,7 +118,7 @@ namespace Opm {
 
     private:
         /// Model's declared maximum fluid-in-place region ID.
-        int minimumMaximumRegionID_{};
+        long long minimumMaximumRegionID_{};
 
         /// Model's named 'FIP' region sets, including 'FIPNUM'.  Sorted
         /// alphabetically to enable binary search when looking up aspects
@@ -127,7 +127,7 @@ namespace Opm {
 
         /// Collection of maximum region IDs across model.  Stored in the
         /// order of the regionSets_.
-        std::vector<int> maxRegionID_{};
+        std::vector<long long> maxRegionID_{};
     };
 } // namespace Opm
 

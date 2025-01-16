@@ -43,7 +43,7 @@ double ThrowOnError::handleBracketingFailure(const double x0, const double x1,
 }
 
 double ThrowOnError::handleTooManyIterations(const double x0,
-                                            const double x1, const int maxiter)
+                                            const double x1, const long long maxiter)
 {
     OPM_THROW(std::runtime_error,
               fmt::format("Maximum number of iterations exceeded: {}\n"
@@ -63,7 +63,7 @@ double WarnAndContinueOnError::handleBracketingFailure(const double x0, const do
 }
 
 double WarnAndContinueOnError::handleTooManyIterations(const double x0,
-                                                       const double x1, const int maxiter)
+                                                       const double x1, const long long maxiter)
 {
     OPM_REPORT;
     OpmLog::warning(fmt::format("Maximum number of iterations exceeded: {}, "

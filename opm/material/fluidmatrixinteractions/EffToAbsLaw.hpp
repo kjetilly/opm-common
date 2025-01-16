@@ -77,7 +77,7 @@ public:
     typedef typename EffLaw::Scalar Scalar;
 
     //! The number of fluid phases
-    static const int numPhases = EffLaw::numPhases;
+    static const long long numPhases = EffLaw::numPhases;
 
     //! Specify whether this material law implements the two-phase
     //! convenience API
@@ -373,7 +373,7 @@ private:
      *                  is constructed accordingly. Afterwards the values are set there, too.
      * \return          Derivative of the effective saturation w.r.t. the absolute saturation.
      */
-    static Scalar dSeff_dSabs_(const Params& params, int /*phaseIdx*/)
+    static Scalar dSeff_dSabs_(const Params& params, long long /*phaseIdx*/)
     { return 1.0/(1 - params.sumResidualSaturations()); }
 
     /*!
@@ -384,7 +384,7 @@ private:
      *                  is constructed accordingly. Afterwards the values are set there, too.
      * \return          Derivative of the absolute saturation w.r.t. the effective saturation.
      */
-    static Scalar dSabs_dSeff_(const Params& params, int /*phaseIdx*/)
+    static Scalar dSabs_dSeff_(const Params& params, long long /*phaseIdx*/)
     { return 1 - params.sumResidualSaturations(); }
 };
 } // namespace Opm

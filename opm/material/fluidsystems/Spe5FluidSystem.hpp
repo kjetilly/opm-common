@@ -75,14 +75,14 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numPhases
-    static const int numPhases = 3;
+    static const long long numPhases = 3;
 
     //! Index of the gas phase
-    static const int gasPhaseIdx = 0;
+    static const long long gasPhaseIdx = 0;
     //! Index of the water phase
-    static const int waterPhaseIdx = 1;
+    static const long long waterPhaseIdx = 1;
     //! Index of the oil phase
-    static const int oilPhaseIdx = 2;
+    static const long long oilPhaseIdx = 2;
 
     //! The component for pure water to be used
     typedef ::Opm::H2O<Scalar> H2O;
@@ -139,15 +139,15 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numComponents
-    static const int numComponents = 7;
+    static const long long numComponents = 7;
 
-    static const int H2OIdx = 0; //!< Index of the water component
-    static const int C1Idx = 1; //!< Index of the C1 component
-    static const int C3Idx = 2; //!< Index of the C3 component
-    static const int C6Idx = 3; //!< Index of the C6 component
-    static const int C10Idx = 4; //!< Index of the C10 component
-    static const int C15Idx = 5; //!< Index of the C15 component
-    static const int C20Idx = 6; //!< Index of the C20 component
+    static const long long H2OIdx = 0; //!< Index of the water component
+    static const long long C1Idx = 1; //!< Index of the C1 component
+    static const long long C3Idx = 2; //!< Index of the C3 component
+    static const long long C6Idx = 3; //!< Index of the C6 component
+    static const long long C10Idx = 4; //!< Index of the C10 component
+    static const long long C15Idx = 5; //!< Index of the C15 component
+    static const long long C20Idx = 6; //!< Index of the C20 component
 
     //! \copydoc BaseFluidSystem::componentName
     static std::string_view componentName(unsigned compIdx)

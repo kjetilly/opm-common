@@ -42,7 +42,7 @@ namespace Opm {
         , last_test(sim_time)
     {}
 
-    int WellTestState::WTestWell::int_reason() const {
+    long long WellTestState::WTestWell::int_reason() const {
         if (!this->closed)
             return 0;
 
@@ -57,7 +57,7 @@ namespace Opm {
         }
     }
 
-    WellTestConfig::Reason WellTestState::WTestWell::inverse_ecl_reason(int ecl_reason) {
+    WellTestConfig::Reason WellTestState::WTestWell::inverse_ecl_reason(long long ecl_reason) {
         switch (ecl_reason) {
         case  WTest::EclCloseReason::NONE:     return WellTestConfig::Reason::NONE;
         case  WTest::EclCloseReason::PHYSICAL: return WellTestConfig::Reason::PHYSICAL;
@@ -173,16 +173,16 @@ namespace Opm {
         return c;
     }
 
-    void WellTestState::close_completion(const std::string& well_name, int complnum, double sim_time) {
+    void WellTestState::close_completion(const std::string& well_name, long long complnum, double sim_time) {
         auto well_iter = this->completions.find(well_name);
         if (well_iter == this->completions.end())
-            this->completions.emplace(well_name, std::unordered_map<int, ClosedCompletion>{});
+            this->completions.emplace(well_name, std::unordered_map<long long, ClosedCompletion>{});
 
         this->completions[well_name].insert_or_assign(complnum, ClosedCompletion{well_name, complnum, sim_time, 0});
     }
 
 
-    void WellTestState::open_completion(const std::string& well_name, int complnum) {
+    void WellTestState::open_completion(const std::string& well_name, long long complnum) {
         const auto& well_iter = this->completions.find(well_name);
         if (well_iter == this->completions.end())
             return;
@@ -195,7 +195,7 @@ namespace Opm {
     }
 
 
-    bool WellTestState::completion_is_closed(const std::string& well_name, const int complnum) const {
+    bool WellTestState::completion_is_closed(const std::string& well_name, const long long complnum) const {
         const auto& well_iter = this->completions.find(well_name);
         if (well_iter == this->completions.end())
             return false;
@@ -240,8 +240,8 @@ namespace Opm {
 
         const auto& conf = config.get(wname);
 
-        int num_test = conf.num_test + 1;
-        int close_reason = 0;
+        long long num_test = conf.num_test + 1;
+        long long close_reason = 0;
         const auto& state_iter = this->wells.find(wname);
         if (state_iter != this->wells.end()) {
             num_test -= state_iter->second.num_attempt;

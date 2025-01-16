@@ -36,21 +36,21 @@ struct RstConnection
 {
     RstConnection(const UnitSystem& unit_system,
                   std::size_t rst_index,
-                  int nsconz,
-                  const int* icon,
+                  long long nsconz,
+                  const long long* icon,
                   const float* scon,
                   const double *xcon);
 
     static double inverse_peaceman(double cf, double kh, double rw, double skin);
 
     std::size_t rst_index;
-    std::array<int,3> ijk;
+    std::array<long long,3> ijk;
     Connection::State state;
-    int drain_sat_table;
-    int imb_sat_table;
-    int completion;
+    long long drain_sat_table;
+    long long imb_sat_table;
+    long long completion;
     Connection::Direction dir;
-    int segment;
+    long long segment;
     Connection::CTFKind cf_kind;
 
     float skin_factor;

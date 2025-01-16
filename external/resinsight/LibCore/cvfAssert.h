@@ -66,7 +66,7 @@ public:
 
 public:
     static void         setReportMode(ReportMode reportMode);
-    static FailAction   reportFailedAssert(const char* fileName, int lineNumber, const char* expr, const char* msg);
+    static FailAction   reportFailedAssert(const char* fileName, long long lineNumber, const char* expr, const char* msg);
 
 private:
     static AssertHandler*   sm_handler;

@@ -249,26 +249,26 @@ namespace {
             });
         }
 
-        int maxSegmentID(const Opm::Schedule& sched,
+        long long maxSegmentID(const Opm::Schedule& sched,
                          const std::size_t    reportStep)
         {
             const auto& wnames = sched.wellNames(reportStep);
 
             return std::accumulate(std::begin(wnames), std::end(wnames), 0,
-                [&sched, reportStep](const int m, const std::string& wname) -> int
+                [&sched, reportStep](const long long m, const std::string& wname) -> long long
             {
                 // maxSegmentID() returns 0 for standard (non-MS) wells.
                 return std::max(m, sched.getWell(wname, reportStep).maxSegmentID());
             });
         }
 
-        int maxBranchID(const Opm::Schedule& sched,
+        long long maxBranchID(const Opm::Schedule& sched,
                         const std::size_t    reportStep)
         {
             const auto& wnames = sched.wellNames(reportStep);
 
             return std::accumulate(std::begin(wnames), std::end(wnames), 0,
-                [&sched, reportStep](const int m, const std::string& wname) -> int
+                [&sched, reportStep](const long long m, const std::string& wname) -> long long
             {
                 // maxBranchID() returns 0 for standard (non-MS) wells.
                 return std::max(m, sched.getWell(wname, reportStep).maxBranchID());
@@ -287,7 +287,7 @@ namespace {
                 numMSW = std::max(numMSW, numMultisegWells(sched, step));
             }
 
-            if (static_cast<int>(numMSW) <= wsdims.maxSegmentedWells()) {
+            if (static_cast<long long>(numMSW) <= wsdims.maxSegmentedWells()) {
                 return;
             }
 
@@ -313,7 +313,7 @@ namespace {
         {
             const auto numSteps = sched.size() - 1;
 
-            auto numSeg = 0;
+            auto numSeg = 0LL;
             for (auto step = 0*numSteps; step < numSteps; ++step) {
                 numSeg = std::max(numSeg, maxSegmentID(sched, step));
             }
@@ -345,7 +345,7 @@ namespace {
         {
             const auto numSteps = sched.size() - 1;
 
-            auto numBranch = 0;
+            auto numBranch = 0LL;
             for (auto step = 0*numSteps; step < numSteps; ++step) {
                 numBranch = std::max(numBranch, maxBranchID(sched, step));
             }
@@ -408,18 +408,18 @@ Opm::checkConsistentArrayDimensions(const EclipseState& es,
 
 
 
-int
+long long
 Opm::maxGroupSize(const Opm::Schedule& sched,
                   const std::size_t    step)
 {
-    int nwgmax = 0;
+    long long nwgmax = 0;
 
     for (const auto& gnm : sched.groupNames(step)) {
         const auto& grp = sched.getGroup(gnm, step);
         const auto  gsz = grp.wellgroup()
             ? grp.numWells() : grp.groups().size();
 
-        nwgmax = std::max(nwgmax, static_cast<int>(gsz));
+        nwgmax = std::max(nwgmax, static_cast<long long>(gsz));
     }
 
     return nwgmax;

@@ -81,7 +81,7 @@ namespace Opm { namespace data {
             , data_  { std::move(x) }
         {}
 
-        explicit CellData(std::vector<int> x,
+        explicit CellData(std::vector<long long> x,
                           TargetType          dest)
             : dim    { UnitSystem::measure::identity }
             , target { dest }
@@ -134,7 +134,7 @@ namespace Opm { namespace data {
         /// Per-cell solution values
         using DataVector = std::variant<std::monostate,
                                         std::vector<double>,
-                                        std::vector<int>>;
+                                        std::vector<long long>>;
 
         DataVector data_{};
 

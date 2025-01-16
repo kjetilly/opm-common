@@ -24,7 +24,7 @@
 
 namespace Opm {
 
-WellTestConfig::WTESTWell::WTESTWell(const std::string& name_arg, int shut_reason_arg, double test_interval_arg, int num_test_arg, double startup_time_arg, int begin_report_step_arg) :
+WellTestConfig::WTESTWell::WTESTWell(const std::string& name_arg, long long shut_reason_arg, double test_interval_arg, long long num_test_arg, double startup_time_arg, long long begin_report_step_arg) :
     name(name_arg),
     reasons(shut_reason_arg),
     test_interval(test_interval_arg),
@@ -34,10 +34,10 @@ WellTestConfig::WTESTWell::WTESTWell(const std::string& name_arg, int shut_reaso
 {}
 
 WellTestConfig::WTESTWell WellTestConfig::WTESTWell::serializationTestObject() {
-    return WellTestConfig::WTESTWell("name", static_cast<int>(Reason::PHYSICAL), 100, 1, 674, 56);
+    return WellTestConfig::WTESTWell("name", static_cast<long long>(Reason::PHYSICAL), 100, 1, 674, 56);
 }
 
-bool WellTestConfig::WTESTWell::test_well(int num_attempt, double elapsed) const {
+bool WellTestConfig::WTESTWell::test_well(long long num_attempt, double elapsed) const {
     if (num_attempt >= this->num_test && this->num_test != 0)
         return false;
 
@@ -48,23 +48,23 @@ bool WellTestConfig::WTESTWell::test_well(int num_attempt, double elapsed) const
 }
 
 
-int WellTestConfig::WTESTWell::ecl_reasons() const
+long long WellTestConfig::WTESTWell::ecl_reasons() const
 {
-    int ecl_value = WTest::EclConfigReason::NONE;
+    long long ecl_value = WTest::EclConfigReason::NONE;
 
-    if (this->reasons & static_cast<int>(Reason::PHYSICAL))
+    if (this->reasons & static_cast<long long>(Reason::PHYSICAL))
         ecl_value *= WTest::EclConfigReason::PHYSICAL;
 
-    if (this->reasons & static_cast<int>(Reason::ECONOMIC))
+    if (this->reasons & static_cast<long long>(Reason::ECONOMIC))
         ecl_value *= WTest::EclConfigReason::ECONOMIC;
 
-    if (this->reasons & static_cast<int>(Reason::GROUP))
+    if (this->reasons & static_cast<long long>(Reason::GROUP))
         ecl_value *= WTest::EclConfigReason::GCON;
 
-    if (this->reasons & static_cast<int>(Reason::THP_DESIGN))
+    if (this->reasons & static_cast<long long>(Reason::THP_DESIGN))
         ecl_value *= WTest::EclConfigReason::THPLimit;
 
-    if (this->reasons & static_cast<int>(Reason::COMPLETION))
+    if (this->reasons & static_cast<long long>(Reason::COMPLETION))
         ecl_value *= WTest::EclConfigReason::CONNECTION;
 
     return ecl_value;
@@ -72,15 +72,15 @@ int WellTestConfig::WTESTWell::ecl_reasons() const
 
 namespace {
 
-void update(int& opm_reasons, const WellTestConfig::Reason opm_reason, const int ecl_reasons, const int ecl_reason) {
+void update(long long& opm_reasons, const WellTestConfig::Reason opm_reason, const long long ecl_reasons, const long long ecl_reason) {
     if (ecl_reasons % ecl_reason == 0)
-        opm_reasons += static_cast<int>(opm_reason);
+        opm_reasons += static_cast<long long>(opm_reason);
 }
 
 }
 
-int WellTestConfig::WTESTWell::inverse_ecl_reasons(int ecl_reasons) {
-    int reasons{0};
+long long WellTestConfig::WTESTWell::inverse_ecl_reasons(long long ecl_reasons) {
+    long long reasons{0};
 
     update(reasons, Reason::PHYSICAL  , ecl_reasons, WTest::EclConfigReason::PHYSICAL);
     update(reasons, Reason::ECONOMIC  , ecl_reasons, WTest::EclConfigReason::ECONOMIC);
@@ -101,34 +101,34 @@ WellTestConfig WellTestConfig::serializationTestObject()
 }
 
 
-void WellTestConfig::add_well(const std::string& well, int reasons, double test_interval,
-                              int num_retries, double startup_time, const int current_step) {
+void WellTestConfig::add_well(const std::string& well, long long reasons, double test_interval,
+                              long long num_retries, double startup_time, const long long current_step) {
     this->wells.insert_or_assign(well, WTESTWell(well, reasons, test_interval, num_retries, startup_time, current_step));
 }
 
 void WellTestConfig::add_well(const std::string& well, const std::string& reasons_string, double test_interval,
-                              int num_retries, double startup_time, const int current_step) {
+                              long long num_retries, double startup_time, const long long current_step) {
     if (reasons_string.empty())
         throw std::invalid_argument("Can not pass empty string to stop testing to add_well() method.");
 
-    int reasons{0};
+    long long reasons{0};
 
     for (auto c : reasons_string) {
         switch(c) {
         case 'P' :
-            reasons += static_cast<int>(Reason::PHYSICAL);
+            reasons += static_cast<long long>(Reason::PHYSICAL);
             break;
         case 'E' :
-            reasons += static_cast<int>(Reason::ECONOMIC);
+            reasons += static_cast<long long>(Reason::ECONOMIC);
             break;
         case 'G':
-            reasons += static_cast<int>(Reason::GROUP);
+            reasons += static_cast<long long>(Reason::GROUP);
             break;
         case 'D':
-            reasons += static_cast<int>(Reason::THP_DESIGN);
+            reasons += static_cast<long long>(Reason::THP_DESIGN);
             break;
         case 'C':
-            reasons += static_cast<int>(Reason::COMPLETION);
+            reasons += static_cast<long long>(Reason::COMPLETION);
             break;
         default:
             throw std::invalid_argument("Invalid character in WTEST configuration");
@@ -153,7 +153,7 @@ bool WellTestConfig::has(const std::string& well, Reason reason) const {
     if (well_iter == wells.end())
         return false;
 
-    return ((well_iter->second.reasons & static_cast<int>(reason)) != 0);
+    return ((well_iter->second.reasons & static_cast<long long>(reason)) != 0);
 }
 
 
@@ -191,7 +191,7 @@ bool WellTestConfig::operator==(const WellTestConfig& data) const {
 }
 
 
-WellTestConfig::WellTestConfig(const RestartIO::RstState& rst_state, int report_step) {
+WellTestConfig::WellTestConfig(const RestartIO::RstState& rst_state, long long report_step) {
     for (const auto& well : rst_state.wells) {
         if (well.wtest_config_reasons != 0) {
             this->add_well(well.name,

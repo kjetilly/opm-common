@@ -101,7 +101,7 @@ unpack(time_point& data, const std::vector<char>& buffer, std::size_t& position)
 template struct Packing<false,std::bitset<3>>;
 template struct Packing<false,std::bitset<4>>;
 template struct Packing<false,std::bitset<10>>;
-constexpr int NumFip = static_cast<int>(FIPConfig::OutputField::NUM_FIP_REPORT);
+constexpr long long NumFip = static_cast<long long>(FIPConfig::OutputField::NUM_FIP_REPORT);
 template struct Packing<false,std::bitset<NumFip>>;
 
 }

@@ -71,8 +71,8 @@ namespace {
         return static_cast<float>(unit_system.to_si(dimension, coeff_a));
     }
 
-    constexpr int def_ecl_phase = 1;
-    constexpr int def_pvt_table = 0;
+    constexpr long long def_ecl_phase = 1;
+    constexpr long long def_pvt_table = 0;
 } // Anonymous namespace
 
 namespace VI = ::Opm::RestartIO::Helpers::VectorItems;
@@ -82,10 +82,10 @@ Opm::RestartIO::RstWell::RstWell(const UnitSystem&  unit_system,
                                  const RstHeader&   header,
                                  const std::string& group_arg,
                                  const std::string* zwel,
-                                 const int*         iwel,
+                                 const long long*         iwel,
                                  const float*       swel,
                                  const double*      xwel,
-                                 const int*         icon,
+                                 const long long*         icon,
                                  const float*       scon,
                                  const double*      xcon) :
     name(rtrim_copy(zwel[0])),
@@ -194,7 +194,7 @@ Opm::RestartIO::RstWell::RstWell(const UnitSystem&  unit_system,
         this->tracer_concentration_injection.push_back(swel[VI::SWell::TracerOffset + tracer_index]);
     }
 
-    for (int ic = 0; ic < iwel[VI::IWell::NConn]; ++ic) {
+    for (long long ic = 0; ic < iwel[VI::IWell::NConn]; ++ic) {
         const std::size_t icon_offset = ic * header.niconz;
         const std::size_t scon_offset = ic * header.nsconz;
         const std::size_t xcon_offset = ic * header.nxconz;
@@ -211,13 +211,13 @@ Opm::RestartIO::RstWell::RstWell(const UnitSystem&          unit_system,
                                  const RstHeader&           header,
                                  const std::string&         group_arg,
                                  const std::string*         zwel,
-                                 const int*                 iwel,
+                                 const long long*                 iwel,
                                  const float*               swel,
                                  const double*              xwel,
-                                 const int*                 icon,
+                                 const long long*                 icon,
                                  const float*               scon,
                                  const double*              xcon,
-                                 const std::vector<int>&    iseg,
+                                 const std::vector<long long>&    iseg,
                                  const std::vector<double>& rseg)
     : RstWell { unit_system, header, group_arg,
                 zwel, iwel, swel, xwel,
@@ -227,8 +227,8 @@ Opm::RestartIO::RstWell::RstWell(const UnitSystem&          unit_system,
         return;
     }
 
-    std::unordered_map<int, std::size_t> segment_map;
-    for (int is = 0; is < header.nsegmx; ++is) {
+    std::unordered_map<long long, std::size_t> segment_map;
+    for (long long is = 0; is < header.nsegmx; ++is) {
         const std::size_t iseg_offset = header.nisegz * (is + (this->msw_index - 1)*header.nsegmx);
         const std::size_t rseg_offset = header.nrsegz * (is + (this->msw_index - 1)*header.nsegmx);
         const auto other_segment_number = iseg[iseg_offset + VI::ISeg::SegNo];
@@ -257,7 +257,7 @@ Opm::RestartIO::RstWell::RstWell(const UnitSystem&          unit_system,
 
 
 const Opm::RestartIO::RstSegment&
-Opm::RestartIO::RstWell::segment(int segment_number) const
+Opm::RestartIO::RstWell::segment(long long segment_number) const
 {
     auto iter = std::find_if(this->segments.begin(), this->segments.end(),
                              [segment_number](const RstSegment& segment)

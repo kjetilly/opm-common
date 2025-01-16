@@ -88,7 +88,7 @@ void Trace::show(const char* format, ...)
     va_list argList;
     va_start(argList, format);
 
-    constexpr int maxFormatLength = 4000;
+    constexpr long long maxFormatLength = 4000;
     char temp[maxFormatLength + 1]{};
 
 #ifdef WIN32
@@ -108,7 +108,7 @@ void Trace::show(const char* format, ...)
 //--------------------------------------------------------------------------------------------------
 /// 
 //--------------------------------------------------------------------------------------------------
-void Trace::showFileLineNumber(const String& file, int line, const String& message)
+void Trace::showFileLineNumber(const String& file, long long line, const String& message)
 {
     String tmp = file + "(" + String(line) + ")";
 

@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE( SORWMIS ) {
     const auto& sorwmis1 = sorwmis.getRecord(1);
 
     // test number of columns
-    const std::size_t ntmisc = miscible0.getItem(0).get<int>(0);
+    const std::size_t ntmisc = miscible0.getItem(0).get<long long>(0);
     const Opm::SorwmisTable sorwmisTable0(sorwmis0.getItem(0), 0);
     BOOST_CHECK_EQUAL(sorwmisTable0.numColumns(), ntmisc);
 
@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE( SGCWMIS ) {
     const auto& sgcwmis1 = sgcwmis.getRecord(1);
 
     // test number of columns
-    size_t ntmisc = miscible0.getItem(0).get< int >(0);
+    size_t ntmisc = miscible0.getItem(0).get< long long >(0);
     Opm::SgcwmisTable sgcwmisTable0(sgcwmis0.getItem(0), 0);
     BOOST_CHECK_EQUAL(sgcwmisTable0.numColumns(),ntmisc);
 
@@ -514,12 +514,12 @@ BOOST_AUTO_TEST_CASE( MULTISEGMENT_ABS ) {
     // Here, we check the information for the segment 2 and 6 as samples.
     {
         const auto& rec2 = kw.getRecord(1);
-        const int segment1 = rec2.getItem("SEGMENT2").get< int >(0);
-        const int segment2 = rec2.getItem("SEGMENT2").get< int >(0);
+        const long long segment1 = rec2.getItem("SEGMENT2").get< long long >(0);
+        const long long segment2 = rec2.getItem("SEGMENT2").get< long long >(0);
         BOOST_CHECK_EQUAL( 2, segment1 );
         BOOST_CHECK_EQUAL( 2, segment2 );
-        const int branch = rec2.getItem("BRANCH").get< int >(0);
-        const int outlet_segment = rec2.getItem("JOIN_SEGMENT").get< int >(0);
+        const long long branch = rec2.getItem("BRANCH").get< long long >(0);
+        const long long outlet_segment = rec2.getItem("JOIN_SEGMENT").get< long long >(0);
         const double segment_length = rec2.getItem("LENGTH").get< double >(0);
         const double depth_change = rec2.getItem("DEPTH").get< double >(0);
         const double diameter = rec2.getItem("DIAMETER").get< double >(0);
@@ -534,12 +534,12 @@ BOOST_AUTO_TEST_CASE( MULTISEGMENT_ABS ) {
 
     {
         const auto& rec6 = kw.getRecord(4);
-        const int segment1 = rec6.getItem("SEGMENT2").get< int >(0);
-        const int segment2 = rec6.getItem("SEGMENT2").get< int >(0);
+        const long long segment1 = rec6.getItem("SEGMENT2").get< long long >(0);
+        const long long segment2 = rec6.getItem("SEGMENT2").get< long long >(0);
         BOOST_CHECK_EQUAL( 6, segment1 );
         BOOST_CHECK_EQUAL( 6, segment2 );
-        const int branch = rec6.getItem("BRANCH").get< int >(0);
-        const int outlet_segment = rec6.getItem("JOIN_SEGMENT").get< int >(0);
+        const long long branch = rec6.getItem("BRANCH").get< long long >(0);
+        const long long outlet_segment = rec6.getItem("JOIN_SEGMENT").get< long long >(0);
         const double segment_length = rec6.getItem("LENGTH").get< double >(0);
         const double depth_change = rec6.getItem("DEPTH").get< double >(0);
         const double diameter = rec6.getItem("DIAMETER").get< double >(0);
@@ -554,12 +554,12 @@ BOOST_AUTO_TEST_CASE( MULTISEGMENT_ABS ) {
 
     {
         const auto& rec7 = kw.getRecord(6);
-        const int segment1 = rec7.getItem("SEGMENT2").get< int >(0);
-        const int segment2 = rec7.getItem("SEGMENT2").get< int >(0);
+        const long long segment1 = rec7.getItem("SEGMENT2").get< long long >(0);
+        const long long segment2 = rec7.getItem("SEGMENT2").get< long long >(0);
         BOOST_CHECK_EQUAL( 8, segment1 );
         BOOST_CHECK_EQUAL( 8, segment2 );
-        const int branch = rec7.getItem("BRANCH").get< int >(0);
-        const int outlet_segment = rec7.getItem("JOIN_SEGMENT").get< int >(0);
+        const long long branch = rec7.getItem("BRANCH").get< long long >(0);
+        const long long outlet_segment = rec7.getItem("JOIN_SEGMENT").get< long long >(0);
         const double segment_length = rec7.getItem("LENGTH").get< double >(0);
         const double depth_change = rec7.getItem("DEPTH").get< double >(0);
         const double diameter = rec7.getItem("DIAMETER").get< double >(0);
@@ -586,10 +586,10 @@ BOOST_AUTO_TEST_CASE( MULTISEGMENT_ABS ) {
     // check the third record and the seventh record
     {
         const auto& rec3 = kw1.getRecord(2);
-        const int i = rec3.getItem("I").get< int >(0);
-        const int j = rec3.getItem("J").get< int >(0);
-        const int k = rec3.getItem("K").get< int >(0);
-        const int branch = rec3.getItem("BRANCH").get< int >(0);
+        const long long i = rec3.getItem("I").get< long long >(0);
+        const long long j = rec3.getItem("J").get< long long >(0);
+        const long long k = rec3.getItem("K").get< long long >(0);
+        const long long branch = rec3.getItem("BRANCH").get< long long >(0);
         const double distance_start = rec3.getItem("DISTANCE_START").get< double >(0);
         const double distance_end = rec3.getItem("DISTANCE_END").get< double >(0);
 
@@ -603,10 +603,10 @@ BOOST_AUTO_TEST_CASE( MULTISEGMENT_ABS ) {
 
     {
         const auto& rec7 = kw1.getRecord(6);
-        const int i = rec7.getItem("I").get< int >(0);
-        const int j = rec7.getItem("J").get< int >(0);
-        const int k = rec7.getItem("K").get< int >(0);
-        const int branch = rec7.getItem("BRANCH").get< int >(0);
+        const long long i = rec7.getItem("I").get< long long >(0);
+        const long long j = rec7.getItem("J").get< long long >(0);
+        const long long k = rec7.getItem("K").get< long long >(0);
+        const long long branch = rec7.getItem("BRANCH").get< long long >(0);
         const double distance_start = rec7.getItem("DISTANCE_START").get< double >(0);
         const double distance_end = rec7.getItem("DISTANCE_END").get< double >(0);
 
@@ -633,25 +633,25 @@ BOOST_AUTO_TEST_CASE( MULTISEGMENT_ABS ) {
     BOOST_CHECK_EQUAL(7U, connections.size());
 
     const Connection& connection5 = connections.get(4);
-    const int seg_number_connection5 = connection5.segment();
+    const long long seg_number_connection5 = connection5.segment();
     const double connection5_depth = connection5.depth();
     BOOST_CHECK_EQUAL(seg_number_connection5, 6);
     BOOST_CHECK_CLOSE(connection5_depth, 2538.83, 0.001);
 
     const Connection& connection6 = connections.get(5);
-    const int seg_number_connection6 = connection6.segment();
+    const long long seg_number_connection6 = connection6.segment();
     const double connection6_depth = connection6.depth();
     BOOST_CHECK_EQUAL(seg_number_connection6, 6);
     BOOST_CHECK_CLOSE(connection6_depth, 2537.83, 0.001);
 
     const Connection& connection1 = connections.get(0);
-    const int seg_number_connection1 = connection1.segment();
+    const long long seg_number_connection1 = connection1.segment();
     const double connection1_depth = connection1.depth();
     BOOST_CHECK_EQUAL(seg_number_connection1, 1);
     BOOST_CHECK_EQUAL(connection1_depth, 2512.5);
 
     const Connection& connection3 = connections.get(2);
-    const int seg_number_connection3 = connection3.segment();
+    const long long seg_number_connection3 = connection3.segment();
     const double connection3_depth = connection3.depth();
     BOOST_CHECK_EQUAL(seg_number_connection3, 3);
     BOOST_CHECK_EQUAL(connection3_depth, 2562.5);
@@ -1210,7 +1210,7 @@ BOOST_AUTO_TEST_CASE( VFPPROD ) {
     {
         const auto& record = VFPPROD1.getRecord(0);
 
-        BOOST_CHECK_EQUAL( record.getItem("TABLE").get< int >(0) , 32 );
+        BOOST_CHECK_EQUAL( record.getItem("TABLE").get< long long >(0) , 32 );
         BOOST_CHECK_EQUAL( record.getItem("DATUM_DEPTH").getSIDouble(0) , 394);
         BOOST_CHECK_EQUAL( record.getItem("RATE_TYPE").get< std::string >(0) , "LIQ");
         BOOST_CHECK_EQUAL( record.getItem("WFR").get< std::string >(0) , "WCT");
@@ -1267,23 +1267,23 @@ BOOST_AUTO_TEST_CASE( VFPPROD ) {
         {
             const auto& item = record.getItem("THP_INDEX");
             BOOST_CHECK( item.hasValue(0));
-            BOOST_CHECK_EQUAL( item.get< int >(0) , 1 );
+            BOOST_CHECK_EQUAL( item.get< long long >(0) , 1 );
         }
 
         {
             const auto& item = record.getItem("WFR_INDEX");
             BOOST_CHECK( item.hasValue(0));
-            BOOST_CHECK_EQUAL( item.get< int >(0) , 1 );
+            BOOST_CHECK_EQUAL( item.get< long long >(0) , 1 );
         }
         {
             const auto& item = record.getItem("GFR_INDEX");
             BOOST_CHECK( item.hasValue(0));
-            BOOST_CHECK_EQUAL( item.get< int >(0) , 1 );
+            BOOST_CHECK_EQUAL( item.get< long long >(0) , 1 );
         }
         {
             const auto& item = record.getItem("ALQ_INDEX");
             BOOST_CHECK( item.hasValue(0));
-            BOOST_CHECK_EQUAL( item.get< int >(0) , 1 );
+            BOOST_CHECK_EQUAL( item.get< long long >(0) , 1 );
         }
         {
             const auto& item = record.getItem("VALUES");
@@ -1298,22 +1298,22 @@ BOOST_AUTO_TEST_CASE( VFPPROD ) {
         {
             const auto& item = record.getItem("THP_INDEX");
             BOOST_CHECK( item.hasValue(0));
-            BOOST_CHECK_EQUAL( item.get< int >(0) , 7 );
+            BOOST_CHECK_EQUAL( item.get< long long >(0) , 7 );
         }
         {
             const auto& item = record.getItem("WFR_INDEX");
             BOOST_CHECK( item.hasValue(0));
-            BOOST_CHECK_EQUAL( item.get< int >(0) , 9 );
+            BOOST_CHECK_EQUAL( item.get< long long >(0) , 9 );
         }
         {
             const auto& item = record.getItem("GFR_INDEX");
             BOOST_CHECK( item.hasValue(0));
-            BOOST_CHECK_EQUAL( item.get< int >(0) , 9 );
+            BOOST_CHECK_EQUAL( item.get< long long >(0) , 9 );
         }
         {
             const auto& item = record.getItem("ALQ_INDEX");
             BOOST_CHECK( item.hasValue(0));
-            BOOST_CHECK_EQUAL( item.get< int >(0) , 1 );
+            BOOST_CHECK_EQUAL( item.get< long long >(0) , 1 );
         }
         {
             const auto& item = record.getItem("VALUES");

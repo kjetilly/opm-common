@@ -42,8 +42,8 @@
 namespace Opm {
 	std::pair<std::string, std::string> splitParam(const std::string& name)
         {
-	    int pos = name.find(ID_delimiter_path);
-	    if (pos == int(std::string::npos)) {
+	    long long pos = name.find(ID_delimiter_path);
+	    if (pos == (long long)(std::string::npos)) {
 		return std::make_pair(name, "");
 	    } else {
 		return std::make_pair(name.substr(0, pos),

@@ -34,7 +34,7 @@ namespace Opm {
 namespace TimeService {
 
 namespace {
-    const std::unordered_map<std::string, int> month_indices = {
+    const std::unordered_map<std::string, long long> month_indices = {
         {"JAN", 1},
         {"FEB", 2},
         {"MAR", 3},
@@ -52,7 +52,7 @@ namespace {
         {"DEC", 12},
         {"DES", 12}};
 
-    const std::unordered_map<int, std::string> month_names = {
+    const std::unordered_map<long long, std::string> month_names = {
         {1, "JAN"},
         {2, "FEB"},
         {3, "MAR"},
@@ -131,11 +131,11 @@ std::time_t makeUTCTime(std::tm timePoint)
     return portable_timegm(&timePoint);
 }
 
-const std::unordered_map<std::string , int>& eclipseMonthIndices() {
+const std::unordered_map<std::string , long long>& eclipseMonthIndices() {
     return month_indices;
 }
 
-int eclipseMonth(const std::string& name) {
+long long eclipseMonth(const std::string& name) {
     auto iter = month_indices.find(name);
     if (iter != month_indices.end())
         return iter->second;
@@ -144,7 +144,7 @@ int eclipseMonth(const std::string& name) {
 }
 
 
-const std::unordered_map<int, std::string>& eclipseMonthNames() {
+const std::unordered_map<long long, std::string>& eclipseMonthNames() {
     return month_names;
 }
 
@@ -152,7 +152,7 @@ bool valid_month(const std::string& month_name) {
     return (month_indices.count(month_name) != 0);
 }
 
-std::time_t mkdatetime(int in_year, int in_month, int in_day, int hour, int minute, int second) {
+std::time_t mkdatetime(long long in_year, long long in_month, long long in_day, long long hour, long long minute, long long second) {
     const auto tp = TimeStampUTC{ TimeStampUTC::YMD { in_year, in_month, in_day } }
         .hour(hour).minutes(minute).seconds(second);
 
@@ -170,7 +170,7 @@ std::time_t mkdatetime(int in_year, int in_month, int in_day, int hour, int minu
     return t;
 }
 
-std::time_t mkdate(int in_year, int in_month, int in_day) {
+std::time_t mkdate(long long in_year, long long in_month, long long in_day) {
     return mkdatetime(in_year , in_month , in_day, 0,0,0);
 }
 
@@ -179,17 +179,17 @@ std::time_t mkdate(int in_year, int in_month, int in_day) {
 // answer by Sergey D.
 std::time_t portable_timegm(const std::tm* t)
 {
-    int year = t->tm_year + 1900;
-    int month = t->tm_mon;          // 0-11
+    long long year = t->tm_year + 1900;
+    long long month = t->tm_mon;          // 0-11
     if (month > 11) {
         year += month / 12;
         month %= 12;
     } else if (month < 0) {
-        int years_diff = (11 - month) / 12;
+        long long years_diff = (11 - month) / 12;
         year -= years_diff;
         month += 12 * years_diff;
     }
-    int days_from_1970 = days_from_civil(year, month + 1, t->tm_mday);
+    long long days_from_1970 = days_from_civil(year, month + 1, t->tm_mday);
     return 60 * (60 * (24L * days_from_1970 + t->tm_hour) + t->tm_min) + t->tm_sec;
 }
 
@@ -199,7 +199,7 @@ std::time_t timeFromEclipse(const DeckRecord &dateRecord) {
     const auto &yearItem = dateRecord.getItem(2);
     const auto &timeItem = dateRecord.getItem(3);
 
-    int hour = 0, min = 0, second = 0;
+    long long hour = 0, min = 0, second = 0;
     if (timeItem.hasValue(0)) {
         if (sscanf(timeItem.get<std::string>(0).c_str(), "%d:%d:%d" , &hour,&min,&second) != 3) {
             hour = min = second = 0;
@@ -209,9 +209,9 @@ std::time_t timeFromEclipse(const DeckRecord &dateRecord) {
     // Accept lower- and mixed-case month names.
     std::string monthname = uppercase(monthItem.get<std::string>(0));
 
-    std::time_t date = mkdatetime(yearItem.get<int>(0),
+    std::time_t date = mkdatetime(yearItem.get<long long>(0),
                                   TimeService::eclipseMonthIndices().at(monthname),
-                                  dayItem.get<int>(0),
+                                  dayItem.get<long long>(0),
                                   hour,
                                   min,
                                   second);
@@ -252,7 +252,7 @@ Opm::TimeStampUTC::TimeStampUTC(const std::time_t tp)
 }
 
 Opm::TimeStampUTC::TimeStampUTC(const Opm::TimeStampUTC::YMD& ymd,
-                                int hour, int minutes, int seconds, int usec)
+                                long long hour, long long minutes, long long seconds, long long usec)
     : ymd_(ymd)
     , hour_(hour)
     , minutes_(minutes)
@@ -285,29 +285,29 @@ Opm::TimeStampUTC::TimeStampUTC(const YMD& ymd)
     : ymd_{ std::move(ymd) }
 {}
 
-Opm::TimeStampUTC::TimeStampUTC(int year, int month, int day)
+Opm::TimeStampUTC::TimeStampUTC(long long year, long long month, long long day)
     : ymd_{ year, month, day }
 {}
 
-Opm::TimeStampUTC& Opm::TimeStampUTC::hour(const int h)
+Opm::TimeStampUTC& Opm::TimeStampUTC::hour(const long long h)
 {
     this->hour_ = h;
     return *this;
 }
 
-Opm::TimeStampUTC& Opm::TimeStampUTC::minutes(const int m)
+Opm::TimeStampUTC& Opm::TimeStampUTC::minutes(const long long m)
 {
     this->minutes_ = m;
     return *this;
 }
 
-Opm::TimeStampUTC& Opm::TimeStampUTC::seconds(const int s)
+Opm::TimeStampUTC& Opm::TimeStampUTC::seconds(const long long s)
 {
     this->seconds_ = s;
     return *this;
 }
 
-Opm::TimeStampUTC& Opm::TimeStampUTC::microseconds(const int us)
+Opm::TimeStampUTC& Opm::TimeStampUTC::microseconds(const long long us)
 {
     this->usec_ = us;
     return *this;

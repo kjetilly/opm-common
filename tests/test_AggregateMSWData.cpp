@@ -117,8 +117,8 @@ Opm::data::Wells wr()
         double qo = 5.;
         double qw = 4.;
         double qg = 50.;
-        int firstConnectedCell = 90; // zero-based linear index of (1,5,2)
-        for (int i = 0; i < 5; i++) {
+        long long firstConnectedCell = 90; // zero-based linear index of (1,5,2)
+        for (long long i = 0; i < 5; i++) {
             xw["PROD"].connections.emplace_back();
             auto& c = xw["PROD"].connections.back();
 
@@ -139,7 +139,7 @@ Opm::data::Wells wr()
         xw["WINJ"].rates.set(o::gas, 0.0);
         qw = 7.;
         firstConnectedCell = 409; // zero-based linear index of (10,1,9)
-        for (int i = 0; i < 5; i++) {
+        for (long long i = 0; i < 5; i++) {
             xw["WINJ"].connections.emplace_back();
             auto& c = xw["WINJ"].connections.back();
 
@@ -397,10 +397,10 @@ BOOST_AUTO_TEST_CASE (Constructor)
     const auto nlbrmx = VI::intehead::NLBRMX;
     const auto nilbrz = VI::intehead::NILBRZ;
 
-    BOOST_CHECK_EQUAL(static_cast<int>(amswd.getISeg().size()), ih[nswlmx] * ih[nsegmx] * ih[nisegz]);
-    BOOST_CHECK_EQUAL(static_cast<int>(amswd.getRSeg().size()), ih[nswlmx] * ih[nsegmx] * ih[nrsegz]);
-    BOOST_CHECK_EQUAL(static_cast<int>(amswd.getILBs().size()), ih[nswlmx] * ih[nlbrmx]);
-    BOOST_CHECK_EQUAL(static_cast<int>(amswd.getILBr().size()), ih[nswlmx] * ih[nlbrmx] * ih[nilbrz]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(amswd.getISeg().size()), ih[nswlmx] * ih[nsegmx] * ih[nisegz]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(amswd.getRSeg().size()), ih[nswlmx] * ih[nsegmx] * ih[nrsegz]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(amswd.getILBs().size()), ih[nswlmx] * ih[nlbrmx]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(amswd.getILBr().size()), ih[nswlmx] * ih[nlbrmx] * ih[nilbrz]);
 }
 
 BOOST_AUTO_TEST_CASE (Declared_MSW_Data)
@@ -487,7 +487,7 @@ BOOST_AUTO_TEST_CASE (Declared_MSW_Data)
     {
         // well no 1 - PROD
         const std::string wname = "PROD";
-        int segNo = 1;
+        long long segNo = 1;
         // 'stringSegNum' is one-based (1 .. #segments inclusive)
         std::string stringSegNo = std::to_string(segNo);
 
@@ -519,7 +519,7 @@ BOOST_AUTO_TEST_CASE (Declared_MSW_Data)
     {
         // well no 2 - WINJ
         const std::string wname = "WINJ";
-        int segNo = 1;
+        long long segNo = 1;
         // 'stringSegNum' is one-based (1 .. #segments inclusive)
         std::string stringSegNo = std::to_string(segNo);
 
@@ -647,7 +647,7 @@ BOOST_AUTO_TEST_CASE(Multilateral_Branches)
         const auto& ilbs = amswd.getILBs();
 
         // No WSEGDIMS => size = maximum branch number
-        BOOST_CHECK_EQUAL(ilbs.size(), std::vector<int>::size_type{6});
+        BOOST_CHECK_EQUAL(ilbs.size(), std::vector<long long>::size_type{6});
 
         const auto expect = std::vector {
             11, 7, 17, 20, 21, 0,
@@ -657,7 +657,7 @@ BOOST_AUTO_TEST_CASE(Multilateral_Branches)
                                       expect.begin(), expect.end());
     }
 
-    auto ilbrOffset = [&ih](const int branch)
+    auto ilbrOffset = [&ih](const long long branch)
     {
         return ih[VI::intehead::NILBRZ] * (branch - 1);
     };
@@ -768,7 +768,7 @@ BOOST_AUTO_TEST_CASE(Multilateral_Segments_ISEG_0)
     amswd.captureDeclaredMSWData(sched, rptStep, units,
                                  ih, grid, smry, xw);
 
-    auto isegOffset = [&ih](const int ix)
+    auto isegOffset = [&ih](const long long ix)
     {
         return ih[VI::intehead::NISEGZ] * ix;
     };
@@ -841,7 +841,7 @@ BOOST_AUTO_TEST_CASE(Multilateral_Branches_ICD_Valve)
         const auto& ilbs = amswd.getILBs();
 
         // No WSEGDIMS => size = maximum branch number
-        BOOST_CHECK_EQUAL(ilbs.size(), std::vector<int>::size_type{10});
+        BOOST_CHECK_EQUAL(ilbs.size(), std::vector<long long>::size_type{10});
 
         const auto expect = std::vector {
             13, 7, 19, 21, 25, 24, 27, 28, 29, 0,
@@ -851,7 +851,7 @@ BOOST_AUTO_TEST_CASE(Multilateral_Branches_ICD_Valve)
                                       expect.begin(), expect.end());
     }
 
-    auto ilbrOffset = [&ih](const int branch)
+    auto ilbrOffset = [&ih](const long long branch)
     {
         return ih[VI::intehead::NILBRZ] * (branch - 1);
     };
@@ -1011,7 +1011,7 @@ BOOST_AUTO_TEST_CASE(Multilateral_ICD_Valve_ISEG_0)
     amswd.captureDeclaredMSWData(sched, rptStep, es.getUnits(),
                                  ih, grid, smry, xw);
 
-    auto isegOffset = [&ih](const int ix)
+    auto isegOffset = [&ih](const long long ix)
     {
         return ih[VI::intehead::NISEGZ] * ix;
     };
@@ -1090,7 +1090,7 @@ BOOST_AUTO_TEST_CASE(MSW_AICD)
         // well no 1 - PROD
         const auto& rseg = amswd.getRSeg();
 
-        int segNo = 8;
+        long long segNo = 8;
         auto  i0 = (segNo-1)*ih[VI::intehead::NRSEGZ];
         BOOST_CHECK_CLOSE(rseg[i0 + VI::RSeg::index::DeviceBaseStrength], 3.260E-05  , 1.0e-10);
         BOOST_CHECK_CLOSE(rseg[i0 + VI::RSeg::index::ScalingFactor], 0.06391  , 1.0e-10);

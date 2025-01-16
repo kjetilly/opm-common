@@ -31,7 +31,7 @@ namespace Opm {
     {
     public:
         GridDims();
-        explicit GridDims(const std::array<int, 3>& xyz);
+        explicit GridDims(const std::array<long long, 3>& xyz);
         GridDims(std::size_t nx, std::size_t ny, std::size_t nz);
 
         static GridDims serializationTestObject();
@@ -41,13 +41,13 @@ namespace Opm {
         std::size_t getNX() const;
         std::size_t getNY() const;
         std::size_t getNZ() const;
-        std::size_t operator[](int dim) const;
+        std::size_t operator[](long long dim) const;
 
-        std::array<int, 3> getNXYZ() const;
+        std::array<long long, 3> getNXYZ() const;
 
         std::size_t getGlobalIndex(std::size_t i, std::size_t j, std::size_t k) const;
 
-        std::array<int, 3> getIJK(std::size_t globalIndex) const;
+        std::array<long long, 3> getIJK(std::size_t globalIndex) const;
 
         std::size_t getCartesianSize() const;
 

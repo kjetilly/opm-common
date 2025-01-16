@@ -245,12 +245,12 @@ public:
 
         unsigned i =
             static_cast<unsigned>(
-                std::max(0, std::min(static_cast<int>(numX()) - 2,
-                                     static_cast<int>(scalarValue(alpha)))));
+                std::max(0LL, std::min(static_cast<long long>(numX()) - 2,
+                                     static_cast<long long>(scalarValue(alpha)))));
         unsigned j =
             static_cast<unsigned>(
-                std::max(0, std::min(static_cast<int>(numY()) - 2,
-                                     static_cast<int>(scalarValue(beta)))));
+                std::max(0LL, std::min(static_cast<long long>(numY()) - 2,
+                                     static_cast<long long>(scalarValue(beta)))));
 
         alpha -= i;
         beta -= j;

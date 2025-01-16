@@ -72,15 +72,15 @@ void EclipseGridInspector::init_()
     if (deck_.hasKeyword("SPECGRID")) {
         const auto& specgridRecord =
             deck_["SPECGRID"].back().getRecord(0);
-        logical_gridsize_[0] = specgridRecord.getItem("NX").get< int >(0);
-        logical_gridsize_[1] = specgridRecord.getItem("NY").get< int >(0);
-        logical_gridsize_[2] = specgridRecord.getItem("NZ").get< int >(0);
+        logical_gridsize_[0] = specgridRecord.getItem("NX").get< long long >(0);
+        logical_gridsize_[1] = specgridRecord.getItem("NY").get< long long >(0);
+        logical_gridsize_[2] = specgridRecord.getItem("NZ").get< long long >(0);
     } else if (deck_.hasKeyword("DIMENS")) {
         const auto& dimensRecord =
             deck_["DIMENS"].back().getRecord(0);
-        logical_gridsize_[0] = dimensRecord.getItem("NX").get< int >(0);
-        logical_gridsize_[1] = dimensRecord.getItem("NY").get< int >(0);
-        logical_gridsize_[2] = dimensRecord.getItem("NZ").get< int >(0);
+        logical_gridsize_[0] = dimensRecord.getItem("NX").get< long long >(0);
+        logical_gridsize_[1] = dimensRecord.getItem("NY").get< long long >(0);
+        logical_gridsize_[2] = dimensRecord.getItem("NZ").get< long long >(0);
     } else {
         OPM_THROW(std::runtime_error, "Found neither SPECGRID nor DIMENS in file. At least one is needed.");
     }
@@ -96,19 +96,19 @@ void EclipseGridInspector::init_()
 
    @returns a std::pair<double,double> with x-dip in first component and y-dip in second.
 */
-std::pair<double,double> EclipseGridInspector::cellDips(int i, int j, int k) const
+std::pair<double,double> EclipseGridInspector::cellDips(long long i, long long j, long long k) const
 {
     checkLogicalCoords(i, j, k);
     const std::vector<double>& pillc =
         deck_["COORD"].back().getSIDoubleData();
-    int num_pillars = (logical_gridsize_[0] + 1)*(logical_gridsize_[1] + 1);
-        if (6*num_pillars != int(pillc.size())) {
+    long long num_pillars = (logical_gridsize_[0] + 1)*(logical_gridsize_[1] + 1);
+        if (6*num_pillars != (long long)(pillc.size())) {
         throw std::runtime_error("Wrong size of COORD field.");
     }
     const std::vector<double>& z =
         deck_["ZCORN"].back().getSIDoubleData();
-    int num_cells = logical_gridsize_[0]*logical_gridsize_[1]*logical_gridsize_[2];
-    if (8*num_cells != int(z.size())) {
+    long long num_cells = logical_gridsize_[0]*logical_gridsize_[1]*logical_gridsize_[2];
+    if (8*num_cells != (long long)(z.size())) {
         throw std::runtime_error("Wrong size of ZCORN field");
     }
 
@@ -117,8 +117,8 @@ std::pair<double,double> EclipseGridInspector::cellDips(int i, int j, int k) con
 
     // Compute rise in positive x-direction for all four edges (and then find mean)
     // Current implementation is for regularly placed and vertical pillars!
-    int numxpill = logical_gridsize_[0] + 1;
-    int pix = i + j*numxpill;
+    long long numxpill = logical_gridsize_[0] + 1;
+    long long pix = i + j*numxpill;
     double cell_xlength = pillc[6*(pix + 1)] - pillc[6*pix];
     flush(std::cout);
     double xrise[4] = { (cellz[1] - cellz[0])/cell_xlength,  // LLL -> HLL
@@ -136,8 +136,8 @@ std::pair<double,double> EclipseGridInspector::cellDips(int i, int j, int k) con
     // Now ignore those edges that touch the global top or bottom surface
     // of the entire grdecl model. This is to avoid bias, as these edges probably
     // don't follow an overall dip for the model if it exists.
-    int x_edges = 4;
-    int y_edges = 4;
+    long long x_edges = 4;
+    long long y_edges = 4;
     std::array<double, 6> gridlimits = getGridLimits();
     double zmin = gridlimits[4];
     double zmax = gridlimits[5];
@@ -180,51 +180,51 @@ std::pair<double,double> EclipseGridInspector::cellDips(int i, int j, int k) con
 /**
   Wrapper for cellDips(i, j, k).
 */
-std::pair<double,double> EclipseGridInspector::cellDips(int cell_idx) const
+std::pair<double,double> EclipseGridInspector::cellDips(long long cell_idx) const
 {
-    std::array<int, 3> idxs = cellIdxToLogicalCoords(cell_idx);
+    std::array<long long, 3> idxs = cellIdxToLogicalCoords(cell_idx);
     return cellDips(idxs[0], idxs[1], idxs[2]);
 }
 
-std::array<int, 3> EclipseGridInspector::cellIdxToLogicalCoords(int cell_idx) const
+std::array<long long, 3> EclipseGridInspector::cellIdxToLogicalCoords(long long cell_idx) const
 {
 
-    int i,j,k; // Position of cell in cell hierarchy
-    int horIdx = (cell_idx+1) - int(std::floor(((double)(cell_idx+1))/((double)(logical_gridsize_[0]*logical_gridsize_[1]))))*logical_gridsize_[0]*logical_gridsize_[1]; // index in the corresponding horizon
+    long long i,j,k; // Position of cell in cell hierarchy
+    long long horIdx = (cell_idx+1) - (long long)(std::floor(((double)(cell_idx+1))/((double)(logical_gridsize_[0]*logical_gridsize_[1]))))*logical_gridsize_[0]*logical_gridsize_[1]; // index in the corresponding horizon
     if (horIdx == 0) {
         horIdx = logical_gridsize_[0]*logical_gridsize_[1];
     }
-    i = horIdx - int(std::floor(((double)horIdx)/((double)logical_gridsize_[0])))*logical_gridsize_[0];
+    i = horIdx - (long long)(std::floor(((double)horIdx)/((double)logical_gridsize_[0])))*logical_gridsize_[0];
     if (i == 0) {
         i = logical_gridsize_[0];
     }
     j = (horIdx-i)/logical_gridsize_[0]+1;
     k = ((cell_idx+1)-logical_gridsize_[0]*(j-1)-1)/(logical_gridsize_[0]*logical_gridsize_[1])+1;
 
-    std::array<int, 3> a = {{i-1, j-1, k-1}};
-    return a; //std::array<int, 3> {{i-1, j-1, k-1}};
+    std::array<long long, 3> a = {{i-1, j-1, k-1}};
+    return a; //std::array<long long, 3> {{i-1, j-1, k-1}};
 }
 
-double EclipseGridInspector::cellVolumeVerticalPillars(int i, int j, int k) const
+double EclipseGridInspector::cellVolumeVerticalPillars(long long i, long long j, long long k) const
 {
     // Checking parameters and obtaining values from parser.
     checkLogicalCoords(i, j, k);
     const std::vector<double>& pillc =
         deck_["COORD"].back().getSIDoubleData();
-    int num_pillars = (logical_gridsize_[0] + 1)*(logical_gridsize_[1] + 1);
-    if (6*num_pillars != int(pillc.size())) {
+    long long num_pillars = (logical_gridsize_[0] + 1)*(logical_gridsize_[1] + 1);
+    if (6*num_pillars != (long long)(pillc.size())) {
 	throw std::runtime_error("Wrong size of COORD field.");
     }
     const std::vector<double>& z =
         deck_["ZCORN"].back().getSIDoubleData();
-    int num_cells = logical_gridsize_[0]*logical_gridsize_[1]*logical_gridsize_[2];
-    if (8*num_cells != int(z.size())) {
+    long long num_cells = logical_gridsize_[0]*logical_gridsize_[1]*logical_gridsize_[2];
+    if (8*num_cells != (long long)(z.size())) {
 	throw std::runtime_error("Wrong size of ZCORN field");
     }
 
     // Computing the base area as half the 2d cross product of the diagonals.
-    int numxpill = logical_gridsize_[0] + 1;
-    int pix = i + j*numxpill;
+    long long numxpill = logical_gridsize_[0] + 1;
+    long long pix = i + j*numxpill;
     const double px[4] = {pillc[6 * pix],
                           pillc[6 * (pix + 1)],
                           pillc[6 * (pix + numxpill)],
@@ -238,10 +238,10 @@ double EclipseGridInspector::cellVolumeVerticalPillars(int i, int j, int k) cons
     const double area = 0.5*(diag1[0] * diag2[1] - diag1[1] * diag2[0]);
 
     // Computing the average of the z-differences along each pillar.
-    const int delta[3] = {1,
+    const long long delta[3] = {1,
                           2 * logical_gridsize_[0],
                           4 * logical_gridsize_[0] * logical_gridsize_[1]};
-    int ix = 2*(i*delta[0] + j*delta[1] + k*delta[2]);
+    long long ix = 2*(i*delta[0] + j*delta[1] + k*delta[2]);
     const double cellz[8] = {z[ix], z[ix + delta[0]],
                              z[ix + delta[1]], z[ix + delta[1] + delta[0]],
                              z[ix + delta[2]], z[ix + delta[2] + delta[0]],
@@ -255,13 +255,13 @@ double EclipseGridInspector::cellVolumeVerticalPillars(int i, int j, int k) cons
 }
 
 
-double EclipseGridInspector::cellVolumeVerticalPillars(int cell_idx) const
+double EclipseGridInspector::cellVolumeVerticalPillars(long long cell_idx) const
 {
-    std::array<int, 3> idxs = cellIdxToLogicalCoords(cell_idx);
+    std::array<long long, 3> idxs = cellIdxToLogicalCoords(cell_idx);
     return cellVolumeVerticalPillars(idxs[0], idxs[1], idxs[2]);
 }
 
-void EclipseGridInspector::checkLogicalCoords(int i, int j, int k) const
+void EclipseGridInspector::checkLogicalCoords(long long i, long long j, long long k) const
 {
     if (i < 0 || i >= logical_gridsize_[0])
 	throw std::runtime_error("First coordinate out of bounds");
@@ -287,9 +287,9 @@ std::array<double, 6> EclipseGridInspector::getGridLimits() const
     double ymax = -DBL_MAX;
 
 
-    int pillars = (logical_gridsize_[0]+1) * (logical_gridsize_[1]+1);
+    long long pillars = (logical_gridsize_[0]+1) * (logical_gridsize_[1]+1);
 
-    for (int pillarindex = 0; pillarindex < pillars; ++pillarindex) {
+    for (long long pillarindex = 0; pillarindex < pillars; ++pillarindex) {
         if        (coord[pillarindex * 6 + 0] > xmax)
             xmax = coord[pillarindex * 6 + 0];
         if        (coord[pillarindex * 6 + 0] < xmin)
@@ -316,29 +316,29 @@ std::array<double, 6> EclipseGridInspector::getGridLimits() const
 
 
 
-std::array<int, 3> EclipseGridInspector::gridSize() const
+std::array<long long, 3> EclipseGridInspector::gridSize() const
 {
-    std::array<int, 3> retval = {{ logical_gridsize_[0],
+    std::array<long long, 3> retval = {{ logical_gridsize_[0],
 				     logical_gridsize_[1],
 				     logical_gridsize_[2] }};
     return retval;
 }
 
 
-std::array<double, 8> EclipseGridInspector::cellZvals(int i, int j, int k) const
+std::array<double, 8> EclipseGridInspector::cellZvals(long long i, long long j, long long k) const
 {
     // Get the zcorn field.
     const std::vector<double>& z = deck_["ZCORN"].back().getSIDoubleData();
-    int num_cells = logical_gridsize_[0]*logical_gridsize_[1]*logical_gridsize_[2];
-    if (8*num_cells != int(z.size())) {
+    long long num_cells = logical_gridsize_[0]*logical_gridsize_[1]*logical_gridsize_[2];
+    if (8*num_cells != (long long)(z.size())) {
 	throw std::runtime_error("Wrong size of ZCORN field");
     }
 
     // Make the coordinate array.
-    int delta[3] = { 1,
+    long long delta[3] = { 1,
 		     2*logical_gridsize_[0],
 		     4*logical_gridsize_[0]*logical_gridsize_[1] };
-    int ix = 2*(i*delta[0] + j*delta[1] + k*delta[2]);
+    long long ix = 2*(i*delta[0] + j*delta[1] + k*delta[2]);
     std::array<double, 8> cellz = {{ z[ix], z[ix + delta[0]],
 				       z[ix + delta[1]], z[ix + delta[1] + delta[0]],
 				       z[ix + delta[2]], z[ix + delta[2] + delta[0]],

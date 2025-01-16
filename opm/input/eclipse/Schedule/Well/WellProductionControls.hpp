@@ -30,24 +30,24 @@ namespace Opm {
 
 struct WellProductionControls {
 public:
-    explicit WellProductionControls(int controls_arg) :
+    explicit WellProductionControls(long long controls_arg) :
         controls(controls_arg)
     {
     }
 
     bool hasControl(WellProducerCMode cmode_arg) const
     {
-        return (this->controls & static_cast<int>(cmode_arg)) != 0;
+        return (this->controls & static_cast<long long>(cmode_arg)) != 0;
     }
 
     void skipControl(WellProducerCMode cmode_arg) {
-        auto int_arg = static_cast<int>(cmode_arg);
+        auto int_arg = static_cast<long long>(cmode_arg);
         if ((this->controls & int_arg) != 0)
             this->controls -= int_arg;
     }
 
     void addControl(WellProducerCMode cmode_arg) {
-        auto int_arg = static_cast<int>(cmode_arg);
+        auto int_arg = static_cast<long long>(cmode_arg);
         if ((this->controls & int_arg) == 0)
             this->controls += int_arg;
     }
@@ -123,11 +123,11 @@ public:
     double bhp_limit{0};
     double thp_limit{0};
     double alq_value{0};
-    int    vfp_table_number{0};
+    long long    vfp_table_number{0};
     bool   prediction_mode{0};
 
 private:
-    int controls;
+    long long controls;
 };
 
 }

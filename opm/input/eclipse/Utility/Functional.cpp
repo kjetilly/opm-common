@@ -21,9 +21,9 @@
 namespace Opm {
 namespace fun {
 
-    iota::iota( int fst, int lst ) : first( fst ), last( lst ) {}
+    iota::iota( long long fst, long long lst ) : first( fst ), last( lst ) {}
 
-    iota::iota( int lst ) : iota( 0, lst ) {}
+    iota::iota( long long lst ) : iota( 0, lst ) {}
 
     size_t iota::size() const {
         return this->last - this->first;
@@ -37,7 +37,7 @@ namespace fun {
         return const_iterator{ last };
     }
 
-    int iota::const_iterator::operator*() const {
+    long long iota::const_iterator::operator*() const {
         return this->value;
     }
 
@@ -60,7 +60,7 @@ namespace fun {
         return !(*this == rhs );
     }
 
-    iota::const_iterator::const_iterator( int x ) : value( x ) {}
+    iota::const_iterator::const_iterator( long long x ) : value( x ) {}
 
 
 }

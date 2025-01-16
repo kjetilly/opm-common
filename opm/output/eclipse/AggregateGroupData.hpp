@@ -40,15 +40,15 @@ namespace Opm { namespace RestartIO { namespace Helpers {
 class AggregateGroupData
 {
 public:
-    explicit AggregateGroupData(const std::vector<int>& inteHead);
+    explicit AggregateGroupData(const std::vector<long long>& inteHead);
 
     void captureDeclaredGroupData(const Opm::Schedule&        sched,
                          const Opm::UnitSystem&               units,
                          const std::size_t                    simStep,
                          const Opm::SummaryState&             sumState,
-                         const std::vector<int>&              inteHead);
+                         const std::vector<long long>&              inteHead);
 
-    const std::vector<int>& getIGroup() const
+    const std::vector<long long>& getIGroup() const
     {
         return this->iGroup_.data();
     }
@@ -161,7 +161,7 @@ public:
 
 private:
     /// Aggregate 'IWEL' array (Integer) for all wells.
-    WindowedArray<int> iGroup_;
+    WindowedArray<long long> iGroup_;
 
     /// Aggregate 'SWEL' array (Real) for all wells.
     WindowedArray<float> sGroup_;
@@ -173,10 +173,10 @@ private:
     WindowedArray<EclIO::PaddedOutputString<8>> zGroup_;
 
     /// Maximum number of wells in a group.
-    int nWGMax_;
+    long long nWGMax_;
 
     /// Maximum number of groups
-    int nGMaxz_;
+    long long nGMaxz_;
 };
 
 }}} // Opm::RestartIO::Helpers

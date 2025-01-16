@@ -107,13 +107,13 @@ namespace Opm
 
     // =========================================================================
 
-    Connection::Connection(const int i, const int j, const int k,
+    Connection::Connection(const long long i, const long long j, const long long k,
                            const std::size_t    global_index,
-                           const int            complnum,
+                           const long long            complnum,
                            const State          stateArg,
                            const Direction      directionArg,
                            const CTFKind        ctf_kind,
-                           const int            satTableId,
+                           const long long            satTableId,
                            const double         depth,
                            const CTFProperties& ctf_props,
                            const std::size_t    sort_value,
@@ -190,22 +190,22 @@ namespace Opm
         return result;
     }
 
-    bool Connection::sameCoordinate(const int i, const int j, const int k) const
+    bool Connection::sameCoordinate(const long long i, const long long j, const long long k) const
     {
         return this->ijk == std::array { i, j, k };
     }
 
-    int Connection::getI() const
+    long long Connection::getI() const
     {
         return ijk[0];
     }
 
-    int Connection::getJ() const
+    long long Connection::getJ() const
     {
         return ijk[1];
     }
 
-    int Connection::getK() const
+    long long Connection::getK() const
     {
         return ijk[2];
     }
@@ -256,17 +256,17 @@ namespace Opm
         return this->open_state;
     }
 
-    int Connection::satTableId() const
+    long long Connection::satTableId() const
     {
         return this->sat_tableId;
     }
 
-    int Connection::complnum() const
+    long long Connection::complnum() const
     {
         return this->m_complnum;
     }
 
-    void Connection::setComplnum(int complnum)
+    void Connection::setComplnum(long long complnum)
     {
         this->m_complnum = complnum;
     }
@@ -353,7 +353,7 @@ namespace Opm
         this->open_state = state;
     }
 
-    void Connection::updateSegment(const int segment_number_arg,
+    void Connection::updateSegment(const long long segment_number_arg,
                                    const double center_depth_arg,
                                    const std::size_t compseg_insert_index,
                                    const std::optional<std::pair<double, double>>& perf_range)
@@ -364,14 +364,14 @@ namespace Opm
         this->m_perf_range = perf_range;
     }
 
-    void Connection::updateSegmentRST(int segment_number_arg,
+    void Connection::updateSegmentRST(long long segment_number_arg,
                                       double center_depth_arg)
     {
         this->segment_number = segment_number_arg;
         this->center_depth = center_depth_arg;
     }
 
-    int Connection::segment() const
+    long long Connection::segment() const
     {
         return this->segment_number;
     }
@@ -477,7 +477,7 @@ std::string Connection::State2String(State enumValue)
     default:
         throw std::invalid_argument {
             "Unhandled Connection::State value " +
-            std::to_string(static_cast<int>(enumValue))
+            std::to_string(static_cast<long long>(enumValue))
         };
     }
 }
@@ -521,7 +521,7 @@ std::string Connection::Direction2String(const Direction enumValue)
         break;
 
     default:
-        stringValue = std::to_string(static_cast<int>(enumValue));
+        stringValue = std::to_string(static_cast<long long>(enumValue));
         break;
     }
 
@@ -561,7 +561,7 @@ std::string Connection::Order2String(Order enumValue)
     default:
         throw std::invalid_argument {
             "Unhandled Connection::Order value " +
-            std::to_string(static_cast<int>(enumValue))
+            std::to_string(static_cast<long long>(enumValue))
         };
     }
 }
@@ -595,7 +595,7 @@ std::string Connection::CTFKindToString(const CTFKind ctf_kind)
 
     throw std::invalid_argument {
         "Unhandled CTF Kind Value: " +
-        std::to_string(static_cast<int>(ctf_kind))
+        std::to_string(static_cast<long long>(ctf_kind))
     };
 }
 

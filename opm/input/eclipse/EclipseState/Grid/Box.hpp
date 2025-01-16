@@ -70,9 +70,9 @@ namespace Opm
         Box(const GridDims& gridDims,
             IsActive        isActive,
             ActiveIdx       activeIdx,
-            int i1, int i2,
-            int j1, int j2,
-            int k1, int k2);
+            long long i1, long long i2,
+            long long j1, long long j2,
+            long long k1, long long k2);
 
         void update(const DeckRecord& deckRecord);
         void reset();
@@ -87,12 +87,12 @@ namespace Opm
         bool operator==(const Box& other) const;
         bool equal(const Box& other) const;
 
-        int I1() const;
-        int I2() const;
-        int J1() const;
-        int J2() const;
-        int K1() const;
-        int K2() const;
+        long long I1() const;
+        long long I2() const;
+        long long J1() const;
+        long long J2() const;
+        long long K1() const;
+        long long K2() const;
 
     private:
         GridDims m_globalGridDims_{};
@@ -105,10 +105,10 @@ namespace Opm
         std::vector<cell_index> m_active_index_list;
         std::vector<cell_index> m_global_index_list;
 
-        void init(int i1, int i2, int j1, int j2, int k1, int k2);
+        void init(long long i1, long long i2, long long j1, long long j2, long long k1, long long k2);
         void initIndexList();
-        int lower(int dim) const;
-        int upper(int dim) const;
+        long long lower(long long dim) const;
+        long long upper(long long dim) const;
     };
 }
 

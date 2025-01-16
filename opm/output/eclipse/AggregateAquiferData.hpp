@@ -97,13 +97,13 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         ///
         /// Controls output of restart information pertaining to analytic
         /// aquifer connections.
-        int maximumActiveAnalyticAquiferID() const
+        long long maximumActiveAnalyticAquiferID() const
         {
             return this->maxActiveAnalyticAquiferID_;
         }
 
         /// Retrieve Integer Aquifer Data Array.
-        const std::vector<int>& getIntegerAquiferData() const
+        const std::vector<long long>& getIntegerAquiferData() const
         {
             return this->integerAnalyticAq_.data();
         }
@@ -121,7 +121,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         }
 
         /// Retrieve Integer Aquifer Data Array for Numeric Aquifers.
-        const std::vector<int>& getNumericAquiferIntegerData() const
+        const std::vector<long long>& getNumericAquiferIntegerData() const
         {
             return this->integerNumericAq_.data();
         }
@@ -137,7 +137,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         /// \param[in] aquiferID Aquifer for which to retrieve integer
         ///    connection data array.  Expected to be in the range
         ///    [1..maximumActiveAnalyticAquiferID()] (inclusive).
-        const std::vector<int>& getIntegerAquiferConnectionData(const int aquiferID) const
+        const std::vector<long long>& getIntegerAquiferConnectionData(const long long aquiferID) const
         {
             return this->integerAnalyticAquiferConn_[aquiferID - 1].data();
         }
@@ -148,7 +148,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         ///    precision floating point connection data array.  Expected to
         ///    be in the range [1..maximumActiveAnalyticAquiferID()]
         ///    (inclusive).
-        const std::vector<float>& getSinglePrecAquiferConnectionData(const int aquiferID) const
+        const std::vector<float>& getSinglePrecAquiferConnectionData(const long long aquiferID) const
         {
             return this->singleprecAnalyticAquiferConn_[aquiferID - 1].data();
         }
@@ -160,19 +160,19 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         ///    precision floating point connection data array.  Expected to
         ///    be in the range [1..maximumActiveAnalyticAquiferID()]
         ///    (inclusive).
-        const std::vector<double>& getDoublePrecAquiferConnectionData(const int aquiferID) const
+        const std::vector<double>& getDoublePrecAquiferConnectionData(const long long aquiferID) const
         {
             return this->doubleprecAnalyticAquiferConn_[aquiferID - 1].data();
         }
 
     private:
-        int maxActiveAnalyticAquiferID_{0};
+        long long maxActiveAnalyticAquiferID_{0};
 
-        std::vector<int> numActiveConn_{};
+        std::vector<long long> numActiveConn_{};
         std::vector<double> totalInflux_{};
 
         /// Aggregate 'IAAQ' array (Integer) for all analytic aquifers.
-        WindowedArray<int> integerAnalyticAq_;
+        WindowedArray<long long> integerAnalyticAq_;
 
         /// Aggregate 'SAAQ' array (Real) for all analytic aquifers.
         WindowedArray<float> singleprecAnalyticAq_;
@@ -181,14 +181,14 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         WindowedArray<double> doubleprecAnalyticAq_;
 
         /// Aggregate 'IAQN' array (integer) for all numeric aquifers.
-        WindowedArray<int> integerNumericAq_;
+        WindowedArray<long long> integerNumericAq_;
 
         /// Aggregate 'RAQN' array (Double Precision) for all numeric aquifers.
         WindowedArray<double> doubleprecNumericAq_;
 
         /// Aggregate ICAQ array (Integer) for all analytic aquifer
         /// connections.  Separate array for each aquifer.
-        std::vector<WindowedArray<int>> integerAnalyticAquiferConn_;
+        std::vector<WindowedArray<long long>> integerAnalyticAquiferConn_;
 
         /// Aggregate SCAQ array (Real) for all analytic aquifer
         /// connections.  Separate array for each aquifer.

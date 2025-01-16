@@ -59,7 +59,7 @@ public:
      * -1: capillary pressure hysteresis is disabled
      * 0: use the Killough model for capillary pressure hysteresis
      */
-    void setPcHysteresisModel(int value)
+    void setPcHysteresisModel(long long value)
     { pcHysteresisModel_ = value; }
 
     /*!
@@ -68,7 +68,7 @@ public:
      * -1: capillary pressure hysteresis is disabled
      * 0: use the Killough model for capillary pressure hysteresis
      */
-    int pcHysteresisModel() const
+    long long pcHysteresisModel() const
     { return pcHysteresisModel_; }
 
     /*!
@@ -84,7 +84,7 @@ public:
      * 3: use the Killough model for relative permeability hysteresis of the non-wetting
      *    phase and the imbibition curve for the relperm of the wetting phase
      */
-    void setKrHysteresisModel(int value)
+    void setKrHysteresisModel(long long value)
     { krHysteresisModel_ = value; }
 
     /*!
@@ -94,7 +94,7 @@ public:
      * 0/1: use the Carlson model for relative permeability hysteresis
      * 2/3: use the Killough model for relative permeability hysteresis
      */
-    int krHysteresisModel() const
+    long long krHysteresisModel() const
     { return krHysteresisModel_; }
 
     /*!
@@ -133,8 +133,8 @@ private:
     bool enableHysteresis_{false};
 
     // the capillary pressure and the relperm hysteresis models to be used
-    int pcHysteresisModel_{-1};
-    int krHysteresisModel_{-1};
+    long long pcHysteresisModel_{-1};
+    long long krHysteresisModel_{-1};
     double modParamTrapped_{};
     double curvatureCapPrs_{};
 

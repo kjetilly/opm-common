@@ -303,24 +303,24 @@ namespace Opm {
             for (size_t rowIdx = 0; rowIdx < size(); ++rowIdx) {
                 if (defaultApplied( rowIdx )) {
                     // find first row which was not defaulted before the current one
-                    int rowBeforeIdx = static_cast<int>(rowIdx);
+                    long long rowBeforeIdx = static_cast<long long>(rowIdx);
                     for (; rowBeforeIdx >= 0; -- rowBeforeIdx)
                         if (!defaultApplied(rowBeforeIdx))
                             break;
 
                     // find first row which was not defaulted after the current one
-                    int rowAfterIdx = static_cast<int>(rowIdx);
-                    for (; rowAfterIdx < static_cast<int>(size()); ++ rowAfterIdx)
+                    long long rowAfterIdx = static_cast<long long>(rowIdx);
+                    for (; rowAfterIdx < static_cast<long long>(size()); ++ rowAfterIdx)
                         if (!defaultApplied(rowAfterIdx))
                             break;
 
 
                     // switch to extrapolation by a constant at the fringes
-                    if (rowBeforeIdx < 0 && rowAfterIdx >= static_cast<int>(size()))
+                    if (rowBeforeIdx < 0 && rowAfterIdx >= static_cast<long long>(size()))
                         throw std::invalid_argument("Column " + m_schema.name() + " can't be fully defaulted");
                     else if (rowBeforeIdx < 0)
                         rowBeforeIdx = rowAfterIdx;
-                    else if (rowAfterIdx >= static_cast<int>(size()))
+                    else if (rowAfterIdx >= static_cast<long long>(size()))
                         rowAfterIdx = rowBeforeIdx;
 
                     {

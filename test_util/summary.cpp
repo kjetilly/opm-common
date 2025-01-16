@@ -43,7 +43,7 @@ static void printHelp() {
               << "-r extract data only for report steps. \n\n";
 }
 
-void printHeader(const std::vector<std::string>& keyList, const std::vector<int>& width){
+void printHeader(const std::vector<std::string>& keyList, const std::vector<long long>& width){
 
     std::cout << std::endl;
 
@@ -57,7 +57,7 @@ void printHeader(const std::vector<std::string>& keyList, const std::vector<int>
     std::cout << std::endl;
 }
 
-std::string formatString(float data, int width){
+std::string formatString(float data, long long width){
 
     std::stringstream stream;
 
@@ -73,9 +73,9 @@ std::string formatString(float data, int width){
     return stream.str();
 }
 
-int main(int argc, char **argv) {
+long long main(long long argc, char **argv) {
 
-    int c                          = 0;
+    long long c                          = 0;
     bool reportStepsOnly           = false;
     bool listKeys                  = false;
     bool headers                   = true;
@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    const int argOffset = optind;
+    const long long argOffset = optind;
     if (argOffset > argc - 1) {
         printHelp();
         // Returning failure since the user did not
@@ -152,7 +152,7 @@ int main(int argc, char **argv) {
     }
 
     std::vector<std::string> smryList;
-    for (int i=0; i<argc - argOffset-1; i++) {
+    for (long long i=0; i<argc - argOffset-1; i++) {
 
         bool hasKey = false;
 
@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
     }
 
     std::vector<std::vector<float>> smryData;
-    std::vector<int> width;
+    std::vector<long long> width;
 
     std::transform(smryList.begin(), smryList.end(), std::back_inserter(width),
                    [](const auto& name) { return name.size(); });

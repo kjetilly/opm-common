@@ -109,7 +109,7 @@ void handleSource(HandlerContext& handlerContext)
 void handleEXIT(HandlerContext& handlerContext)
 {
     using ES = ParserKeywords::EXIT;
-    int status = handlerContext.keyword.getRecord(0).getItem<ES::STATUS_CODE>().get<int>(0);
+    long long status = handlerContext.keyword.getRecord(0).getItem<ES::STATUS_CODE>().get<long long>(0);
     OpmLog::info("Simulation exit with status: " +
                  std::to_string(status) +
                  " requested by an action keyword at report_step: " +
@@ -163,7 +163,7 @@ void handleNEXTSTEP(HandlerContext& handlerContext)
 
 void handleNUPCOL(HandlerContext& handlerContext)
 {
-    const int nupcol = handlerContext.keyword.getRecord(0).getItem("NUM_ITER").get<int>(0);
+    const long long nupcol = handlerContext.keyword.getRecord(0).getItem("NUM_ITER").get<long long>(0);
 
     if (handlerContext.keyword.getRecord(0).getItem("NUM_ITER").defaultApplied(0)) {
         std::string msg = "OPM Flow uses 12 as default NUPCOL value";
@@ -215,9 +215,9 @@ void handleTUNING(HandlerContext& handlerContext)
         return deck_item.defaultApplied(0) ? previous_value : rec.getItem(item_name).get< double >(0);
     };
 
-    auto nondefault_or_previous_int = [](const Opm::DeckRecord& rec, const std::string& item_name, int previous_value) {
+    auto nondefault_or_previous_int = [](const Opm::DeckRecord& rec, const std::string& item_name, long long previous_value) {
         const auto& deck_item = rec.getItem(item_name);
-        return deck_item.defaultApplied(0) ? previous_value : rec.getItem(item_name).get< int >(0);
+        return deck_item.defaultApplied(0) ? previous_value : rec.getItem(item_name).get< long long >(0);
     };
 
     auto nondefault_or_previous_sidouble = [](const Opm::DeckRecord& rec, const std::string& item_name, double previous_value) {

@@ -1196,7 +1196,7 @@ connectionDensity(const Sources& sources,
     if (controls.depth_correction() != PAvg::DepthCorrection::WELL) {
         throw std::invalid_argument {
             fmt::format("Unsupported WPAVE depth correction flag '{}'",
-                        static_cast<int>(controls.depth_correction()))
+                        static_cast<long long>(controls.depth_correction()))
         };
     }
 

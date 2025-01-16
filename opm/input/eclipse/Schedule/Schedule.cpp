@@ -134,7 +134,7 @@ namespace Opm {
                         const bool lowActionParsingStrictness,
                         const bool slave_mode,
                         bool keepKeywords,
-                        const std::optional<int>& output_interval,
+                        const std::optional<long long>& output_interval,
                         const RestartIO::RstState * rst,
                         const TracerConfig * tracer_config)
     try :
@@ -176,7 +176,7 @@ namespace Opm {
                                          parseContext, errors, grid, nullptr, "", keepKeywords);
             // Events added during restart reading well be added to previous step, but need to be active at the
             // restart step to ensure well potentials and guide rates are available at the first step.
-            const auto prev_step = std::max(static_cast<int>(restart_step-1), 0);
+            const auto prev_step = std::max(static_cast<long long>(restart_step-1), 0LL);
             this->snapshots[restart_step].update_wellgroup_events(this->snapshots[prev_step].wellgroup_events());
             this->snapshots[restart_step].update_events(this->snapshots[prev_step].events());
         } else {
@@ -205,7 +205,7 @@ namespace Opm {
                         const bool lowActionParsingStrictness,
                         const bool slave_mode,
                         const bool keepKeywords,
-                        const std::optional<int>& output_interval,
+                        const std::optional<long long>& output_interval,
                         const RestartIO::RstState * rst,
                         const TracerConfig* tracer_config)
         : Schedule(deck,
@@ -231,7 +231,7 @@ namespace Opm {
                         const bool lowActionParsingStrictness,
                         const bool slave_mode,
                         const bool keepKeywords,
-                        const std::optional<int>& output_interval,
+                        const std::optional<long long>& output_interval,
                         const RestartIO::RstState * rst,
                         const TracerConfig* tracer_config)
         : Schedule(deck,
@@ -257,7 +257,7 @@ namespace Opm {
                        bool lowActionParsingStrictness,
                        const bool slave_mode,
                        const bool keepKeywords,
-                       const std::optional<int>& output_interval,
+                       const std::optional<long long>& output_interval,
                        const RestartIO::RstState * rst)
         : Schedule(deck,
                    es.getInputGrid(),
@@ -283,7 +283,7 @@ namespace Opm {
                        bool lowActionParsingStrictness,
                        const bool slave_mode,
                        const bool keepKeywords,
-                       const std::optional<int>& output_interval,
+                       const std::optional<long long>& output_interval,
                        const RestartIO::RstState * rst)
         : Schedule(deck,
                    es.getInputGrid(),
@@ -307,7 +307,7 @@ namespace Opm {
                        bool lowActionParsingStrictness,
                        const bool slave_mode,
                        const bool keepKeywords,
-                       const std::optional<int>& output_interval,
+                       const std::optional<long long>& output_interval,
                        const RestartIO::RstState * rst)
         : Schedule(deck,
                    es,
@@ -323,7 +323,7 @@ namespace Opm {
 
     Schedule::Schedule(const Deck& deck,
                        const EclipseState& es,
-                       const std::optional<int>& output_interval,
+                       const std::optional<long long>& output_interval,
                        const RestartIO::RstState * rst)
         : Schedule(deck,
                    es,
@@ -788,8 +788,8 @@ void Schedule::iterateScheduleSection(std::size_t load_start, std::size_t load_e
                 const auto& itemI = record.getItem("I");
                 const auto& itemJ = record.getItem("J");
 
-                const auto defaulted_I = itemI.defaultApplied(0) || (itemI.get<int>(0) == 0);
-                const auto defaulted_J = itemJ.defaultApplied(0) || (itemJ.get<int>(0) == 0);
+                const auto defaulted_I = itemI.defaultApplied(0) || (itemI.get<long long>(0) == 0);
+                const auto defaulted_J = itemJ.defaultApplied(0) || (itemJ.get<long long>(0) == 0);
 
                 if (defaulted_I || defaulted_J) {
                     const auto msg_fmt = std::string { R"(Problem with COMPDAT in ACTIONX
@@ -801,17 +801,17 @@ Defaulted grid coordinates is not allowed for COMPDAT as part of ACTIONX)"
                                              msg_fmt, keyword.location(), errors);
                 }
 
-                const auto I = itemI.get<int>(0) - 1;
-                const auto J = itemJ.get<int>(0) - 1;
+                const auto I = itemI.get<long long>(0) - 1;
+                const auto J = itemJ.get<long long>(0) - 1;
 
-                const auto K1 = record.getItem("K1").get<int>(0) - 1;
-                const auto K2 = record.getItem("K2").get<int>(0) - 1;
+                const auto K1 = record.getItem("K1").get<long long>(0) - 1;
+                const auto K2 = record.getItem("K2").get<long long>(0) - 1;
 
                 const auto wellName = record.getItem("WELL").getTrimmedString(0);
 
                 // Retrieve or create the set of future connections for the well
                 auto& currentSet = this->possibleFutureConnections[wellName];
-                for (int k = K1; k <= K2; k++) {
+                for (long long k = K1; k <= K2; k++) {
                     try {
                         // Adds this cell to the "active cells" of the
                         // schedule grid by calling grid.get_cell(I, J, k)
@@ -844,9 +844,9 @@ Defaulted grid coordinates is not allowed for COMPDAT as part of ACTIONX)"
                     continue;
                 }
 
-                const int I = record.getItem("I").get<int>(0) - 1;
-                const int J = record.getItem("J").get<int>(0) - 1;
-                const int K = record.getItem("K").get<int>(0) - 1;
+                const long long I = record.getItem("I").get<long long>(0) - 1;
+                const long long J = record.getItem("J").get<long long>(0) - 1;
+                const long long K = record.getItem("K").get<long long>(0) - 1;
 
                 try {
                     const auto& cell = grid.get_cell(I, J, K);
@@ -1026,8 +1026,8 @@ Defaulted grid coordinates is not allowed for COMPDAT as part of ACTIONX)"
                            Connection::Order wellConnectionOrder)
     {
         // We change from eclipse's 1 - n, to a 0 - n-1 solution
-        int headI = record.getItem("HEAD_I").get< int >(0) - 1;
-        int headJ = record.getItem("HEAD_J").get< int >(0) - 1;
+        long long headI = record.getItem("HEAD_I").get< long long >(0) - 1;
+        long long headJ = record.getItem("HEAD_J").get< long long >(0) - 1;
         Phase preferredPhase;
         {
             const std::string phaseStr = record.getItem("PHASE").getTrimmedString(0);
@@ -1061,7 +1061,7 @@ Defaulted grid coordinates is not allowed for COMPDAT as part of ACTIONX)"
         }
 
         const std::string& group = record.getItem<ParserKeywords::WELSPECS::GROUP>().getTrimmedString(0);
-        auto pvt_table = record.getItem<ParserKeywords::WELSPECS::P_TABLE>().get<int>(0);
+        auto pvt_table = record.getItem<ParserKeywords::WELSPECS::P_TABLE>().get<long long>(0);
         auto gas_inflow = WellGasInflowEquationFromString(record.getItem<ParserKeywords::WELSPECS::INFLOW_EQ>().get<std::string>(0));
 
         this->addWell(wellName,
@@ -1096,14 +1096,14 @@ Defaulted grid coordinates is not allowed for COMPDAT as part of ACTIONX)"
 
     void Schedule::addWell(const std::string& wellName,
                            const std::string& group,
-                           int headI,
-                           int headJ,
+                           long long headI,
+                           long long headJ,
                            Phase preferredPhase,
                            const std::optional<double>& ref_depth,
                            double drainageRadius,
                            bool allowCrossFlow,
                            bool automaticShutIn,
-                           int pvt_table,
+                           long long pvt_table,
                            Well::GasInflowEquation gas_inflow,
                            std::size_t timeStep,
                            Connection::Order wellConnectionOrder) {
@@ -1247,14 +1247,14 @@ Defaulted grid coordinates is not allowed for COMPDAT as part of ACTIONX)"
         return this->getWell(well_name, this->snapshots.size() - 1);
     }
 
-    const std::unordered_map<std::string, std::set<int>>&
+    const std::unordered_map<std::string, std::set<long long>>&
     Schedule::getPossibleFutureConnections() const
     {
         return this->possibleFutureConnections;
     }
 
-    std::unordered_set<int> Schedule::getAquiferFluxSchedule() const {
-        std::unordered_set<int> ids;
+    std::unordered_set<long long> Schedule::getAquiferFluxSchedule() const {
+        std::unordered_set<long long> ids;
         for (const auto& snapshot : this->snapshots) {
             const auto& aquflux = snapshot.aqufluxs;
             for ([[maybe_unused]] const auto& [id, aqu]  : aquflux) {
@@ -1585,7 +1585,7 @@ File {} line {}.)", pattern, location.keyword, location.filename, location.linen
         return this->snapshots[timeStep].udq.get();
     }
 
-    std::optional<int> Schedule::exitStatus() const {
+    std::optional<long long> Schedule::exitStatus() const {
         return this->exit_status;
     }
 
@@ -2072,7 +2072,7 @@ File {} line {}.)", pattern, location.keyword, location.filename, location.linen
         return sched_state->wlist_manager.get().hasList(pattern);
     }
 
-    const std::map< std::string, int >& Schedule::rst_keywords( size_t report_step ) const {
+    const std::map< std::string, long long >& Schedule::rst_keywords( size_t report_step ) const {
         if (report_step == 0)
             return this->m_static.rst_config.keywords;
 
@@ -2119,7 +2119,7 @@ File {} line {}.)", pattern, location.keyword, location.filename, location.linen
 namespace {
 
     // Duplicated from Well.cpp
-    Connection::Order order_from_int(int int_value) {
+    Connection::Order order_from_int(long long int_value) {
         switch(int_value) {
         case 0:
             return Connection::Order::TRACK;
@@ -2140,7 +2140,7 @@ namespace {
     {
         const auto report_step = rst_state.header.report_step - 1;
 
-        std::map<int, std::string> rst_group_names;
+        std::map<long long, std::string> rst_group_names;
         for (const auto& rst_group : rst_state.groups) {
             this->addGroup(rst_group, report_step);
             const auto& group = this->snapshots.back().groups.get( rst_group.name );
@@ -2228,7 +2228,7 @@ namespace {
                 well.updateConnections(std::move(connections), grid);
             }
             else {
-                auto rst_segments = std::unordered_map<int, Segment>{};
+                auto rst_segments = std::unordered_map<long long, Segment>{};
                 for (const auto& rst_segment : rst_well.segments) {
                     rst_segments.try_emplace(rst_segment.segment, rst_segment);
                 }
@@ -2303,7 +2303,7 @@ namespace {
             }
             if (group.isInjectionGroup()) {
                 // Set name of VREP group if different than default
-                if (static_cast<int>(group.insert_index()) != rst_group.voidage_group_index) {
+                if (static_cast<long long>(group.insert_index()) != rst_group.voidage_group_index) {
                     for (const auto& [phase, orig_inj_prop] : group.injectionProperties()) {
                         Group::GroupInjectionProperties inj_prop(orig_inj_prop);
                         inj_prop.voidage_group = rst_group_names[rst_group.voidage_group_index];
@@ -2432,17 +2432,17 @@ namespace {
   simple templated comparison function
 
      template <typename T>
-     int not_equal(const T& arg1, const T& arg2, const std::string& msg);
+     long long not_equal(const T& arg1, const T& arg2, const std::string& msg);
 
   which will print arg1 and arg2 on stderr *if* T supports operator<<, otherwise
   it will just print the typename of T.
 */
 
 
-template<typename T, typename = int>
+template<typename T, typename = long long>
 struct cmpx
 {
-    int neq(const T& arg1, const T& arg2, const std::string& msg) {
+    long long neq(const T& arg1, const T& arg2, const std::string& msg) {
         if (arg1 == arg2)
             return 0;
 
@@ -2454,7 +2454,7 @@ struct cmpx
 template <typename T>
 struct cmpx<T, decltype(std::cout << T(), 0)>
 {
-    int neq(const T& arg1, const T& arg2, const std::string& msg) {
+    long long neq(const T& arg1, const T& arg2, const std::string& msg) {
         if (arg1 == arg2)
             return 0;
 
@@ -2465,13 +2465,13 @@ struct cmpx<T, decltype(std::cout << T(), 0)>
 
 
 template <typename T>
-int not_equal(const T& arg1, const T& arg2, const std::string& msg) {
+long long not_equal(const T& arg1, const T& arg2, const std::string& msg) {
     return cmpx<T>().neq(arg1, arg2, msg);
 }
 
 
 template <>
-int not_equal(const double& arg1, const double& arg2, const std::string& msg) {
+long long not_equal(const double& arg1, const double& arg2, const std::string& msg) {
     if (Opm::cmp::scalar_equal(arg1, arg2))
         return 0;
 
@@ -2480,7 +2480,7 @@ int not_equal(const double& arg1, const double& arg2, const std::string& msg) {
 }
 
 template <>
-int not_equal(const UDAValue& arg1, const UDAValue& arg2, const std::string& msg) {
+long long not_equal(const UDAValue& arg1, const UDAValue& arg2, const std::string& msg) {
     if (arg1.is<double>())
         return not_equal( arg1.get<double>(), arg2.get<double>(), msg);
     else
@@ -2492,7 +2492,7 @@ std::string well_msg(const std::string& well, const std::string& msg) {
     return "Well: " + well + " " + msg;
 }
 
-std::string well_segment_msg(const std::string& well, int segment_number, const std::string& msg) {
+std::string well_segment_msg(const std::string& well, long long segment_number, const std::string& msg) {
     return "Well: " + well + " Segment: " + std::to_string(segment_number) + " " + msg;
 }
 
@@ -2503,7 +2503,7 @@ std::string well_connection_msg(const std::string& well, const Connection& conn,
 }
 
 bool Schedule::cmp(const Schedule& sched1, const Schedule& sched2, std::size_t report_step) {
-    int count = not_equal(sched1.wellNames(report_step), sched2.wellNames(report_step), "Wellnames");
+    long long count = not_equal(sched1.wellNames(report_step), sched2.wellNames(report_step), "Wellnames");
     if (count != 0)
         return false;
     {
@@ -2528,7 +2528,7 @@ bool Schedule::cmp(const Schedule& sched1, const Schedule& sched2, std::size_t r
     for (const auto& wname : sched1.wellNames(report_step)) {
         const auto& well1 = sched1.getWell(wname, report_step);
         const auto& well2 = sched2.getWell(wname, report_step);
-        int well_count = 0;
+        long long well_count = 0;
         {
             const auto& connections2 = well2.getConnections();
             const auto& connections1 = well1.getConnections();

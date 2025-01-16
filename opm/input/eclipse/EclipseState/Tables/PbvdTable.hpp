@@ -27,7 +27,7 @@ namespace Opm {
 
     class PbvdTable : public SimpleTable {
     public:
-        PbvdTable( const DeckItem& item, const int tableID );
+        PbvdTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getDepthColumn() const;
         const TableColumn& getPbubColumn() const;

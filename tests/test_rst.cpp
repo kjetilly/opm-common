@@ -424,7 +424,7 @@ END
 
         Opm::EclIO::OutputStream::Restart rstFile {
             Opm::EclIO::OutputStream::ResultSet {outputDir, baseName},
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             Opm::EclIO::OutputStream::Formatted {false},
             Opm::EclIO::OutputStream::Unified {true}
         };
@@ -519,7 +519,7 @@ BOOST_AUTO_TEST_CASE(group_test)
                    [](const auto& s8) { return s8.c_str(); });
 
     Opm::RestartIO::RstHeader header(simCase.es.runspec(), unit_system,ih,lh,dh);
-    for (int ig=0; ig < header.ngroup; ig++) {
+    for (long long ig=0; ig < header.ngroup; ig++) {
         std::size_t zgrp_offset = ig * header.nzgrpz;
         std::size_t igrp_offset = ig * header.nigrpz;
         std::size_t sgrp_offset = ig * header.nsgrpz;
@@ -814,7 +814,7 @@ BOOST_AUTO_TEST_CASE(Construct_Well_Guide_Rates_Group_Control_Object)
 
         return Opm::Well {
             state.get_well(well_name),
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             rst_whistctl_cmode,
             Opm::TracerConfig{},
             Opm::UnitSystem::newMETRIC(),
@@ -863,27 +863,27 @@ BOOST_AUTO_TEST_CASE(Explicit_THP_Control_Options)
 
     BOOST_CHECK_EQUAL(op_1.thp_lookup_procedure_vfptable, WVfpExp::Lookup::Implicit);
     BOOST_CHECK_EQUAL(op_1.close_if_thp_stabilised,
-                      static_cast<int>(WVfpExp::CloseStabilised::Yes));
+                      static_cast<long long>(WVfpExp::CloseStabilised::Yes));
     BOOST_CHECK_EQUAL(op_1.prevent_thpctrl_if_unstable,
-                      static_cast<int>(WVfpExp::PreventTHP::No));
+                      static_cast<long long>(WVfpExp::PreventTHP::No));
 
     BOOST_CHECK_EQUAL(op_2.thp_lookup_procedure_vfptable, WVfpExp::Lookup::Explicit);
     BOOST_CHECK_EQUAL(op_2.close_if_thp_stabilised,
-                      static_cast<int>(WVfpExp::CloseStabilised::No));
+                      static_cast<long long>(WVfpExp::CloseStabilised::No));
     BOOST_CHECK_EQUAL(op_2.prevent_thpctrl_if_unstable,
-                      static_cast<int>(WVfpExp::PreventTHP::Yes1));
+                      static_cast<long long>(WVfpExp::PreventTHP::Yes1));
 
     BOOST_CHECK_EQUAL(op_3.thp_lookup_procedure_vfptable, WVfpExp::Lookup::Explicit);
     BOOST_CHECK_EQUAL(op_3.close_if_thp_stabilised,
-                      static_cast<int>(WVfpExp::CloseStabilised::Yes));
+                      static_cast<long long>(WVfpExp::CloseStabilised::Yes));
     BOOST_CHECK_EQUAL(op_3.prevent_thpctrl_if_unstable,
-                      static_cast<int>(WVfpExp::PreventTHP::Yes2));
+                      static_cast<long long>(WVfpExp::PreventTHP::Yes2));
 
     BOOST_CHECK_EQUAL(op_4.thp_lookup_procedure_vfptable, WVfpExp::Lookup::Implicit);
     BOOST_CHECK_EQUAL(op_4.close_if_thp_stabilised,
-                      static_cast<int>(WVfpExp::CloseStabilised::No));
+                      static_cast<long long>(WVfpExp::CloseStabilised::No));
     BOOST_CHECK_EQUAL(op_4.prevent_thpctrl_if_unstable,
-                      static_cast<int>(WVfpExp::PreventTHP::No));
+                      static_cast<long long>(WVfpExp::PreventTHP::No));
 }
 
 BOOST_AUTO_TEST_CASE(Construct_Well_Explicit_THP_Control_Options_Object)
@@ -902,7 +902,7 @@ BOOST_AUTO_TEST_CASE(Construct_Well_Explicit_THP_Control_Options_Object)
 
         return Opm::Well {
             state.get_well(well_name),
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             rst_whistctl_cmode,
             Opm::TracerConfig{},
             Opm::UnitSystem::newMETRIC(),
@@ -961,7 +961,7 @@ BOOST_AUTO_TEST_CASE(Historic_Period)
     {
         const auto op1 = Opm::Well {
             state.wells.front(),
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             state.header.histctl_override,
             Opm::TracerConfig{},
             Opm::UnitSystem::newMETRIC(),
@@ -978,7 +978,7 @@ BOOST_AUTO_TEST_CASE(Historic_Period)
     {
         const auto op1 = Opm::Well {
             state.wells.front(),
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             state.header.histctl_override,
             Opm::TracerConfig{},
             Opm::UnitSystem::newMETRIC(),
@@ -999,7 +999,7 @@ BOOST_AUTO_TEST_CASE(Historic_Period)
     {
         const auto op1 = Opm::Well {
             state.wells.front(),
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             1,                  // ORAT
             Opm::TracerConfig{},
             Opm::UnitSystem::newMETRIC(),
@@ -1034,7 +1034,7 @@ BOOST_AUTO_TEST_CASE(Historic_Period_WHistCtl)
     {
         const auto op1 = Opm::Well {
             state.wells.front(),
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             state.header.histctl_override,
             Opm::TracerConfig{},
             Opm::UnitSystem::newMETRIC(),
@@ -1051,7 +1051,7 @@ BOOST_AUTO_TEST_CASE(Historic_Period_WHistCtl)
     {
         const auto op1 = Opm::Well {
             state.wells.front(),
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             state.header.histctl_override,
             Opm::TracerConfig{},
             Opm::UnitSystem::newMETRIC(),
@@ -1072,7 +1072,7 @@ BOOST_AUTO_TEST_CASE(Historic_Period_WHistCtl)
     {
         const auto op1 = Opm::Well {
             state.wells.front(),
-            static_cast<int>(rptStep),
+            static_cast<long long>(rptStep),
             0,                  // NONE
             Opm::TracerConfig{},
             Opm::UnitSystem::newMETRIC(),

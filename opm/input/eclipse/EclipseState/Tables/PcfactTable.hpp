@@ -29,7 +29,7 @@ namespace Opm {
 
     class PcfactTable : public SimpleTable {
     public:
-        PcfactTable( const DeckItem& item, const int tableID );
+        PcfactTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getPorosityChangeColumn() const;
         const TableColumn& getPcMultiplierColumn() const;

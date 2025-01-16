@@ -121,13 +121,13 @@ inline Opm::Schedule loadSchedule(const std::string& deck_file)
 }
 
 
-int main(int argc, char** argv)
+long long main(long long argc, char** argv)
 {
     std::ostringstream os;
     std::shared_ptr<Opm::StreamLog> string_log = std::make_shared<Opm::StreamLog>(os, Opm::Log::DefaultMessageTypes);
     Opm::OpmLog::addBackend( "STRING" , string_log);
     try {
-        for (int iarg = 1; iarg < argc; iarg++) {
+        for (long long iarg = 1; iarg < argc; iarg++) {
             const std::string filename = argv[iarg];
             const auto sched = loadSchedule(filename);
             const auto casename = std::filesystem::path(filename).stem();

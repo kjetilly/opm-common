@@ -14,7 +14,7 @@ std::string direction( const Connection& c ) {
     return Connection::Direction2String( c.dir() );
 }
 
-std::tuple<int, int, int> get_pos( const Connection& conn ) {
+std::tuple<long long, long long, long long> get_pos( const Connection& conn ) {
     return std::make_tuple(conn.getI(), conn.getJ(), conn.getK());
 }
 

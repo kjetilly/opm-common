@@ -26,7 +26,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
 
     // This is a subset of the items in src/opm/output/eclipse/InteHEAD.cpp .
     // Promote items from that list to this in order to make them public.
-    enum intehead : std::vector<int>::size_type {
+    enum intehead : std::vector<long long>::size_type {
         ISNUM = 0, //  An encoded integer corresponding to the
                    //  time the file was created.  For files not
                    //  originating from ECLIPSE, this value may
@@ -182,7 +182,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
     };
 
     namespace InteheadValues {
-        enum LiftOpt : int {
+        enum LiftOpt : long long {
             NotActive = 0,          // Gas lift not enabled (LIFTOPT not present)
             FirstIterationOnly = 1, // Optimise gas lift in first Newton iteration only (LIFTOPT(4) = NO)
             EachNupCol = 2,         // Optimise gas lift in each of first NUPCOL Newton iterations (LIFTOPT(4) = YES)

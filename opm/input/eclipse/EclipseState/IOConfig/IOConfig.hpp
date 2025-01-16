@@ -167,7 +167,7 @@ namespace Opm {
         void overrideNOSIM(bool nosim);
         void consistentFileFlags();
 
-        std::string getRestartFileName(const std::string& restart_base, int report_step, bool output) const;
+        std::string getRestartFileName(const std::string& restart_base, long long report_step, bool output) const;
 
         bool getOutputEnabled() const;
         void setOutputEnabled(bool enabled);

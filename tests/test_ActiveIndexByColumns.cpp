@@ -35,8 +35,8 @@ BOOST_AUTO_TEST_SUITE(Basic_Mapping)
 
 BOOST_AUTO_TEST_CASE(Constructor)
 {
-    const auto cartDims = std::array<int,3>{ { 1, 1, 4 } };
-    const auto actIJK = std::vector<std::array<int,3>> {
+    const auto cartDims = std::array<long long,3>{ { 1, 1, 4 } };
+    const auto actIJK = std::vector<std::array<long long,3>> {
         { 0, 0, 0 },
         { 0, 0, 1 },
         { 0, 0, 3 },
@@ -55,8 +55,8 @@ BOOST_AUTO_TEST_CASE(Constructor)
 
 BOOST_AUTO_TEST_CASE(Single_Column)
 {
-    const auto cartDims = std::array<int,3>{ { 1, 1, 4 } };
-    const auto actIJK = std::vector<std::array<int,3>> {
+    const auto cartDims = std::array<long long,3>{ { 1, 1, 4 } };
+    const auto actIJK = std::vector<std::array<long long,3>> {
         { 0, 0, 0 },
         { 0, 0, 1 },
         { 0, 0, 3 },
@@ -75,8 +75,8 @@ BOOST_AUTO_TEST_CASE(Single_Column)
 
 BOOST_AUTO_TEST_CASE(Two_Columns)
 {
-    const auto cartDims = std::array<int,3>{ { 2, 1, 4 } };
-    const auto actIJK = std::vector<std::array<int,3>> {
+    const auto cartDims = std::array<long long,3>{ { 2, 1, 4 } };
+    const auto actIJK = std::vector<std::array<long long,3>> {
         { 0, 0, 0 },  { 1, 0, 0 },
         { 0, 0, 1 },  { 1, 0, 1 },
                       { 1, 0, 2 },
@@ -100,8 +100,8 @@ BOOST_AUTO_TEST_CASE(Two_Columns)
 
 BOOST_AUTO_TEST_CASE(Four_Columns)
 {
-    const auto cartDims = std::array<int,3>{ { 2, 2, 4 } };
-    const auto actIJK = std::vector<std::array<int,3>> {
+    const auto cartDims = std::array<long long,3>{ { 2, 2, 4 } };
+    const auto actIJK = std::vector<std::array<long long,3>> {
         //   0             2             1             3
         { 0, 0, 0 },  { 1, 0, 0 },  { 0, 1, 0 },  { 1, 1, 0 },
         { 0, 0, 1 },  { 1, 0, 1 },  { 0, 1, 1 },
@@ -182,7 +182,7 @@ namespace {
         };
     }
 
-    std::vector<int> actnum_3x3x3_exclude_centre_cell()
+    std::vector<long long> actnum_3x3x3_exclude_centre_cell()
     {
         return {
             1, 1, 1,
@@ -199,7 +199,7 @@ namespace {
         };
     }
 
-    std::vector<int> actnum_3x3x3_exclude_centre_column()
+    std::vector<long long> actnum_3x3x3_exclude_centre_column()
     {
         return {
             1, 1, 1,
@@ -216,7 +216,7 @@ namespace {
         };
     }
 
-    std::vector<int> actnum_3x3x3_exclude_diagonals()
+    std::vector<long long> actnum_3x3x3_exclude_diagonals()
     {
         return {
             0, 1, 0,
@@ -538,7 +538,7 @@ namespace {
         };
     }
 
-    std::vector<int> actnum_2x3x4_exclude_alternate_centre()
+    std::vector<long long> actnum_2x3x4_exclude_alternate_centre()
     {
         return {
             1, 1,
@@ -559,7 +559,7 @@ namespace {
         };
     }
 
-    std::vector<int> actnum_2x3x4_exclude_centre_column()
+    std::vector<long long> actnum_2x3x4_exclude_centre_column()
     {
         return {
             1, 1,
@@ -580,7 +580,7 @@ namespace {
         };
     }
 
-    std::vector<int> actnum_2x3x4_exclude_diagonals()
+    std::vector<long long> actnum_2x3x4_exclude_diagonals()
     {
         return {
             0, 1,

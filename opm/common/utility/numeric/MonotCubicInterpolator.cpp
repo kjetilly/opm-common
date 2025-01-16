@@ -116,7 +116,7 @@ MonotCubicInterpolator(const vector<double> & x, const vector<double> & f) {
 
 bool
 MonotCubicInterpolator::
-read(const std::string & datafilename, int xColumn, int fColumn)
+read(const std::string & datafilename, long long xColumn, long long fColumn)
 {
   data.clear() ;
   ddata.clear() ;
@@ -139,7 +139,7 @@ read(const std::string & datafilename, int xColumn, int fColumn)
     }
 
     stringstream strs(linestring);
-    int columnindex = 0;
+    long long columnindex = 0;
     std::vector<double> value;
     if (linestring.size() > 0 && linestring.at(0) != '#') {
         while (!(strs.rdstate() & std::ios::failbit)) {
@@ -270,7 +270,7 @@ string
 MonotCubicInterpolator::
 toString() const
 {
-  const int precision = 20;
+  const long long precision = 20;
   std::stringstream dataStringStream;
   for (map<double,double>::const_iterator it = data.begin();
        it != data.end(); ++it) {

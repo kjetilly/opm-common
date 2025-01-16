@@ -14,7 +14,7 @@ namespace py = pybind11;
 namespace {
 
 
-using EclEntry = std::tuple<std::string, Opm::EclIO::eclArrType, int>;
+using EclEntry = std::tuple<std::string, Opm::EclIO::eclArrType, long long>;
 
 
 Opm::EclIO::eclArrType getArrayType(EModel * file_ptr, std::string key){
@@ -50,16 +50,16 @@ py::array get_param(EModel * file_ptr, std::string key)
         std::vector<float> vect = file_ptr->getParam<float>(key);
         return py::array(py::dtype("f"), {vect.size()}, {}, &vect[0]);
     } else if (arrType == Opm::EclIO::INTE){
-        std::vector<int> vect = file_ptr->getParam<int>(key);
+        std::vector<long long> vect = file_ptr->getParam<long long>(key);
         return py::array(py::dtype("i"), {vect.size()}, {}, &vect[0]);
     } else
         throw std::logic_error("Data type not supported");
 }
 
 
-void add_int_filter_1value(EModel * file_ptr, std::string key, std::string opr, int value)
+void add_int_filter_1value(EModel * file_ptr, std::string key, std::string opr, long long value)
 {
-    file_ptr->addFilter<int>(key, opr, value);
+    file_ptr->addFilter<long long>(key, opr, value);
 }
 
 void add_float_filter_1value(EModel * file_ptr, std::string key, std::string opr, float value)
@@ -67,9 +67,9 @@ void add_float_filter_1value(EModel * file_ptr, std::string key, std::string opr
     file_ptr->addFilter<float>(key, opr, value);
 }
 
-void add_int_filter_2values(EModel * file_ptr, std::string key, std::string opr, int value1, int value2)
+void add_int_filter_2values(EModel * file_ptr, std::string key, std::string opr, long long value1, long long value2)
 {
-    file_ptr->addFilter<int>(key, opr, value1, value2);
+    file_ptr->addFilter<long long>(key, opr, value1, value2);
 }
 
 void add_float_filter_2values(EModel * file_ptr, std::string key, std::string opr, float value1, float value2)

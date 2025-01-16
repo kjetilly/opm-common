@@ -103,14 +103,14 @@ namespace Opm {
 	    inline std::pair<std::string, std::string>
 	    ParameterGroup::filename_split(const std::string& filename)
             {
-		int fpos = filename.rfind('.');
+		long long fpos = filename.rfind('.');
 		std::string name = filename.substr(0, fpos);
 		std::string type = filename.substr(fpos+1);
 		return std::make_pair(name, type);
 	    }
 
         template <typename StringArray>
-	ParameterGroup::ParameterGroup(int argc, StringArray argv, bool verify_syntax,
+	ParameterGroup::ParameterGroup(long long argc, StringArray argv, bool verify_syntax,
                                        const bool enable_output)
             : path_(ID_path_root), parent_(0), output_is_enabled_(enable_output)
 	{
@@ -127,21 +127,21 @@ namespace Opm {
 	}
 
         template <typename StringArray>
-	void ParameterGroup::parseCommandLineArguments(int argc, StringArray argv, bool verify_syntax)
+	void ParameterGroup::parseCommandLineArguments(long long argc, StringArray argv, bool verify_syntax)
         {
 	    std::vector<std::string> files;
 	    std::vector<std::pair<std::string, std::string> > assignments;
-	    for (int i = 1; i < argc; ++i) {
+	    for (long long i = 1; i < argc; ++i) {
 		std::string arg(argv[i]);
-		int fpos = arg.find(ID_delimiter_assignment);
-		if (fpos == int(std::string::npos)) {
+		long long fpos = arg.find(ID_delimiter_assignment);
+		if (fpos == (long long)(std::string::npos)) {
 		    std::string filename = arg.substr(0, fpos);
 		    files.push_back(filename);
 		    continue;
 		}
-		int pos = fpos + ID_delimiter_assignment.size();
-		int spos = arg.find(ID_delimiter_assignment, pos);
-		if (spos == int(std::string::npos)) {
+		long long pos = fpos + ID_delimiter_assignment.size();
+		long long spos = arg.find(ID_delimiter_assignment, pos);
+		if (spos == (long long)(std::string::npos)) {
 		    std::string name = arg.substr(0, fpos);
 		    std::string value = arg.substr(pos, spos);
 		    assignments.push_back(std::make_pair(name, value));
@@ -151,7 +151,7 @@ namespace Opm {
                 	        + ID_delimiter_assignment
 	                        + "') detected in argument " + to_string(i));
 	    }
-	    for (int i = 0; i < int(files.size()); ++i) {
+	    for (long long i = 0; i < (long long)(files.size()); ++i) {
 		std::pair<std::string, std::string> file_type = filename_split(files[i]);
 		if (file_type.second == "param") {
 		    this->readParam(files[i]);
@@ -165,7 +165,7 @@ namespace Opm {
                     }
 		}
 	    }
-	    for (int i = 0; i < int(assignments.size()); ++i) {
+	    for (long long i = 0; i < (long long)(assignments.size()); ++i) {
 		this->insertParameter(assignments[i].first, assignments[i].second);
 	    }
 	}

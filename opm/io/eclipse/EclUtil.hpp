@@ -30,7 +30,7 @@
 
 namespace Opm { namespace EclIO {
 
-    int flipEndianInt(int num);
+    long long flipEndianInt(long long num);
     std::int64_t flipEndianLongInt(std::int64_t num);
     float flipEndianFloat(float num);
     double flipEndianDouble(double num);
@@ -44,49 +44,49 @@ namespace Opm { namespace EclIO {
     ///
     /// Constituents are *typically* one-based region IDs, but at least one
     /// of the two could be a component ID too.
-    int combineSummaryNumbers(const int n1, const int n2);
+    long long combineSummaryNumbers(const long long n1, const long long n2);
 
     /// Split a combined summary vector ID ('NUMS' entry) into its original
     /// two constituent IDs.
-    std::tuple<int,int> splitSummaryNumber(const int n);
+    std::tuple<long long,long long> splitSummaryNumber(const long long n);
 
-    std::tuple<int, int> block_size_data_binary(eclArrType arrType);
-    std::tuple<int, int, int> block_size_data_formatted(eclArrType arrType);
+    std::tuple<long long, long long> block_size_data_binary(eclArrType arrType);
+    std::tuple<long long, long long, long long> block_size_data_formatted(eclArrType arrType);
 
     std::string trimr(const std::string &str1);
 
-    std::uint64_t sizeOnDiskBinary(std::int64_t num, Opm::EclIO::eclArrType arrType, int elementSize);
-    std::uint64_t sizeOnDiskFormatted(const std::int64_t num, Opm::EclIO::eclArrType arrType, int elementSize);
+    std::uint64_t sizeOnDiskBinary(std::int64_t num, Opm::EclIO::eclArrType arrType, long long elementSize);
+    std::uint64_t sizeOnDiskFormatted(const std::int64_t num, Opm::EclIO::eclArrType arrType, long long elementSize);
 
     void readBinaryHeader(std::fstream& fileH, std::string& tmpStrName,
-                      int& tmpSize, std::string& tmpStrType);
+                      long long& tmpSize, std::string& tmpStrType);
 
     void readBinaryHeader(std::fstream& fileH, std::string& arrName,
-                      std::int64_t& size, Opm::EclIO::eclArrType &arrType, int& elementSize);
+                      std::int64_t& size, Opm::EclIO::eclArrType &arrType, long long& elementSize);
 
     void readFormattedHeader(std::fstream& fileH, std::string& arrName,
-                      std::int64_t &num, Opm::EclIO::eclArrType &arrType, int& elementSize);
+                      std::int64_t &num, Opm::EclIO::eclArrType &arrType, long long& elementSize);
 
     template<typename T, typename T2>
     std::vector<T> readBinaryArray(std::fstream& fileH, const std::int64_t size, Opm::EclIO::eclArrType type,
-                               std::function<T(T2)>& flip, int elementSize);
+                               std::function<T(T2)>& flip, long long elementSize);
 
-    std::vector<int> readBinaryInteArray(std::fstream &fileH, const std::int64_t size);
+    std::vector<long long> readBinaryInteArray(std::fstream &fileH, const std::int64_t size);
     std::vector<float> readBinaryRealArray(std::fstream& fileH, const std::int64_t size);
     std::vector<double> readBinaryDoubArray(std::fstream& fileH, const std::int64_t size);
     std::vector<bool> readBinaryLogiArray(std::fstream &fileH, const std::int64_t size);
-    std::vector<unsigned int> readBinaryRawLogiArray(std::fstream &fileH, const std::int64_t size);
+    std::vector<size_t> readBinaryRawLogiArray(std::fstream &fileH, const std::int64_t size);
     std::vector<std::string> readBinaryCharArray(std::fstream& fileH, const std::int64_t size);
-    std::vector<std::string> readBinaryC0nnArray(std::fstream& fileH, const std::int64_t size, int elementSize);
+    std::vector<std::string> readBinaryC0nnArray(std::fstream& fileH, const std::int64_t size, long long elementSize);
 
     template<typename T>
-    std::vector<T> readFormattedArray(const std::string& file_str, const int size, std::int64_t fromPos,
+    std::vector<T> readFormattedArray(const std::string& file_str, const long long size, std::int64_t fromPos,
                                        std::function<T(const std::string&)>& process);
 
-    std::vector<int> readFormattedInteArray(const std::string& file_str, const std::int64_t size, std::int64_t fromPos);
+    std::vector<long long> readFormattedInteArray(const std::string& file_str, const std::int64_t size, std::int64_t fromPos);
 
     std::vector<std::string> readFormattedCharArray(const std::string& file_str, const std::int64_t size,
-                                                    std::int64_t fromPos, int elementSize);
+                                                    std::int64_t fromPos, long long elementSize);
 
     std::vector<float> readFormattedRealArray(const std::string& file_str, const std::int64_t size, std::int64_t fromPos);
     std::vector<std::string> readFormattedRealRawStrings(const std::string& file_str, const std::int64_t size, std::int64_t fromPos);

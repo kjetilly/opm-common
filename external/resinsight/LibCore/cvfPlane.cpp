@@ -502,7 +502,7 @@ size_t Plane::clipTriangle(const Vec3d& a, const Vec3d& b, const Vec3d& c, Vec3d
     onPosSide[0] = distanceSquared(a) >= 0 ? true : false;
     onPosSide[1] = distanceSquared(b) >= 0 ? true : false;
     onPosSide[2] = distanceSquared(c) >= 0 ? true : false;
-    const int numPositiveVertices = (onPosSide[0] ? 1 : 0) + (onPosSide[1] ? 1 : 0) + (onPosSide[2] ? 1 : 0);
+    const long long numPositiveVertices = (onPosSide[0] ? 1 : 0) + (onPosSide[1] ? 1 : 0) + (onPosSide[2] ? 1 : 0);
     
     // The entire triangle is on the negative side
     // Clip everything

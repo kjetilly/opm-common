@@ -1101,7 +1101,7 @@ BOOST_AUTO_TEST_CASE(NUPCOL_DEFAULT) {
 
 
 BOOST_AUTO_TEST_CASE(NUPCOL) {
-    const int min_value = 3;
+    const long long min_value = 3;
     Nupcol np(min_value);
     BOOST_CHECK_EQUAL(np.value(), ParserKeywords::NUPCOL::NUM_ITER::defaultValue);
 

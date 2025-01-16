@@ -85,7 +85,7 @@ checkInitialisedCopy(const FieldData&,
                      const bool);
 
 template
-void Opm::Fieldprops::FieldData<int>::
+void Opm::Fieldprops::FieldData<long long>::
 checkInitialisedCopy(const FieldData&,
                      const std::vector<Box::cell_index>&,
                      const std::string&,

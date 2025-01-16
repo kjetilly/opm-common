@@ -7,7 +7,7 @@
 
 namespace VI = ::Opm::RestartIO::Helpers::VectorItems;
 
-enum index : std::vector<int>::size_type {
+enum index : std::vector<long long>::size_type {
     // Flag to signify live oil (dissolved gas) PVT
     IsLiveOil = VI::logihead::IsLiveOil,
 
@@ -186,7 +186,7 @@ Opm::RestartIO::LogiHEAD&
 Opm::RestartIO::LogiHEAD::
 variousParam(const bool e300_radial,
              const bool e100_radial,
-             const int  nswlmx,
+             const long long  nswlmx,
              const bool enableHyster)
 {
     this -> data_[E300Radial] = e300_radial;
@@ -221,7 +221,7 @@ Opm::RestartIO::LogiHEAD::saturationFunction(const SatfuncFlags& satfunc)
 }
 
 Opm::RestartIO::LogiHEAD&
-Opm::RestartIO::LogiHEAD::network(const int maxNoNodes)
+Opm::RestartIO::LogiHEAD::network(const long long maxNoNodes)
 {
     this->data_[HasNetwork  ] = (maxNoNodes >= 1) ? true : false;
 

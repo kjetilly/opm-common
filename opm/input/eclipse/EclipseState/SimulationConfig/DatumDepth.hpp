@@ -78,7 +78,7 @@ namespace Opm {
         ///
         /// \return Datum/reference depth in region \p region of standard
         ///   FIPNUM region set.
-        double operator()(const int region) const
+        double operator()(const long long region) const
         {
             return (*this)("FIPNUM", region);
         }
@@ -91,7 +91,7 @@ namespace Opm {
         ///
         /// \return Datum/reference depth in region \p region of region set
         /// \p rset.
-        double operator()(std::string_view rset, const int region) const
+        double operator()(std::string_view rset, const long long region) const
         {
             return std::visit([rset, region](const auto& datumDepthImpl)
             { return datumDepthImpl(rset, region); }, this->datum_);
@@ -135,7 +135,7 @@ namespace Opm {
             /// \return Datum/reference depth in region \p region of region
             /// set \p rset (= 0).
             double operator()([[maybe_unused]] std::string_view rset,
-                              [[maybe_unused]] const int        region) const
+                              [[maybe_unused]] const long long        region) const
             {
                 return 0.0;
             }
@@ -178,7 +178,7 @@ namespace Opm {
             /// \return Datum/reference depth in region \p region of region
             /// set \p rset (= globally configured reference depth).
             double operator()([[maybe_unused]] std::string_view rset,
-                              [[maybe_unused]] const int        region) const
+                              [[maybe_unused]] const long long        region) const
             {
                 return this->depth_;
             }
@@ -239,7 +239,7 @@ namespace Opm {
             /// \return Datum/reference depth in region \p region of region
             /// set \p rset.
             double operator()([[maybe_unused]] std::string_view rset,
-                              const int region) const
+                              const long long region) const
             {
                 assert (! this->depth_.empty());
 
@@ -247,7 +247,7 @@ namespace Opm {
                 // If the input supplies fewer depth values than there are
                 // regions, then the remaining regions implicitly have the
                 // same datum depth as the last fully specified region.
-                return (region < static_cast<int>(this->depth_.size()))
+                return (region < static_cast<long long>(this->depth_.size()))
                     ? this->depth_[region] : this->depth_.back();
             }
 
@@ -303,7 +303,7 @@ namespace Opm {
             ///
             /// \return Datum/reference depth in region \p region of region
             /// set \p rset (= globally configured reference depth).
-            double operator()(std::string_view rset, const int region) const;
+            double operator()(std::string_view rset, const long long region) const;
 
             /// Equality predicate.
             ///

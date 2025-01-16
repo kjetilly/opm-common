@@ -45,7 +45,7 @@ namespace Opm {
     public:
         static PolyInjTable serializationTestObject();
 
-        int getTableNumber() const;
+        long long getTableNumber() const;
 
         const std::vector<double>& getThroughputs() const;
         const std::vector<double>& getVelocities() const;
@@ -67,7 +67,7 @@ namespace Opm {
         std::vector<double> m_velocities;
 
         // TODO: maybe not needed, since this is also stored in the std::map
-        int m_table_number = 0;
+        long long m_table_number = 0;
 
         // each vector corresponds to the values corresponds to one value related to one x sampling point
         // as a result, the number of the vector should be equal to be the size of m_x_points,

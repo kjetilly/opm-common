@@ -132,16 +132,16 @@ void handleGCONINJE(HandlerContext& handlerContext)
                 injection.available_group_control = availableForGroupControl;
 
                 if (!record.getItem("SURFACE_TARGET").defaultApplied(0))
-                    injection.injection_controls += static_cast<int>(Group::InjectionCMode::RATE);
+                    injection.injection_controls += static_cast<long long>(Group::InjectionCMode::RATE);
 
                 if (!record.getItem("RESV_TARGET").defaultApplied(0))
-                    injection.injection_controls += static_cast<int>(Group::InjectionCMode::RESV);
+                    injection.injection_controls += static_cast<long long>(Group::InjectionCMode::RESV);
 
                 if (!record.getItem("REINJ_TARGET").defaultApplied(0))
-                    injection.injection_controls += static_cast<int>(Group::InjectionCMode::REIN);
+                    injection.injection_controls += static_cast<long long>(Group::InjectionCMode::REIN);
 
                 if (!record.getItem("VOIDAGE_TARGET").defaultApplied(0))
-                    injection.injection_controls += static_cast<int>(Group::InjectionCMode::VREP);
+                    injection.injection_controls += static_cast<long long>(Group::InjectionCMode::VREP);
 
                 if (record.getItem("REINJECT_GROUP").hasValue(0))
                     injection.reinj_group = record.getItem("REINJECT_GROUP").getTrimmedString(0);
@@ -269,26 +269,26 @@ void handleGCONPROD(HandlerContext& handlerContext)
                 if (production.cmode == Group::ProductionCMode::ORAT ||
                     (groupLimitAction.allRates != Group::ExceedAction::NONE &&
                     !apply_default_oil_target)) {
-                    production.production_controls |= static_cast<int>(Group::ProductionCMode::ORAT);
+                    production.production_controls |= static_cast<long long>(Group::ProductionCMode::ORAT);
                 }
                 if (production.cmode == Group::ProductionCMode::WRAT ||
                     ((groupLimitAction.water != Group::ExceedAction::NONE) &&
                     !apply_default_water_target)) {
-                    production.production_controls |= static_cast<int>(Group::ProductionCMode::WRAT);
+                    production.production_controls |= static_cast<long long>(Group::ProductionCMode::WRAT);
                 }
                 if (production.cmode == Group::ProductionCMode::GRAT ||
                     ((groupLimitAction.gas  != Group::ExceedAction::NONE) &&
                     !apply_default_gas_target)) {
-                    production.production_controls |= static_cast<int>(Group::ProductionCMode::GRAT);
+                    production.production_controls |= static_cast<long long>(Group::ProductionCMode::GRAT);
                 }
                 if (production.cmode == Group::ProductionCMode::LRAT ||
                     ((groupLimitAction.liquid != Group::ExceedAction::NONE) &&
                     !apply_default_liquid_target)) {
-                    production.production_controls |= static_cast<int>(Group::ProductionCMode::LRAT);
+                    production.production_controls |= static_cast<long long>(Group::ProductionCMode::LRAT);
                 }
 
                 if (!apply_default_resv_target)
-                    production.production_controls |= static_cast<int>(Group::ProductionCMode::RESV);
+                    production.production_controls |= static_cast<long long>(Group::ProductionCMode::RESV);
 
                 if (new_group.updateProduction(production)) {
                     auto new_config = handlerContext.state().guide_rate();

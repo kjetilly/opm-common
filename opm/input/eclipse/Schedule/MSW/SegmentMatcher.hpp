@@ -43,7 +43,7 @@ class SegmentSet
 {
 public:
     /// Demarcation of Start/End of Segment Range for Single MS Well
-    using WellSegmentRangeIterator = std::vector<int>::const_iterator;
+    using WellSegmentRangeIterator = std::vector<long long>::const_iterator;
 
     /// Segment Range for Single MS Well.
     class WellSegmentRange
@@ -114,7 +114,7 @@ public:
     ///   level UDQ.
     bool isScalar() const
     {
-        return this->segments_.size() == std::vector<int>::size_type{1};
+        return this->segments_.size() == std::vector<long long>::size_type{1};
     }
 
     /// Retrieve list of (MS) well names covered by this result set.
@@ -163,11 +163,11 @@ private:
     std::vector<std::vector<std::string>::size_type> wellNameIndex_{};
 
     /// CSR start pointers for MS wells' segments.
-    std::vector<std::vector<int>::size_type> segmentStart_{};
+    std::vector<std::vector<long long>::size_type> segmentStart_{};
 
     /// All segments covered by this result set.  Structured by \c
     /// segmentStart_.
-    std::vector<int> segments_{};
+    std::vector<long long> segments_{};
 
     /// Build well-name to well number lookup index.
     ///
@@ -183,7 +183,7 @@ private:
     /// \param[in] segments List of segment numbers matching input
     ///    request for \p well.
     void addWellSegments(const std::string&      well,
-                         const std::vector<int>& segments);
+                         const std::vector<long long>& segments);
 };
 
 /// Encapsulation of Matching Process for MSW Segment Sets
@@ -228,7 +228,7 @@ public:
         /// \param[in] segNum Requests's segment number.
         ///
         /// \return \code *this \endcode.
-        SetDescriptor& segmentNumber(const int segNum);
+        SetDescriptor& segmentNumber(const long long segNum);
 
         /// Assign request's segment number.
         ///
@@ -246,7 +246,7 @@ public:
         /// Retrive request's segment number
         ///
         /// \return Segment number.  Unset if request matches all segments.
-        const std::optional<int>& segmentNumber() const
+        const std::optional<long long>& segmentNumber() const
         {
             return this->segmentNumber_;
         }
@@ -274,7 +274,7 @@ public:
 
         /// Request's segment number.  Unset if request applies to all
         /// segments of pertinent well set.
-        std::optional<int> segmentNumber_{};
+        std::optional<long long> segmentNumber_{};
     };
 
     /// Default constructor

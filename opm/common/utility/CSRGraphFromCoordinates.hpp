@@ -51,7 +51,7 @@ namespace Opm { namespace utility {
     /// \tparam PermitSelfConnections Whether or not to allow connections of
     ///    the form i->i--i.e., diagonal elements.  Default value, \c false,
     ///    does not generate connections from a vertex to itself.
-    template <typename VertexID = int, bool TrackCompressedIdx = false, bool PermitSelfConnections = false>
+    template <typename VertexID = long long, bool TrackCompressedIdx = false, bool PermitSelfConnections = false>
     class CSRGraphFromCoordinates
     {
     private:
@@ -457,7 +457,7 @@ namespace Opm { namespace utility {
             ///    coordinate format input contributions.  Needed to count
             ///    the number of possibly repeated column index entries per
             ///    row.
-            void preparePushbackRowGrouping(const int         numRows,
+            void preparePushbackRowGrouping(const long long         numRows,
                                             const Neighbours& rowIdx);
 
             /// Group column indices by corresponding row index and track

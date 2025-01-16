@@ -39,7 +39,7 @@ namespace Opm {
         size_t global_index{};
         FaceDir::DirEnum face_dir{FaceDir::Unknown};
         double trans_multipler{};
-        int trans_option{};
+        long long trans_option{};
         bool connect_active_cell{false};
 
         // The following are options related to VE simulation

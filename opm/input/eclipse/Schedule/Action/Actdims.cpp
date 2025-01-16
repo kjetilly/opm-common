@@ -39,10 +39,10 @@ Actdims::Actdims(const Deck& deck)
         const auto& keyword = deck.get<ParserKeywords::ACTDIMS>().back();
         const auto& record = keyword.getRecord(0);
 
-        this->keywords   = record.getItem<ParserKeywords::ACTDIMS::MAX_ACTION>().get<int>(0);
-        this->line_count = record.getItem<ParserKeywords::ACTDIMS::MAX_ACTION_LINES>().get<int>(0);
-        this->characters = record.getItem<ParserKeywords::ACTDIMS::MAX_ACTION_LINE_CHARACTERS>().get<int>(0);
-        this->conditions = record.getItem<ParserKeywords::ACTDIMS::MAX_ACTION_COND>().get<int>(0);
+        this->keywords   = record.getItem<ParserKeywords::ACTDIMS::MAX_ACTION>().get<long long>(0);
+        this->line_count = record.getItem<ParserKeywords::ACTDIMS::MAX_ACTION_LINES>().get<long long>(0);
+        this->characters = record.getItem<ParserKeywords::ACTDIMS::MAX_ACTION_LINE_CHARACTERS>().get<long long>(0);
+        this->conditions = record.getItem<ParserKeywords::ACTDIMS::MAX_ACTION_COND>().get<long long>(0);
     }
 }
 

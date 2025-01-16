@@ -27,7 +27,7 @@ namespace Opm {
 
     class AqutabTable : public SimpleTable {
     public:
-        AqutabTable( const DeckItem& item, const int tableID );
+        AqutabTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getTimeColumn() const;
         const TableColumn& getPressureColumn() const;

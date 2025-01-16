@@ -63,16 +63,16 @@
 namespace {
     struct MockIH
     {
-        explicit MockIH(const int numWells,
-                        const int nsegWell     =  1,   // E100
-                        const int ncwMax       = 20,
-                        const int iConnPerConn =  25,  // NICONZ
-                        const int sConnPerConn =  41,  // NSCONZ
-                        const int xConnPerConn =  58); // NXCONZ
+        explicit MockIH(const long long numWells,
+                        const long long nsegWell     =  1,   // E100
+                        const long long ncwMax       = 20,
+                        const long long iConnPerConn =  25,  // NICONZ
+                        const long long sConnPerConn =  41,  // NSCONZ
+                        const long long xConnPerConn =  58); // NXCONZ
 
-        std::vector<int> value;
+        std::vector<long long> value;
 
-        using Sz = std::vector<int>::size_type;
+        using Sz = std::vector<long long>::size_type;
 
         Sz nwells;
         Sz nsegwl;
@@ -84,12 +84,12 @@ namespace {
         Sz nxconz;
     };
 
-    MockIH::MockIH(const int numWells,
-                   const int nsegWell,
-                   const int ncwMax,
-                   const int iConnPerConn,
-                   const int sConnPerConn,
-                   const int xConnPerConn)
+    MockIH::MockIH(const long long numWells,
+                   const long long nsegWell,
+                   const long long ncwMax,
+                   const long long iConnPerConn,
+                   const long long sConnPerConn,
+                   const long long xConnPerConn)
         : value(411, 0)
     {
         using Ix = ::Opm::RestartIO::Helpers::VectorItems::intehead;
@@ -523,7 +523,7 @@ END
 
                 const auto& well = sched.getWell("PROD", 0);
                 const auto& connections = well.getConnections();
-                for (int i = 0; i < 5; i++) {
+                for (long long i = 0; i < 5; i++) {
                     auto& c = xw["PROD"].connections.emplace_back();
 
                     c.rates.set(o::wat, qw * (float(i) + 1.0))
@@ -566,7 +566,7 @@ END
                 xw["WINJ"].rates.set(o::gas, 0.0);
 
                 const double qw = 7.0;
-                for (int i = 0; i < 4; i++) {
+                for (long long i = 0; i < 4; i++) {
                     xw["WINJ"].connections.emplace_back();
                     auto& c = xw["WINJ"].connections.back();
 
@@ -616,7 +616,7 @@ BOOST_AUTO_TEST_CASE(Declared_Connection_Data)
     // Report Step 1: 2115-01-01 --> 2015-01-03
     const auto rptStep = std::size_t {1};
 
-    const auto ih = MockIH {static_cast<int>(simCase.sched.getWells(rptStep).size())};
+    const auto ih = MockIH {static_cast<long long>(simCase.sched.getWells(rptStep).size())};
 
     BOOST_CHECK_EQUAL(ih.nwells, MockIH::Sz {2});
 
@@ -697,7 +697,7 @@ BOOST_AUTO_TEST_CASE(Declared_Connection_Data)
         // well no 1 - PROD
         using Ix = ::Opm::RestartIO::Helpers::VectorItems::SConn::index;
         const auto& sconn = amconn.getSConn();
-        int connNo = 1;
+        long long connNo = 1;
         decltype(connNo*ih.nxconz) i0 = 0;
         BOOST_CHECK_CLOSE(sconn[i0 + Ix::EffConnTrans], 2.55826545, 1.0e-5); // PROD - conn 1 : Effective transmissibility factor
         BOOST_CHECK_CLOSE(sconn[i0 + Ix::Depth], 7050., 1.0e-5); // PROD - conn 1 : Centre depth
@@ -747,7 +747,7 @@ BOOST_AUTO_TEST_CASE(Declared_Connection_Data)
         const auto& xconn = amconn.getXConn();
 
         // PROD well
-        int connNo = 1;
+        long long connNo = 1;
         decltype(connNo*ih.nxconz) i0 = 0;
         BOOST_CHECK_CLOSE(xconn[i0 + Ix::OilRate], 5.0 * (float(connNo)),
                           1.0e-5); // PROD - conn 1 : Surface oil rate
@@ -834,7 +834,7 @@ BOOST_AUTO_TEST_CASE(InactiveCell)
 {
     auto simCase = SimulationCase{first_sim()};
     const auto rptStep = std::size_t{1};
-    const auto ih = MockIH {static_cast<int>(simCase.sched.getWells(rptStep).size())};
+    const auto ih = MockIH {static_cast<long long>(simCase.sched.getWells(rptStep).size())};
 
     const auto& [wrc, sum_state] = wr(simCase.sched);
     auto conn0 = Opm::RestartIO::Helpers::AggregateConnectionData{ih.value};
@@ -846,7 +846,7 @@ BOOST_AUTO_TEST_CASE(InactiveCell)
                                   rptStep);
 
     // Here we deactive the cell holding connection number 2.
-    std::vector<int> actnum(500, 1);
+    std::vector<long long> actnum(500, 1);
     actnum[simCase.grid.getGlobalIndex(2,4,1)] = 0;
     simCase.grid.resetACTNUM(actnum);
 

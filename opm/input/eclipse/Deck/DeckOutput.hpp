@@ -35,7 +35,7 @@ namespace Opm {
             std::string keyword_sep = "";  // The separation between keywords;
         };
 
-        explicit DeckOutput(std::ostream& s, int precision = 10);
+        explicit DeckOutput(std::ostream& s, long long precision = 10);
         ~DeckOutput();
         void stash_default( );
 
@@ -54,13 +54,13 @@ namespace Opm {
         size_t default_count;
         size_t row_count;
         bool record_on;
-        int org_precision;
+        long long org_precision;
         bool split_line;
 
         template <typename T> void write_value(const T& value);
         void split_record();
         void write_sep( );
-        void set_precision(int precision);
+        void set_precision(long long precision);
     };
 }
 

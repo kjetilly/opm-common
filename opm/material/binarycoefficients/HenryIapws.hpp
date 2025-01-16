@@ -64,7 +64,7 @@ inline Evaluation henryIAPWS(Scalar E,
     static const Scalar q = -0.023767;
 
     Evaluation f = 0;
-    for (int i = 0; i < 6; ++i) {
+    for (long long i = 0; i < 6; ++i) {
         f += c[i]*pow(tau, d[i]);
     }
 

@@ -50,7 +50,7 @@ class CodeLocation
 {
 public:
     CodeLocation();
-    CodeLocation(const char* fileName, const char* functionName, int lineNumber);
+    CodeLocation(const char* fileName, const char* functionName, long long lineNumber);
     CodeLocation(const CodeLocation& other);
 
     const CodeLocation& operator=(CodeLocation rhs);
@@ -58,13 +58,13 @@ public:
     const char*         fileName() const;
     const char*         shortFileName() const;
     const char*         functionName() const;
-    int                 lineNumber() const;
+    long long                 lineNumber() const;
     void                swap(CodeLocation& other);
 
 private:
     const char*     m_fileName;
     const char*     m_functionName;
-    int             m_lineNumber;
+    long long             m_lineNumber;
 };
 
 

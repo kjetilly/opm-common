@@ -58,10 +58,10 @@ public:
     typedef ParamsT Params;
     typedef typename Traits::Scalar Scalar;
 
-    static const int numPhases = 3;
-    static const int wettingPhaseIdx = Traits::wettingPhaseIdx;
-    static const int nonWettingPhaseIdx = Traits::nonWettingPhaseIdx;
-    static const int gasPhaseIdx = Traits::gasPhaseIdx;
+    static const long long numPhases = 3;
+    static const long long wettingPhaseIdx = Traits::wettingPhaseIdx;
+    static const long long nonWettingPhaseIdx = Traits::nonWettingPhaseIdx;
+    static const long long gasPhaseIdx = Traits::gasPhaseIdx;
 
     //! Specify whether this material law implements the two-phase
     //! convenience API

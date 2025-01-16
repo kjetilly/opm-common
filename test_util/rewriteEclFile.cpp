@@ -36,9 +36,9 @@ static void printHelp() {
               << "-h Print help and exit.\n\n";
 }
 
-int main(int argc, char **argv) {
+long long main(long long argc, char **argv) {
 
-    int c                          = 0;
+    long long c                          = 0;
 
     while ((c = getopt(argc, argv, "h")) != -1) {
         switch (c) {
@@ -50,14 +50,14 @@ int main(int argc, char **argv) {
         }
     }
 
-    int argOffset = optind;
+    long long argOffset = optind;
 
     Opm::EclIO::EclFile reffile(argv[argOffset]);
     auto arrayList = reffile.getList();
 
     std::string outputFile=std::string(argv[argOffset]);
 
-    int p1 = outputFile.find_last_of(".");
+    long long p1 = outputFile.find_last_of(".");
     std::string ext = outputFile.substr(p1+1);
 
     outputFile.resize(p1);
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 
     reffile.loadData();
 
-    std::vector<int> elementSizeList = reffile.getElementSizeList();
+    std::vector<long long> elementSizeList = reffile.getElementSizeList();
 
     for (size_t n = 0; n < arrayList.size(); n++){
 
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
         auto arrType = std::get<1>(arrayList[n]);
 
         if (arrType == Opm::EclIO::INTE) {
-            auto data = reffile.get<int>(n);
+            auto data = reffile.get<long long>(n);
             outFile.write(name, data);
         } else if (arrType == Opm::EclIO::CHAR) {
             auto data = reffile.get<std::string>(n);

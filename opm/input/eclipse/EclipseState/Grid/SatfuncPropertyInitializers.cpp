@@ -152,21 +152,21 @@ namespace {
         const auto& sgwfnTables = tm.getSgwfnTables();
         const auto& wsfTables = tm.getWsfTables();
 
-        const auto famI = [&swofTables]( int i ) {
+        const auto famI = [&swofTables]( long long i ) {
             return swofTables.getTable<Opm::SwofTable>( i ).getSwColumn().front();
         };
 
-        const auto famI_let = [&swofLetTables]( int i ) {
+        const auto famI_let = [&swofLetTables]( long long i ) {
             return swofLetTables[i].s1_residual;
         };
 
-        const auto famII = [&swfnTables]( int i ) {
+        const auto famII = [&swfnTables]( long long i ) {
             return swfnTables.getTable<Opm::SwfnTable>( i ).getSwColumn().front();
         };
-        const auto famII_sgwfn = [&sgwfnTables]( int i ) {
+        const auto famII_sgwfn = [&sgwfnTables]( long long i ) {
             return 1.0 - sgwfnTables.getTable<Opm::SgwfnTable>( i ).getSgColumn().back();
         };
-        const auto famIII = [&wsfTables]( int i ) {
+        const auto famIII = [&wsfTables]( long long i ) {
             return wsfTables.getTable<Opm::WsfTable>( i ).getSwColumn().front();
         };
         switch( getSaturationFunctionFamily( tm, ph ) ) {
@@ -204,21 +204,21 @@ namespace {
         const auto& sgwfnTables = tm.getSgwfnTables();
         const auto& wsfTables = tm.getWsfTables();
 
-        const auto famI = [&swofTables]( int i ) {
+        const auto famI = [&swofTables]( long long i ) {
             return swofTables.getTable<Opm::SwofTable>( i ).getSwColumn().back();
         };
 
-        const auto famI_let = [&swofLetTables]( int i ) {
+        const auto famI_let = [&swofLetTables]( long long i ) {
             return 1.0 - swofLetTables[i].s2_residual;
         };
 
-        const auto famII = [&swfnTables]( int i ) {
+        const auto famII = [&swfnTables]( long long i ) {
             return swfnTables.getTable<Opm::SwfnTable>( i ).getSwColumn().back();
         };
-        const auto famII_sgwfn = [&sgwfnTables]( int i ) {
+        const auto famII_sgwfn = [&sgwfnTables]( long long i ) {
             return 1.0 - sgwfnTables.getTable<Opm::SgwfnTable>( i ).getSgColumn().front();
         };
-        const auto famIII = [&wsfTables]( int i ) {
+        const auto famIII = [&wsfTables]( long long i ) {
             return wsfTables.getTable<Opm::WsfTable>( i ).getSwColumn().back();
         };
         switch( getSaturationFunctionFamily( tm, ph ) ) {
@@ -258,25 +258,25 @@ namespace {
         const auto& sgwfnTables = tm.getSgwfnTables();
         const auto& gsfTables = tm.getGsfTables();
 
-        const auto famI_sgof = [&sgofTables]( int i ) {
+        const auto famI_sgof = [&sgofTables]( long long i ) {
             return sgofTables.getTable<Opm::SgofTable>( i ).getSgColumn().front();
         };
 
-        const auto famI_sgof_let = [&sgofLetTables]( int i ) {
+        const auto famI_sgof_let = [&sgofLetTables]( long long i ) {
             return sgofLetTables[i].s1_residual;
         };
 
-        const auto famI_slgof = [&slgofTables]( int i ) {
+        const auto famI_slgof = [&slgofTables]( long long i ) {
             return 1.0 - slgofTables.getTable<Opm::SlgofTable>( i ).getSlColumn().back();
         };
 
-        const auto famII = [&sgfnTables]( int i ) {
+        const auto famII = [&sgfnTables]( long long i ) {
             return sgfnTables.getTable<Opm::SgfnTable>( i ).getSgColumn().front();
         };
-        const auto famII_sgwfn = [&sgwfnTables]( int i ) {
+        const auto famII_sgwfn = [&sgwfnTables]( long long i ) {
             return sgwfnTables.getTable<Opm::SgwfnTable>( i ).getSgColumn().front();
         };
-        const auto famIII = [&gsfTables]( int i ) {
+        const auto famIII = [&gsfTables]( long long i ) {
             return gsfTables.getTable<Opm::GsfTable>( i ).getSgColumn().front();
         };
         switch( getSaturationFunctionFamily( tm, ph ) ) {
@@ -321,26 +321,26 @@ namespace {
         const auto& sgwfnTables = tm.getSgwfnTables();
         const auto& gsfTables = tm.getGsfTables();
 
-        const auto famI_sgof = [&sgofTables]( int i ) {
+        const auto famI_sgof = [&sgofTables]( long long i ) {
             return sgofTables.getTable<Opm::SgofTable>( i ).getSgColumn().back();
         };
 
-        const auto famI_sgof_let = [&swofLetTables]( int i ) {
+        const auto famI_sgof_let = [&swofLetTables]( long long i ) {
             // Assume this to be 1-swco
             return 1.0 - swofLetTables[i].s1_residual;
         };
 
-        const auto famI_slgof = [&slgofTables]( int i ) {
+        const auto famI_slgof = [&slgofTables]( long long i ) {
             return 1.0 - slgofTables.getTable<Opm::SlgofTable>( i ).getSlColumn().front();
         };
 
-        const auto famII = [&sgfnTables]( int i ) {
+        const auto famII = [&sgfnTables]( long long i ) {
             return sgfnTables.getTable<Opm::SgfnTable>( i ).getSgColumn().back();
         };
-        const auto famII_sgwfn = [&sgwfnTables]( int i ) {
+        const auto famII_sgwfn = [&sgwfnTables]( long long i ) {
             return sgwfnTables.getTable<Opm::SgwfnTable>( i ).getSgColumn().back();
         };
-        const auto famIII = [&gsfTables]( int i ) {
+        const auto famIII = [&gsfTables]( long long i ) {
             return gsfTables.getTable<Opm::GsfTable>( i ).getSgColumn().back();
         };
 
@@ -457,24 +457,24 @@ namespace {
         const auto& sgwfnTables = tm.getSgwfnTables();
         const auto& wsfTables = tm.getWsfTables();
 
-        const auto famI = [&swofTables, tolcrit](const int i) -> double
+        const auto famI = [&swofTables, tolcrit](const long long i) -> double
         {
             return critical_water(swofTables.getTable<Opm::SwofTable>(i), tolcrit);
         };
 
-        const auto famI_let = [&swofLetTables]( int i ) {
+        const auto famI_let = [&swofLetTables]( long long i ) {
             return swofLetTables[i].s1_critical;
         };
 
-        const auto famII = [&swfnTables, tolcrit](const int i) -> double
+        const auto famII = [&swfnTables, tolcrit](const long long i) -> double
         {
             return critical_water(swfnTables.getTable<Opm::SwfnTable>(i), tolcrit);
         };
-        const auto famII_sgwfn = [&sgwfnTables, tolcrit](const int i) -> double
+        const auto famII_sgwfn = [&sgwfnTables, tolcrit](const long long i) -> double
         {
             return critical_water_sgwfn(sgwfnTables.getTable<Opm::SgwfnTable>(i), tolcrit);
         };
-        const auto famIII = [&wsfTables, tolcrit](const int i) -> double
+        const auto famIII = [&wsfTables, tolcrit](const long long i) -> double
         {
             return critical_water(wsfTables.getTable<Opm::WsfTable>(i), tolcrit);
         };
@@ -545,31 +545,31 @@ namespace {
         const auto& slgofTables = tm.getSlgofTables();
         const auto& gsfTables = tm.getGsfTables();
 
-        const auto famI_sgof = [&sgofTables, tolcrit](const int i) -> double
+        const auto famI_sgof = [&sgofTables, tolcrit](const long long i) -> double
         {
             return critical_gas(sgofTables.getTable<Opm::SgofTable>(i), tolcrit);
         };
 
-        const auto famI_sgof_let = [&sgofLetTables]( int i ) {
+        const auto famI_sgof_let = [&sgofLetTables]( long long i ) {
             return sgofLetTables[i].s1_critical;
         };
 
-        const auto famI_slgof = [&slgofTables, tolcrit](const int i) -> double
+        const auto famI_slgof = [&slgofTables, tolcrit](const long long i) -> double
         {
             return critical_gas(slgofTables.getTable<Opm::SlgofTable>(i), tolcrit);
         };
 
-        const auto famII = [&sgfnTables, tolcrit](const int i) -> double
+        const auto famII = [&sgfnTables, tolcrit](const long long i) -> double
         {
             return critical_gas(sgfnTables.getTable<Opm::SgfnTable>(i), tolcrit);
         };
 
-        const auto famII_sgwfn = [&sgwfnTables, tolcrit](const int i) -> double
+        const auto famII_sgwfn = [&sgwfnTables, tolcrit](const long long i) -> double
         {
             return critical_gas(sgwfnTables.getTable<Opm::SgwfnTable>(i), tolcrit);
         };
 
-        const auto famIII = [&gsfTables, tolcrit](const int i) -> double
+        const auto famIII = [&gsfTables, tolcrit](const long long i) -> double
         {
             return critical_gas(gsfTables.getTable<Opm::GsfTable>(i), tolcrit);
         };
@@ -658,21 +658,21 @@ namespace {
         const auto& sof2Tables = tm.getSof2Tables();
         const auto& sof3Tables = tm.getSof3Tables();
 
-        const auto famI = [&swofTables, tolcrit](const int i) -> double
+        const auto famI = [&swofTables, tolcrit](const long long i) -> double
         {
             return critical_oil_water(swofTables.getTable<Opm::SwofTable>(i), tolcrit);
         };
 
-        const auto famI_let = [&swofLetTables]( int i ) {
+        const auto famI_let = [&swofLetTables]( long long i ) {
             return swofLetTables[i].s2_critical;
         };
 
-        const auto famII_2p = [&sof2Tables, tolcrit](const int i) -> double
+        const auto famII_2p = [&sof2Tables, tolcrit](const long long i) -> double
         {
             return critical_oil(sof2Tables.getTable<Opm::Sof2Table>(i), tolcrit);
         };
 
-        const auto famII_3p = [&sof3Tables, tolcrit](const int i) -> double
+        const auto famII_3p = [&sof3Tables, tolcrit](const long long i) -> double
         {
             const auto& tb = sof3Tables.getTable<Opm::Sof3Table>(i);
             return critical_oil(tb, tb.getKrowColumn(), tolcrit);
@@ -745,26 +745,26 @@ namespace {
         const auto& sof2Tables = tm.getSof2Tables();
         const auto& sof3Tables = tm.getSof3Tables();
 
-        const auto famI_sgof = [&sgofTables, &swco, tolcrit](const int i) -> double
+        const auto famI_sgof = [&sgofTables, &swco, tolcrit](const long long i) -> double
         {
             return critical_oil_gas(sgofTables.getTable<Opm::SgofTable>(i), tolcrit) - swco[i];
         };
 
-        const auto famI_sgof_let = [&sgofLetTables]( int i ) {
+        const auto famI_sgof_let = [&sgofLetTables]( long long i ) {
             return sgofLetTables[i].s2_critical;
         };
 
-        const auto famI_slgof = [&slgofTables, &swco, tolcrit](const int i) -> double
+        const auto famI_slgof = [&slgofTables, &swco, tolcrit](const long long i) -> double
         {
             return critical_oil_gas(slgofTables.getTable<Opm::SlgofTable>(i), tolcrit) - swco[i];
         };
 
-        const auto famII_2p = [&sof2Tables, tolcrit](const int i) -> double
+        const auto famII_2p = [&sof2Tables, tolcrit](const long long i) -> double
         {
             return critical_oil(sof2Tables.getTable<Opm::Sof2Table>(i), tolcrit);
         };
 
-        const auto famII_3p = [&sof3Tables, tolcrit](const int i) -> double
+        const auto famII_3p = [&sof3Tables, tolcrit](const long long i) -> double
         {
             const auto& tb = sof3Tables.getTable<Opm::Sof3Table>(i);
             return critical_oil(tb, tb.getKrogColumn(), tolcrit);
@@ -809,27 +809,27 @@ namespace {
         const auto& sgwfnTables = tm.getSgwfnTables();
         const auto& gsfTables = tm.getGsfTables();
 
-        const auto& famI_sgof = [&sgofTables]( int i ) {
+        const auto& famI_sgof = [&sgofTables]( long long i ) {
             return sgofTables.getTable<Opm::SgofTable>( i ).getKrgColumn().back();
         };
 
-        const auto& famI_sgof_let = [&sgofLetTables]( int i ) {
+        const auto& famI_sgof_let = [&sgofLetTables]( long long i ) {
             return sgofLetTables[i].krt1_relperm;
         };
 
-        const auto& famI_slgof = [&slgofTables]( int i ) {
+        const auto& famI_slgof = [&slgofTables]( long long i ) {
             return slgofTables.getTable<Opm::SlgofTable>( i ).getKrgColumn().front();
         };
 
-        const auto& famII = [&sgfnTables]( int i ) {
+        const auto& famII = [&sgfnTables]( long long i ) {
             return sgfnTables.getTable<Opm::SgfnTable>( i ).getKrgColumn().back();
         };
 
-        const auto& famII_sgwfn = [&sgwfnTables]( int i ) {
+        const auto& famII_sgwfn = [&sgwfnTables]( long long i ) {
             return sgwfnTables.getTable<Opm::SgwfnTable>( i ).getKrgColumn().back();
         };
 
-        const auto& famIII = [&gsfTables]( int i ) {
+        const auto& famIII = [&gsfTables]( long long i ) {
             return gsfTables.getTable<Opm::GsfTable>( i ).getKrgColumn().back();
         };
 
@@ -887,7 +887,7 @@ namespace {
             }
         }
 
-        const auto famI_sgof = [&sgofTables, &sr](const int i) -> double
+        const auto famI_sgof = [&sgofTables, &sr](const long long i) -> double
         {
             const auto& sgof = sgofTables.getTable<Opm::SgofTable>(i);
             const auto  ix   = sgof.getSgColumn().lookup(sr[i]);
@@ -895,12 +895,12 @@ namespace {
             return sgof.getKrgColumn().eval(ix);
         };
 
-        const auto famI_sgof_let = [&sgofLetTables](const int i) -> double
+        const auto famI_sgof_let = [&sgofLetTables](const long long i) -> double
         {
             return sgofLetTables[i].krt1_relperm;
         };
 
-        const auto famI_slgof = [&slgofTables, &sr](const int i) -> double
+        const auto famI_slgof = [&slgofTables, &sr](const long long i) -> double
         {
             const auto& slgof = slgofTables.getTable<Opm::SlgofTable>(i);
             const auto  ix    = slgof.getSlColumn().lookup(1.0 - sr[i]); // Sg -> Sl
@@ -908,7 +908,7 @@ namespace {
             return slgof.getKrgColumn().eval(ix);
         };
 
-        const auto famII = [&sgfnTables, &sr](const int i) -> double
+        const auto famII = [&sgfnTables, &sr](const long long i) -> double
         {
             const auto& sgfn = sgfnTables.getTable<Opm::SgfnTable>(i);
             const auto  ix   = sgfn.getSgColumn().lookup(sr[i]);
@@ -916,7 +916,7 @@ namespace {
             return sgfn.getKrgColumn().eval(ix);
         };
 
-        const auto famII_sgwfn = [&sgwfnTables, &sr](const int i) -> double
+        const auto famII_sgwfn = [&sgwfnTables, &sr](const long long i) -> double
         {
             const auto& sgwfn = sgwfnTables.getTable<Opm::SgwfnTable>(i);
             const auto  ix   = sgwfn.getSgColumn().lookup(sr[i]);
@@ -924,7 +924,7 @@ namespace {
             return sgwfn.getKrgColumn().eval(ix);
         };
 
-        const auto famIII = [&gsfTables, &sr](const int i) -> double
+        const auto famIII = [&gsfTables, &sr](const long long i) -> double
         {
             const auto& gsf = gsfTables.getTable<Opm::GsfTable>(i);
             const auto  ix   = gsf.getSgColumn().lookup(sr[i]);
@@ -985,7 +985,7 @@ namespace {
             }
         }
 
-        const auto& famI = [&swofTables, &sr](const int i) -> double
+        const auto& famI = [&swofTables, &sr](const long long i) -> double
         {
             const auto& swof = swofTables.getTable<Opm::SwofTable>(i);
             const auto  ix   = swof.getSwColumn().lookup(sr[i]);
@@ -993,12 +993,12 @@ namespace {
             return swof.getKrwColumn().eval(ix);
         };
 
-        const auto& famI_let = [&swofLetTables](const int i) -> double
+        const auto& famI_let = [&swofLetTables](const long long i) -> double
         {
             return swofLetTables[i].krt1_relperm;
         };
 
-        const auto& famII = [&swfnTables, &sr](const int i) -> double
+        const auto& famII = [&swfnTables, &sr](const long long i) -> double
         {
             const auto& swfn = swfnTables.getTable<Opm::SwfnTable>(i);
             const auto  ix   = swfn.getSwColumn().lookup(sr[i]);
@@ -1006,7 +1006,7 @@ namespace {
             return swfn.getKrwColumn().eval(ix);
         };
 
-        const auto& famII_sgwfn = [&sgwfnTables, &sr](const int i) -> double
+        const auto& famII_sgwfn = [&sgwfnTables, &sr](const long long i) -> double
         {
             const auto& sgwfn = sgwfnTables.getTable<Opm::SgwfnTable>(i);
             const auto  ix   = sgwfn.getSgColumn().lookup(1. - sr[i]);
@@ -1014,7 +1014,7 @@ namespace {
             return sgwfn.getKrgwColumn().eval(ix);
         };
 
-        const auto& famIII = [&wsfTables, &sr](const int i) -> double
+        const auto& famIII = [&wsfTables, &sr](const long long i) -> double
         {
             const auto& wsf = wsfTables.getTable<Opm::WsfTable>(i);
             const auto  ix   = wsf.getSwColumn().lookup(sr[i]);
@@ -1059,7 +1059,7 @@ namespace {
         const auto& sof2Tables = tm.getSof2Tables();
         const auto& sof3Tables = tm.getSof3Tables();
 
-        const auto famI = [&swofTables, &ep](const int i) -> double
+        const auto famI = [&swofTables, &ep](const long long i) -> double
         {
             const auto& swof = swofTables.getTable<Opm::SwofTable>(i);
             const auto  sr   = ep.critical.water[i] + ep.connate.gas[i];
@@ -1068,12 +1068,12 @@ namespace {
             return swof.getKrowColumn().eval(ix);
         };
 
-        const auto famI_let = [&swofLetTables](const int i) -> double
+        const auto famI_let = [&swofLetTables](const long long i) -> double
         {
             return swofLetTables[i].krt2_relperm;
         };
 
-        const auto famII_3p = [&sof3Tables, &ep](const int i) -> double
+        const auto famII_3p = [&sof3Tables, &ep](const long long i) -> double
         {
             const auto& sof3 = sof3Tables.getTable<Opm::Sof3Table>(i);
             const auto  sr   = 1.0 - ep.critical.water[i] - ep.connate.gas[i];
@@ -1082,7 +1082,7 @@ namespace {
             return sof3.getKrowColumn().eval(ix);
         };
 
-        const auto famII_2p = [&sof2Tables, &ep](const int i) -> double
+        const auto famII_2p = [&sof2Tables, &ep](const long long i) -> double
         {
             const auto& sof2 = sof2Tables.getTable<Opm::Sof2Table>(i);
             const auto  sr   = 1.0 - ep.critical.water[i] - ep.connate.gas[i];
@@ -1128,7 +1128,7 @@ namespace {
         const auto& sof2Tables = tm.getSof2Tables();
         const auto& sof3Tables = tm.getSof3Tables();
 
-        const auto famI_sgof = [&sgofTables, &ep](const int i) -> double
+        const auto famI_sgof = [&sgofTables, &ep](const long long i) -> double
         {
             const auto& sgof = sgofTables.getTable<Opm::SgofTable>(i);
             const auto  ix   = sgof.getSgColumn().lookup(ep.critical.gas[i]);
@@ -1137,12 +1137,12 @@ namespace {
             return sgof.getKrogColumn().eval(ix);
         };
 
-        const auto famI_sgof_let = [&sgofLetTables](const int i) -> double
+        const auto famI_sgof_let = [&sgofLetTables](const long long i) -> double
         {
             return sgofLetTables[i].krt2_relperm;
         };
 
-        const auto famI_slgof = [&slgofTables, &ep](const int i) -> double
+        const auto famI_slgof = [&slgofTables, &ep](const long long i) -> double
         {
             const auto& slgof = slgofTables.getTable<Opm::SlgofTable>(i);
             const auto  ix    = slgof.getSlColumn().lookup(1.0 - ep.critical.gas[i]);
@@ -1150,7 +1150,7 @@ namespace {
             return slgof.getKrogColumn().eval(ix);
         };
 
-        const auto famII_3p = [&sof3Tables, &ep](const int i) -> double
+        const auto famII_3p = [&sof3Tables, &ep](const long long i) -> double
         {
             const auto& sof3 = sof3Tables.getTable<Opm::Sof3Table>(i);
             const auto  sr   = 1.0 - ep.critical.gas[i] - ep.connate.water[i];
@@ -1159,7 +1159,7 @@ namespace {
             return sof3.getKrogColumn().eval(ix);
         };
 
-        const auto famII_2p = [&sof2Tables, &ep](const int i) -> double
+        const auto famII_2p = [&sof2Tables, &ep](const long long i) -> double
         {
             const auto& sof2 = sof2Tables.getTable<Opm::Sof2Table>(i);
             const auto  sr   = 1.0 - ep.critical.gas[i] - ep.connate.water[i];
@@ -1214,27 +1214,27 @@ namespace {
         const auto& sgwfnTables = tm.getSgwfnTables();
         const auto& gsfTables = tm.getGsfTables();
 
-        const auto& famI_sgof = [&sgofTables]( int i ) {
+        const auto& famI_sgof = [&sgofTables]( long long i ) {
             return sgofTables.getTable<Opm::SgofTable>( i ).getPcogColumn().back();
         };
 
-        const auto& famI_sgof_let = [&sgofLetTables]( int i ) {
+        const auto& famI_sgof_let = [&sgofLetTables]( long long i ) {
             return sgofLetTables[i].pct_pc;
         };
 
-        const auto& famI_slgof = [&slgofTables]( int i ) {
+        const auto& famI_slgof = [&slgofTables]( long long i ) {
             return slgofTables.getTable<Opm::SlgofTable>( i ).getPcogColumn().front();
         };
 
-        const auto& famII = [&sgfnTables]( int i ) {
+        const auto& famII = [&sgfnTables]( long long i ) {
             return sgfnTables.getTable<Opm::SgfnTable>( i ).getPcogColumn().back();
         };
 
-        const auto& famII_sgwfn = [&sgwfnTables]( int i ) {
+        const auto& famII_sgwfn = [&sgwfnTables]( long long i ) {
             return sgwfnTables.getTable<Opm::SgwfnTable>( i ).getPcgwColumn().back();
         };
 
-        const auto& famIII = [&gsfTables]( int i ) {
+        const auto& famIII = [&gsfTables]( long long i ) {
             return gsfTables.getTable<Opm::GsfTable>( i ).getPcgwColumn().back();
         };
 
@@ -1274,15 +1274,15 @@ namespace {
         const auto& swofLetTables = tm.getSwofletTable();
         const auto& swfnTables = tm.getSwfnTables();
 
-        const auto& famI = [&swofTables]( int i ) {
+        const auto& famI = [&swofTables]( long long i ) {
             return swofTables.getTable<Opm::SwofTable>( i ).getPcowColumn().front();
         };
 
-        const auto& famI_let = [&swofLetTables]( int i ) {
+        const auto& famI_let = [&swofLetTables]( long long i ) {
             return swofLetTables[i].pct_pc;
         };
 
-        const auto& famII = [&swfnTables]( int i ) {
+        const auto& famII = [&swfnTables]( long long i ) {
             return swfnTables.getTable<Opm::SwfnTable>( i ).getPcowColumn().front();
         };
 
@@ -1321,7 +1321,7 @@ namespace {
         const auto& sof2Tables = tm.getSof2Tables();
         const auto& sof3Tables = tm.getSof3Tables();
 
-        const auto& famI = [&other_f1,wat]( int i ) {
+        const auto& famI = [&other_f1,wat]( long long i ) {
             // In O/W/G runs this relies on Krog(Sg=0) == Krow(Sw=Swco),
             // meaning that the first entry in the KRO column--in each
             // saturation region--is equal in keywords SGOF and SWOF.
@@ -1330,23 +1330,23 @@ namespace {
                 : other_f1.getTable<Opm::SgofTable>( i ).getKrogColumn().front();
         };
 
-        const auto& famI_let_wat = [&wat_f1_let]( int i ) {
+        const auto& famI_let_wat = [&wat_f1_let]( long long i ) {
             // In O/W/G runs this relies on Krog(Sg=0) == Krow(Sw=Swco),
             // meaning that in each region krt2_relperm is equal for SGOFLET and SWOFLET.
             return wat_f1_let[i].krt2_relperm;
         };
 
-        const auto& famI_let_gas = [&gas_f1_let]( int i ) {
+        const auto& famI_let_gas = [&gas_f1_let]( long long i ) {
             // In O/W/G runs this relies on Krog(Sg=0) == Krow(Sw=Swco),
             // meaning that in each region krt2_relperm is equal for SGOFLET and SWOFLET.
             return gas_f1_let[i].krt2_relperm;
         };
 
-        const auto& famII_2p = [&sof2Tables]( int i ) {
+        const auto& famII_2p = [&sof2Tables]( long long i ) {
             return sof2Tables.getTable<Opm::Sof2Table>( i ).getKroColumn().back();
         };
 
-        const auto& famII_3p = [&sof3Tables]( int i ) {
+        const auto& famII_3p = [&sof3Tables]( long long i ) {
             return sof3Tables.getTable<Opm::Sof3Table>( i ).getKrowColumn().back();
         };
 
@@ -1387,23 +1387,23 @@ namespace {
         const auto& sgwfnTables = tm.getSgwfnTables();
         const auto& wsfTables = tm.getWsfTables();
 
-        const auto& famI = [&swofTables]( int i ) {
+        const auto& famI = [&swofTables]( long long i ) {
             return swofTables.getTable<Opm::SwofTable>( i ).getKrwColumn().back();
         };
 
-        const auto& famI_let = [&swofLetTables]( int i ) {
+        const auto& famI_let = [&swofLetTables]( long long i ) {
             return swofLetTables[i].krt1_relperm;
         };
 
-        const auto& famII = [&swfnTables]( int i ) {
+        const auto& famII = [&swfnTables]( long long i ) {
             return swfnTables.getTable<Opm::SwfnTable>( i ).getKrwColumn().back();
         };
 
-        const auto& famII_sgwfn = [&sgwfnTables]( int i ) {
+        const auto& famII_sgwfn = [&sgwfnTables]( long long i ) {
             return sgwfnTables.getTable<Opm::SgwfnTable>( i ).getKrgwColumn().front();
         };
 
-        const auto& famIII = [&wsfTables]( int i ) {
+        const auto& famIII = [&wsfTables]( long long i ) {
             return wsfTables.getTable<Opm::WsfTable>( i ).getKrwColumn().back();
         };
 
@@ -1428,7 +1428,7 @@ namespace {
     }
 
     double selectValue(const Opm::TableContainer& depthTables,
-                       int tableIdx,
+                       long long tableIdx,
                        const std::string& columnName,
                        double cellDepth,
                        double fallbackValue,
@@ -1438,7 +1438,7 @@ namespace {
 
         const auto& table = depthTables.getTable( tableIdx );
 
-        if( tableIdx >= int( depthTables.size() ) )
+        if( tableIdx >= (long long)( depthTables.size() ) )
             throw std::invalid_argument("Not enough tables!");
 
         // evaluate the table at the cell depth
@@ -1452,8 +1452,8 @@ namespace {
     }
 
     void checkSatRegions(const std::size_t  cellIdx,
-                         const int          satfunc,
-                         const int          endfunc,
+                         const long long          satfunc,
+                         const long long          endfunc,
                          const std::string& satregname)
     {
         if ((satfunc < 0) || (endfunc < 0)) {
@@ -1472,8 +1472,8 @@ namespace {
                 const std::vector< double >& fallbackValues,
                 const Opm::TableManager& tableManager,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>& satnum_data,
-                const std::vector<int>& endnum_data,
+                const std::vector<long long>& satnum_data,
+                const std::vector<long long>& endnum_data,
                 bool useOneMinusTableValue)
     {
         std::vector< double > values( size, 0 );
@@ -1486,8 +1486,8 @@ namespace {
         const bool useEnptvd = tableManager.useEnptvd();
         const auto& enptvdTables = tableManager.getEnptvdTables();
         for( size_t cellIdx = 0; cellIdx < values.size(); cellIdx++ ) {
-            int satTableIdx = satnum_data[cellIdx] - 1;
-            int endNum = endnum_data[cellIdx] - 1;
+            long long satTableIdx = satnum_data[cellIdx] - 1;
+            long long endNum = endnum_data[cellIdx] - 1;
 
             // Active cell better have {SAT,END}NUM > 0.
             checkSatRegions(cellIdx, satTableIdx, endNum, "SATNUM");
@@ -1509,8 +1509,8 @@ namespace {
                 const std::vector< double >& fallBackValues,
                 const Opm::TableManager& tableManager,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>& imbnum_data,
-                const std::vector<int>& endnum_data,
+                const std::vector<long long>& imbnum_data,
+                const std::vector<long long>& endnum_data,
                 bool useOneMinusTableValue )
     {
         std::vector< double > values( size, 0 );
@@ -1523,8 +1523,8 @@ namespace {
         const bool useImptvd = tableManager.useImptvd();
         const Opm::TableContainer& imptvdTables = tableManager.getImptvdTables();
         for( size_t cellIdx = 0; cellIdx < values.size(); cellIdx++ ) {
-            int imbTableIdx = imbnum_data[ cellIdx ] - 1;
-            int endNum = endnum_data[ cellIdx ] - 1;
+            long long imbTableIdx = imbnum_data[ cellIdx ] - 1;
+            long long endNum = endnum_data[ cellIdx ] - 1;
 
             // Active cell better have {IMB,END}NUM > 0.
             checkSatRegions(cellIdx, imbTableIdx, endNum, "IMBNUM");
@@ -1545,8 +1545,8 @@ namespace {
                 const Opm::Phases&         /* phases */,
                 const RawTableEndPoints&   ep,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    endnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    endnum)
     {
         return satnumApply(cell_depth.size(), "SGCO", ep.connate.gas,
                            tableManager, cell_depth, satnum, endnum, false);
@@ -1557,8 +1557,8 @@ namespace {
                  const Opm::Phases&         /* phases */,
                  const RawTableEndPoints&   ep,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         return imbnumApply(cell_depth.size(), "SGCO", ep.connate.gas,
                            tableManager, cell_depth, imbnum, endnum, false);
@@ -1569,8 +1569,8 @@ namespace {
                 const Opm::Phases&         /* phases */,
                 const RawTableEndPoints&   ep,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    endnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    endnum)
     {
         return satnumApply(cell_depth.size(), "SGMAX", ep.maximum.gas,
                            tableManager, cell_depth, satnum, endnum, false);
@@ -1581,8 +1581,8 @@ namespace {
                  const Opm::Phases&         /* phases */,
                  const RawTableEndPoints&   ep,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         return imbnumApply(cell_depth.size(), "SGMAX", ep.maximum.gas,
                            tableManager, cell_depth, imbnum, endnum, false);
@@ -1593,8 +1593,8 @@ namespace {
                 const Opm::Phases&         /* phases */,
                 const RawTableEndPoints&   ep,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    endnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    endnum)
     {
         return satnumApply(cell_depth.size(), "SWCO", ep.connate.water,
                            tableManager, cell_depth, satnum, endnum, false);
@@ -1605,8 +1605,8 @@ namespace {
                  const Opm::Phases&         /* phases */,
                  const RawTableEndPoints&   ep,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         return imbnumApply(cell_depth.size(), "SWCO", ep.connate.water,
                            tableManager, cell_depth, imbnum, endnum, false);
@@ -1617,8 +1617,8 @@ namespace {
                 const Opm::Phases&         /* phases */,
                 const RawTableEndPoints&   ep,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    endnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    endnum)
     {
         return satnumApply(cell_depth.size(), "SWMAX", ep.maximum.water,
                            tableManager, cell_depth, satnum, endnum, true);
@@ -1629,8 +1629,8 @@ namespace {
                  const Opm::Phases&         /* phases */,
                  const RawTableEndPoints&   ep,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         return imbnumApply(cell_depth.size(), "SWMAX", ep.maximum.water,
                            tableManager, cell_depth, imbnum, endnum, true);
@@ -1641,8 +1641,8 @@ namespace {
                  const Opm::Phases&         /* phases */,
                  const RawTableEndPoints&   ep,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    satnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    satnum,
+                 const std::vector<long long>&    endnum)
     {
         return satnumApply(cell_depth.size(), "SGCRIT", ep.critical.gas,
                            tableManager, cell_depth, satnum, endnum, false);
@@ -1653,8 +1653,8 @@ namespace {
                   const Opm::Phases&         /* phases */,
                   const RawTableEndPoints&   ep,
                   const std::vector<double>& cell_depth,
-                  const std::vector<int>&    imbnum,
-                  const std::vector<int>&    endnum)
+                  const std::vector<long long>&    imbnum,
+                  const std::vector<long long>&    endnum)
     {
         return imbnumApply(cell_depth.size(), "SGCRIT", ep.critical.gas,
                            tableManager, cell_depth, imbnum, endnum, false);
@@ -1665,8 +1665,8 @@ namespace {
                   const Opm::Phases&         /* phases */,
                   const RawTableEndPoints&   ep,
                   const std::vector<double>& cell_depth,
-                  const std::vector<int>&    satnum,
-                  const std::vector<int>&    endnum)
+                  const std::vector<long long>&    satnum,
+                  const std::vector<long long>&    endnum)
     {
         return satnumApply(cell_depth.size(), "SOWCRIT", ep.critical.oil_in_water,
                            tableManager, cell_depth, satnum, endnum, false);
@@ -1677,8 +1677,8 @@ namespace {
                    const Opm::Phases&         /* phases */,
                    const RawTableEndPoints&   ep,
                    const std::vector<double>& cell_depth,
-                   const std::vector<int>&    imbnum,
-                   const std::vector<int>&    endnum)
+                   const std::vector<long long>&    imbnum,
+                   const std::vector<long long>&    endnum)
     {
         return imbnumApply(cell_depth.size(), "SOWCRIT", ep.critical.oil_in_water,
                            tableManager, cell_depth, imbnum, endnum, false);
@@ -1689,8 +1689,8 @@ namespace {
                   const Opm::Phases&         /* phases */,
                   const RawTableEndPoints&   ep,
                   const std::vector<double>& cell_depth,
-                  const std::vector<int>&    satnum,
-                  const std::vector<int>&    endnum)
+                  const std::vector<long long>&    satnum,
+                  const std::vector<long long>&    endnum)
     {
         return satnumApply(cell_depth.size(), "SOGCRIT", ep.critical.oil_in_gas,
                            tableManager, cell_depth, satnum, endnum, false);
@@ -1701,8 +1701,8 @@ namespace {
                    const Opm::Phases&         /* phases */,
                    const RawTableEndPoints&   ep,
                    const std::vector<double>& cell_depth,
-                   const std::vector<int>&    imbnum,
-                   const std::vector<int>&    endnum)
+                   const std::vector<long long>&    imbnum,
+                   const std::vector<long long>&    endnum)
     {
         return imbnumApply(cell_depth.size(), "SOGCRIT", ep.critical.oil_in_gas,
                            tableManager, cell_depth, imbnum, endnum, false);
@@ -1713,8 +1713,8 @@ namespace {
                  const Opm::Phases&         /* phases */,
                  const RawTableEndPoints&   ep,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    satnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    satnum,
+                 const std::vector<long long>&    endnum)
     {
         return satnumApply(cell_depth.size(), "SWCRIT", ep.critical.water,
                            tableManager, cell_depth, satnum, endnum, false);
@@ -1725,8 +1725,8 @@ namespace {
                   const Opm::Phases&         /* phases */,
                   const RawTableEndPoints&   ep,
                   const std::vector<double>& cell_depth,
-                  const std::vector<int>&    imbnum,
-                  const std::vector<int>&    endnum)
+                  const std::vector<long long>&    imbnum,
+                  const std::vector<long long>&    endnum)
     {
         return imbnumApply(cell_depth.size(), "SWCRIT", ep.critical.water,
                            tableManager, cell_depth, imbnum, endnum, false);
@@ -1737,8 +1737,8 @@ namespace {
                 const Opm::Phases&         phases,
                 const RawTableEndPoints&   /* ep */,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    endnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    endnum)
     {
         const auto max_pcow = findMaxPcow(tableManager, phases);
         return satnumApply(cell_depth.size(), "PCW", max_pcow, tableManager,
@@ -1750,8 +1750,8 @@ namespace {
                  const Opm::Phases&         phases,
                  const RawTableEndPoints&   /* ep */,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         const auto max_pcow = findMaxPcow(tableManager, phases);
         return imbnumApply(cell_depth.size(), "IPCW", max_pcow, tableManager,
@@ -1763,8 +1763,8 @@ namespace {
                 const Opm::Phases&         phases,
                 const RawTableEndPoints&   /* ep */,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    imbnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    imbnum)
     {
         const auto max_pcog = findMaxPcog(tableManager, phases);
         return satnumApply(cell_depth.size(), "PCG", max_pcog, tableManager,
@@ -1776,8 +1776,8 @@ namespace {
                  const Opm::Phases&         phases,
                  const RawTableEndPoints&   /* ep */,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         const auto max_pcog = findMaxPcog(tableManager, phases);
         return imbnumApply(cell_depth.size(), "IPCG", max_pcog, tableManager,
@@ -1789,8 +1789,8 @@ namespace {
                 const Opm::Phases&         phases,
                 const RawTableEndPoints&   /* ep */,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    endnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    endnum)
     {
         const auto max_krw = findMaxKrw(tableManager, phases);
         return satnumApply(cell_depth.size(), "KRW", max_krw, tableManager,
@@ -1802,8 +1802,8 @@ namespace {
                  const Opm::Phases&         phases,
                  const RawTableEndPoints&   /* ep */,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         const auto max_krw = findMaxKrw(tableManager, phases);
         return imbnumApply(cell_depth.size(), "IKRW", max_krw, tableManager,
@@ -1815,8 +1815,8 @@ namespace {
                  const Opm::Phases&         phases,
                  const RawTableEndPoints&   ep,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    satnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    satnum,
+                 const std::vector<long long>&    endnum)
     {
         const auto krwr = findKrwr(tableManager, phases, ep);
         return satnumApply(cell_depth.size(), "KRWR", krwr, tableManager,
@@ -1828,8 +1828,8 @@ namespace {
                   const Opm::Phases&         phases,
                   const RawTableEndPoints&   ep,
                   const std::vector<double>& cell_depth,
-                  const std::vector<int>&    imbnum,
-                  const std::vector<int>&    endnum)
+                  const std::vector<long long>&    imbnum,
+                  const std::vector<long long>&    endnum)
     {
         const auto krwr = findKrwr(tableManager, phases, ep);
         return imbnumApply(cell_depth.size(), "IKRWR", krwr, tableManager,
@@ -1841,8 +1841,8 @@ namespace {
                 const Opm::Phases&         phases,
                 const RawTableEndPoints&   /* ep */,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    endnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    endnum)
     {
         const auto max_kro = findMaxKro(tableManager, phases);
         return satnumApply(cell_depth.size(), "KRO", max_kro, tableManager,
@@ -1854,8 +1854,8 @@ namespace {
                  const Opm::Phases&         phases,
                  const RawTableEndPoints&   /* ep */,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         const auto max_kro = findMaxKro(tableManager, phases);
         return imbnumApply(cell_depth.size(), "IKRO", max_kro, tableManager,
@@ -1867,8 +1867,8 @@ namespace {
                   const Opm::Phases&         phases,
                   const RawTableEndPoints&   ep,
                   const std::vector<double>& cell_depth,
-                  const std::vector<int>&    satnum,
-                  const std::vector<int>&    endnum)
+                  const std::vector<long long>&    satnum,
+                  const std::vector<long long>&    endnum)
     {
         const auto krorw = findKrorw(tableManager, phases, ep);
         return satnumApply(cell_depth.size(), "KRORW", krorw, tableManager,
@@ -1880,8 +1880,8 @@ namespace {
                    const Opm::Phases&         phases,
                    const RawTableEndPoints&   ep,
                    const std::vector<double>& cell_depth,
-                   const std::vector<int>&    imbnum,
-                   const std::vector<int>&    endnum)
+                   const std::vector<long long>&    imbnum,
+                   const std::vector<long long>&    endnum)
     {
         const auto krorw = findKrorw(tableManager, phases, ep);
         return imbnumApply(cell_depth.size(), "IKRORW", krorw, tableManager,
@@ -1893,8 +1893,8 @@ namespace {
                   const Opm::Phases&         phases,
                   const RawTableEndPoints&   ep,
                   const std::vector<double>& cell_depth,
-                  const std::vector<int>&    satnum,
-                  const std::vector<int>&    endnum)
+                  const std::vector<long long>&    satnum,
+                  const std::vector<long long>&    endnum)
     {
         const auto krorg = findKrorg(tableManager, phases, ep);
         return satnumApply(cell_depth.size(), "KRORG", krorg, tableManager,
@@ -1906,8 +1906,8 @@ namespace {
                    const Opm::Phases&         phases,
                    const RawTableEndPoints&   ep,
                    const std::vector<double>& cell_depth,
-                   const std::vector<int>&    imbnum,
-                   const std::vector<int>&    endnum)
+                   const std::vector<long long>&    imbnum,
+                   const std::vector<long long>&    endnum)
     {
         const auto krorg = findKrorg(tableManager, phases, ep);
         return imbnumApply(cell_depth.size(), "IKRORG", krorg, tableManager,
@@ -1919,8 +1919,8 @@ namespace {
                 const Opm::Phases&         phases,
                 const RawTableEndPoints&   /* ep */,
                 const std::vector<double>& cell_depth,
-                const std::vector<int>&    satnum,
-                const std::vector<int>&    endnum)
+                const std::vector<long long>&    satnum,
+                const std::vector<long long>&    endnum)
     {
         const auto max_krg = findMaxKrg(tableManager, phases);
         return satnumApply(cell_depth.size(), "KRG", max_krg, tableManager,
@@ -1932,8 +1932,8 @@ namespace {
                  const Opm::Phases&         phases,
                  const RawTableEndPoints&   /* ep */,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    imbnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    imbnum,
+                 const std::vector<long long>&    endnum)
     {
         const auto max_krg = findMaxKrg(tableManager, phases);
         return imbnumApply(cell_depth.size(), "IKRG", max_krg, tableManager,
@@ -1945,8 +1945,8 @@ namespace {
                  const Opm::Phases&         phases,
                  const RawTableEndPoints&   ep,
                  const std::vector<double>& cell_depth,
-                 const std::vector<int>&    satnum,
-                 const std::vector<int>&    endnum)
+                 const std::vector<long long>&    satnum,
+                 const std::vector<long long>&    endnum)
     {
         const auto krgr = findKrgr(tableManager, phases, ep);
         return satnumApply(cell_depth.size(), "KRGR", krgr, tableManager,
@@ -1958,8 +1958,8 @@ namespace {
                   const Opm::Phases&         phases,
                   const RawTableEndPoints&   ep,
                   const std::vector<double>& cell_depth,
-                  const std::vector<int>&    imbnum,
-                  const std::vector<int>&    endnum)
+                  const std::vector<long long>&    imbnum,
+                  const std::vector<long long>&    endnum)
     {
         const auto krgr = findKrgr(tableManager, phases, ep);
         return imbnumApply(cell_depth.size(), "IKRGR", krgr, tableManager,
@@ -2018,8 +2018,8 @@ Opm::satfunc::init(const std::string&         keyword,
                    const Phases&              phases,
                    const RawTableEndPoints&   ep,
                    const std::vector<double>& cell_depth,
-                   const std::vector<int>&    num,
-                   const std::vector<int>&    endnum)
+                   const std::vector<long long>&    num,
+                   const std::vector<long long>&    endnum)
 {
     using func_type = decltype(&IKRGEndpoint);
 

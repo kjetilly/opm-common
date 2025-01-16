@@ -60,7 +60,7 @@ namespace Opm {
 
         SummaryConfigNode& parameterType(const Type type);
         SummaryConfigNode& namedEntity(std::string name);
-        SummaryConfigNode& number(const int num);
+        SummaryConfigNode& number(const long long num);
         SummaryConfigNode& isUserDefined(const bool userDefined);
         SummaryConfigNode& fip_region(const std::string& fip_region);
 
@@ -68,7 +68,7 @@ namespace Opm {
         Category category() const { return this->category_; }
         Type type() const { return this->type_; }
         const std::string& namedEntity() const { return this->name_; }
-        int number() const { return this->number_; }
+        long long number() const { return this->number_; }
         bool isUserDefined() const { return this->userDefined_; }
         const std::string& fip_region() const { return *this->fip_region_ ; }
 
@@ -98,7 +98,7 @@ namespace Opm {
         KeywordLocation loc{};
         Type        type_{ Type::Undefined };
         std::string name_{};
-        int         number_{std::numeric_limits<int>::min()};
+        long long         number_{std::numeric_limits<long long>::min()};
         std::optional<std::string> fip_region_;
         bool        userDefined_{false};
     };

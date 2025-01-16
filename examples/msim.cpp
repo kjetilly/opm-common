@@ -34,7 +34,7 @@
 #include <opm/msim/msim.hpp>
 
 
-int main(int /* argc */, char** argv) {
+long long main(long long /* argc */, char** argv) {
     std::string deck_file = argv[1];
     Opm::Parser parser;
     Opm::ParseContext parse_context;

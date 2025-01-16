@@ -167,13 +167,13 @@ namespace Opm {
 
 
         Connection() = default;
-        Connection(int i, int j, int k,
+        Connection(long long i, long long j, long long k,
                    std::size_t          global_index,
-                   int                  complnum,
+                   long long                  complnum,
                    State                state,
                    Direction            direction,
                    CTFKind              ctf_kind,
-                   const int            satTableId,
+                   const long long            satTableId,
                    double               depth,
                    const CTFProperties& ctf_properties,
                    const std::size_t    sort_value,
@@ -186,17 +186,17 @@ namespace Opm {
         static Connection serializationTestObject();
 
         bool attachedToSegment() const;
-        bool sameCoordinate(const int i, const int j, const int k) const;
-        int getI() const;
-        int getJ() const;
-        int getK() const;
+        bool sameCoordinate(const long long i, const long long j, const long long k) const;
+        long long getI() const;
+        long long getJ() const;
+        long long getK() const;
         std::size_t global_index() const;
         State state() const;
         Direction dir() const;
         double depth() const;
-        int satTableId() const;
-        int complnum() const;
-        int segment() const;
+        long long satTableId() const;
+        long long complnum() const;
+        long long segment() const;
         double wpimult() const;
         double CF() const;
         double Kh() const;
@@ -239,7 +239,7 @@ namespace Opm {
         void setInjMult(const InjMult& inj_mult);
         void setFilterCake(const FilterCake& filter_cake);
         void setState(State state);
-        void setComplnum(int compnum);
+        void setComplnum(long long compnum);
         void setSkinFactor(double skin_factor);
         void setDFactor(double d_factor);
         void setKe(double Ke);
@@ -251,9 +251,9 @@ namespace Opm {
         bool prepareWellPIScaling();
         bool applyWellPIScaling(const double scaleFactor);
 
-        void updateSegmentRST(int segment_number_arg,
+        void updateSegmentRST(long long segment_number_arg,
                               double center_depth_arg);
-        void updateSegment(int segment_number_arg,
+        void updateSegment(long long segment_number_arg,
                            double center_depth_arg,
                            std::size_t compseg_insert_index,
                            const std::optional<std::pair<double,double>>& perf_range);
@@ -287,11 +287,11 @@ namespace Opm {
         Direction direction { Direction::Z };
         double center_depth { 0.0 };
         State open_state { State::SHUT };
-        int sat_tableId { -1 };
-        int m_complnum { -1 };
+        long long sat_tableId { -1 };
+        long long m_complnum { -1 };
         CTFProperties ctf_properties_{};
 
-        std::array<int,3> ijk{};
+        std::array<long long,3> ijk{};
         CTFKind m_ctfkind { CTFKind::DeckValue };
         std::optional<InjMult> m_injmult{};
         std::size_t m_global_index{};
@@ -355,7 +355,7 @@ namespace Opm {
         // Associate segment number
         //
         // 0 means the connection is not associated to a segment.
-        int segment_number { 0 };
+        long long segment_number { 0 };
 
         double m_wpimult { 1.0 };
 

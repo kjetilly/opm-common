@@ -111,7 +111,7 @@ namespace {
     std::size_t targetSizeRockFromTabdims(const Opm::Deck& deck)
     {
         const auto& tabd = deck.get<Opm::ParserKeywords::TABDIMS>().back().getRecord(0);
-        const auto ntPvt = tabd.getItem<Opm::ParserKeywords::TABDIMS::NTPVT>().get<int>(0);
+        const auto ntPvt = tabd.getItem<Opm::ParserKeywords::TABDIMS::NTPVT>().get<long long>(0);
 
         if (! deck.hasKeyword<Opm::ParserKeywords::ROCKOPTS>()) {
             return ntPvt;
@@ -131,13 +131,13 @@ namespace {
         }
 
         if (tableType == Opm::ParserKeywords::SATNUM::keywordName) {
-            return tabd.getItem<Opm::ParserKeywords::TABDIMS::NTSFUN>().get<int>(0);
+            return tabd.getItem<Opm::ParserKeywords::TABDIMS::NTSFUN>().get<long long>(0);
         }
 
         if (tableType == Opm::ParserKeywords::ROCKNUM::keywordName) {
             const auto& ntrocc = tabd.getItem<Opm::ParserKeywords::TABDIMS::NTROCC>();
 
-            return ntrocc.defaultApplied(0) ? ntPvt : ntrocc.get<int>(0);
+            return ntrocc.defaultApplied(0) ? ntPvt : ntrocc.get<long long>(0);
         }
 
         throw std::invalid_argument {
@@ -584,7 +584,7 @@ bool ParserState::check_section_keywords(bool& has_edit, bool& has_regions, bool
     has_regions = false;
     has_summary = false;
 
-    int n = 0;
+    long long n = 0;
     auto p0 = root_file_str.find_first_not_of(" \t\n");
 
     while (p0 != std::string::npos){
@@ -855,7 +855,7 @@ newRawKeyword(const ParserKeyword& parserKeyword,
         const auto& sizeDefinitionKeyword = deck[keyword_size.keyword()].back();
         const auto& record = sizeDefinitionKeyword.getRecord(0);
 
-        auto targetSize = record.getItem(keyword_size.item()).get<int>(0) + keyword_size.size_shift();
+        auto targetSize = record.getItem(keyword_size.item()).get<long long>(0) + keyword_size.size_shift();
         if (parserKeyword.isAlternatingKeyword()) {
             targetSize *= std::distance(parserKeyword.begin(), parserKeyword.end());
         }
@@ -889,7 +889,7 @@ newRawKeyword(const ParserKeyword& parserKeyword,
     const auto& record   = keyword.getRecord(0);
     const auto& int_item = record.get(keyword_size.item());
 
-    const auto targetSize = int_item.getDefault<int>() + keyword_size.size_shift();
+    const auto targetSize = int_item.getDefault<long long>() + keyword_size.size_shift();
     return new RawKeyword(keywordString,
                           parserState.current_path().string(),
                           parserState.line(),

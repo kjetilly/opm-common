@@ -27,7 +27,7 @@ class DeckItem;
 
 class SaltsolTable : public SimpleTable {
 public:
-    SaltsolTable( const DeckItem& item, const int tableID );
+    SaltsolTable( const DeckItem& item, const long long tableID );
 
     const TableColumn& getSaltsolColumn() const;
     const TableColumn& getSaltdenColumn() const;

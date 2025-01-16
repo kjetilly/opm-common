@@ -28,7 +28,7 @@ namespace Opm {
     // not for a way to cheat on the SPE test cases ;)
     class SpecheatTable : public SimpleTable {
     public:
-        SpecheatTable(const DeckItem& item, const int tableID);
+        SpecheatTable(const DeckItem& item, const long long tableID);
 
         const TableColumn& getTemperatureColumn() const;
         const TableColumn& getCvOilColumn() const;

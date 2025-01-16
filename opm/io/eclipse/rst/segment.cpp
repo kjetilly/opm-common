@@ -35,7 +35,7 @@ double area_to_si(const Opm::UnitSystem& unit_system, const double raw_value)
 
 double
 load_device_base_strength(const Opm::UnitSystem& unit_system,
-                          const int              segment_type,
+                          const long long              segment_type,
                           const double           base_strength_raw)
 {
     using VI::ISeg::Value::Type;
@@ -53,7 +53,7 @@ load_device_base_strength(const Opm::UnitSystem& unit_system,
 
 double
 load_icd_scaling_factor(const Opm::UnitSystem& unit_system,
-                        const int*             iseg,
+                        const long long*             iseg,
                         const double*          rseg)
 {
     const auto scalingFactor = rseg[VI::RSeg::ScalingFactor];
@@ -73,8 +73,8 @@ load_icd_scaling_factor(const Opm::UnitSystem& unit_system,
 } // Anonymous namespace
 
 Opm::RestartIO::RstSegment::RstSegment(const UnitSystem& unit_system,
-                                       const int         segment_number,
-                                       const int*        iseg,
+                                       const long long         segment_number,
+                                       const long long*        iseg,
                                        const double*     rseg)
     : segment(                                                   segment_number)
     , outlet_segment(                                            iseg[VI::ISeg::OutSeg])

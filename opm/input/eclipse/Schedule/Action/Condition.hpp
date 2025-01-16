@@ -42,7 +42,7 @@ public:
     std::string quantity;
     std::vector<std::string> args;
     bool date() const;
-    int int_type() const;
+    long long int_type() const;
 
 
     bool operator==(const Quantity& data) const {
@@ -77,10 +77,10 @@ public:
 
     std::string cmp_string;
 
-    static Logical logic_from_int(int);
-    int logic_as_int() const;
-    int comparator_as_int() const;
-    int paren_as_int() const;
+    static Logical logic_from_int(long long);
+    long long logic_as_int() const;
+    long long comparator_as_int() const;
+    long long paren_as_int() const;
     bool open_paren() const;
     bool close_paren() const;
     bool operator==(const Condition& data) const;

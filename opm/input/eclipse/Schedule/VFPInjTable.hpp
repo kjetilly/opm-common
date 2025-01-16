@@ -52,12 +52,12 @@ public:
         return this->m_location;
     }
 
-    inline int getTableNum() const {
+    inline long long getTableNum() const {
         return m_table_num;
     }
 
     // The name() method is added to simplify serialization.
-    inline int name() const {
+    inline long long name() const {
         return m_table_num;
     }
 
@@ -112,7 +112,7 @@ public:
     }
 
 private:
-    int m_table_num;
+    long long m_table_num;
     double m_datum_depth;
     FLO_TYPE m_flo_type;
 

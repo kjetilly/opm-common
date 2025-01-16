@@ -61,8 +61,8 @@ inline void loadDeck( const char * deck_file) {
 }
 
 
-int main(int argc, char** argv) {
-    for (int iarg = 1; iarg < argc; iarg++)
+long long main(long long argc, char** argv) {
+    for (long long iarg = 1; iarg < argc; iarg++)
         loadDeck( argv[iarg] );
 }
 

@@ -73,7 +73,7 @@ ExtSmryOutput::ExtSmryOutput(const std::vector<std::string>& valueKeys, const st
 }
 
 
-void ExtSmryOutput::write(const std::vector<float>& ts_data, int report_step, bool is_final_summary)
+void ExtSmryOutput::write(const std::vector<float>& ts_data, long long report_step, bool is_final_summary)
 {
 
     if (ts_data.size() != static_cast<size_t>(m_nVect))
@@ -108,18 +108,18 @@ void ExtSmryOutput::write(const std::vector<float>& ts_data, int report_step, bo
         {
             Opm::EclIO::EclOutput outFile(tmp_file_name, m_fmt, std::ios::out);
 
-            outFile.write<int>("START", m_start_date_vect);
+            outFile.write<long long>("START", m_start_date_vect);
 
             if (m_restart_rootn.size() > 0) {
                 outFile.write<std::string>("RESTART", {m_restart_rootn});
-                outFile.write<int>("RSTNUM", {m_restart_step});
+                outFile.write<long long>("RSTNUM", {m_restart_step});
             }
 
             outFile.write("KEYCHECK", m_smry_keys);
             outFile.write("UNITS", m_smryUnits);
 
-            outFile.write<int>("RSTEP", m_rstep);
-            outFile.write<int>("TSTEP", m_tstep);
+            outFile.write<long long>("RSTEP", m_rstep);
+            outFile.write<long long>("TSTEP", m_tstep);
 
             for (size_t n = 0; n < static_cast<size_t>(m_nVect); n++ ) {
                 std::string vect_name="V" + std::to_string(n);
@@ -163,7 +163,7 @@ std::vector<std::string> ExtSmryOutput::make_modified_keys(const std::vector<std
             size_t p = valueKeys[n].find_first_of(":");
             p = valueKeys[n].find_first_of(":", p + 1);
 
-            int num = std::stod(valueKeys[n].substr(p + 1)) - 1;
+            long long num = std::stod(valueKeys[n].substr(p + 1)) - 1;
 
             auto ijk = ijk_from_global_index(dims, num);
 
@@ -176,7 +176,7 @@ std::vector<std::string> ExtSmryOutput::make_modified_keys(const std::vector<std
 
             size_t p = valueKeys[n].find_first_of(":");
 
-            int num = std::stod(valueKeys[n].substr(p + 1)) - 1;
+            long long num = std::stod(valueKeys[n].substr(p + 1)) - 1;
 
             auto ijk = ijk_from_global_index(dims, num);
 
@@ -195,7 +195,7 @@ std::vector<std::string> ExtSmryOutput::make_modified_keys(const std::vector<std
             } else if ((str34 == "FR") || (str34 == "FT") || (str45 == "FR") || (str45 == "FT")) {
                 auto p = valueKeys[n].find(":");
                 if (p != std::string::npos) {
-                    int num = std::stoi(valueKeys[n].substr(p+1));
+                    long long num = std::stoi(valueKeys[n].substr(p+1));
                     const auto& [r1, r2] = splitSummaryNumber(num);
                     std::string mod_key = valueKeys[n].substr(0,p) + ":" + std::to_string(r1) + "-" + std::to_string(r2);
                     mod_keys.push_back(mod_key);
@@ -216,13 +216,13 @@ std::vector<std::string> ExtSmryOutput::make_modified_keys(const std::vector<std
 
 }
 
-std::array<int, 3> ExtSmryOutput::ijk_from_global_index(const GridDims& dims, int globInd) const
+std::array<long long, 3> ExtSmryOutput::ijk_from_global_index(const GridDims& dims, long long globInd) const
 {
 
     if (globInd < 0 || static_cast<size_t>(globInd) >= dims[0] * dims[1] * dims[2])
         throw std::invalid_argument("global index out of range");
 
-    std::array<int, 3> result;
+    std::array<long long, 3> result;
 
     result[0] = globInd % dims[0];
     globInd /= dims[0];

@@ -48,8 +48,8 @@ class TwoPhaseLETCurvesParams : public EnsureFinalized
 public:
     using Traits = TraitsT;
 
-    static constexpr int wIdx = 0; //wetting phase index for two phase let
-    static constexpr int nwIdx = 1; //non-wetting phase index for two phase let
+    static constexpr long long wIdx = 0; //wetting phase index for two phase let
+    static constexpr long long nwIdx = 1; //non-wetting phase index for two phase let
 
     TwoPhaseLETCurvesParams()
     {
@@ -230,7 +230,7 @@ private:
     {
 /*
         std::cout << "# LET parameters: "<< std::endl;
-        for (int i=0; i<Traits::numPhases; ++i) {
+        for (long long i=0; i<Traits::numPhases; ++i) {
             std::cout << "Kr[" << i;
             std::cout << "]:  Smin:" << Smin_[i];
             std::cout << " dS:" << dS_[i];

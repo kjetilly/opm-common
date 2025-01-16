@@ -47,7 +47,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
     class AggregateWellData
     {
     public:
-        explicit AggregateWellData(const std::vector<int>& inteHead);
+        explicit AggregateWellData(const std::vector<long long>& inteHead);
 
         void captureDeclaredWellData(const Schedule&   	       sched,
                                      const TracerConfig&       tracer,
@@ -55,7 +55,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
                                      const Opm::Action::State& action_state,
                                      const Opm::WellTestState& wtest_state,
                                      const Opm::SummaryState&  smry,
-                                     const std::vector<int>& 	 inteHead);
+                                     const std::vector<long long>& 	 inteHead);
 
         void captureDynamicWellData(const Opm::Schedule&        sched,
                                     const TracerConfig&       tracer,
@@ -64,7 +64,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
                                     const Opm::SummaryState&    smry);
 
         /// Retrieve Integer Well Data Array.
-        const std::vector<int>& getIWell() const
+        const std::vector<long long>& getIWell() const
         {
             return this->iWell_.data();
         }
@@ -91,7 +91,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
 
     private:
         /// Aggregate 'IWEL' array (Integer) for all wells.
-        WindowedArray<int> iWell_;
+        WindowedArray<long long> iWell_;
 
         /// Aggregate 'SWEL' array (Real) for all wells.
         WindowedArray<float> sWell_;
@@ -103,7 +103,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         WindowedArray<EclIO::PaddedOutputString<8>> zWell_;
 
         /// Maximum number of groups in model.
-        int nWGMax_;
+        long long nWGMax_;
     };
 
 }}} // Opm::RestartIO::Helpers

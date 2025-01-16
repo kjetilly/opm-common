@@ -37,7 +37,7 @@
 
 namespace {
 
-Opm::time_point make_date(const std::vector<int>& datetime) {
+Opm::time_point make_date(const std::vector<long long>& datetime) {
     auto day = datetime[0];
     auto month = datetime[1];
     auto year = datetime[2];
@@ -113,7 +113,7 @@ ExtESmry::ExtESmry(const std::string &filename, bool loadBaseRunData) :
     uint64_t rstep_offset;
 
     bool res = open_esmry(m_inputFileName, ext_esmry_head, rstep_offset);
-    int n_attempts = 1;
+    long long n_attempts = 1;
 
     while ((!res) && (n_attempts < 10)){
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -127,7 +127,7 @@ ExtESmry::ExtESmry(const std::string &filename, bool loadBaseRunData) :
     m_startdat = std::get<0>(ext_esmry_head);
     m_rstep_offset.push_back(rstep_offset);
 
-    std::map<std::string, int> key_index;
+    std::map<std::string, long long> key_index;
 
     auto keyword = std::get<2>(ext_esmry_head);
     auto units = std::get<3>(ext_esmry_head);
@@ -156,7 +156,7 @@ ExtESmry::ExtESmry(const std::string &filename, bool loadBaseRunData) :
         auto restart = std::get<0>(rst_entry);
         auto rstNum = std::get<1>(rst_entry);
 
-        int sim_ind = 0;
+        long long sim_ind = 0;
         while (!restart.empty()){
             sim_ind++;
 
@@ -179,10 +179,10 @@ ExtESmry::ExtESmry(const std::string &filename, bool loadBaseRunData) :
 
             m_nTstep_v.push_back(m_tstep_v.back().size());
 
-            int cidx = 0;
+            long long cidx = 0;
 
             auto it = std::find_if(m_rstep_v[sim_ind].begin(), m_rstep_v[sim_ind].end(),
-                           [&cidx, &rstNum](const int & val)
+                           [&cidx, &rstNum](const long long & val)
                            {
                               if (val == 1)
                                   ++cidx;
@@ -213,10 +213,10 @@ ExtESmry::ExtESmry(const std::string &filename, bool loadBaseRunData) :
     m_vectorData.resize(m_nVect, {});
     m_vectorLoaded.resize(m_nVect, false);
 
-    int ind = static_cast<int>(m_tstep_range.size()) - 1 ;
+    long long ind = static_cast<long long>(m_tstep_range.size()) - 1 ;
 
     while (ind > -1) {
-        int to_ind = std::get<1>(m_tstep_range[ind]);
+        long long to_ind = std::get<1>(m_tstep_range[ind]);
         m_rstep.insert(m_rstep.end(), m_rstep_v[ind].begin(), m_rstep_v[ind].begin() + to_ind + 1);
         m_tstep.insert(m_tstep.end(), m_tstep_v[ind].begin(), m_tstep_v[ind].begin() + to_ind + 1);
         ind--;
@@ -279,7 +279,7 @@ bool ExtESmry::open_esmry(const std::filesystem::path& inputFileName, ExtSmryHea
     std::string arrName;
     int64_t arr_size;
     Opm::EclIO::eclArrType arrType;
-    int sizeOfElement;
+    long long sizeOfElement;
 
     try {
         Opm::EclIO::readBinaryHeader(fileH, arrName, arr_size, arrType, sizeOfElement);
@@ -316,7 +316,7 @@ bool ExtESmry::open_esmry(const std::filesystem::path& inputFileName, ExtSmryHea
 
             std::vector<std::string> rstfile = Opm::EclIO::readBinaryC0nnArray(fileH, arr_size, sizeOfElement);
             Opm::EclIO::readBinaryHeader(fileH, arrName, arr_size, arrType, sizeOfElement);
-            std::vector<int> rst_num  = Opm::EclIO::readBinaryInteArray(fileH, arr_size);
+            std::vector<long long> rst_num  = Opm::EclIO::readBinaryInteArray(fileH, arr_size);
 
             rst_entry = std::make_tuple(rstfile[0], rst_num[0]);
 
@@ -376,7 +376,7 @@ bool ExtESmry::open_esmry(const std::filesystem::path& inputFileName, ExtSmryHea
     if ((arrName != "RSTEP   ") or (arrType != Opm::EclIO::INTE))
         OPM_THROW(std::invalid_argument, "Reading RSTEP, invalid esmry file " + inputFileName.string() );
 
-    std::vector<int> rstep;
+    std::vector<long long> rstep;
 
     try {
         rstep = Opm::EclIO::readBinaryInteArray(fileH, arr_size);
@@ -395,7 +395,7 @@ bool ExtESmry::open_esmry(const std::filesystem::path& inputFileName, ExtSmryHea
     if ((arrName != "TSTEP   ") or (arrType != Opm::EclIO::INTE))
         OPM_THROW(std::invalid_argument, "reading TSTEP, invalid esmry file " + inputFileName.string() );
 
-    std::vector<int> tstep;
+    std::vector<long long> tstep;
 
     try {
         tstep = Opm::EclIO::readBinaryInteArray(fileH, arr_size);
@@ -424,8 +424,8 @@ void ExtESmry::updatePathAndRootName(std::filesystem::path& dir, std::filesystem
 }
 
 
-bool ExtESmry::load_esmry(const std::vector<std::string>& stringVect, const std::vector<int>& keyIndexVect,
-                               const std::vector<int>& loadKeyIndex, int ind, int to_ind )
+bool ExtESmry::load_esmry(const std::vector<std::string>& stringVect, const std::vector<long long>& keyIndexVect,
+                               const std::vector<long long>& loadKeyIndex, long long ind, long long to_ind )
 {
     std::fstream fileH;
 
@@ -437,7 +437,7 @@ bool ExtESmry::load_esmry(const std::vector<std::string>& stringVect, const std:
     std::string arrName;
     Opm::EclIO::eclArrType arrType;
     int64_t num_tstep;
-    int sizeOfElement;
+    long long sizeOfElement;
 
     // Read actual number of time steps on disk from RSTEP array before loading
     // data. Notice that number of time steps can be different than what it was when
@@ -468,7 +468,7 @@ bool ExtESmry::load_esmry(const std::vector<std::string>& stringVect, const std:
 
         } else {
 
-            int key_ind = m_keyword_index[ind].at(key);
+            long long key_ind = m_keyword_index[ind].at(key);
 
             uint64_t pos = m_rstep_offset[ind] + smry_arr_size*static_cast<uint64_t>(key_ind);
 
@@ -519,13 +519,13 @@ void ExtESmry::loadData(const std::vector<std::string>& stringVect)
     auto start = std::chrono::system_clock::now();
 
     auto num_keys = stringVect.size();
-    std::vector<int> keyIndexVect;
-    std::vector<int> loadKeyIndex;
+    std::vector<long long> keyIndexVect;
+    std::vector<long long> loadKeyIndex;
 
     keyIndexVect.reserve(num_keys);
     loadKeyIndex.reserve(num_keys);
 
-    int keyCounter = 0;
+    long long keyCounter = 0;
 
     for (const auto& key: stringVect){
         auto key_ind = m_keyword_index[0].at(key);
@@ -536,15 +536,15 @@ void ExtESmry::loadData(const std::vector<std::string>& stringVect)
         ++keyCounter;
     }
 
-    int ind = static_cast<int>(m_tstep_range.size()) - 1 ;
+    long long ind = static_cast<long long>(m_tstep_range.size()) - 1 ;
 
     while (ind > -1) {
 
-        int to_ind = std::get<1>(m_tstep_range[ind]);
+        long long to_ind = std::get<1>(m_tstep_range[ind]);
 
         bool res = load_esmry(stringVect, keyIndexVect, loadKeyIndex, ind, to_ind );
 
-        int n_attempts = 1;
+        long long n_attempts = 1;
 
         while ((!res) && (n_attempts < 10)){
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -577,7 +577,7 @@ const std::vector<float>& ExtESmry::get(const std::string& name)
     if ( m_keyword_index[0].find(name) == m_keyword_index[0].end() )
         throw std::invalid_argument("summary key '" + name + "' not found");
 
-    int index = m_keyword_index[0].at(name);
+    long long index = m_keyword_index[0].at(name);
 
     if (!m_vectorLoaded[index]){
         loadData({name});

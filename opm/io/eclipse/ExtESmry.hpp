@@ -31,13 +31,13 @@
 
 namespace Opm { namespace EclIO {
 
-using ArrSourceEntry = std::tuple<std::string, std::string, int, uint64_t>;
-using TimeStepEntry = std::tuple<int, int, uint64_t>;
-using RstEntry = std::tuple<std::string, int>;
+using ArrSourceEntry = std::tuple<std::string, std::string, long long, uint64_t>;
+using TimeStepEntry = std::tuple<long long, long long, uint64_t>;
+using RstEntry = std::tuple<std::string, long long>;
 
 // start, rstart + rstnum, keycheck, units, rstep, tstep
 using ExtSmryHeadType = std::tuple<time_point, RstEntry, std::vector<std::string>, std::vector<std::string>,
-                                    std::vector<int>, std::vector<int>>;
+                                    std::vector<long long>, std::vector<long long>>;
 
 class ExtESmry
 {
@@ -54,7 +54,7 @@ public:
     void loadData(const std::vector<std::string>& stringVect);
 
     time_point startdate() const { return m_startdat; }
-    const std::vector<int>& start_v() const { return m_start_vect; }
+    const std::vector<long long>& start_v() const { return m_start_vect; }
 
     bool hasKey(const std::string& key) const;
 
@@ -75,13 +75,13 @@ private:
     std::vector<std::filesystem::path> m_esmry_files;
 
     bool m_loadBaseRun;
-    std::vector<std::map<std::string, int>> m_keyword_index;
-    std::vector<std::tuple<int,int>> m_tstep_range;
+    std::vector<std::map<std::string, long long>> m_keyword_index;
+    std::vector<std::tuple<long long,long long>> m_tstep_range;
     std::vector<std::string> m_keyword;
-    std::vector<int> m_rstep;
-    std::vector<int> m_tstep;
-    std::vector<std::vector<int>> m_rstep_v;
-    std::vector<std::vector<int>> m_tstep_v;
+    std::vector<long long> m_rstep;
+    std::vector<long long> m_tstep;
+    std::vector<std::vector<long long>> m_rstep_v;
+    std::vector<std::vector<long long>> m_tstep_v;
     std::vector<std::vector<float>> m_vectorData;
     std::vector<bool> m_vectorLoaded;
     std::unordered_map<std::string, std::string> kwunits;
@@ -89,20 +89,20 @@ private:
     size_t m_nVect;
     std::vector<size_t> m_nTstep_v;
     size_t m_nTstep;
-    std::vector<int> m_seqIndex;
+    std::vector<long long> m_seqIndex;
 
     std::vector<uint64_t> m_rstep_offset;
 
     time_point m_startdat;
-    std::vector<int> m_start_vect;
+    std::vector<long long> m_start_vect;
 
     double m_io_opening;
     double m_io_loading;
 
     bool open_esmry(const std::filesystem::path& inputFileName, ExtSmryHeadType& ext_smry_head, uint64_t& rstep_offset);
 
-    bool load_esmry(const std::vector<std::string>& stringVect, const std::vector<int>& keyIndexVect,
-                               const std::vector<int>& loadKeyIndex, int ind, int to_ind );
+    bool load_esmry(const std::vector<std::string>& stringVect, const std::vector<long long>& keyIndexVect,
+                               const std::vector<long long>& loadKeyIndex, long long ind, long long to_ind );
 
     void updatePathAndRootName(std::filesystem::path& dir, std::filesystem::path& rootN);
 };

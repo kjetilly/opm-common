@@ -38,18 +38,18 @@ namespace Opm { namespace RestartIO { namespace Helpers {
     class AggregateMSWData
     {
     public:
-        explicit AggregateMSWData(const std::vector<int>& inteHead);
+        explicit AggregateMSWData(const std::vector<long long>& inteHead);
 
         void captureDeclaredMSWData(const Opm::Schedule&     sched,
                                     const std::size_t        rptStep,
                                     const Opm::UnitSystem&   units,
-                                    const std::vector<int>&  inteHead,
+                                    const std::vector<long long>&  inteHead,
                                     const Opm::EclipseGrid&  grid,
                                     const Opm::SummaryState& smry,
                                     const Opm::data::Wells&  wr);
 
         /// Retrieve Integer Multisegment well data Array.
-        const std::vector<int>& getISeg() const
+        const std::vector<long long>& getISeg() const
         {
             return this->iSeg_.data();
         }
@@ -61,29 +61,29 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         }
 
         /// Retrieve Integer multisegment well data Array for lateral branches  (ILBS)
-        const std::vector<int>& getILBs() const
+        const std::vector<long long>& getILBs() const
         {
             return this->iLBS_.data();
         }
 
         /// Retrieve Integer multisegment well data Array for lateral branches (ILBR)
-        const std::vector<int>& getILBr() const
+        const std::vector<long long>& getILBr() const
         {
             return this->iLBR_.data();
         }
 
     private:
         /// Aggregate 'ISEG' array (Integer) for all multisegment wells
-        WindowedArray<int> iSeg_;
+        WindowedArray<long long> iSeg_;
 
         /// Aggregate 'RSEG' array (Double) for all multisegment wells
         WindowedArray<double> rSeg_;
 
         /// Aggregate 'ILBS' array (Integer) for all multisegment wells
-        WindowedArray<int> iLBS_;
+        WindowedArray<long long> iLBS_;
 
         /// Aggregate 'ILBR' array (Integer) for all multisegment wells
-        WindowedMatrix<int> iLBR_;
+        WindowedMatrix<long long> iLBR_;
     };
 
 }}} // Opm::RestartIO::Helpers

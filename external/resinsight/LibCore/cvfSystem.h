@@ -55,10 +55,10 @@ public:
     static bool     memcpy(void* dst, size_t dstSizeInBytes, const void* src, size_t numBytesToCopy);
     static bool     strcpy(char* strDestination, size_t maxNumElementsInDestination, const char* strSource);
     static bool     strcat(char* strDestination, size_t maxNumElementsInDestination, const char* strSource);
-    static int      sprintf(char* buffer, size_t maxNumElementsInBuffer, const char* format, ...);
-    static int      swprintf(wchar_t* buffer, size_t maxNumElementsInBuffer, const wchar_t* format, ...);
+    static long long      sprintf(char* buffer, size_t maxNumElementsInBuffer, const char* format, ...);
+    static long long      swprintf(wchar_t* buffer, size_t maxNumElementsInBuffer, const wchar_t* format, ...);
     static size_t   strlen(const char* str);
-    static int      strcmp(const char* str1, const char* str2);
+    static long long      strcmp(const char* str1, const char* str2);
 };
 
 }

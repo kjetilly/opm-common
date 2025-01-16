@@ -28,7 +28,7 @@ namespace Opm {
     class SsfnTable : public SimpleTable {
         public:
             friend class TableManager;
-            SsfnTable( const DeckItem& item, const int tableID );
+            SsfnTable( const DeckItem& item, const long long tableID );
 
             const TableColumn& getSolventFractionColumn() const;
             const TableColumn& getGasRelPermMultiplierColumn() const;

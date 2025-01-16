@@ -205,7 +205,7 @@ namespace UDQ {
     UDQAction actionType(const std::string& action_string);
 
     UDQUpdate updateType(const std::string& update_string);
-    UDQUpdate updateType(int int_value);
+    UDQUpdate updateType(long long int_value);
 
     UDQTokenType tokenType(const std::string& func_name);
     UDQTokenType funcType(const std::string& func_name);
@@ -228,8 +228,8 @@ namespace UDQ {
     std::string controlName(UDAControl control);
 
     UDAKeyword keyword(UDAControl control);
-    int udaCode(UDAControl control);
-    UDAControl udaControl(int uda_code);
+    long long udaCode(UDAControl control);
+    UDAControl udaControl(long long uda_code);
 
     constexpr double restart_default = -0.3E+21;
 

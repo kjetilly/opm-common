@@ -125,7 +125,7 @@ VFPProdTable::VFPProdTable()
 }
 
 
-VFPProdTable::VFPProdTable(int table_num,
+VFPProdTable::VFPProdTable(long long table_num,
                            double datum_depth,
                            FLO_TYPE flo_type,
                            WFR_TYPE wfr_type,
@@ -195,7 +195,7 @@ VFPProdTable::VFPProdTable( const DeckKeyword& table, bool gaslift_opt_active, c
     const auto& header = table.getRecord(0);
 
     //Get the different header items
-    m_table_num   = header.getItem<VFPPROD::TABLE>().get< int >(0);
+    m_table_num   = header.getItem<VFPPROD::TABLE>().get< long long >(0);
     m_datum_depth = header.getItem<VFPPROD::DATUM_DEPTH>().getSIDouble(0);
 
     m_flo_type = Opm::getFloType(header.getItem<VFPPROD::RATE_TYPE>());
@@ -299,10 +299,10 @@ VFPProdTable::VFPProdTable( const DeckKeyword& table, bool gaslift_opt_active, c
     for (size_t i=6; i<table.size(); ++i) {
         const auto& record = table.getRecord(i);
         //Get indices (subtract 1 to get 0-based index)
-        int t = record.getItem<VFPPROD::THP_INDEX>().get< int >(0) - 1;
-        int w = record.getItem<VFPPROD::WFR_INDEX>().get< int >(0) - 1;
-        int g = record.getItem<VFPPROD::GFR_INDEX>().get< int >(0) - 1;
-        int a = record.getItem<VFPPROD::ALQ_INDEX>().get< int >(0) - 1;
+        long long t = record.getItem<VFPPROD::THP_INDEX>().get< long long >(0) - 1;
+        long long w = record.getItem<VFPPROD::WFR_INDEX>().get< long long >(0) - 1;
+        long long g = record.getItem<VFPPROD::GFR_INDEX>().get< long long >(0) - 1;
+        long long a = record.getItem<VFPPROD::ALQ_INDEX>().get< long long >(0) - 1;
 
         //Rest of values (bottom hole pressure or tubing head temperature) have index of flo value
         const std::vector<double>& bhp_tht = record.getItem<VFPPROD::VALUES>().getData< double >();

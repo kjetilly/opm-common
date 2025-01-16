@@ -35,7 +35,7 @@ public:
         const std::string& name,
         const std::string& data_filename,
         const std::string& directory_path,
-        unsigned int numprocs
+        size_t numprocs
     ) :
         m_name{name},
         m_data_filename{data_filename},
@@ -53,7 +53,7 @@ public:
     const std::string& directoryPath() const {
         return this->m_directory_path;
     }
-    unsigned int numprocs() const {
+    size_t numprocs() const {
         return this->m_numprocs;
     }
 
@@ -66,7 +66,7 @@ public:
     void directoryPath(const std::string& value) {
         this->m_directory_path = value;
     }
-    void numprocs(unsigned int value) {
+    void numprocs(size_t value) {
         this->m_numprocs = value;
     }
     bool operator==(const Slave& other) const;
@@ -83,7 +83,7 @@ private:
     std::string m_name{};
     std::string m_data_filename{};
     std::string m_directory_path{};
-    unsigned int m_numprocs{};
+    size_t m_numprocs{};
 };
 
 } // namespace ReservoirCoupling

@@ -86,8 +86,8 @@ namespace Opm {
 template <class Scalar, class FluidSystem>
 class NcpFlash
 {
-    static constexpr int numPhases = FluidSystem::numPhases;
-    static constexpr int numComponents = FluidSystem::numComponents;
+    static constexpr long long numPhases = FluidSystem::numPhases;
+    static constexpr long long numComponents = FluidSystem::numComponents;
 
     enum {
         p0PvIdx = 0,
@@ -95,7 +95,7 @@ class NcpFlash
         x00PvIdx = S0PvIdx + numPhases - 1
     };
 
-    static const int numEq = numPhases*(numComponents + 1);
+    static const long long numEq = numPhases*(numComponents + 1);
 
 public:
     /*!

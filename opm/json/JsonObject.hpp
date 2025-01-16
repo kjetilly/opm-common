@@ -39,12 +39,12 @@ namespace Json {
         ~JsonObject();
 
         void add(double value);
-        void add(int value);
+        void add(long long value);
         void add(const std::string& value);
         JsonObject add_array();
         JsonObject add_object();
         void add_item(const std::string& key, double value);
-        void add_item(const std::string& key, int value);
+        void add_item(const std::string& key, long long value);
         void add_item(const std::string& key, const std::string& value);
         JsonObject add_array(const std::string& key);
         JsonObject add_object(const std::string& key);
@@ -60,8 +60,8 @@ namespace Json {
         bool is_string( ) const;
 
         bool is_number( ) const;
-        int get_int(const std::string& key) const;
-        int as_int() const;
+        long long get_int(const std::string& key) const;
+        long long as_int() const;
         double get_double(const std::string& key) const;
         double as_double() const;
 

@@ -189,8 +189,8 @@ public:
         const Evaluation m = S/(1-S)/58.44e-3;
 
         Evaluation d_h = 0;
-        for (int i = 0; i<=3; ++i) {
-            for (int j = 0; j <= 2; ++j) {
+        for (long long i = 0; i<=3; ++i) {
+            for (long long j = 0; j <= 2; ++j) {
                 d_h += a[i][j] * pow(theta, i) * pow(m, j);
             }
         }
@@ -303,7 +303,7 @@ public:
         Scalar eps = scalarValue(pressure)*1e-7;
 
         Evaluation deltaP = pressure*2;
-        for (int i = 0;
+        for (long long i = 0;
              i < 5
                  && std::abs(scalarValue(pressure)*1e-9) < std::abs(scalarValue(deltaP));
              ++i)

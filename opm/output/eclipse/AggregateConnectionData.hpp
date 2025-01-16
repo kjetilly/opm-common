@@ -41,7 +41,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
     class AggregateConnectionData
     {
     public:
-        explicit AggregateConnectionData(const std::vector<int>& inteHead);
+        explicit AggregateConnectionData(const std::vector<long long>& inteHead);
 
         void captureDeclaredConnData(const Opm::Schedule&        sched,
                                      const Opm::EclipseGrid&     grid,
@@ -50,7 +50,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
                                      const Opm::SummaryState&    summary_state,
                                      const std::size_t           sim_step);
 
-        const std::vector<int>& getIConn() const
+        const std::vector<long long>& getIConn() const
         {
             return this->iConn_.data();
         }
@@ -66,7 +66,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
         }
 
     private:
-        WindowedMatrix<int> iConn_;
+        WindowedMatrix<long long> iConn_;
         WindowedMatrix<float> sConn_;
         WindowedMatrix<double> xConn_;
     };

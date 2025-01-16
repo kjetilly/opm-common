@@ -26,7 +26,7 @@
 
 namespace Opm {
 
-    DeckOutput::DeckOutput( std::ostream& s, int precision) :
+    DeckOutput::DeckOutput( std::ostream& s, long long precision) :
         os( s ),
         default_count( 0 ),
         row_count( 0 ),
@@ -41,7 +41,7 @@ namespace Opm {
     }
 
 
-    void DeckOutput::set_precision(int precision) {
+    void DeckOutput::set_precision(long long precision) {
         this->os.precision(precision);
     }
 
@@ -81,7 +81,7 @@ namespace Opm {
     }
 
     template <>
-    void DeckOutput::write_value( const int& value ) {
+    void DeckOutput::write_value( const long long& value ) {
         this->os << value;
     }
 
@@ -148,7 +148,7 @@ namespace Opm {
     }
 
 
-    template void DeckOutput::write( const int& value);
+    template void DeckOutput::write( const long long& value);
     template void DeckOutput::write( const double& value);
     template void DeckOutput::write( const std::string& value);
     template void DeckOutput::write( const RawString& value);

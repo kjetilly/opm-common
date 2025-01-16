@@ -45,7 +45,7 @@ public:
         size_t clippedEdgeVx2Id;
 
         bool isVxIdsNative; //< Pointing to real vertices, or indices to ClipVx's in the supplied triangle vertices array
-        int derivedVxLevel; //< Helper data to make it possible to track what set of ClipVx's the indices is reffering
+        long long derivedVxLevel; //< Helper data to make it possible to track what set of ClipVx's the indices is reffering
                             // to in case of consecutive clips
     };
 
@@ -68,43 +68,43 @@ public:
                                            bool*             isMostVxesOnPositiveSide );
 
     static void clipTrianglesBetweenTwoParallelPlanes( const std::vector<ClipVx>& triangleVxes,
-                                                       const std::vector<int>&    cellFaceForEachTriangleEdge,
+                                                       const std::vector<long long>&    cellFaceForEachTriangleEdge,
                                                        const cvf::Plane&          p1Plane,
                                                        const cvf::Plane&          p2Plane,
                                                        std::vector<ClipVx>*       clippedTriangleVxes,
-                                                       std::vector<int>*          cellFaceForEachClippedTriangleEdge );
+                                                       std::vector<long long>*          cellFaceForEachClippedTriangleEdge );
 
     static void clipPlanarTrianglesWithInPlaneTriangle( const std::vector<cvf::Vec3d>& triangleVxes,
-                                                        const std::vector<int>&        cellFaceForEachTriangleEdge,
+                                                        const std::vector<long long>&        cellFaceForEachTriangleEdge,
                                                         const cvf::Vec3d&              tp1,
                                                         const cvf::Vec3d&              tp2,
                                                         const cvf::Vec3d&              tp3,
                                                         std::vector<cvf::Vec3d>*       clippedTriangleVxes,
-                                                        std::vector<int>* cellFaceForEachClippedTriangleEdge );
+                                                        std::vector<long long>* cellFaceForEachClippedTriangleEdge );
 
     static cvf::Vec3d planeLineIntersectionForMC( const cvf::Plane& plane,
                                                   const cvf::Vec3d& p1,
                                                   const cvf::Vec3d& p2,
                                                   double*           normalizedDistFromP1 );
 
-    static int planeHexIntersectionMC( const cvf::Plane&    plane,
+    static long long planeHexIntersectionMC( const cvf::Plane&    plane,
                                        const cvf::Vec3d     cell[8],
                                        const size_t         hexCornersIds[8],
                                        std::vector<ClipVx>* triangleVxes,
-                                       std::vector<int>*    cellFaceForEachTriangleEdge );
+                                       std::vector<long long>*    cellFaceForEachTriangleEdge );
 
-    static int       planeHexIntersectionMCTet( const cvf::Plane&    plane,
+    static long long       planeHexIntersectionMCTet( const cvf::Plane&    plane,
                                                 const cvf::Vec3d     cell[8],
                                                 const size_t         hexCornersIds[8],
                                                 std::vector<ClipVx>* triangleVxes,
-                                                std::vector<int>*    cellFaceForEachTriangleEdge );
+                                                std::vector<long long>*    cellFaceForEachTriangleEdge );
     static cvf::uint planeMcTetIntersection( const cvf::Plane&         plane,
                                              const cvf::Vec3d          hexCell[8],
                                              const size_t              hexCornersIds[8],
                                              const double              cornerDistToPlane[8],
-                                             const std::array<int, 4>& tetCell,
+                                             const std::array<long long, 4>& tetCell,
                                              std::vector<ClipVx>*      triangleVxes,
-                                             std::vector<int>*         cellFaceForEachTriangleEdge );
+                                             std::vector<long long>*         cellFaceForEachTriangleEdge );
 };
 
 }; // namespace caf

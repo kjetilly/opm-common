@@ -190,14 +190,14 @@ BOOST_AUTO_TEST_CASE(parse_fileWithBPRKeyword_dataiscorrect) {
     const auto& record1 = keyword.getRecord(0);
     BOOST_CHECK_EQUAL(3U, record1.size());
 
-    BOOST_CHECK_EQUAL(1, record1.getItem(0).get< int >(0));
-    BOOST_CHECK_EQUAL(1, record1.getItem("I").get< int >(0));
+    BOOST_CHECK_EQUAL(1, record1.getItem(0).get< long long >(0));
+    BOOST_CHECK_EQUAL(1, record1.getItem("I").get< long long >(0));
 
-    BOOST_CHECK_EQUAL(2, record1.getItem(1).get< int >(0));
-    BOOST_CHECK_EQUAL(2, record1.getItem("J").get< int >(0));
+    BOOST_CHECK_EQUAL(2, record1.getItem(1).get< long long >(0));
+    BOOST_CHECK_EQUAL(2, record1.getItem("J").get< long long >(0));
 
-    BOOST_CHECK_EQUAL(3, record1.getItem(2).get< int >(0));
-    BOOST_CHECK_EQUAL(3, record1.getItem("K").get< int >(0));
+    BOOST_CHECK_EQUAL(3, record1.getItem(2).get< long long >(0));
+    BOOST_CHECK_EQUAL(3, record1.getItem("K").get< long long >(0));
 }
 
 
@@ -251,24 +251,24 @@ RADFIN4
     BOOST_CHECK_EQUAL("NAME", radfin4_1_partial.getRecord(0).getItem(0).get< std::string >(0));
 
     // Specified in datafile
-    BOOST_CHECK_EQUAL(213, radfin4_0_full.getRecord(0).getItem(1).get< int >(0));
-    BOOST_CHECK_EQUAL(213, radfin4_1_partial.getRecord(0).getItem(1).get< int >(0));
+    BOOST_CHECK_EQUAL(213, radfin4_0_full.getRecord(0).getItem(1).get< long long >(0));
+    BOOST_CHECK_EQUAL(213, radfin4_1_partial.getRecord(0).getItem(1).get< long long >(0));
 
     const auto& record_0 = radfin4_0_full.getRecord(0);
     const auto& lastItem_0 = record_0.getItem(record_0.size() - 1);
     BOOST_CHECK(!lastItem_0.defaultApplied(0));
-    BOOST_CHECK_EQUAL(lastItem_0.get< int >(0), 18);
+    BOOST_CHECK_EQUAL(lastItem_0.get< long long >(0), 18);
 
     const auto& record_1 = radfin4_1_partial.getRecord(0);
     const auto& lastItem_1 = record_1.getItem(record_1.size() - 1);
-    BOOST_CHECK_EQUAL(213, radfin4_1_partial.getRecord(0).getItem(1).get< int >(0));
+    BOOST_CHECK_EQUAL(213, radfin4_1_partial.getRecord(0).getItem(1).get< long long >(0));
     BOOST_CHECK(lastItem_1.defaultApplied(0));
-    BOOST_CHECK_EQUAL(lastItem_1.get< int >(0), 1);
+    BOOST_CHECK_EQUAL(lastItem_1.get< long long >(0), 1);
 
     const auto& parserKeyword = parser.getParserKeywordFromDeckName("RADFIN4");
     const auto& parserRecord = parserKeyword.getRecord(0);
     const auto& intItem = parserRecord.get("NWMAX");
 
-    BOOST_CHECK_EQUAL(18, radfin4_0_full.getRecord(0).getItem(10).get< int >(0));
-    BOOST_CHECK_EQUAL(intItem.getDefault< int >(), radfin4_1_partial.getRecord(0).getItem(10).get< int >(0));
+    BOOST_CHECK_EQUAL(18, radfin4_0_full.getRecord(0).getItem(10).get< long long >(0));
+    BOOST_CHECK_EQUAL(intItem.getDefault< long long >(), radfin4_1_partial.getRecord(0).getItem(10).get< long long >(0));
 }

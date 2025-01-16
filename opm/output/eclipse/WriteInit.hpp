@@ -51,7 +51,7 @@ namespace Opm { namespace InitIO {
                const ::Opm::EclipseGrid&               grid,
                const ::Opm::Schedule&                  schedule,
                const ::Opm::data::Solution&            simProps,
-               std::map<std::string, std::vector<int>> int_data,
+               std::map<std::string, std::vector<long long>> int_data,
                const std::vector<::Opm::NNCdata>&      nnc,
                ::Opm::EclIO::OutputStream::Init&       initFile);
 

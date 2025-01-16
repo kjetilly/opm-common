@@ -175,13 +175,13 @@ BOOST_AUTO_TEST_CASE(test_IOrderSet) {
     BOOST_CHECK_THROW(iset[10], std::out_of_range);
 
 
-    Opm::IOrderSet<int> iset2;
+    Opm::IOrderSet<long long> iset2;
 
 
-    for (int i=10; i >= 0; i--)
+    for (long long i=10; i >= 0; i--)
         iset2.insert(i);
 
-    int expected = 10;
+    long long expected = 10;
     std::size_t index=0;
     const auto &d = iset2.data();
     for (const auto &v : iset2) {

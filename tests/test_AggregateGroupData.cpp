@@ -55,17 +55,17 @@ namespace {
 
 struct MockIH
 {
-    MockIH(const int numWells,
+    MockIH(const long long numWells,
 
-           const int igrpPerGrp	 = 101,  // no of data elements per group in IGRP array
-           const int sgrpPerGrp  = 112,  // number of data elements per group in SGRP array
-           const int xgrpPerGrp  = 180,  // number of data elements per group in XGRP array
-           const int zgrpPerGrp  =   5);  // number of data elements per group in XGRP array
+           const long long igrpPerGrp	 = 101,  // no of data elements per group in IGRP array
+           const long long sgrpPerGrp  = 112,  // number of data elements per group in SGRP array
+           const long long xgrpPerGrp  = 180,  // number of data elements per group in XGRP array
+           const long long zgrpPerGrp  =   5);  // number of data elements per group in XGRP array
 
 
-    std::vector<int> value;
+    std::vector<long long> value;
 
-    using Sz = std::vector<int>::size_type;
+    using Sz = std::vector<long long>::size_type;
 
     Sz nwells;
     Sz nwgmax;
@@ -76,11 +76,11 @@ struct MockIH
     Sz nzgrpz;
 };
 
-MockIH::MockIH(const int numWells,
-               const int igrpPerGrp,
-               const int sgrpPerGrp,
-               const int xgrpPerGrp,
-               const int zgrpPerGrp)
+MockIH::MockIH(const long long numWells,
+               const long long igrpPerGrp,
+               const long long sgrpPerGrp,
+               const long long xgrpPerGrp,
+               const long long zgrpPerGrp)
     : value(411, 0)
 {
     using Ix = ::Opm::RestartIO::Helpers::VectorItems::intehead;
@@ -646,7 +646,7 @@ BOOST_AUTO_TEST_CASE (Declared_Group_Data)
     const auto rptStep = std::size_t {1};
 
     const auto ih = MockIH {
-        static_cast<int>(simCase.sched.getWells(rptStep).size())
+        static_cast<long long>(simCase.sched.getWells(rptStep).size())
     };
 
     BOOST_CHECK_EQUAL(ih.nwells, MockIH::Sz {4});
@@ -1092,12 +1092,12 @@ END
 
     using Ix = VI::SGroup::prod_index;
 
-    auto requireGroup = [&zgrp, &ih](const int groupID, const std::string& name)
+    auto requireGroup = [&zgrp, &ih](const long long groupID, const std::string& name)
     {
         BOOST_REQUIRE_EQUAL(zgrp[groupID*ih[VI::intehead::NZGRPZ] + 0].c_str(), name);
     };
 
-    auto sgrpValue = [&ih, &sgrp](const int groupID, const int item)
+    auto sgrpValue = [&ih, &sgrp](const long long groupID, const long long item)
     {
         return sgrp[groupID*ih[VI::intehead::NSGRPZ] + item];
     };

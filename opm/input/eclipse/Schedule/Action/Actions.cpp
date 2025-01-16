@@ -93,12 +93,12 @@ const ActionX& Actions::operator[](std::size_t index) const {
     return this->actions[index];
 }
 
-int Actions::max_input_lines() const {
+long long Actions::max_input_lines() const {
     std::size_t max_il = 0;
     for (const auto& act : this-> actions) {
         if (act.keyword_strings().size() > max_il) max_il = act.keyword_strings().size() ;
     }
-    return static_cast<int>(max_il);
+    return static_cast<long long>(max_il);
 }
 
 

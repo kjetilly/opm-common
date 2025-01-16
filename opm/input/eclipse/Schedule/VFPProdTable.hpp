@@ -68,7 +68,7 @@ public:
 
     VFPProdTable();
     VFPProdTable( const DeckKeyword& table, bool gaslift_opt_active, const UnitSystem& deck_unit_system);
-    VFPProdTable(int table_num,
+    VFPProdTable(long long table_num,
                  double datum_depth,
                  FLO_TYPE flo_type,
                  WFR_TYPE wfr_type,
@@ -84,7 +84,7 @@ public:
 
     static VFPProdTable serializationTestObject();
 
-    inline int getTableNum() const {
+    inline long long getTableNum() const {
         return m_table_num;
     }
 
@@ -93,7 +93,7 @@ public:
     }
 
     // The name() method is added to simplify serialization.
-    inline int name() const {
+    inline long long name() const {
         return m_table_num;
     }
 
@@ -180,7 +180,7 @@ public:
     }
 
 private:
-    int m_table_num;
+    long long m_table_num;
     double m_datum_depth;
     FLO_TYPE m_flo_type;
     WFR_TYPE m_wfr_type;

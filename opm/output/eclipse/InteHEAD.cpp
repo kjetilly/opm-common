@@ -56,7 +56,7 @@
 // The 'index' list always uses public items where available.
 namespace VI = ::Opm::RestartIO::Helpers::VectorItems;
 
-enum index : std::vector<int>::size_type {
+enum index : std::vector<long long>::size_type {
   ISNUM        =       VI::intehead::ISNUM,    //       0       0              An encoded integer corresponding to the time the file was created. For files not originating from ECLIPSE, this value may be set to zero.
   VERSION      =       VI::intehead::VERSION,  //       0       0
   UNIT         =       VI::intehead::UNIT,     //       (1,2,3)       1              units type: 1 - METRIC, 2 - FIELD, 3 - LAB
@@ -485,7 +485,7 @@ Opm::RestartIO::InteHEAD::InteHEAD()
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-dimensions(const int nx, const int ny, const int nz)
+dimensions(const long long nx, const long long ny, const long long nz)
 {
     this -> data_[NX] = nx;
     this -> data_[NY] = ny;
@@ -496,13 +496,13 @@ dimensions(const int nx, const int ny, const int nz)
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-dimensions(const std::array<int,3>& cartDims)
+dimensions(const std::array<long long,3>& cartDims)
 {
     return this->dimensions(cartDims[0], cartDims[1], cartDims[2]);
 }
 
 Opm::RestartIO::InteHEAD&
-Opm::RestartIO::InteHEAD::numActive(const int nactive)
+Opm::RestartIO::InteHEAD::numActive(const long long nactive)
 {
     this->data_[NACTIV] = nactive;
 
@@ -556,11 +556,11 @@ Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::activePhases(const Phases& phases)
 {
     const auto iphs =
-        (static_cast<unsigned int>  (phases.oil)   << 0u)
-        | (static_cast<unsigned int>(phases.water) << 1u)
-        | (static_cast<unsigned int>(phases.gas)   << 2u);
+        (static_cast<size_t>  (phases.oil)   << 0u)
+        | (static_cast<size_t>(phases.water) << 1u)
+        | (static_cast<size_t>(phases.gas)   << 2u);
 
-    this->data_[PHASE] = static_cast<int>(iphs);
+    this->data_[PHASE] = static_cast<long long>(iphs);
 
     return *this;
 }
@@ -581,7 +581,7 @@ Opm::RestartIO::InteHEAD::InteHEAD::drsdt(const Schedule&   sched,
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-params_NWELZ(const int niwelz, const int nswelz, const int nxwelz, const int nzwelz)
+params_NWELZ(const long long niwelz, const long long nswelz, const long long nxwelz, const long long nzwelz)
 {
     this -> data_[NIWELZ] = niwelz;
     this -> data_[NSWELZ] = nswelz;
@@ -593,7 +593,7 @@ params_NWELZ(const int niwelz, const int nswelz, const int nxwelz, const int nzw
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-params_NCON(const int niconz, const int nsconz, const int nxconz)
+params_NCON(const long long niconz, const long long nsconz, const long long nxconz)
 {
     this -> data_[NICONZ] = niconz;
     this -> data_[NSCONZ] = nsconz;
@@ -604,7 +604,7 @@ params_NCON(const int niconz, const int nsconz, const int nxconz)
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-params_GRPZ(const std::array<int, 4>& grpz)
+params_GRPZ(const std::array<long long, 4>& grpz)
 {
     this -> data_[NIGRPZ] = grpz[0];
     this -> data_[NSGRPZ] = grpz[1];
@@ -616,7 +616,7 @@ params_GRPZ(const std::array<int, 4>& grpz)
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-params_NGCTRL(const int gct)
+params_NGCTRL(const long long gct)
 {
     this -> data_[NGCONT] = gct;
 
@@ -656,7 +656,7 @@ aquiferDimensions(const AquiferDims& aqdims)
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-stepParam(const int num_solver_steps, const int report_step)
+stepParam(const long long num_solver_steps, const long long report_step)
 {
     this -> data_[NUM_SOLVER_STEPS] = num_solver_steps;
     this -> data_[REPORT_STEP]      = report_step;
@@ -679,8 +679,8 @@ Opm::RestartIO::InteHEAD::tuningParam(const TuningPar& tunpar)
 }
 
 Opm::RestartIO::InteHEAD&
-Opm::RestartIO::InteHEAD::variousParam(const int version,
-                                       const int iprog)
+Opm::RestartIO::InteHEAD::variousParam(const long long version,
+                                       const long long iprog)
 {
     this->data_[VERSION] = version;
     this->data_[IPROG]   = iprog;
@@ -811,7 +811,7 @@ nominatedPhaseGuideRate(GuideRateNominatedPhase nphase)
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-whistControlMode(int mode)
+whistControlMode(long long mode)
 {
     this -> data_[NWHISTCTL]  =  mode;
 
@@ -820,7 +820,7 @@ whistControlMode(int mode)
 
 Opm::RestartIO::InteHEAD&
 Opm::RestartIO::InteHEAD::
-liftOptParam(int in_enc)
+liftOptParam(long long in_enc)
 {
     this -> data_[EACHNC]  =  in_enc;
 
@@ -866,7 +866,7 @@ Opm::RestartIO::InteHEAD::netBalanceData(const NetBalanceDims& nwbaldim)
     return *this;
 }
 
-int Opm::RestartIO::InteHEAD::numRsegElem(const ::Opm::Phases& phase)
+long long Opm::RestartIO::InteHEAD::numRsegElem(const ::Opm::Phases& phase)
 {
     const auto nact = phase.active(::Opm::Phase::OIL)
         + phase.active(::Opm::Phase::GAS)
@@ -909,13 +909,13 @@ Opm::RestartIO::getSimulationTimePoint(const std::time_t start,
         std::min(tp.tm_sec, 59), // Ignore leap seconds
 
         // Fractional seconds in microsecond resolution.
-        static_cast<int>(usec),
+        static_cast<long long>(usec),
     };
 }
 
 namespace {
     template <typename T, class A>
-    int numUnique(std::vector<T, A> elems)
+    long long numUnique(std::vector<T, A> elems)
     {
         if (elems.empty())     { return 0; }
         if (elems.size() == 1) { return 1; }
@@ -926,25 +926,25 @@ namespace {
         return std::distance(elems.begin(), end);
     }
 
-    int numberOfCarterTracyAquifers(const Opm::AquiferConfig& cfg)
+    long long numberOfCarterTracyAquifers(const Opm::AquiferConfig& cfg)
     {
         return cfg.ct().size();
     }
 
-    int numberOfFetkovichAquifers(const Opm::AquiferConfig& cfg)
+    long long numberOfFetkovichAquifers(const Opm::AquiferConfig& cfg)
     {
         return cfg.fetp().size();
     }
 
-    int numberOfConstantFluxAquifers(const Opm::AquiferConfig& cfg)
+    long long numberOfConstantFluxAquifers(const Opm::AquiferConfig& cfg)
     {
         return cfg.aquflux().size();
     }
 
-    int numberOfConstantFluxAquifers(const Opm::AquiferConfig& cfg,
+    long long numberOfConstantFluxAquifers(const Opm::AquiferConfig& cfg,
                                      const Opm::ScheduleState& sched)
     {
-        auto aquiferIDs = std::vector<int>{};
+        auto aquiferIDs = std::vector<long long>{};
         aquiferIDs.reserve(numberOfConstantFluxAquifers(cfg)
                            + sched.aqufluxs.size());
 
@@ -964,14 +964,14 @@ namespace {
         return numUnique(std::move(aquiferIDs));
     }
 
-    int getNumberOfAnalyticAquifers(const Opm::AquiferConfig& cfg)
+    long long getNumberOfAnalyticAquifers(const Opm::AquiferConfig& cfg)
     {
         return numberOfCarterTracyAquifers(cfg)
             +  numberOfFetkovichAquifers(cfg)
             +  numberOfConstantFluxAquifers(cfg);
     }
 
-    int getNumberOfAnalyticAquifers(const Opm::AquiferConfig& cfg,
+    long long getNumberOfAnalyticAquifers(const Opm::AquiferConfig& cfg,
                                     const Opm::ScheduleState& sched)
     {
         return numberOfCarterTracyAquifers(cfg)
@@ -979,21 +979,21 @@ namespace {
             +  numberOfConstantFluxAquifers(cfg, sched);
     }
 
-    int getMaximumNumberOfAnalyticAquifers(const Opm::Runspec& runspec)
+    long long getMaximumNumberOfAnalyticAquifers(const Opm::Runspec& runspec)
     {
         return runspec.aquiferDimensions().maxAnalyticAquifers();
     }
 
-    int getMaximumNumberOfAnalyticAquiferConnections(const Opm::Runspec& runspec)
+    long long getMaximumNumberOfAnalyticAquiferConnections(const Opm::Runspec& runspec)
     {
         return runspec.aquiferDimensions().maxAnalyticAquiferConnections();
     }
 
-    int getMaximumNumberOfActiveAnalyticAquiferConnections(const Opm::AquiferConfig& cfg)
+    long long getMaximumNumberOfActiveAnalyticAquiferConnections(const Opm::AquiferConfig& cfg)
     {
-        auto maxNumActiveConn = 0;
+        auto maxNumActiveConn = 0LL;
         for (const auto& aqConn : cfg.connections().data()) {
-            const auto nActiveConn = static_cast<int>(aqConn.second.size());
+            const auto nActiveConn = static_cast<long long>(aqConn.second.size());
 
             maxNumActiveConn = std::max(maxNumActiveConn, nActiveConn);
         }
@@ -1002,17 +1002,17 @@ namespace {
     }
 
     template <typename AquiferCollection>
-    int maxAquID(const AquiferCollection& aquiferCollection)
+    long long maxAquID(const AquiferCollection& aquiferCollection)
     {
         return std::accumulate(aquiferCollection.begin(), aquiferCollection.end(), 0,
-                               [](const int maxID, const auto& aquiferData)
+                               [](const long long maxID, const auto& aquiferData)
                                {
                                    return std::max(maxID, aquiferData.aquiferID);
                                });
     }
 
     template <typename AquFluxIter>
-    int maxAquID(AquFluxIter begin, AquFluxIter end)
+    long long maxAquID(AquFluxIter begin, AquFluxIter end)
     {
         auto maxIDPos =
             std::max_element(begin, end,
@@ -1024,7 +1024,7 @@ namespace {
         return (maxIDPos == end) ? 0 : maxIDPos->first;
     }
 
-    int getMaximumAnalyticAquiferID(const Opm::AquiferConfig& cfg)
+    long long getMaximumAnalyticAquiferID(const Opm::AquiferConfig& cfg)
     {
         return std::max({
                 maxAquID(cfg.ct()),
@@ -1033,7 +1033,7 @@ namespace {
             });
     }
 
-    int getMaximumAnalyticAquiferID(const int                 maxAquiferID,
+    long long getMaximumAnalyticAquiferID(const long long                 maxAquiferID,
                                     const Opm::ScheduleState& sched)
     {
         return std::max(maxAquiferID, maxAquID(sched.aqufluxs.begin(), sched.aqufluxs.end()));

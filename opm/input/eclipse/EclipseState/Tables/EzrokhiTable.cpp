@@ -25,7 +25,7 @@
 
 namespace Opm {
 
-    void EzrokhiTable::init(const DeckRecord& record, const std::string& cname, const int icomp) 
+    void EzrokhiTable::init(const DeckRecord& record, const std::string& cname, const long long icomp) 
     {
         // DATA is a flattened (ncomps, 3) table
         const double c0 = record.getItem("DATA").getSIDouble(3 * icomp);

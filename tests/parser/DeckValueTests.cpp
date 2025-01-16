@@ -40,35 +40,35 @@ BOOST_AUTO_TEST_CASE(DeckValueTest) {
 
     const DeckValue value0;
     BOOST_CHECK(value0.is_default());
-    BOOST_CHECK(!value0.is_compatible<int>());
+    BOOST_CHECK(!value0.is_compatible<long long>());
     BOOST_CHECK(!value0.is_compatible<std::string>());
     BOOST_CHECK(!value0.is_compatible<double>());
-    BOOST_CHECK_THROW( value0.get<int>(), std::invalid_argument);
+    BOOST_CHECK_THROW( value0.get<long long>(), std::invalid_argument);
     BOOST_CHECK_THROW( value0.get<std::string>(), std::invalid_argument);
     BOOST_CHECK_THROW( value0.get<double>(), std::invalid_argument);
 
     DeckValue value1(10);
     BOOST_CHECK(!value1.is_default());
-    BOOST_CHECK(value1.is_compatible<int>());
+    BOOST_CHECK(value1.is_compatible<long long>());
     BOOST_CHECK(value1.is_compatible<double>());
     BOOST_CHECK(!value1.is_compatible<std::string>());
-    BOOST_CHECK_EQUAL( value1.get<int>(), 10);
+    BOOST_CHECK_EQUAL( value1.get<long long>(), 10);
     BOOST_CHECK_EQUAL( value1.get<double>(), 10);
 
     DeckValue value2(10.0);
     BOOST_CHECK(value2.is_compatible<double>());
-    BOOST_CHECK(!value2.is_compatible<int>());
+    BOOST_CHECK(!value2.is_compatible<long long>());
     BOOST_CHECK(!value2.is_compatible<std::string>());
     BOOST_CHECK_EQUAL( value2.get<double>(), 10);
     BOOST_CHECK_THROW( value2.get<std::string>(), std::invalid_argument);
-    BOOST_CHECK_THROW( value2.get<int>(), std::invalid_argument);
+    BOOST_CHECK_THROW( value2.get<long long>(), std::invalid_argument);
 
     DeckValue value3("FUBHP");
     BOOST_CHECK(!value3.is_compatible<double>());
     BOOST_CHECK(value3.is_compatible<std::string>());
     BOOST_CHECK_EQUAL( value3.get<std::string>(), std::string("FUBHP"));
     BOOST_CHECK_THROW( value3.get<double>(), std::invalid_argument);
-    BOOST_CHECK_THROW( value3.get<int>(), std::invalid_argument);
+    BOOST_CHECK_THROW( value3.get<long long>(), std::invalid_argument);
 
 
 }
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(DeckKeywordConstructor) {
 
     BOOST_CHECK_EQUAL( array.get<std::string>(0), "WORD_A" );
     BOOST_CHECK_EQUAL( shift.get<double>(0), 16.25 );
-    BOOST_CHECK_EQUAL( number.get<int>(0), 77 );
+    BOOST_CHECK_EQUAL( number.get<long long>(0), 77 );
     BOOST_CHECK_EQUAL( name.get<std::string>(0), "WORD_B" );
 
     //checking default values:
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(DeckKeywordConstructor) {
     BOOST_CHECK_EQUAL( shift1.get<double>(0), 0 );
     BOOST_CHECK_EQUAL( name1.get<std::string>(0), "M" );
 
-    //check that int can substitute double
+    //check that long long can substitute double
     BOOST_CHECK_NO_THROW( DeckKeyword(addreg, {{DeckValue("WORD_A"), DeckValue(5), DeckValue(77)}}, unit_active, unit_default   ) );
 
     //Check correct SI conversion
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(DeckKeywordVectorInt) {
    const ParserKeyword& hbnum = parser.getKeyword("HBNUM");
    const ParserKeyword& box = parser.getKeyword("BOX");
 
-   std::vector<int> data = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+   std::vector<long long> data = {0, 1, 2, 3, 4, 5, 6, 7, 8};
    BOOST_CHECK_THROW( DeckKeyword(box, data), std::invalid_argument );
    DeckKeyword hbnum_kw(hbnum, data);
    BOOST_CHECK(hbnum_kw.isDataKeyword());

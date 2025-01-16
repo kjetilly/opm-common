@@ -82,7 +82,7 @@ namespace Opm { namespace RestartIO {
 
         LogiHEAD& variousParam(const bool e300_radial,
                                const bool e100_radial,
-                               const int  nswlmx,
+                               const long long  nswlmx,
 			       const bool enableHyster
 			      );
 
@@ -108,7 +108,7 @@ namespace Opm { namespace RestartIO {
 
         /// Logical switch to indicate that the network option is used
         ///
-        LogiHEAD& network(const int maxNoNodes);
+        LogiHEAD& network(const long long maxNoNodes);
     private:
         std::vector<bool> data_;
     };

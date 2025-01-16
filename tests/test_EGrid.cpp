@@ -87,8 +87,8 @@ BOOST_AUTO_TEST_CASE(DimensAndIndices) {
 
     EGrid grid1(testFile);
 
-    int nAct=grid1.activeCells();
-    int nTot=grid1.totalNumberOfCells();
+    long long nAct=grid1.activeCells();
+    long long nTot=grid1.totalNumberOfCells();
 
     BOOST_CHECK_EQUAL(nAct,294);
     BOOST_CHECK_EQUAL(nTot,300);
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(DimensAndIndices) {
     BOOST_CHECK_EQUAL(dim[1],10);
     BOOST_CHECK_EQUAL(dim[2],3);
 
-    int globInd = grid1.global_index(3, 2, 1);
+    long long globInd = grid1.global_index(3, 2, 1);
 
     BOOST_CHECK_EQUAL(globInd, 123);   // 10*10*1 + 10*2 + 3 = 100+20+3 = 123
 
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(DimensAndIndices) {
     // 6 inactive cells in first layer, actInd not same as glogInd
     // actInd and globInd are zero based indices
 
-    int actInd = grid1.active_index(3,2,1);
+    long long actInd = grid1.active_index(3,2,1);
 
     BOOST_CHECK_EQUAL(actInd, 117);   // global index 123, - 6 inactive
     BOOST_CHECK_EQUAL(grid1.active_index(0, 0, 0), 0);
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(getCellCorners) {
     Y = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     Z = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
-    int globInd=grid1.global_index(3,2,1);
+    long long globInd=grid1.global_index(3,2,1);
 
     grid1.getCellCorners(globInd,X,Y,Z);
 
@@ -204,9 +204,9 @@ BOOST_AUTO_TEST_CASE(lgr_1) {
       {2,3,1,2,4,0,7.67373}, {2,3,2,2,4,1,7.67373}, {2,3,3,2,4,2,7.67373}, {3,3,1,3,4,0,7.67373},
       {3,3,2,3,4,1,7.67373}, {3,3,3,3,4,2,7.67373}};
 
-    const std::array<int, 3> ref_dim_global = {2,3,5};
-    const std::array<int, 3> ref_dim_lgr1 = {4,8,4};
-    const std::array<int, 3> ref_dim_lgr2 = {6,8,4};
+    const std::array<long long, 3> ref_dim_global = {2,3,5};
+    const std::array<long long, 3> ref_dim_lgr1 = {4,8,4};
+    const std::array<long long, 3> ref_dim_lgr2 = {6,8,4};
 
     EGrid grid1(testEgridFile);
 
@@ -290,7 +290,7 @@ BOOST_AUTO_TEST_CASE(lgr_1) {
     }
 
     {
-        int act_ind = lgr1.active_index(1,2,0);
+        long long act_ind = lgr1.active_index(1,2,0);
         auto porv = init1.getInitData<float>("PORV", "LGR1");
         auto poro = init1.getInitData<float>("PORO", "LGR1");
 

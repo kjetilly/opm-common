@@ -104,9 +104,9 @@ BOOST_AUTO_TEST_CASE (Constructor)
         auto wListData = Opm::RestartIO::Helpers::AggregateWListData(ih);
         wListData.captureDeclaredWListData(sched, simStep, ih);
 
-        BOOST_CHECK_EQUAL(static_cast<int>(wListData.getIWls().size()),
+        BOOST_CHECK_EQUAL(static_cast<long long>(wListData.getIWls().size()),
                           ih[VI::intehead::NWMAXZ] * ih[VI::intehead::MXWLSTPRWELL]);
-        BOOST_CHECK_EQUAL(static_cast<int>(wListData.getZWls().size()),
+        BOOST_CHECK_EQUAL(static_cast<long long>(wListData.getZWls().size()),
                           ih[VI::intehead::NWMAXZ] * ih[VI::intehead::MXWLSTPRWELL]);
 
         // IWls-parameters

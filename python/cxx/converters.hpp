@@ -30,7 +30,7 @@ std::vector<T> vector(py::array_t<T>& input) {
     T * input_ptr    = (T *) input.request().ptr; 
     std::vector<T> output(input.size());
   
-    for (int i = 0; i < input.size(); i++)
+    for (long long i = 0; i < input.size(); i++)
         output[i] = input_ptr[i];
 
     return output;

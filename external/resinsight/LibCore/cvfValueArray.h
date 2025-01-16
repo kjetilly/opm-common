@@ -59,7 +59,7 @@ public:
 };
 
 
-typedef ValueArray<int>         IntValueArray;
+typedef ValueArray<long long>         IntValueArray;
 typedef ValueArray<uint>	    UIntValueArray;
 typedef ValueArray<ushort>	    UShortValueArray;
 typedef ValueArray<ubyte>	    UByteValueArray;

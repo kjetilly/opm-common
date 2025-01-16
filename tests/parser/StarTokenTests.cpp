@@ -100,10 +100,10 @@ BOOST_AUTO_TEST_CASE( ContainsStar_WithStar_ReturnsTrue ) {
 }
 
 BOOST_AUTO_TEST_CASE( readValueToken_basic_validity_tests ) {
-    BOOST_CHECK_THROW( Opm::readValueToken<int>( std::string( "3.3" ) ), std::invalid_argument );
-    BOOST_CHECK_EQUAL( 3, Opm::readValueToken<int>( std::string( "3" ) ) );
-    BOOST_CHECK_EQUAL( 3, Opm::readValueToken<int>( std::string( "+3" ) ) );
-    BOOST_CHECK_EQUAL( -3, Opm::readValueToken<int>( std::string( "-3" ) ) );
+    BOOST_CHECK_THROW( Opm::readValueToken<long long>( std::string( "3.3" ) ), std::invalid_argument );
+    BOOST_CHECK_EQUAL( 3, Opm::readValueToken<long long>( std::string( "3" ) ) );
+    BOOST_CHECK_EQUAL( 3, Opm::readValueToken<long long>( std::string( "+3" ) ) );
+    BOOST_CHECK_EQUAL( -3, Opm::readValueToken<long long>( std::string( "-3" ) ) );
     BOOST_CHECK_THROW( Opm::readValueToken<double>( std::string( "truls" ) ), std::invalid_argument );
     BOOST_CHECK_EQUAL( 0, Opm::readValueToken<double>( std::string( "0" ) ) );
     BOOST_CHECK_EQUAL( 0, Opm::readValueToken<double>( std::string( "0.0" ) ) );

@@ -28,9 +28,9 @@ template <typename T = double>
 T calcHexaVol(const std::array<T,8>& x, const std::array<T,8>& y, const std::array<T,8>& z, 
               const T& cx,  const T& cy, const T& cz )
 {
-    constexpr std::array<std::array<int, 3>, 12> faceConfigurations
+    constexpr std::array<std::array<long long, 3>, 12> faceConfigurations
     {
-        std::array<int, 3>{0, 1, 5}, 
+        std::array<long long, 3>{0, 1, 5}, 
                           {1, 5, 4},     // Face 0
                           {0, 4, 6},
                           {4, 6, 2},     // Face 1
@@ -44,7 +44,7 @@ T calcHexaVol(const std::array<T,8>& x, const std::array<T,8>& y, const std::arr
                           {5, 7, 6}     // Face 5
     };
     auto getNodes = [](const std::array<T, 8>& X, const std::array<T, 8>& Y, const std::array<T, 8>& Z,
-                                    const std::array<int,3>&  ind){
+                                    const std::array<long long,3>&  ind){
         std::array<T, 3> filtered_vectorX;
         std::array<T, 3> filtered_vectorY;
         std::array<T, 3> filtered_vectorZ;
@@ -70,11 +70,11 @@ T calcHexaVol(const std::array<T,8>& x, const std::array<T,8>& y, const std::arr
 };
 
 template <typename T = double>
-std::vector<int> isInsideElement(const std::vector<T>& tpX, const std::vector<T>& tpY, const std::vector<T>& tpZ,  
+std::vector<long long> isInsideElement(const std::vector<T>& tpX, const std::vector<T>& tpY, const std::vector<T>& tpZ,  
                                                 const std::vector<std::array<T, 8>>& X, const std::vector<std::array<T, 8>>& Y,
                                                 const std::vector<std::array<T, 8>>& Z)
 {
-    std::vector<int> in_elements(tpX.size(),0);
+    std::vector<long long> in_elements(tpX.size(),0);
     // check if it is insde or outside boundary box
     T minX, minY, minZ, maxX, maxY, maxZ;
     T pcX, pcY, pcZ, element_volume, test_element_volume;
@@ -100,7 +100,7 @@ std::vector<int> isInsideElement(const std::vector<T>& tpX, const std::vector<T>
                 test_element_volume = calcHexaVol(X[outerIndex],Y[outerIndex],Z[outerIndex], 
                                                 tpX[innerIndex], tpY[innerIndex],tpZ[innerIndex]);                         
                 if (std::abs(test_element_volume - element_volume) < epslon){
-                        in_elements[innerIndex] = static_cast<int>(outerIndex);
+                        in_elements[innerIndex] = static_cast<long long>(outerIndex);
                 }                             
             }
         }

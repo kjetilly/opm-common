@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(Create)
         c.insert("NAME", UnitSystem::measure::identity, data , data::TargetType::RESTART_SOLUTION);
         BOOST_CHECK_EQUAL( c.size() , 1U );
         BOOST_CHECK_EQUAL( c.has("NAME") , true);
-        BOOST_CHECK_THROW(c.data<int>("NAME"), std::bad_variant_access);
+        BOOST_CHECK_THROW(c.data<long long>("NAME"), std::bad_variant_access);
 
         BOOST_CHECK_EQUAL( c.find("NAME")->first, "NAME");
 
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(Create2)
 
 BOOST_AUTO_TEST_CASE(CreateInt)
 {
-    std::vector<int> data(100);
+    std::vector<long long> data(100);
     const auto c = data::Solution {
         { "CNV_OIL", data::CellData { data, data::TargetType::RESTART_SOLUTION } },
         { "CNV_GAS", data::CellData { data, data::TargetType::RESTART_SOLUTION } },
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(CreateInt)
     const auto c2 = c;
     BOOST_CHECK_EQUAL( c2.size() , 3U );
     BOOST_CHECK( c2.has("CNV_OIL") );
-    const auto& fld = c2.data<int>("CNV_WAT");
+    const auto& fld = c2.data<long long>("CNV_WAT");
     BOOST_CHECK_EQUAL_COLLECTIONS(data.begin(), data.end(), fld.begin(), fld.end());
     BOOST_CHECK_THROW(c2.data<double>("CNV_GAS"), std::bad_variant_access);
 }

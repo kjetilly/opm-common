@@ -91,7 +91,7 @@ void handleUDT(HandlerContext& handlerContext)
     const auto& header = handlerContext.keyword.getRecord(0);
     const std::string name = header.getItem<PUDT::TABLE_NAME>().get<std::string>(0);
 
-    const int dim = header.getItem<PUDT::DIMENSIONS>().get<int>(0);
+    const long long dim = header.getItem<PUDT::DIMENSIONS>().get<long long>(0);
     if (dim != 1) {
         throw OpmInputError("Only 1D UDTs are supported",
                             handlerContext.keyword.location());

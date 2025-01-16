@@ -77,13 +77,13 @@ public:
     struct RestartWell {
         std::string name;
         double test_interval;
-        int num_test;
+        long long num_test;
         double startup_time;
 
-        int config_reasons;
-        int close_reason;
+        long long config_reasons;
+        long long close_reason;
 
-        RestartWell(const std::string& wname, double ti, int num, double st, int r1, int r2)
+        RestartWell(const std::string& wname, double ti, long long num, double st, long long r1, long long r2)
             : name(wname)
             , test_interval(ti)
             , num_test(num)
@@ -98,15 +98,15 @@ public:
         WTest::Reason reason{WTest::Reason::NONE};
         double last_test{};
 
-        int num_attempt{0};
+        long long num_attempt{0};
         bool closed{true};
-        std::optional<int> wtest_report_step{};
+        std::optional<long long> wtest_report_step{};
 
         WTestWell() = default;
         WTestWell(const std::string& wname, WTest::Reason reason_, double last_test);
 
-        int int_reason() const;
-        static WTest::Reason inverse_ecl_reason(int ecl_reason);
+        long long int_reason() const;
+        static WTest::Reason inverse_ecl_reason(long long ecl_reason);
 
         bool operator==(const WTestWell& other) const {
             return this->name == other.name &&
@@ -154,9 +154,9 @@ public:
 
     struct ClosedCompletion {
         std::string wellName{};
-        int complnum{};
+        long long complnum{};
         double last_test{};
-        int num_attempt{};
+        long long num_attempt{};
 
         bool operator==(const ClosedCompletion& other) const {
             return this->wellName == other.wellName &&
@@ -221,10 +221,10 @@ public:
     std::size_t num_closed_wells() const;
     double lastTestTime(const std::string& well_name) const;
 
-    void close_completion(const std::string& well_name, int complnum, double sim_time);
-    void open_completion(const std::string& well_name, int complnum);
+    void close_completion(const std::string& well_name, long long complnum, double sim_time);
+    void open_completion(const std::string& well_name, long long complnum);
     void open_completions(const std::string& well_name);
-    bool completion_is_closed(const std::string& well_name, const int complnum) const;
+    bool completion_is_closed(const std::string& well_name, const long long complnum) const;
     std::size_t num_closed_completions() const;
 
     void clear();
@@ -248,7 +248,7 @@ public:
         buffer.read(size);
         for (std::size_t i = 0; i < size; i++) {
             std::string well;
-            std::unordered_map<int, ClosedCompletion> cmap;
+            std::unordered_map<long long, ClosedCompletion> cmap;
 
             buffer.read(well);
             unpack_map(buffer, cmap);
@@ -270,9 +270,9 @@ public:
 
 private:
     std::unordered_map<std::string, WTestWell> wells;
-    std::unordered_map<std::string, std::unordered_map<int, ClosedCompletion>> completions;
+    std::unordered_map<std::string, std::unordered_map<long long, ClosedCompletion>> completions;
 
-    std::vector<std::pair<std::string, int>> updateCompletion(const WellTestConfig& config, double sim_time);
+    std::vector<std::pair<std::string, long long>> updateCompletion(const WellTestConfig& config, double sim_time);
 };
 
 

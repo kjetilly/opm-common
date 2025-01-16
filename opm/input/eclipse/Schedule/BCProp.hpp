@@ -90,7 +90,7 @@ class BCProp
 public:
     struct BCFace
     {
-        int index{};
+        long long index{};
         BCType bctype{BCType::NONE};
         BCMECHType bcmechtype{BCMECHType::NONE};
         BCComponent component{BCComponent::NONE};
@@ -129,7 +129,7 @@ public:
     std::vector<BCFace>::const_iterator begin() const;
     std::vector<BCFace>::const_iterator end() const;
     bool operator==(const BCProp& other) const;
-    const BCFace& operator[](int index) const;
+    const BCFace& operator[](long long index) const;
 
     void updateBCProp(const DeckRecord& record);
 

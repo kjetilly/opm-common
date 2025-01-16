@@ -76,7 +76,7 @@ public:
 protected:
     PLScanningCurve(PLScanningCurve* prevSC,
                     PLScanningCurve* nextSC,
-                    int loopN,
+                    long long loopN,
                     Scalar SwReversal,
                     Scalar pcnwReversal,
                     Scalar SwMiCurve,
@@ -186,7 +186,7 @@ public:
      *
      * The MDC is 0, PISC is 1, PDSC is 2, ...
      */
-    int loopNum()
+    long long loopNum()
     { return loopNum_; }
 
     /*!
@@ -220,7 +220,7 @@ private:
     PLScanningCurve* prev_;
     PLScanningCurve* next_;
 
-    int loopNum_;
+    long long loopNum_;
 
     Scalar Sw_;
     Scalar pcnw_;
@@ -244,7 +244,7 @@ public:
     typedef typename Traits::Scalar Scalar;
 
     //! The number of fluid phases
-    static const int numPhases = Traits::numPhases;
+    static const long long numPhases = Traits::numPhases;
     static_assert(numPhases == 2,
                   "The Parker-Lenhard capillary pressure law only "
                   "applies to the case of two fluid phases");

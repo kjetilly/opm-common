@@ -54,7 +54,7 @@ namespace VI = Opm::RestartIO::Helpers::VectorItems;
 namespace {
     double getSummaryVariable(const Opm::SummaryState& summaryState,
                               const std::string&       variable,
-                              const int                aquiferID)
+                              const long long                aquiferID)
     {
         const auto key = fmt::format("{}:{}", variable, aquiferID);
 
@@ -118,7 +118,7 @@ namespace {
 
             for (auto cellIndex = 0*numCells; cellIndex < numCells; ++cellIndex) {
                 const auto* aqCell = aquifer.getCellPrt(cellIndex);
-                aquiferOp(static_cast<int>(aquiferID), cellIndex, *aqCell);
+                aquiferOp(static_cast<long long>(aquiferID), cellIndex, *aqCell);
             }
         }
     }
@@ -145,10 +145,10 @@ namespace {
 
     namespace IntegerAnalyticAquifer
     {
-        Opm::RestartIO::Helpers::WindowedArray<int>
+        Opm::RestartIO::Helpers::WindowedArray<long long>
         allocate(const Opm::RestartIO::InteHEAD::AquiferDims& aqDims)
         {
-            using WA = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WA = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
             return WA {
                 WA::NumWindows{ static_cast<WA::Idx>(aqDims.maxAquiferID) },
@@ -159,7 +159,7 @@ namespace {
         namespace Common
         {
             template <typename IAaqArray>
-            void staticContrib(const int  numActiveConn,
+            void staticContrib(const long long  numActiveConn,
                                IAaqArray& iaaq)
             {
                 using Ix = VI::IAnalyticAquifer::index;
@@ -173,7 +173,7 @@ namespace {
         {
             template <typename IAaqArray>
             void staticContrib(const Opm::AquiferCT::AQUCT_data& aquifer,
-                               const int                         numActiveConn,
+                               const long long                         numActiveConn,
                                IAaqArray&                        iaaq)
             {
                 using Ix = VI::IAnalyticAquifer::index;
@@ -190,7 +190,7 @@ namespace {
         namespace ConstantFlux
         {
             template <typename IAaqArray>
-            void staticContrib(const int numActiveConn, IAaqArray& iaaq)
+            void staticContrib(const long long numActiveConn, IAaqArray& iaaq)
             {
                 namespace IAAQ = VI::IAnalyticAquifer;
 
@@ -204,7 +204,7 @@ namespace {
         {
             template <typename IAaqArray>
             void staticContrib(const Opm::Aquifetp::AQUFETP_data& aquifer,
-                               const int                          numActiveConn,
+                               const long long                          numActiveConn,
                                IAaqArray&                         iaaq)
             {
                 using Ix = VI::IAnalyticAquifer::index;
@@ -219,10 +219,10 @@ namespace {
 
     namespace IntegerNumericAquifer
     {
-        Opm::RestartIO::Helpers::WindowedArray<int>
+        Opm::RestartIO::Helpers::WindowedArray<long long>
         allocate(const Opm::RestartIO::InteHEAD::AquiferDims& aqDims)
         {
-            using WA = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WA = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
             return WA {
                 WA::NumWindows{ static_cast<WA::Idx>(aqDims.numNumericAquiferRecords) },
@@ -232,16 +232,16 @@ namespace {
 
         template <typename IAqnArray>
         void staticContrib(const Opm::NumericalAquiferCell& aqCell,
-                           const int                        aquiferID,
+                           const long long                        aquiferID,
                            IAqnArray&                       iaqn)
         {
             using Ix = VI::INumericAquifer::index;
 
             iaqn[Ix::AquiferID] = aquiferID;
 
-            iaqn[Ix::Cell_I] = static_cast<int>(aqCell.I) + 1;
-            iaqn[Ix::Cell_J] = static_cast<int>(aqCell.J) + 1;
-            iaqn[Ix::Cell_K] = static_cast<int>(aqCell.K) + 1;
+            iaqn[Ix::Cell_I] = static_cast<long long>(aqCell.I) + 1;
+            iaqn[Ix::Cell_J] = static_cast<long long>(aqCell.J) + 1;
+            iaqn[Ix::Cell_K] = static_cast<long long>(aqCell.K) + 1;
 
             iaqn[Ix::PVTTableID] = aqCell.pvttable;
             iaqn[Ix::SatFuncID] = aqCell.sattable;
@@ -250,10 +250,10 @@ namespace {
 
     namespace IntegerAnalyticAquiferConn
     {
-        std::vector<Opm::RestartIO::Helpers::WindowedArray<int>>
+        std::vector<Opm::RestartIO::Helpers::WindowedArray<long long>>
         allocate(const Opm::RestartIO::InteHEAD::AquiferDims& aqDims)
         {
-            using WA = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WA = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
             return std::vector<WA>(maxNumberOfAquifers(aqDims), WA {
                 WA::NumWindows{ static_cast<WA::Idx>(aqDims.maxNumActiveAquiferConn) },
@@ -261,7 +261,7 @@ namespace {
             });
         }
 
-        int eclipseFaceDirection(const Opm::FaceDir::DirEnum faceDir)
+        long long eclipseFaceDirection(const Opm::FaceDir::DirEnum faceDir)
         {
             using FDValue = VI::IAnalyticAquiferConn::Value::FaceDirection;
 
@@ -280,7 +280,7 @@ namespace {
             }
 
             throw std::invalid_argument {
-                fmt::format("Unknown Face Direction {}", static_cast<int>(faceDir))
+                fmt::format("Unknown Face Direction {}", static_cast<long long>(faceDir))
             };
         }
 
@@ -629,7 +629,7 @@ AggregateAquiferData(const InteHEAD::AquiferDims& aqDims,
          const double                tot_influx,
          const Aquancon::AquancCell& connection) -> void
     {
-        const auto aquIndex = static_cast<WindowedArray<int>::Idx>(aquiferID - 1);
+        const auto aquIndex = static_cast<WindowedArray<long long>::Idx>(aquiferID - 1);
 
         // Note: ACAQ intentionally omitted here.  This array is not fully characterised.
         auto icaq = this->integerAnalyticAquiferConn_   [aquIndex][connectionID];
@@ -685,7 +685,7 @@ handleCarterTracy(const AquiferConfig&  aqConfig,
     CarterTracyAquiferLoop(aqConfig, [this, &summaryState, &aquData, &usys]
         (const AquiferCT::AQUCT_data& aquifer)
     {
-        const auto aquIndex = static_cast<WindowedArray<int>::Idx>(aquifer.aquiferID - 1);
+        const auto aquIndex = static_cast<WindowedArray<long long>::Idx>(aquifer.aquiferID - 1);
 
         auto iaaq = this->integerAnalyticAq_[aquIndex];
         const auto nActiveConn = this->numActiveConn_[aquIndex];
@@ -724,7 +724,7 @@ handleConstantFlux(const AquiferConfig&  aqConfig,
     ConstantFluxAquiferLoop(aqConfig, sched, [this, &usys, &summaryState]
         (const SingleAquiferFlux& aquifer)
     {
-        const auto aquIndex = static_cast<WindowedArray<int>::Idx>(aquifer.id - 1);
+        const auto aquIndex = static_cast<WindowedArray<long long>::Idx>(aquifer.id - 1);
 
         auto iaaq = this->integerAnalyticAq_[aquIndex];
         const auto nActiveConn = this->numActiveConn_[aquIndex];
@@ -754,7 +754,7 @@ handleFetkovich(const AquiferConfig&  aqConfig,
     FetkovichAquiferLoop(aqConfig, [this, &summaryState, &aquData, &usys]
         (const Aquifetp::AQUFETP_data& aquifer)
     {
-        const auto aquIndex = static_cast<WindowedArray<int>::Idx>(aquifer.aquiferID - 1);
+        const auto aquIndex = static_cast<WindowedArray<long long>::Idx>(aquifer.aquiferID - 1);
 
         auto iaaq = this->integerAnalyticAq_[aquIndex];
         const auto nActiveConn = this->numActiveConn_[aquIndex];
@@ -790,7 +790,7 @@ handleNumeric(const AquiferConfig&  aqConfig,
               const UnitSystem&     usys)
 {
     numericAquiferLoop(aqConfig, [this, &summaryState, &aquData, &usys]
-        (const int                   aquiferID,
+        (const long long                   aquiferID,
          const std::size_t           cellIndex,
          const NumericalAquiferCell& aqCell)
     {

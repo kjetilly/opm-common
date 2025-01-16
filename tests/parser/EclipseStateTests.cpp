@@ -274,8 +274,8 @@ BOOST_AUTO_TEST_CASE(IntProperties) {
     auto deck = createDeck();
     EclipseState state( deck );
 
-    BOOST_CHECK_EQUAL( false, state.fieldProps().supported<int>( "NONO" ) );
-    BOOST_CHECK_EQUAL( true,  state.fieldProps().supported<int>( "SATNUM" ) );
+    BOOST_CHECK_EQUAL( false, state.fieldProps().supported<long long>( "NONO" ) );
+    BOOST_CHECK_EQUAL( true,  state.fieldProps().supported<long long>( "SATNUM" ) );
     BOOST_CHECK_EQUAL( true,  state.fieldProps().has_int( "SATNUM" ) );
 }
 
@@ -325,9 +325,9 @@ BOOST_AUTO_TEST_CASE(FaceTransMults) {
     EclipseState state(deck);
     const auto& transMult = state.getTransMult();
 
-    for (int i = 0; i < 10; ++ i) {
-        for (int j = 0; j < 10; ++ j) {
-            for (int k = 0; k < 10; ++ k) {
+    for (long long i = 0; i < 10; ++ i) {
+        for (long long j = 0; j < 10; ++ j) {
+            for (long long k = 0; k < 10; ++ k) {
                 if (k == 1)
                     BOOST_CHECK_EQUAL(transMult.getMultiplier(i, j, k, FaceDir::XPlus), 10.0);
                 else

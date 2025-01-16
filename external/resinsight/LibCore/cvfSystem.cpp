@@ -61,7 +61,7 @@ bool System::is64Bit()
 //--------------------------------------------------------------------------------------------------
 bool System::isBigEndian()
 {
-    int iInt = 1;
+    long long iInt = 1;
     const char* pcChar = reinterpret_cast<const char*>(&iInt);
 
     return !(*pcChar);
@@ -198,7 +198,7 @@ bool System::strcat(char* strDestination, size_t maxNumElementsInDestination, co
 /// Not that at most maxNumElementsInBuffer - 1 characters are ever written into the buffer since
 /// a termination character is always written to the last position in the buffer.
 //--------------------------------------------------------------------------------------------------
-int System::sprintf(char* buffer, size_t maxNumElementsInBuffer, const char* format, ...)
+long long System::sprintf(char* buffer, size_t maxNumElementsInBuffer, const char* format, ...)
 {
     if (!buffer || maxNumElementsInBuffer == 0 || !format)
     {
@@ -210,15 +210,15 @@ int System::sprintf(char* buffer, size_t maxNumElementsInBuffer, const char* for
 
 #ifdef WIN32
 
-    int numWritten = vsnprintf_s(buffer, maxNumElementsInBuffer*sizeof(char), maxNumElementsInBuffer - 1, format, argList);
+    long long numWritten = vsnprintf_s(buffer, maxNumElementsInBuffer*sizeof(char), maxNumElementsInBuffer - 1, format, argList);
 
 #else
 
-    int numWritten = vsnprintf(buffer, maxNumElementsInBuffer, format, argList);
+    long long numWritten = vsnprintf(buffer, maxNumElementsInBuffer, format, argList);
     
     // Linux will fill the buffer without adding a NULL
     // Catch this and report as error
-    if (numWritten == static_cast<int>(maxNumElementsInBuffer))
+    if (numWritten == static_cast<long long>(maxNumElementsInBuffer))
     {
         numWritten = -1;
     }
@@ -247,7 +247,7 @@ int System::sprintf(char* buffer, size_t maxNumElementsInBuffer, const char* for
 /// Not that at most maxNumElementsInBuffer - 1 characters are ever written into the buffer since
 /// a termination character is always written to the last position in the buffer.
 //--------------------------------------------------------------------------------------------------
-int System::swprintf(wchar_t* buffer, size_t maxNumElementsInBuffer, const wchar_t* format, ...)
+long long System::swprintf(wchar_t* buffer, size_t maxNumElementsInBuffer, const wchar_t* format, ...)
 {
     if (!buffer || maxNumElementsInBuffer == 0 || !format)
     {
@@ -258,9 +258,9 @@ int System::swprintf(wchar_t* buffer, size_t maxNumElementsInBuffer, const wchar
     va_start(argList, format);
 
 #ifdef WIN32
-    int numWritten = _vsnwprintf_s(buffer, maxNumElementsInBuffer, maxNumElementsInBuffer - 1, format, argList);
+    long long numWritten = _vsnwprintf_s(buffer, maxNumElementsInBuffer, maxNumElementsInBuffer - 1, format, argList);
 #else
-    int numWritten = vswprintf(buffer, maxNumElementsInBuffer, format, argList);
+    long long numWritten = vswprintf(buffer, maxNumElementsInBuffer, format, argList);
 #endif
 
     va_end(argList);
@@ -290,7 +290,7 @@ size_t System::strlen(const char* str)
 //--------------------------------------------------------------------------------------------------
 /// 
 //--------------------------------------------------------------------------------------------------
-int System::strcmp(const char* str1, const char* str2)
+long long System::strcmp(const char* str1, const char* str2)
 {
     if (str1 == NULL || str2 == NULL)
     {

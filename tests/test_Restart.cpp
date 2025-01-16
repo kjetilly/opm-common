@@ -83,7 +83,7 @@
 using namespace Opm;
 
 namespace {
-    int ecl_file_get_num_named_kw(Opm::EclIO::ERst&  rst,
+    long long ecl_file_get_num_named_kw(Opm::EclIO::ERst&  rst,
                                   const std::string& kw)
     {
         return std::accumulate(rst.listOfReportStepNumbers().begin(),
@@ -100,7 +100,7 @@ namespace {
     EclIO::EclFile::EclEntry
     ecl_file_iget_named_kw(Opm::EclIO::ERst&  rst,
                            const std::string& kw,
-                           const int          seqnum)
+                           const long long          seqnum)
     {
         const auto list = rst.listOfRstArrays(seqnum);
         const auto it = std::find_if(list.begin(),
@@ -179,7 +179,7 @@ data::Wells mkWells()
     }
 }
 
-data::Solution mkSolution(int numCells)
+data::Solution mkSolution(long long numCells)
 {
     using measure = UnitSystem::measure;
 
@@ -208,7 +208,7 @@ data::Solution mkSolution(int numCells)
     return sol;
 }
 
-data::Solution mkSolutionFIP(const int numCells)
+data::Solution mkSolutionFIP(const long long numCells)
 {
     using measure = UnitSystem::measure;
 
@@ -422,7 +422,7 @@ first_sim(const Setup&         setup,
     EclipseIO eclWriter(setup.es, setup.grid, setup.schedule, setup.summary_config);
 
     const auto num_cells = setup.grid.getNumActive( );
-    const int report_step = 1;
+    const long long report_step = 1;
     const auto start_time = setup.schedule.getStartTime();
     const auto first_step = setup.schedule.simTime(report_step);
 
@@ -861,7 +861,7 @@ BOOST_AUTO_TEST_CASE(STORE_THPRES)
                                    std::runtime_error);
             }
 
-            int num_regions = base_setup.es.getTableManager().getEqldims().getNumEquilRegions();
+            long long num_regions = base_setup.es.getTableManager().getEqldims().getNumEquilRegions();
             std::vector<double>  thpres(num_regions * num_regions, 78);
             restart_value2.addExtra("THRESHPR", UnitSystem::measure::pressure, thpres);
             restart_value2.addExtra("EXTRA", UnitSystem::measure::pressure, thpres);
@@ -891,7 +891,7 @@ BOOST_AUTO_TEST_CASE(STORE_THPRES)
                     outputFileName({outputDir, "FILE2"}, "UNRST");
 
                 EclIO::ERst rst(rstFile);
-                std::map<std::string,int> kw_pos;
+                std::map<std::string,long long> kw_pos;
 
                 {
                     auto i = 0;
@@ -1207,25 +1207,25 @@ struct MessageBuffer
 
     void write( const std::string& str)
     {
-        int size = str.size();
+        long long size = str.size();
         write(size);
-        for (int k = 0; k < size; ++k) {
+        for (long long k = 0; k < size; ++k) {
             write(str[k]);
         }
     }
 
     void read( std::string& str)
     {
-        int size = 0;
+        long long size = 0;
         read(size);
         str.resize(size);
-        for (int k = 0; k < size; ++k) {
+        for (long long k = 0; k < size; ++k) {
             read(str[k]);
         }
     }
 };
 
-Opm::data::AquiferData getFetkovichAquifer(const int aquiferID = 1)
+Opm::data::AquiferData getFetkovichAquifer(const long long aquiferID = 1)
 {
     auto aquifer = Opm::data::AquiferData {
         aquiferID, 123.456, 56.78, 9.0e10, 290.0, 2515.5
@@ -1240,7 +1240,7 @@ Opm::data::AquiferData getFetkovichAquifer(const int aquiferID = 1)
     return aquifer;
 }
 
-Opm::data::AquiferData getCarterTracyAquifer(const int aquiferID = 5)
+Opm::data::AquiferData getCarterTracyAquifer(const long long aquiferID = 5)
 {
     auto aquifer = Opm::data::AquiferData {
         aquiferID, 123.456, 56.78, 9.0e10, 290.0, 2515.5
@@ -1258,7 +1258,7 @@ Opm::data::AquiferData getCarterTracyAquifer(const int aquiferID = 5)
     return aquifer;
 }
 
-Opm::data::AquiferData getNumericalAquifer(const int aquiferID = 2)
+Opm::data::AquiferData getNumericalAquifer(const long long aquiferID = 2)
 {
     auto aquifer = Opm::data::AquiferData {
         aquiferID, 123.456, 56.78, 9.0e10, 290.0, 2515.5

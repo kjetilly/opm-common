@@ -55,13 +55,13 @@ namespace {
 
     namespace iACT {
 
-        Opm::RestartIO::Helpers::WindowedArray<int>
-        allocate(const std::vector<int>& actDims)
+        Opm::RestartIO::Helpers::WindowedArray<long long>
+        allocate(const std::vector<long long>& actDims)
         {
-            using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
-            int nwin = std::max(actDims[0], 1);
-            int nitPrWin = std::max(actDims[1], 1);
+            long long nwin = std::max(actDims[0], 1LL);
+            long long nitPrWin = std::max(actDims[1], 1LL);
             return WV {
                 WV::NumWindows{ static_cast<std::size_t>(nwin) },
                 WV::WindowSize{ static_cast<std::size_t>(nitPrWin) }
@@ -96,12 +96,12 @@ namespace {
         namespace sACT {
 
         Opm::RestartIO::Helpers::WindowedArray<float>
-        allocate(const std::vector<int>& actDims)
+        allocate(const std::vector<long long>& actDims)
         {
             using WV = Opm::RestartIO::Helpers::WindowedArray<float>;
 
-            int nwin = std::max(actDims[0], 1);
-            int nitPrWin = std::max(actDims[2], 1);
+            long long nwin = std::max(actDims[0], 1LL);
+            long long nitPrWin = std::max(actDims[2], 1LL);
             return WV {
                 WV::NumWindows{ static_cast<std::size_t>(nwin) },
                 WV::WindowSize{ static_cast<std::size_t>(nitPrWin) }
@@ -132,14 +132,14 @@ namespace {
         Opm::RestartIO::Helpers::WindowedArray<
             Opm::EclIO::PaddedOutputString<8>
         >
-        allocate(const std::vector<int>& actDims)
+        allocate(const std::vector<long long>& actDims)
         {
             using WV = Opm::RestartIO::Helpers::WindowedArray<
                 Opm::EclIO::PaddedOutputString<8>
             >;
 
-            int nwin = std::max(actDims[0], 1);
-            int nitPrWin = std::max(actDims[3], 1);
+            long long nwin = std::max(actDims[0], 1LL);
+            long long nitPrWin = std::max(actDims[3], 1LL);
             return WV {
                 WV::NumWindows{ static_cast<std::size_t>(nwin) },
                 WV::WindowSize{ static_cast<std::size_t>(nitPrWin) }
@@ -174,15 +174,15 @@ namespace {
     void staticContrib(const Opm::Action::ActionX& actx, const Opm::Actdims& actdims, ZLACTArray& zLact)
         {
             std::size_t offset = 0;
-            int l_sstr = 8;
+            long long l_sstr = 8;
             // write out the schedule input lines
             for (auto input_line : actx.keyword_strings()) {
                 input_line = Opm::trim_copy(input_line);
                 if (input_line.size() > Opm::RestartIO::Helpers::VectorItems::ZLACT::max_line_length)
                     throw std::invalid_argument(fmt::format("Actionx line to long for action {}", actx.name()));
 
-                int n_sstr =  input_line.size()/l_sstr;
-                for (int i = 0; i < n_sstr; i++) {
+                long long n_sstr =  input_line.size()/l_sstr;
+                for (long long i = 0; i < n_sstr; i++) {
                     zLact[offset + i] = input_line.substr(i*l_sstr, l_sstr);
                 }
                 //add remainder of last non-zero string
@@ -256,10 +256,10 @@ namespace {
 
     namespace iACN {
 
-        Opm::RestartIO::Helpers::WindowedArray<int>
+        Opm::RestartIO::Helpers::WindowedArray<long long>
         allocate(std::size_t num_actions, const Opm::Actdims& actdims)
         {
-            using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
             return WV {
                 WV::NumWindows{ num_actions },
                 WV::WindowSize{ actdims.max_conditions() * Opm::RestartIO::Helpers::VectorItems::IACN::ConditionSize }
@@ -274,7 +274,7 @@ namespace {
             using Ix = Opm::RestartIO::Helpers::VectorItems::IACN::index;
             std::size_t offset = 0;
             const auto& actx_cond = actx.conditions();
-            int first_greater = 0;
+            long long first_greater = 0;
             if( !actx_cond.empty() &&
                 actx_cond[0].cmp == Opm::Action::Comparator::LESS)
             {
@@ -383,9 +383,9 @@ namespace {
             Matrix::Idx action_;
         };
 
-        int rhsQuantityIndex(const char quantity)
+        long long rhsQuantityIndex(const char quantity)
         {
-            const auto index = std::map<std::string, int> {
+            const auto index = std::map<std::string, long long> {
                 {"F", 1},
                 {"W", 2},
                 {"G", 3},
@@ -538,7 +538,7 @@ namespace {
 // =====================================================================
 
 Opm::RestartIO::Helpers::AggregateActionxData::
-AggregateActionxData( const std::vector<int>&   rst_dims,
+AggregateActionxData( const std::vector<long long>&   rst_dims,
                       std::size_t               num_actions,
                       const Opm::Actdims&       actdims,
                       const Opm::Schedule&      sched,

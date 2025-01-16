@@ -103,7 +103,7 @@ unsigned invertQuadraticPolynomial(SolContainer& sol,
 //! \cond SKIP_THIS
 template <class Scalar, class SolContainer>
 void invertCubicPolynomialPostProcess_(SolContainer& sol,
-                                       int numSol,
+                                       long long numSol,
                                        Scalar a,
                                        Scalar b,
                                        Scalar c,
@@ -111,7 +111,7 @@ void invertCubicPolynomialPostProcess_(SolContainer& sol,
 {
     // do one Newton iteration on the analytic solution if the
     // precision is increased
-    for (int i = 0; i < numSol; ++i) {
+    for (long long i = 0; i < numSol; ++i) {
         Scalar x = sol[i];
         Scalar fOld = d + x*(c + x*(b + x*a));
 
@@ -258,7 +258,7 @@ unsigned invertCubicPolynomial(SolContainer* sol,
             // Considering the fact that u is a cubic root, we have three
             // values for phi which differ by 2/3*pi. This allows to
             // calculate the three real roots of the polynomial:
-            for (int i = 0; i < 3; ++i) {
+            for (long long i = 0; i < 3; ++i) {
                 sol[i] = cos(phi)*(uAbs - p/(3*uAbs)) - b/3;
                 phi += 2*M_PI/3;
             }

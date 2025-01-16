@@ -28,7 +28,7 @@ namespace Opm {
 
     class GasvisctTable : public SimpleTable {
     public:
-        GasvisctTable( const DeckItem& item, const int tableID  );
+        GasvisctTable( const DeckItem& item, const long long tableID  );
 
         const TableColumn& getTemperatureColumn() const;
         const TableColumn& getGasViscosityColumn() const;

@@ -74,25 +74,25 @@ namespace {
         std::vector<double> sgfr;
     };
 
-    std::size_t nswlmx(const std::vector<int>& inteHead)
+    std::size_t nswlmx(const std::vector<long long>& inteHead)
     {
         // inteHead(175) = NSWLMX
         return inteHead[175];
     }
 
-    std::size_t nisegz(const std::vector<int>& inteHead)
+    std::size_t nisegz(const std::vector<long long>& inteHead)
     {
         // inteHead(178) = NISEGZ
         return inteHead[178];
     }
 
-    std::size_t nrsegz(const std::vector<int>& inteHead)
+    std::size_t nrsegz(const std::vector<long long>& inteHead)
     {
         // inteHead(179) = NRSEGZ
         return inteHead[179];
     }
 
-    std::size_t nilbrz(const std::vector<int>& inteHead)
+    std::size_t nilbrz(const std::vector<long long>& inteHead)
     {
         // inteHead(180) = NILBRZ
         return inteHead[180];
@@ -280,12 +280,12 @@ namespace {
         };
     }
 
-    int noConnectionsSegment(const Opm::WellConnections& compSet,
+    long long noConnectionsSegment(const Opm::WellConnections& compSet,
                              const Opm::WellSegments&    segSet,
                              const std::size_t           segIndex)
     {
         const auto& segNumber  = segSet[segIndex].segmentNumber();
-        int noConnections = 0;
+        long long noConnections = 0;
         for (const auto& it : compSet) {
             auto cSegment = it.segment();
             if (segNumber == cSegment) {
@@ -296,14 +296,14 @@ namespace {
         return noConnections;
     }
 
-    int sumConnectionsSegment(const Opm::WellConnections& compSet,
+    long long sumConnectionsSegment(const Opm::WellConnections& compSet,
                               const Opm::WellSegments&    segSet,
                               const std::size_t           segIndex)
     {
         // This function returns (for a given segment) the sum of number of connections for each segment
         // with lower segment index than the currnet segment
         // If the segment contains no connections, the number returned is zero.
-        int sumConn = 0;
+        long long sumConn = 0;
         if (noConnectionsSegment(compSet, segSet, segIndex) > 0) {
             // add up the number of connections for å segments with lower segment index than current segment
             for (size_t ind = 0; ind <= segIndex; ind++) {
@@ -314,13 +314,13 @@ namespace {
         return sumConn;
     }
 
-    int noInFlowBranches(const Opm::WellSegments& segSet,
+    long long noInFlowBranches(const Opm::WellSegments& segSet,
                          const std::size_t        segIndex)
     {
         const auto segNumber = segSet[segIndex].segmentNumber();
         const auto branch    = segSet[segIndex].branchNumber();
 
-        int noIFBr = 0;
+        long long noIFBr = 0;
         for (std::size_t ind = 0; ind < segSet.size(); ind++) {
             const auto& o_segNum = segSet[ind].outletSegment();
             const auto& i_branch = segSet[ind].branchNumber();
@@ -335,12 +335,12 @@ namespace {
     //find the number of inflow branch-segments (segments that has a branch) from the
     // first segment to the current segment for segments that has at least one inflow branch
     // Segments with no inflow branches get the value zero
-    int sumNoInFlowBranches(const Opm::WellSegments& segSet,
+    long long sumNoInFlowBranches(const Opm::WellSegments& segSet,
                             const std::size_t        segIndex)
     {
-        int sumIFB = 0;
+        long long sumIFB = 0;
         //auto segInd = segIndex;
-        for (int segInd = static_cast<int>(segIndex); segInd >= 0; segInd--) {
+        for (long long segInd = static_cast<long long>(segIndex); segInd >= 0; segInd--) {
             const auto& curBranch = segSet[segInd].branchNumber();
             const auto& iSInd = inflowSegmentsIndex(segSet, segInd);
             for (auto inFlowInd : iSInd) {
@@ -357,14 +357,14 @@ namespace {
             ? sumIFB : 0;
     }
 
-    int inflowSegmentCurBranch(const std::string&       wname,
+    long long inflowSegmentCurBranch(const std::string&       wname,
                                const Opm::WellSegments& segSet,
                                const std::size_t        segIndex)
     {
         const auto branch    = segSet[segIndex].branchNumber();
         const auto segNumber = segSet[segIndex].segmentNumber();
 
-        int inFlowSegInd = -1;
+        long long inFlowSegInd = -1;
         for (std::size_t ind = 0; ind < segSet.size(); ind++) {
             const auto& i_segNum = segSet[ind].segmentNumber();
             const auto& i_branch = segSet[ind].branchNumber();
@@ -402,17 +402,17 @@ namespace {
     }
 
     namespace ISeg {
-        std::size_t entriesPerMSW(const std::vector<int>& inteHead)
+        std::size_t entriesPerMSW(const std::vector<long long>& inteHead)
         {
             // inteHead(176) = NSEGMX
             // inteHead(178) = NISEGZ
             return static_cast<std::size_t>(inteHead[176]) * inteHead[178];
         }
 
-        Opm::RestartIO::Helpers::WindowedArray<int>
-        allocate(const std::vector<int>& inteHead)
+        Opm::RestartIO::Helpers::WindowedArray<long long>
+        allocate(const std::vector<long long>& inteHead)
         {
-            using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
             return WV {
                 WV::NumWindows{ nswlmx(inteHead) },
@@ -477,7 +477,7 @@ namespace {
 
         template <class ISegArray>
         void staticContrib(const Opm::Well&       well,
-                           const std::vector<int>& inteHead,
+                           const std::vector<long long>& inteHead,
                            ISegArray&              iSeg)
         {
             using Ix = ::Opm::RestartIO::Helpers::
@@ -489,7 +489,7 @@ namespace {
                 const auto& completionSet = well.getConnections();
                 const auto& noElmSeg      = nisegz(inteHead);
                 auto orderedSegmentNo = segmentOrder(welSegSet);
-                std::vector<int> seg_reorder (welSegSet.size(),0);
+                std::vector<long long> seg_reorder (welSegSet.size(),0);
                 for (std::size_t ind = 0; ind < welSegSet.size(); ind++ ){
                     const auto s_no = welSegSet[orderedSegmentNo[ind]].segmentNumber();
                     const auto s_ind = welSegSet.segmentNumberToIndex(s_no);
@@ -522,7 +522,7 @@ namespace {
     } // ISeg
 
     namespace RSeg {
-        std::size_t entriesPerMSW(const std::vector<int>& inteHead)
+        std::size_t entriesPerMSW(const std::vector<long long>& inteHead)
         {
             // inteHead(176) = NSEGMX
             // inteHead(179) = NRSEGZ
@@ -530,7 +530,7 @@ namespace {
         }
 
         Opm::RestartIO::Helpers::WindowedArray<double>
-        allocate(const std::vector<int>& inteHead)
+        allocate(const std::vector<long long>& inteHead)
         {
             using WV = Opm::RestartIO::Helpers::WindowedArray<double>;
 
@@ -566,14 +566,14 @@ namespace {
 
             throw std::invalid_argument {
                 "Unsupported Unit Convention: '" +
-                std::to_string(static_cast<int>(uType)) + '\''
+                std::to_string(static_cast<long long>(uType)) + '\''
             };
         }
 
         template <class RSegArray>
         void assignValveCharacteristics(const ::Opm::Segment&    segment,
                                         const ::Opm::UnitSystem& usys,
-                                        const int                baseIndex,
+                                        const long long                baseIndex,
                                         RSegArray&               rSeg)
         {
             using Ix = ::Opm::RestartIO::Helpers::VectorItems::RSeg::index;
@@ -604,7 +604,7 @@ namespace {
         template <class RSegArray>
         void assignICDBaseCharacteristics(const ::Opm::SICD&       sicd,
                                           const ::Opm::UnitSystem& usys,
-                                          const int                baseIndex,
+                                          const long long                baseIndex,
                                           RSegArray&               rSeg)
         {
             using Ix = ::Opm::RestartIO::Helpers::VectorItems::RSeg::index;
@@ -649,7 +649,7 @@ namespace {
         template <class RSegArray>
         void assignSpiralICDCharacteristics(const ::Opm::Segment&    segment,
                                             const ::Opm::UnitSystem& usys,
-                                            const int                baseIndex,
+                                            const long long                baseIndex,
                                             RSegArray&               rSeg)
         {
             using Ix = ::Opm::RestartIO::Helpers::VectorItems::RSeg::index;
@@ -674,7 +674,7 @@ namespace {
         template <class RSegArray>
         void assignAICDCharacteristics(const ::Opm::Segment&    segment,
                                        const ::Opm::UnitSystem& usys,
-                                       const int                baseIndex,
+                                       const long long                baseIndex,
                                        RSegArray&               rSeg)
         {
             using Ix = ::Opm::RestartIO::Helpers::VectorItems::RSeg::index;
@@ -724,7 +724,7 @@ namespace {
         template <class RSegArray>
         void assignSegmentTypeCharacteristics(const ::Opm::Segment&    segment,
                                               const ::Opm::UnitSystem& usys,
-                                              const int                baseIndex,
+                                              const long long                baseIndex,
                                               RSegArray&               rSeg)
         {
             if (segment.isSpiralICD()) {
@@ -754,7 +754,7 @@ namespace {
         template <class RSegArray>
         void staticContrib(const Opm::Runspec&      runspec,
                            const Opm::Well&         well,
-                           const std::vector<int>&  inteHead,
+                           const std::vector<long long>&  inteHead,
                            const Opm::EclipseGrid&  grid,
                            const Opm::UnitSystem&   units,
                            const Opm::SummaryState& smry,
@@ -802,7 +802,7 @@ namespace {
 
                 // Treat the top segment individually
                 {
-                    const int segNumber = segment0.segmentNumber();
+                    const long long segNumber = segment0.segmentNumber();
                     const auto& segment_string = std::to_string(segNumber);
                     auto iS = (segNumber - 1)*noElmSeg;
 
@@ -858,7 +858,7 @@ namespace {
                 for (std::size_t segIndex = 1; segIndex < welSegSet.size(); segIndex++) {
                     const auto& segment = welSegSet[segIndex];
                     const auto& outlet_segment = welSegSet.getFromSegmentNumber( segment.outletSegment() );
-                    const int segNumber = segment.segmentNumber();
+                    const long long segNumber = segment.segmentNumber();
                     const auto& segment_string = std::to_string(segNumber);
 
                     // set the elements of the rSeg array
@@ -966,9 +966,9 @@ namespace {
             /// Callback for discovering/creating a new branch.
             using NewBranchCallback = std::function<
                 void(std::string_view well,
-                     const int        branchId,
-                     const int        kickOffSegment,
-                     const int        outletSegment)
+                     const long long        branchId,
+                     const long long        kickOffSegment,
+                     const long long        outletSegment)
             >;
 
             /// Constructor.
@@ -1020,14 +1020,14 @@ namespace {
             struct KickOffPoint
             {
                 /// Branch start segment
-                int segment;
+                long long segment;
 
                 /// Branch outlet segment.  Segment from which the branch
                 /// kicks off.
-                int outlet;
+                long long outlet;
 
                 /// ID of branch starting at this kick-off point.
-                int branch;
+                long long branch;
             };
 
             /// Priority queue ordering operation
@@ -1075,7 +1075,7 @@ namespace {
             KickOffPointsQueue kickOffPoints_{};
 
             /// One-based segment number of currently visited segment.
-            int currentSegment_{};
+            long long currentSegment_{};
 
             /// Create a new branch from "top" kick-off point.
             ///
@@ -1097,8 +1097,8 @@ namespace {
             ///
             /// \param[in] children Collection of new branch start segments.
             ///    One child/kick-off segment for each new branch.
-            void discoverNewBranches(const int               outletSegment,
-                                     const std::vector<int>& children);
+            void discoverNewBranches(const long long               outletSegment,
+                                     const std::vector<long long>& children);
 
             /// Split child segments of current segment into groups
             /// based on their associate branch number.
@@ -1111,7 +1111,7 @@ namespace {
             /// as the current segment.  This will be \c nullopt if there is
             /// no such child segment, thus signifiying the end of the
             /// current branch.
-            std::pair<std::vector<int>, std::optional<int>>
+            std::pair<std::vector<long long>, std::optional<long long>>
             characteriseChildSegments() const;
 
             /// Get current segment object.
@@ -1122,7 +1122,7 @@ namespace {
             /// \param[in] segNum One-based segment number.
             ///
             /// \return Segment object corresponding to \p segNum.
-            const Opm::Segment& segment(const int segNum) const;
+            const Opm::Segment& segment(const long long segNum) const;
         };
 
         void Topology::traverseStructure()
@@ -1178,8 +1178,8 @@ namespace {
             }
         }
 
-        void Topology::discoverNewBranches(const int               outletSegment,
-                                           const std::vector<int>& children)
+        void Topology::discoverNewBranches(const long long               outletSegment,
+                                           const std::vector<long long>& children)
         {
             for (const auto& child : children) {
                 this->kickOffPoints_
@@ -1190,7 +1190,7 @@ namespace {
             }
         }
 
-        std::pair<std::vector<int>, std::optional<int>>
+        std::pair<std::vector<long long>, std::optional<long long>>
         Topology::characteriseChildSegments() const
         {
             auto children = this->currentSegment().inletSegments();
@@ -1198,7 +1198,7 @@ namespace {
             auto sameBranchPos =
                 std::stable_partition(children.begin(), children.end(),
                     [this, currBranch = this->currentSegment().branchNumber()]
-                    (const int segNum)
+                    (const long long segNum)
                 {
                     return this->segment(segNum).branchNumber() != currBranch;
                 });
@@ -1213,7 +1213,7 @@ namespace {
             }
             else {
                 if (const auto numSameBranch = std::distance(sameBranchPos, children.end());
-                    numSameBranch != std::vector<int>::difference_type{1})
+                    numSameBranch != std::vector<long long>::difference_type{1})
                 {
                     throw std::invalid_argument {
                         fmt::format("Segment {} of well {} has {} "
@@ -1240,23 +1240,23 @@ namespace {
             return this->segment(this->currentSegment_);
         }
 
-        const Opm::Segment& Topology::segment(const int segNum) const
+        const Opm::Segment& Topology::segment(const long long segNum) const
         {
             return this->segSet_.get().getFromSegmentNumber(segNum);
         }
     } // LateralBranch
 
     namespace ILBS {
-        std::size_t entriesPerMSW(const std::vector<int>& inteHead)
+        std::size_t entriesPerMSW(const std::vector<long long>& inteHead)
         {
             // inteHead(177) = NLBRMX
             return inteHead[177];
         }
 
-        Opm::RestartIO::Helpers::WindowedArray<int>
-        allocate(const std::vector<int>& inteHead)
+        Opm::RestartIO::Helpers::WindowedArray<long long>
+        allocate(const std::vector<long long>& inteHead)
         {
-            using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
             return WV {
                 WV::NumWindows{ nswlmx(inteHead) },
@@ -1269,7 +1269,7 @@ namespace {
         class Array
         {
         public:
-            using Matrix = Opm::RestartIO::Helpers::WindowedMatrix<int>;
+            using Matrix = Opm::RestartIO::Helpers::WindowedMatrix<long long>;
 
             explicit Array(Matrix&           ilbr,
                            const Matrix::Idx msWellID)
@@ -1287,15 +1287,15 @@ namespace {
             Matrix::Idx well_;
         };
 
-        std::size_t maxBranchesPerMSWell(const std::vector<int>& inteHead)
+        std::size_t maxBranchesPerMSWell(const std::vector<long long>& inteHead)
         {
             return inteHead[177];
         }
 
-        Opm::RestartIO::Helpers::WindowedMatrix<int>
-        allocate(const std::vector<int>& inteHead)
+        Opm::RestartIO::Helpers::WindowedMatrix<long long>
+        allocate(const std::vector<long long>& inteHead)
         {
-            using WM = Opm::RestartIO::Helpers::WindowedMatrix<int>;
+            using WM = Opm::RestartIO::Helpers::WindowedMatrix<long long>;
 
             return WM {
                 WM::NumRows   { nswlmx(inteHead) },
@@ -1310,7 +1310,7 @@ namespace {
 // =====================================================================
 
 Opm::RestartIO::Helpers::AggregateMSWData::
-AggregateMSWData(const std::vector<int>& inteHead)
+AggregateMSWData(const std::vector<long long>& inteHead)
     : iSeg_ (ISeg::allocate(inteHead))
     , rSeg_ (RSeg::allocate(inteHead))
     , iLBS_ (ILBS::allocate(inteHead))
@@ -1324,7 +1324,7 @@ Opm::RestartIO::Helpers::AggregateMSWData::
 captureDeclaredMSWData(const Schedule&          sched,
                        const std::size_t        rptStep,
                        const Opm::UnitSystem&   units,
-                       const std::vector<int>&  inteHead,
+                       const std::vector<long long>&  inteHead,
                        const Opm::EclipseGrid&  grid,
                        const Opm::SummaryState& smry,
                        const Opm::data::Wells&  wr)
@@ -1382,9 +1382,9 @@ captureDeclaredMSWData(const Schedule&          sched,
             })
             .setNewBranchCallback([&ilbr, &ilbs, insertIndex = 0]
                                   (std::string_view wellName,
-                                   const int        newBranchId,
-                                   const int        kickOffSegment,
-                                   const int        outletSegment) mutable
+                                   const long long        newBranchId,
+                                   const long long        kickOffSegment,
+                                   const long long        outletSegment) mutable
             {
                 ilbs[insertIndex] = kickOffSegment;
 

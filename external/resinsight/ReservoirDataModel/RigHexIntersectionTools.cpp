@@ -29,7 +29,7 @@ namespace external {
 //--------------------------------------------------------------------------------------------------
 ///
 //--------------------------------------------------------------------------------------------------
-int RigHexIntersectionTools::lineHexCellIntersection( const cvf::Vec3d                  p1,
+long long RigHexIntersectionTools::lineHexCellIntersection( const cvf::Vec3d                  p1,
                                                       const cvf::Vec3d                  p2,
                                                       const cvf::Vec3d                  hexCorners[8],
                                                       const size_t                      hexIndex,
@@ -39,7 +39,7 @@ int RigHexIntersectionTools::lineHexCellIntersection( const cvf::Vec3d          
 
     std::set<HexIntersectionInfo> uniqueIntersections;
 
-    for ( int face = 0; face < 6; ++face )
+    for ( long long face = 0; face < 6; ++face )
     {
         cvf::ubyte faceVertexIndices[4];
         cvf::StructGridInterface::cellFaceVertexIndices( static_cast<cvf::StructGridInterface::FaceType>( face ),
@@ -52,11 +52,11 @@ int RigHexIntersectionTools::lineHexCellIntersection( const cvf::Vec3d          
                                                                        hexCorners[faceVertexIndices[2]],
                                                                        hexCorners[faceVertexIndices[3]] );
 
-        for ( int i = 0; i < 4; ++i )
+        for ( long long i = 0; i < 4; ++i )
         {
-            int next = i < 3 ? i + 1 : 0;
+            long long next = i < 3 ? i + 1 : 0;
 
-            int intsStatus = cvf::GeometryTools::intersectLineSegmentTriangle( p1,
+            long long intsStatus = cvf::GeometryTools::intersectLineSegmentTriangle( p1,
                                                                                p2,
                                                                                hexCorners[faceVertexIndices[i]],
                                                                                hexCorners[faceVertexIndices[next]],
@@ -73,7 +73,7 @@ int RigHexIntersectionTools::lineHexCellIntersection( const cvf::Vec3d          
         }
     }
 
-    int intersectionCount = 0;
+    long long intersectionCount = 0;
     for ( const auto& intersection : uniqueIntersections )
     {
         intersections->push_back( intersection );
@@ -90,7 +90,7 @@ bool RigHexIntersectionTools::lineIntersectsHexCell( const cvf::Vec3d p1,
                                                      const cvf::Vec3d p2,
                                                      const cvf::Vec3d hexCorners[8] )
 {
-    for ( int face = 0; face < 6; ++face )
+    for ( long long face = 0; face < 6; ++face )
     {
         cvf::ubyte faceVertexIndices[4];
         cvf::StructGridInterface::cellFaceVertexIndices( static_cast<cvf::StructGridInterface::FaceType>( face ),
@@ -103,11 +103,11 @@ bool RigHexIntersectionTools::lineIntersectsHexCell( const cvf::Vec3d p1,
                                                                        hexCorners[faceVertexIndices[2]],
                                                                        hexCorners[faceVertexIndices[3]] );
 
-        for ( int i = 0; i < 4; ++i )
+        for ( long long i = 0; i < 4; ++i )
         {
-            int next = i < 3 ? i + 1 : 0;
+            long long next = i < 3 ? i + 1 : 0;
 
-            int intsStatus = cvf::GeometryTools::intersectLineSegmentTriangle( p1,
+            long long intsStatus = cvf::GeometryTools::intersectLineSegmentTriangle( p1,
                                                                                p2,
                                                                                hexCorners[faceVertexIndices[i]],
                                                                                hexCorners[faceVertexIndices[next]],
@@ -132,7 +132,7 @@ bool RigHexIntersectionTools::isPointInCell( const cvf::Vec3d point, const cvf::
     ray.setOrigin( point );
     size_t intersections = 0;
 
-    for ( int face = 0; face < 6; ++face )
+    for ( long long face = 0; face < 6; ++face )
     {
         cvf::ubyte faceVertexIndices[4];
         cvf::StructGridInterface::cellFaceVertexIndices( static_cast<cvf::StructGridInterface::FaceType>( face ),
@@ -142,9 +142,9 @@ bool RigHexIntersectionTools::isPointInCell( const cvf::Vec3d point, const cvf::
                                                                        hexCorners[faceVertexIndices[2]],
                                                                        hexCorners[faceVertexIndices[3]] );
 
-        for ( int i = 0; i < 4; ++i )
+        for ( long long i = 0; i < 4; ++i )
         {
-            int next = i < 3 ? i + 1 : 0;
+            long long next = i < 3 ? i + 1 : 0;
             if ( ray.triangleIntersect( hexCorners[faceVertexIndices[i]], hexCorners[faceVertexIndices[next]], faceCenter ) )
             {
                 ++intersections;
@@ -167,7 +167,7 @@ bool RigHexIntersectionTools::isPointInCell( const cvf::Vec3d point, const cvf::
 //     caf::HexGridIntersectionTools::ClipVx triangleIntersectionPoint2;
 //     bool                                  isMostVxesOnPositiveSideOfP1 = false;
 
-//     for ( int face = 0; face < 6; ++face )
+//     for ( long long face = 0; face < 6; ++face )
 //     {
 //         cvf::StructGridInterface::cellFaceVertexIndices( static_cast<cvf::StructGridInterface::FaceType>( face ),
 //                                                          faceVertexIndices );
@@ -177,9 +177,9 @@ bool RigHexIntersectionTools::isPointInCell( const cvf::Vec3d point, const cvf::
 //                                                                        hexCorners[faceVertexIndices[2]],
 //                                                                        hexCorners[faceVertexIndices[3]] );
 
-//         for ( int i = 0; i < 4; i++ )
+//         for ( long long i = 0; i < 4; i++ )
 //         {
-//             int next = i < 3 ? i + 1 : 0;
+//             long long next = i < 3 ? i + 1 : 0;
 
 //             bool isIntersectingPlane =
 //                 caf::HexGridIntersectionTools::planeTriangleIntersection( fracturePlane,

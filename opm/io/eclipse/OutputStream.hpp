@@ -79,7 +79,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         ///
         /// \param[in] data Output values.
         void write(const std::string&      kw,
-                   const std::vector<int>& data);
+                   const std::vector<long long>& data);
 
         /// Write boolean data to underlying output stream.
         ///
@@ -153,7 +153,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         ///
         /// \param[in] unif Whether or not to create unified output files.
         explicit Restart(const ResultSet& rset,
-                         const int        seqnum,
+                         const long long        seqnum,
                          const Formatted& fmt,
                          const Unified&   unif);
 
@@ -177,7 +177,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         ///
         /// \param[in] data Output values.
         void write(const std::string&      kw,
-                   const std::vector<int>& data);
+                   const std::vector<long long>& data);
 
         /// Write boolean data to underlying output stream.
         ///
@@ -240,7 +240,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         ///    report step ID.
         void openUnified(const std::string& fname,
                          const bool         formatted,
-                         const int          seqnum);
+                         const long long          seqnum);
 
         /// Open new output stream.
         ///
@@ -312,7 +312,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         ///
         /// \param[in] data Output values.
         void write(const std::string&      kw,
-                   const std::vector<int>& data);
+                   const std::vector<long long>& data);
 
         /// Write single precision floating point data to underlying
         /// output stream.
@@ -376,7 +376,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         struct RestartSpecification
         {
             std::string root;
-            int step;
+            long long step;
         };
 
         class Parameters
@@ -384,7 +384,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         public:
             void add(const std::string& keyword,
                      const std::string& wgname,
-                     const int          num,
+                     const long long          num,
                      const std::string& unit);
 
             friend class SummarySpecification;
@@ -392,14 +392,14 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         private:
             std::vector<PaddedOutputString<8>> keywords{};
             std::vector<PaddedOutputString<8>> wgnames{};
-            std::vector<int>                   nums{};
+            std::vector<long long>                   nums{};
             std::vector<PaddedOutputString<8>> units{};
         };
 
         explicit SummarySpecification(const ResultSet&            rset,
                                       const Formatted&            fmt,
                                       const UnitConvention        uconv,
-                                      const std::array<int,3>&    cartDims,
+                                      const std::array<long long,3>&    cartDims,
                                       const RestartSpecification& restart,
                                       const StartTime             start);
 
@@ -414,9 +414,9 @@ namespace Opm { namespace EclIO { namespace OutputStream {
         void write(const Parameters& params);
 
     private:
-        int unit_;
-        int restartStep_;
-        std::array<int,3> cartDims_;
+        long long unit_;
+        long long restartStep_;
+        std::array<long long,3> cartDims_;
         StartTime startDate_;
         std::vector<PaddedOutputString<8>> restart_;
 
@@ -431,7 +431,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
 
     std::unique_ptr<EclOutput>
     createSummaryFile(const ResultSet& rset,
-                      const int        seqnum,
+                      const long long        seqnum,
                       const Formatted& fmt,
                       const Unified&   unif);
 

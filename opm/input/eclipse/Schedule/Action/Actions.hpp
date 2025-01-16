@@ -47,7 +47,7 @@ public:
 
     std::size_t py_size() const;
     std::size_t ecl_size() const;
-    int max_input_lines() const;
+    long long max_input_lines() const;
     bool empty() const;
     void add(const ActionX& action);
     void add(const PyAction& pyaction);

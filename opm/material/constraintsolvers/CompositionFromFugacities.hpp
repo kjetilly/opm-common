@@ -48,7 +48,7 @@ namespace Opm {
 template <class Scalar, class FluidSystem, class Evaluation = Scalar>
 class CompositionFromFugacities
 {
-    static constexpr int numComponents = FluidSystem::numComponents;
+    static constexpr long long numComponents = FluidSystem::numComponents;
 
 public:
     typedef Dune::FieldVector<Evaluation, numComponents> ComponentVector;
@@ -85,7 +85,7 @@ public:
                       unsigned phaseIdx,
                       const ComponentVector& targetFug)
     {
-        assert (phaseIdx < static_cast<unsigned int>(FluidSystem::numPhases));
+        assert (phaseIdx < static_cast<size_t>(FluidSystem::numPhases));
 
         // use a much more efficient method in case the phase is an
         // ideal mixture
@@ -114,8 +114,8 @@ public:
         paramCache.updatePhase(fluidState, phaseIdx);
 
         // maximum number of iterations
-        const int nMax = 25;
-        for (int nIdx = 0; nIdx < nMax; ++nIdx) {
+        const long long nMax = 25;
+        for (long long nIdx = 0; nIdx < nMax; ++nIdx) {
             // calculate Jacobian matrix and right hand side
             linearize_(J, b, fluidState, paramCache, phaseIdx, targetFug);
             Valgrind::CheckDefined(J);

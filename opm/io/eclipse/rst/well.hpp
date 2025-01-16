@@ -45,10 +45,10 @@ struct RstWell
             const RstHeader& header,
             const std::string& group_arg,
             const std::string* zwel,
-            const int * iwel,
+            const long long * iwel,
             const float * swel,
             const double * xwel,
-            const int * icon,
+            const long long * icon,
             const float * scon,
             const double * xcon);
 
@@ -56,42 +56,42 @@ struct RstWell
             const RstHeader& header,
             const std::string& group_arg,
             const std::string* zwel,
-            const int * iwel,
+            const long long * iwel,
             const float * swel,
             const double * xwel,
-            const int * icon,
+            const long long * icon,
             const float * scon,
             const double * xcon,
-            const std::vector<int>& iseg,
+            const std::vector<long long>& iseg,
             const std::vector<double>& rseg);
 
     std::string name;
     std::string group;
-    std::array<int, 2> ij;
-    std::pair<int,int> k1k2;
+    std::array<long long, 2> ij;
+    std::pair<long long,long long> k1k2;
     WellType wtype;
-    int well_status;
-    int active_control;
-    int vfp_table;
-    int econ_workover_procedure;
-    int preferred_phase;
+    long long well_status;
+    long long active_control;
+    long long vfp_table;
+    long long econ_workover_procedure;
+    long long preferred_phase;
     bool allow_xflow;
-    int group_controllable_flag;
-    int econ_limit_end_run;
-    int grupcon_gr_phase;
-    int hist_requested_control;
-    int msw_index;
-    int completion_ordering;
-    int pvt_table;
-    int msw_pressure_drop_model;
-    int wtest_config_reasons;
-    int wtest_close_reason;
-    int wtest_remaining;
-    int econ_limit_quantity;
-    int econ_workover_procedure_2;
-    int thp_lookup_procedure_vfptable;
-    int close_if_thp_stabilised;
-    int prevent_thpctrl_if_unstable;
+    long long group_controllable_flag;
+    long long econ_limit_end_run;
+    long long grupcon_gr_phase;
+    long long hist_requested_control;
+    long long msw_index;
+    long long completion_ordering;
+    long long pvt_table;
+    long long msw_pressure_drop_model;
+    long long wtest_config_reasons;
+    long long wtest_close_reason;
+    long long wtest_remaining;
+    long long econ_limit_quantity;
+    long long econ_workover_procedure_2;
+    long long thp_lookup_procedure_vfptable;
+    long long close_if_thp_stabilised;
+    long long prevent_thpctrl_if_unstable;
     bool glift_active;
     bool glift_alloc_extra_gas;
 
@@ -159,7 +159,7 @@ struct RstWell
 
     static constexpr auto UNDEFINED_VALUE = 1.0e20f;
 
-    const RstSegment& segment(int segment_number) const;
+    const RstSegment& segment(long long segment_number) const;
     std::vector<RstConnection> connections;
     std::vector<RstSegment> segments;
 };

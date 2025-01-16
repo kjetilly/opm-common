@@ -58,8 +58,8 @@ namespace Opm {
                             Box::IsActive   isActive,
                             Box::ActiveIdx  activeIdx);
 
-        void setInputBox( int i1,int i2 , int j1 , int j2 , int k1 , int k2);
-        void setKeywordBox( int i1,int i2 , int j1 , int j2 , int k1 , int k2);
+        void setInputBox( long long i1,long long i2 , long long j1 , long long j2 , long long k1 , long long k2);
+        void setKeywordBox( long long i1,long long i2 , long long j1 , long long j2 , long long k1 , long long k2);
 
         void endSection();
         void endInputBox();
@@ -78,9 +78,9 @@ namespace Opm {
         std::unique_ptr<Box> m_keywordBox;
 
         std::unique_ptr<Box>
-        makeBox(const int i1, const int i2,
-                const int j1, const int j2,
-                const int k1, const int k2) const;
+        makeBox(const long long i1, const long long i2,
+                const long long j1, const long long j2,
+                const long long k1, const long long k2) const;
     };
 }
 

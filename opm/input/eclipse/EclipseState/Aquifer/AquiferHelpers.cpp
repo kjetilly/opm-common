@@ -21,8 +21,8 @@
 #include "AquiferHelpers.hpp"
 
 namespace Opm::AquiferHelpers {
-    bool cellInsideReservoirAndActive(const EclipseGrid& grid, const int i, const int j, const int k,
-                                      const std::vector<int>& actnum,
+    bool cellInsideReservoirAndActive(const EclipseGrid& grid, const long long i, const long long j, const long long k,
+                                      const std::vector<long long>& actnum,
                                       const std::optional<const std::unordered_set<std::size_t>>& numerical_aquifer_cells = std::nullopt)
     {
         if ( i < 0 || j < 0 || k < 0
@@ -46,8 +46,8 @@ namespace Opm::AquiferHelpers {
         return true;
     }
 
-    bool neighborCellInsideReservoirAndActive(const EclipseGrid& grid, const int i, const int j, const int k,
-                                              const Opm::FaceDir::DirEnum faceDir, const std::vector<int>& actnum,
+    bool neighborCellInsideReservoirAndActive(const EclipseGrid& grid, const long long i, const long long j, const long long k,
+                                              const Opm::FaceDir::DirEnum faceDir, const std::vector<long long>& actnum,
                                               const std::optional<const std::unordered_set<std::size_t>>& numerical_aquifer_cells)
     {
         switch(faceDir) {

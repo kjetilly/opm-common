@@ -33,13 +33,13 @@ template<class Method>
 struct Test
 {
     template <class Functor>
-    static int run(const Functor& f,
+    static long long run(const Functor& f,
                    const double a,
                    const double b,
-                   const int max_iter,
+                   const long long max_iter,
                    const double tolerance)
     {
-        int iter = 0;
+        long long iter = 0;
         Method::solve(f, a, b, max_iter, tolerance, iter);
         return iter;
     }

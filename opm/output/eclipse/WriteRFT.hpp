@@ -76,7 +76,7 @@ namespace Opm { namespace RftIO {
     ///    positioned for new content (i.e., at end-of-file).  On output,
     ///    containing new RFT output (if applicable) and positioned after
     ///    new contents.
-    void write(const int                        reportStep,
+    void write(const long long                        reportStep,
                const double                     elapsed,
                const ::Opm::UnitSystem&         usys,
                const ::Opm::EclipseGrid&        grid,

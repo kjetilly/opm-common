@@ -395,7 +395,7 @@ void FileDeck::dump_stdout(const std::string& output_dir, OutputMode mode) const
 }
 
 
-void FileDeck::rst_solution(const std::string& rst_base, int report_step) {
+void FileDeck::rst_solution(const std::string& rst_base, long long report_step) {
     auto index = this->find("SOLUTION").value();
     auto summary_index = this->find("SUMMARY").value();
 
@@ -432,8 +432,8 @@ void FileDeck::insert_skiprest() {
 }
 
 
-void FileDeck::skip(int report_step) {
-    int current_report = 0;
+void FileDeck::skip(long long report_step) {
+    long long current_report = 0;
     const auto& schedule = this->find("SCHEDULE");
     auto deck_pos = schedule.value();
     while (true) {
@@ -482,9 +482,9 @@ void FileDeck::skip(int report_step) {
         current_report -= deck_keyword.size();
         for (size_t record_index = report_step - current_report; record_index < deck_keyword.size(); record_index++) {
             const auto& record = deck_keyword[record_index];
-            records.push_back( {DeckValue{record.getItem<D::DAY>().get<int>(0)},
+            records.push_back( {DeckValue{record.getItem<D::DAY>().get<long long>(0)},
                                 DeckValue{record.getItem<D::MONTH>().get<std::string>(0)},
-                                DeckValue{record.getItem<D::YEAR>().get<int>(0)} });
+                                DeckValue{record.getItem<D::YEAR>().get<long long>(0)} });
         }
 
         UnitSystem unit_system;

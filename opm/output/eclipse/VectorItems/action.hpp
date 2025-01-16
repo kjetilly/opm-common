@@ -25,7 +25,7 @@
 namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems {
 
     namespace IACN {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             LHSQuantityType = 10,
             RHSQuantityType = 11,
             FirstGreater    = 12,
@@ -62,7 +62,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
 
     namespace SACN {
 
-    enum index : std::vector<int>::size_type {
+    enum index : std::vector<long long>::size_type {
         LHSValue0 = 0,
         RHSValue0 = 2,
         LHSValue1 = 4,
@@ -78,7 +78,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
 
 
     namespace ZACN {
-    enum index : std::vector<int>::size_type {
+    enum index : std::vector<long long>::size_type {
         Quantity = 0,
         LHSQuantity = 0,
         RHSQuantity = 1,

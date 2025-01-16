@@ -17,19 +17,19 @@ namespace {
                                grid.getNZ());
     }
 
-    int getNumActive( const EclipseGrid& grid ) {
+    long long getNumActive( const EclipseGrid& grid ) {
         return grid.getNumActive();
     }
 
-    int getCartesianSize( const EclipseGrid& grid ) {
+    long long getCartesianSize( const EclipseGrid& grid ) {
         return grid.getCartesianSize();
     }
 
-    int getGlobalIndex( const EclipseGrid& grid, int i, int j, int k ) {
+    long long getGlobalIndex( const EclipseGrid& grid, long long i, long long j, long long k ) {
         return grid.getGlobalIndex(i, j, k);
     }
 
-    py::tuple getIJK( const EclipseGrid& grid, int g ) {
+    py::tuple getIJK( const EclipseGrid& grid, long long g ) {
         const auto& ijk = grid.getIJK(g);
         return py::make_tuple(ijk[0], ijk[1], ijk[2]);
     }
@@ -45,7 +45,7 @@ namespace {
     py::array cellVolumeAll( const EclipseGrid& grid)
     {
         std::vector<double> cellVol;
-        std::array<int, 3> dims = grid.getNXYZ();        
+        std::array<long long, 3> dims = grid.getNXYZ();        
         size_t nCells = dims[0]*dims[1]*dims[2];
         cellVol.reserve(nCells);
         
@@ -55,9 +55,9 @@ namespace {
         return convert::numpy_array(cellVol);
     }
 
-    py::array cellVolumeMask( const EclipseGrid& grid, std::vector<int>& mask)
+    py::array cellVolumeMask( const EclipseGrid& grid, std::vector<long long>& mask)
     {
-        std::array<int, 3> dims = grid.getNXYZ();        
+        std::array<long long, 3> dims = grid.getNXYZ();        
         size_t nCells = dims[0]*dims[1]*dims[2];
     
         if (nCells != mask.size()) 
@@ -83,7 +83,7 @@ namespace {
     py::array cellDepthAll( const EclipseGrid& grid)
     {
         std::vector<double> cellDepth;
-        std::array<int, 3> dims = grid.getNXYZ();        
+        std::array<long long, 3> dims = grid.getNXYZ();        
         size_t nCells = dims[0]*dims[1]*dims[2];
         cellDepth.reserve(nCells);
         
@@ -93,9 +93,9 @@ namespace {
         return convert::numpy_array(cellDepth);
     }
 
-    py::array cellDepthMask( const EclipseGrid& grid, std::vector<int>& mask)
+    py::array cellDepthMask( const EclipseGrid& grid, std::vector<long long>& mask)
     {
-        std::array<int, 3> dims = grid.getNXYZ();        
+        std::array<long long, 3> dims = grid.getNXYZ();        
         size_t nCells = dims[0]*dims[1]*dims[2];
     
         if (nCells != mask.size()) 

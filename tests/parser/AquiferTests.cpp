@@ -44,7 +44,7 @@ EclipseGrid makeGrid()
 {
     EclipseGrid grid(3, 3, 3);
 
-    std::vector<int> actnum(27, 1);
+    std::vector<long long> actnum(27, 1);
     for (const std::size_t layer : { 0, 1, 2 })
         actnum[grid.getGlobalIndex(0, 0, layer)] = 0;
 
@@ -654,7 +654,7 @@ END
     BOOST_CHECK_MESSAGE(  !aquConfig.hasAnalyticalAquifer(7), "Configuration object must NOT have Analytical Aquifer ID 7");
 
     {
-        const auto expect = std::vector<int>{ 1, 2, 3 };
+        const auto expect = std::vector<long long>{ 1, 2, 3 };
         const auto analytic = analyticAquiferIDs(aquConfig);
 
         BOOST_CHECK_EQUAL_COLLECTIONS(analytic.begin(), analytic.end(),
@@ -662,7 +662,7 @@ END
     }
 
     {
-        const auto expect = std::vector<int>{ 4, 5, 6, 7 };
+        const auto expect = std::vector<long long>{ 4, 5, 6, 7 };
         const auto numeric = numericAquiferIDs(aquConfig);
 
         BOOST_CHECK_EQUAL_COLLECTIONS(numeric.begin(), numeric.end(),
@@ -804,7 +804,7 @@ BOOST_AUTO_TEST_CASE(NumericalAquiferTest)
     }
 
     // using processed actnum for numerical aquifer connection generation
-    std::vector<int> new_actnum(360, 1);
+    std::vector<long long> new_actnum(360, 1);
     new_actnum[0] = 0;
     new_actnum[1] = 0;
     new_actnum[3] = 0;
@@ -828,7 +828,7 @@ BOOST_AUTO_TEST_CASE(NumericalAquiferTest)
     const double taq = nncs[0].trans;
     const double tcell = nncs[1].trans*1.0e9;
     // now check the multiplier for the rest of the connection i > 2 where m = 1->6
-    for (int i = 2; i < 8; ++i) {
+    for (long long i = 2; i < 8; ++i) {
       const double mult = (i - 1);
       const double t = mult*tcell*taq / (taq + mult*tcell);
       BOOST_CHECK_CLOSE(t, nncs[i].trans, 1.0e-6);

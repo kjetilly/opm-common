@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(TestEInit_1) {
         "SGCR", "SGL", "SGLPC", "SGU", "SOGCR", "SOWCR", "SWATINIT", "SWCR", "SWL", "SWLPC",
         "SWU", "TAB", "TABDIMS", "TOPS", "TRANNNC", "TRANX", "TRANY", "TRANZ" };
 
-    const std::vector<int> ref_global_size = {3, 30, 229, 30, 30, 30, 30, 30, 30, 411,
+    const std::vector<long long> ref_global_size = {3, 30, 229, 30, 30, 30, 30, 30, 30, 411,
         30, 30, 30, 30, 30, 30, 30, 121, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 6821, 100, 30, 8, 30, 30, 30 };
 
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(TestEInit_1) {
         "SWATINIT", "SWCR", "SWL", "SWLPC", "SWU", "TOPS", "TRANGL", "TRANNNC", "TRANX",
         "TRANY", "TRANZ" };
 
-    const std::vector<int> ref_lgr1_size = {128, 229, 128, 128, 128, 128, 128, 128, 411, 128,
+    const std::vector<long long> ref_lgr1_size = {128, 229, 128, 128, 128, 128, 128, 128, 411, 128,
         128, 128, 128, 128, 128, 128, 5, 45, 5, 121, 128, 128, 128, 128, 128, 128, 128, 128,
         128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
         128, 128, 84, 12, 128, 128, 128 };
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(TestEInit_1) {
         "SOGCR", "SOWCR", "SWATINIT", "SWCR", "SWL", "SWLPC", "SWU", "TOPS", "TRANGL", "TRANNNC",
         "TRANR", "TRANTHT", "TRANZ" };
 
-    const std::vector<int> ref_lgr2_size = { 192, 229, 192, 192, 192, 192, 192, 192, 192, 192,
+    const std::vector<long long> ref_lgr2_size = { 192, 229, 192, 192, 192, 192, 192, 192, 192, 192,
         192, 411, 192, 192, 192, 192, 192, 192, 192, 5, 45, 5, 121, 192, 192, 192, 192, 192,
         192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192,
         192, 192, 192, 192, 192, 58, 60, 192, 192, 192 };
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(TestEInit_1) {
 
     {
         std::vector<std::string> tmpg0;
-        std::vector<int> tmpg2;
+        std::vector<long long> tmpg2;
 
         for (auto element : global_arrays){
             tmpg0.push_back(std::get<0>(element));
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(TestEInit_1) {
 
     {
         std::vector<std::string> tmplgr1_0;
-        std::vector<int> tmplgr1_2;
+        std::vector<long long> tmplgr1_2;
 
         for (auto element : lgr1_arrays){
             tmplgr1_0.push_back(std::get<0>(element));
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(TestEInit_1) {
 
     {
         std::vector<std::string> tmplgr2_0;
-        std::vector<int> tmplgr2_2;
+        std::vector<long long> tmplgr2_2;
 
         for (auto element : lgr2_arrays){
             tmplgr2_0.push_back(std::get<0>(element));
@@ -153,24 +153,24 @@ BOOST_AUTO_TEST_CASE(TestEInit_2) {
 
     std::string testInitFile = "LGR_TESTMOD.INIT";
 
-    const std::array<int, 3> ref_dim_global = {2,3,5};
-    const std::array<int, 3> ref_dim_lgr1 = {4,8,4};
-    const std::array<int, 3> ref_dim_lgr2 = {6,8,4};
+    const std::array<long long, 3> ref_dim_global = {2,3,5};
+    const std::array<long long, 3> ref_dim_lgr1 = {4,8,4};
+    const std::array<long long, 3> ref_dim_lgr2 = {6,8,4};
 
     EInit init1(testInitFile);
 
     BOOST_CHECK_THROW(init1.grid_dimension("XXXX") , std::invalid_argument );
 
-    const std::array<int, 3> nijk = init1.grid_dimension();
+    const std::array<long long, 3> nijk = init1.grid_dimension();
     BOOST_CHECK_EQUAL(nijk == ref_dim_global, true);
 
-    const std::array<int, 3> nijk_global = init1.grid_dimension("global");
+    const std::array<long long, 3> nijk_global = init1.grid_dimension("global");
     BOOST_CHECK_EQUAL(nijk_global == ref_dim_global, true);
 
-    const std::array<int, 3> nijk_lgr1 = init1.grid_dimension("LGR1");
+    const std::array<long long, 3> nijk_lgr1 = init1.grid_dimension("LGR1");
     BOOST_CHECK_EQUAL(nijk_lgr1 == ref_dim_lgr1, true);
 
-    const std::array<int, 3> nijk_lgr2 = init1.grid_dimension("LGR2");
+    const std::array<long long, 3> nijk_lgr2 = init1.grid_dimension("LGR2");
     BOOST_CHECK_EQUAL(nijk_lgr2 == ref_dim_lgr2, true);
 
     BOOST_CHECK_EQUAL(init1.activeCells(), 30);
@@ -227,14 +227,14 @@ BOOST_AUTO_TEST_CASE(TestEInit_3) {
     BOOST_REQUIRE_CLOSE (doub_data_lgr1[3]  , 0.10011100149012, 1e-5);
     BOOST_REQUIRE_CLOSE (doub_data_lgr2[3]  , 0.10022200149012, 1e-5);
 
-    // int data type
+    // long long data type
 
-    auto fipnum_global= init1.getInitData<int>("FIPNUM");
+    auto fipnum_global= init1.getInitData<long long>("FIPNUM");
 
-    BOOST_CHECK_THROW(init1.getInitData<int>("FIPNUM", "XXXX") , std::invalid_argument );
+    BOOST_CHECK_THROW(init1.getInitData<long long>("FIPNUM", "XXXX") , std::invalid_argument );
 
-    auto fipnum_lgr1= init1.getInitData<int>("FIPNUM", "LGR1");
-    auto fipnum_lgr2= init1.getInitData<int>("FIPNUM", "LGR2");
+    auto fipnum_lgr1= init1.getInitData<long long>("FIPNUM", "LGR1");
+    auto fipnum_lgr2= init1.getInitData<long long>("FIPNUM", "LGR2");
 
     BOOST_CHECK_EQUAL(fipnum_global.size(), 30);
     BOOST_CHECK_EQUAL(fipnum_lgr1.size(), 128);

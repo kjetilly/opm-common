@@ -44,12 +44,12 @@ void EclFile::load(bool preload) {
     if (!fileH)
         throw std::runtime_error(fmt::format("Can not open EclFile: {}", this->inputFilename));
 
-    int n = 0;
+    long long n = 0;
     while (!isEOF(&fileH)) {
         std::string arrName(8,' ');
         eclArrType arrType;
         std::int64_t num;
-        int sizeOfElement;
+        long long sizeOfElement;
 
         try {
             if (formatted) {
@@ -186,7 +186,7 @@ void EclFile::loadData()
 
     if (formatted) {
 
-        std::vector<int> arrIndices(array_name.size());
+        std::vector<long long> arrIndices(array_name.size());
         std::iota(arrIndices.begin(), arrIndices.end(), 0);
 
         this->loadData(arrIndices);
@@ -217,7 +217,7 @@ void EclFile::loadData(const std::string& name)
 
         std::ifstream inFile(inputFilename);
 
-        for (unsigned int arrIndex = 0; arrIndex < array_name.size(); arrIndex++) {
+        for (size_t arrIndex = 0; arrIndex < array_name.size(); arrIndex++) {
 
             if (array_name[arrIndex] == name) {
 
@@ -256,14 +256,14 @@ void EclFile::loadData(const std::string& name)
 }
 
 
-void EclFile::loadData(const std::vector<int>& arrIndex)
+void EclFile::loadData(const std::vector<long long>& arrIndex)
 {
 
     if (formatted) {
 
         std::ifstream inFile(inputFilename);
 
-        for (int ind : arrIndex) {
+        for (long long ind : arrIndex) {
 
             inFile.seekg(ifStreamPos[ind]);
 
@@ -287,7 +287,7 @@ void EclFile::loadData(const std::vector<int>& arrIndex)
             OPM_THROW(std::runtime_error, message);
         }
 
-        for (int ind : arrIndex) {
+        for (long long ind : arrIndex) {
             loadBinaryArray(fileH, ind);
         }
 
@@ -296,7 +296,7 @@ void EclFile::loadData(const std::vector<int>& arrIndex)
 }
 
 
-void EclFile::loadData(int arrIndex)
+void EclFile::loadData(long long arrIndex)
 {
     if (formatted) {
 
@@ -345,7 +345,7 @@ bool EclFile::is_ix() const
                 return true;
             } else if (array_type[n] == Opm::EclIO::REAL) {
                 auto realStr = get_fmt_real_raw_str_values(n);
-                int p, first;
+                long long p, first;
 
                 for (const auto& val : realStr) {
                     double dtmpv = fabs(std::stod(val));
@@ -382,7 +382,7 @@ bool EclFile::is_ix() const
     return false;
 }
 
-std::vector<unsigned int> EclFile::get_bin_logi_raw_values(int arrIndex) const
+std::vector<size_t> EclFile::get_bin_logi_raw_values(long long arrIndex) const
 {
     if (array_type[arrIndex] != Opm::EclIO::LOGI)
         OPM_THROW(std::runtime_error, "Error, selected array is not of type LOGI");
@@ -397,12 +397,12 @@ std::vector<unsigned int> EclFile::get_bin_logi_raw_values(int arrIndex) const
 
     fileH.seekg (ifStreamPos[arrIndex], fileH.beg);
 
-    std::vector<unsigned int> raw_logi = readBinaryRawLogiArray(fileH, array_size[arrIndex]);
+    std::vector<size_t> raw_logi = readBinaryRawLogiArray(fileH, array_size[arrIndex]);
 
     return raw_logi;
 }
 
-std::vector<std::string> EclFile::get_fmt_real_raw_str_values(int arrIndex) const
+std::vector<std::string> EclFile::get_fmt_real_raw_str_values(long long arrIndex) const
 {
     if (array_type[arrIndex] != Opm::EclIO::REAL)
         OPM_THROW(std::runtime_error, "Error, selected array is not of type REAL");
@@ -446,35 +446,35 @@ std::vector<EclFile::EclEntry> EclFile::getList() const
 
 
 template<>
-const std::vector<int>& EclFile::get<int>(int arrIndex)
+const std::vector<long long>& EclFile::get<long long>(long long arrIndex)
 {
     return getImpl(arrIndex, INTE, inte_array, "integer");
 }
 
 template<>
 const std::vector<float>&
-EclFile::get<float>(int arrIndex)
+EclFile::get<float>(long long arrIndex)
 {
     return getImpl(arrIndex, REAL, real_array, "float");
 }
 
 
 template<>
-const std::vector<double> &EclFile::get<double>(int arrIndex)
+const std::vector<double> &EclFile::get<double>(long long arrIndex)
 {
     return getImpl(arrIndex, DOUB, doub_array, "double");
 }
 
 
 template<>
-const std::vector<bool>& EclFile::get<bool>(int arrIndex)
+const std::vector<bool>& EclFile::get<bool>(long long arrIndex)
 {
     return getImpl(arrIndex, LOGI, logi_array, "bool");
 }
 
 
 template<>
-const std::vector<std::string>& EclFile::get<std::string>(int arrIndex)
+const std::vector<std::string>& EclFile::get<std::string>(long long arrIndex)
 {
     if ((array_type[arrIndex] != Opm::EclIO::C0NN) && (array_type[arrIndex] != Opm::EclIO::CHAR)){
         std::string message = "Array with index " + std::to_string(arrIndex) + " is not of type " + "std::string";
@@ -553,7 +553,7 @@ EclFile::seekPosition(const std::vector<std::string>::size_type arrIndex) const
 }
 
 template<>
-const std::vector<int>& EclFile::get<int>(const std::string& name)
+const std::vector<long long>& EclFile::get<long long>(const std::string& name)
 {
     auto search = array_index.find(name);
 
@@ -627,8 +627,8 @@ const std::vector<std::string>& EclFile::get<std::string>(const std::string &nam
 
 
 template<class T>
-const std::vector<T>& EclFile::getImpl(int arrIndex, eclArrType type,
-                                       const std::unordered_map<int, std::vector<T>>& array,
+const std::vector<T>& EclFile::getImpl(long long arrIndex, eclArrType type,
+                                       const std::unordered_map<long long, std::vector<T>>& array,
                                        const std::string& typeStr)
 {
     if (array_type[arrIndex] != type) {

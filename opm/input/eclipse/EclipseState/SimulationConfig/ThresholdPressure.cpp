@@ -99,7 +99,7 @@ namespace Opm {
             const auto& eqlnum = fp.get_int("EQLNUM");
 
             //Find max of eqlnum
-            int maxEqlnum = *std::max_element(eqlnum.begin(), eqlnum.end());
+            long long maxEqlnum = *std::max_element(eqlnum.begin(), eqlnum.end());
 
             if (0 == maxEqlnum) {
                 throw std::runtime_error("Error in EQLNUM data: all values are 0");
@@ -117,8 +117,8 @@ namespace Opm {
                 if( !region1Item.hasValue( 0 ) || !region2Item.hasValue( 0 ) )
                     throw std::runtime_error("Missing region data for use of the THPRES keyword");
 
-                const int r1 = region1Item.get< int >(0);
-                const int r2 = region2Item.get< int >(0);
+                const long long r1 = region1Item.get< long long >(0);
+                const long long r2 = region2Item.get< long long >(0);
                 if (r1 > maxEqlnum || r2 > maxEqlnum) {
                     OpmLog::warning("The THPRES region values: " + std::to_string(r1) + " and " + std::to_string(r2) + " are not compatible with EQLNUM: 1.." + std::to_string(maxEqlnum) + " ignored");
                     continue;
@@ -175,8 +175,8 @@ namespace Opm {
         return result;
     }
 
-    bool ThresholdPressure::hasRegionBarrier(int r1 , int r2) const {
-        std::pair<int,int> indexPair = this->makeIndex(r1,r2);
+    bool ThresholdPressure::hasRegionBarrier(long long r1 , long long r2) const {
+        std::pair<long long,long long> indexPair = this->makeIndex(r1,r2);
         if (m_pressureTable.find( indexPair ) == m_pressureTable.end())
             return false;
         else
@@ -184,8 +184,8 @@ namespace Opm {
     }
 
 
-    double ThresholdPressure::getThresholdPressure(int r1 , int r2) const {
-        std::pair<int,int> indexPair = this->makeIndex(r1,r2);
+    double ThresholdPressure::getThresholdPressure(long long r1 , long long r2) const {
+        std::pair<long long,long long> indexPair = this->makeIndex(r1,r2);
         auto iter = m_pressureTable.find( indexPair );
         if (iter == m_pressureTable.end())
             return 0.0;
@@ -202,11 +202,11 @@ namespace Opm {
 
     }
 
-    double ThresholdPressure::getThresholdPressureFault(int idx) const {
+    double ThresholdPressure::getThresholdPressureFault(long long idx) const {
         return m_thresholdFaultTable[idx];
     }
 
-    std::pair<int,int> ThresholdPressure::makeIndex(int r1 , int r2) const {
+    std::pair<long long,long long> ThresholdPressure::makeIndex(long long r1 , long long r2) const {
         if (this->m_irreversible)
             return std::make_pair(r1,r2);
 
@@ -216,17 +216,17 @@ namespace Opm {
             return std::make_pair(r2,r1);
     }
 
-    void ThresholdPressure::addPair(int r1 , int r2 , const std::pair<bool , double>& valuePair) {
-        std::pair<int,int> indexPair = this->makeIndex(r1,r2);
+    void ThresholdPressure::addPair(long long r1 , long long r2 , const std::pair<bool , double>& valuePair) {
+        std::pair<long long,long long> indexPair = this->makeIndex(r1,r2);
         m_pressureTable[indexPair] = valuePair;
     }
 
-    void ThresholdPressure::addBarrier(int r1 , int r2 , double p) {
+    void ThresholdPressure::addBarrier(long long r1 , long long r2 , double p) {
         std::pair<bool,double> valuePair = std::make_pair(true , p);
         addPair( r1,r2, valuePair );
     }
 
-    void ThresholdPressure::addBarrier(int r1 , int r2) {
+    void ThresholdPressure::addBarrier(long long r1 , long long r2) {
         std::pair<bool,double> valuePair = std::make_pair(false , 0);
         addPair( r1,r2, valuePair );
     }
@@ -251,8 +251,8 @@ namespace Opm {
         return m_irreversible;
     }
 
-    bool ThresholdPressure::hasThresholdPressure(int r1 , int r2) const {
-        std::pair<int,int> indexPair = makeIndex(r1,r2);
+    bool ThresholdPressure::hasThresholdPressure(long long r1 , long long r2) const {
+        std::pair<long long,long long> indexPair = makeIndex(r1,r2);
         auto iter = m_pressureTable.find( indexPair );
         if (iter == m_pressureTable.end())
             return false;

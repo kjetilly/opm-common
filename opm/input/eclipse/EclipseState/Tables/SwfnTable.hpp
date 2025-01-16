@@ -25,7 +25,7 @@ namespace Opm {
     class SwfnTable : public SimpleTable {
 
     public:
-        SwfnTable( const DeckItem& item, const bool jfunc, const int tableID );
+        SwfnTable( const DeckItem& item, const bool jfunc, const long long tableID );
 
         const TableColumn& getSwColumn() const;
         const TableColumn& getKrwColumn() const;

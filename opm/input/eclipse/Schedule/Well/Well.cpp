@@ -75,40 +75,40 @@ namespace {
     bool defaulted(const Opm::DeckRecord& rec, const std::string& s)
     {
         const auto& item = rec.getItem(s);
-        return item.defaultApplied(0) || (item.get<int>(0) == 0);
+        return item.defaultApplied(0) || (item.get<long long>(0) == 0);
     }
 
-    int limit(const Opm::DeckRecord& rec, const std::string& s, const int shift)
+    long long limit(const Opm::DeckRecord& rec, const std::string& s, const long long shift)
     {
         const auto& item = rec.getItem(s);
-        return shift + item.get<int>(0);
+        return shift + item.get<long long>(0);
     }
 
-    bool match_le(const int              value,
+    bool match_le(const long long              value,
                   const Opm::DeckRecord& rec,
                   const std::string&     s,
-                  const int              shift = 0)
+                  const long long              shift = 0)
     {
         return defaulted(rec, s) || (value <= limit(rec, s, shift));
     }
 
-    bool match_ge(const int              value,
+    bool match_ge(const long long              value,
                   const Opm::DeckRecord& rec,
                   const std::string&     s,
-                  const int              shift = 0)
+                  const long long              shift = 0)
     {
         return defaulted(rec, s) || (value >= limit(rec, s, shift));
     }
 
-    bool match_eq(const int              value,
+    bool match_eq(const long long              value,
                   const Opm::DeckRecord& rec,
                   const std::string&     s,
-                  const int              shift = 0)
+                  const long long              shift = 0)
     {
         return defaulted(rec, s)|| (limit(rec, s, shift) == value);
     }
 
-Opm::Connection::Order order_from_int(const int int_value)
+Opm::Connection::Order order_from_int(const long long int_value)
 {
     switch (int_value) {
     case 0: return Opm::Connection::Order::TRACK;
@@ -122,7 +122,7 @@ Opm::Connection::Order order_from_int(const int int_value)
     }
 }
 
-Opm::Well::Status status_from_int(const int int_value)
+Opm::Well::Status status_from_int(const long long int_value)
 {
     using Value = Opm::RestartIO::Helpers::VectorItems::IWell::Value::Status;
 
@@ -139,7 +139,7 @@ Opm::Well::Status status_from_int(const int int_value)
     }
 }
 
-Opm::Well::ProducerCMode producer_cmode_from_int(const int pmode)
+Opm::Well::ProducerCMode producer_cmode_from_int(const long long pmode)
 {
     using CModeVal = ::Opm::RestartIO::Helpers::VectorItems::
         IWell::Value::WellCtrlMode;
@@ -160,7 +160,7 @@ Opm::Well::ProducerCMode producer_cmode_from_int(const int pmode)
     };
 }
 
-Opm::Well::InjectorCMode injector_cmode_from_int(const int imode)
+Opm::Well::InjectorCMode injector_cmode_from_int(const long long imode)
 {
     using CModeVal = ::Opm::RestartIO::Helpers::VectorItems::
         IWell::Value::WellCtrlMode;
@@ -219,7 +219,7 @@ economicLimits(const Opm::RestartIO::RstWell& rst_well)
         : std::make_shared<Opm::WellEconProductionLimits>();
 }
 
-Opm::Well::GuideRateTarget guideRatePhase(const int gr_phase)
+Opm::Well::GuideRateTarget guideRatePhase(const long long gr_phase)
 {
     namespace WGrupCon = Opm::RestartIO::Helpers::VectorItems::
         IWell::Value::WGrupCon;
@@ -242,7 +242,7 @@ Opm::Well::GuideRateTarget guideRatePhase(const int gr_phase)
     };
 }
 
-bool isGroupControllable(const int gr_controllable_flag)
+bool isGroupControllable(const long long gr_controllable_flag)
 {
     return gr_controllable_flag != Opm::RestartIO::Helpers::VectorItems::
         IWell::Value::WGrupCon::Controllable::No;
@@ -282,8 +282,8 @@ constexpr double def_solvent_fraction = 0;
 namespace Opm {
 
 Well::Well(const RestartIO::RstWell& rst_well,
-           const int report_step,
-           const int rst_whistctl_cmode,
+           const long long report_step,
+           const long long rst_whistctl_cmode,
            const TracerConfig& tracer_config,
            const UnitSystem& unit_system_arg,
            const double udq_undefined_arg,
@@ -483,8 +483,8 @@ Well::Well(const std::string& wname_arg,
            const std::string& gname,
            std::size_t init_step_arg,
            std::size_t insert_index_arg,
-           int headI_arg,
-           int headJ_arg,
+           long long headI_arg,
+           long long headJ_arg,
            const std::optional<double>& ref_depth_arg,
            const WellType& wtype_arg,
            ProducerCMode whistctl_cmode,
@@ -494,7 +494,7 @@ Well::Well(const std::string& wname_arg,
            double dr,
            bool allow_xflow,
            bool auto_shutin,
-           int pvt_table_,
+           long long pvt_table_,
            GasInflowEquation inflow_eq,
            bool temp_option):
     wname(wname_arg),
@@ -873,7 +873,7 @@ bool Well::updateGroup(const std::string& group_arg)
     return false;
 }
 
-bool Well::updateHead(std::optional<int> I, std::optional<int> J)
+bool Well::updateHead(std::optional<long long> I, std::optional<long long> J)
 {
     bool update = false;
 
@@ -1110,7 +1110,7 @@ Well::GuideRateTarget Well::preferredPhaseAsGuideRatePhase() const
         throw std::logic_error {
             fmt::format("Unable to convert well preferred "
                         "phase {} to GuideRate target phase",
-                        static_cast<int>(this->getPreferredPhase()))
+                        static_cast<long long>(this->getPreferredPhase()))
         };
     }
 }
@@ -1135,12 +1135,12 @@ std::size_t Well::seqIndex() const
     return this->insert_index;
 }
 
-int Well::getHeadI() const
+long long Well::getHeadI() const
 {
     return this->headI;
 }
 
-int Well::getHeadJ() const
+long long Well::getHeadJ() const
 {
     return this->headJ;
 }
@@ -1244,7 +1244,7 @@ double Well::convertDeckPI(double deckPI) const
 
     default:
         throw std::invalid_argument {
-            "Preferred phase " + std::to_string(static_cast<int>(this->getPreferredPhase())) +
+            "Preferred phase " + std::to_string(static_cast<long long>(this->getPreferredPhase())) +
             " is not supported. Must be one of 'OIL', 'GAS', or 'WATER'"
         };
     }
@@ -1271,7 +1271,7 @@ WellConnections& Well::getConnections()
     return *this->connections;
 }
 
-std::vector<const Connection *> Well::getConnections(int completion) const
+std::vector<const Connection *> Well::getConnections(long long completion) const
 {
     std::vector<const Connection *> connvector;
 
@@ -1346,14 +1346,14 @@ const WellSegments& Well::getSegments() const
     };
 }
 
-int Well::maxSegmentID() const
+long long Well::maxSegmentID() const
 {
     return (this->segments == nullptr)
         ? 0
         : this->segments->maxSegmentID();
 }
 
-int Well::maxBranchID() const
+long long Well::maxBranchID() const
 {
     return (this->segments == nullptr)
         ? 0
@@ -1376,9 +1376,9 @@ const PAvg& Well::pavg() const
 }
 
 
-std::map<int, std::vector<Connection>> Well::getCompletions() const
+std::map<long long, std::vector<Connection>> Well::getCompletions() const
 {
-    std::map<int, std::vector<Connection>> completions;
+    std::map<long long, std::vector<Connection>> completions;
 
     for (const auto& conn : *this->connections) {
         auto pair = completions.find( conn.complnum() );
@@ -1393,7 +1393,7 @@ std::map<int, std::vector<Connection>> Well::getCompletions() const
     return completions;
 }
 
-bool Well::hasCompletion(int completion) const
+bool Well::hasCompletion(long long completion) const
 {
     return std::any_of(this->connections->begin(), this->connections->end(),
                        [completion](const auto& conn)
@@ -1407,12 +1407,12 @@ Phase Well::getPreferredPhase() const
     return this->wtype.preferred_phase();
 }
 
-int Well::pvt_table_number() const
+long long Well::pvt_table_number() const
 {
     return this->pvt_table;
 }
 
-int Well::fip_region_number() const
+long long Well::fip_region_number() const
 {
     return ParserKeywords::WELSPECS::FIP_REGION::defaultValue;
 }
@@ -1536,7 +1536,7 @@ bool Well::handleCOMPLUMP(const DeckRecord& record)
     auto new_connections = std::make_shared<WellConnections>
         (this->connections->ordering(), this->headI, this->headJ);
 
-    const int complnum = record.getItem("N").get<int>(0);
+    const long long complnum = record.getItem("N").get<long long>(0);
     if (complnum <= 0) {
         throw std::invalid_argument {
             fmt::format("Completion number must be >= 1. COMPLNUM={} is invalid", complnum)
@@ -1671,7 +1671,7 @@ bool Well::handleWINJMULT(const Opm::DeckRecord& record, const KeywordLocation& 
     // work current match_eq function only treats 0 and default values for
     // all connections, we might need to revisit this part later when
     // complication regarding this occurs.  it is possible that changing
-    // (item.get<int>(0) == 0); to (item.get<int>(0) <= 0) is solution to go
+    // (item.get<long long>(0) == 0); to (item.get<long long>(0) <= 0) is solution to go
     // while it remains to be discussed.
     auto match = [&record](const Connection& c) -> bool {
         if (!match_eq(c.getI(), record, "I", -1)) { return false; }
@@ -1767,7 +1767,7 @@ bool Well::handleWELSEGS(const DeckKeyword& keyword)
     return true;
 }
 
-bool Well::updatePVTTable(std::optional<int> pvt_table_)
+bool Well::updatePVTTable(std::optional<long long> pvt_table_)
 {
     if (pvt_table_.has_value() && (this->pvt_table != *pvt_table_)) {
         this->pvt_table = *pvt_table_;
@@ -1777,7 +1777,7 @@ bool Well::updatePVTTable(std::optional<int> pvt_table_)
     return false;
 }
 
-bool Well::updateWSEGSICD(const std::vector<std::pair<int, SICD>>& sicd_pairs)
+bool Well::updateWSEGSICD(const std::vector<std::pair<long long, SICD>>& sicd_pairs)
 {
     auto new_segments = std::make_shared<WellSegments>(*this->segments);
 
@@ -1789,7 +1789,7 @@ bool Well::updateWSEGSICD(const std::vector<std::pair<int, SICD>>& sicd_pairs)
     return false;
 }
 
-bool Well::updateWSEGAICD(const std::vector<std::pair<int, AutoICD>>& aicd_pairs,
+bool Well::updateWSEGAICD(const std::vector<std::pair<long long, AutoICD>>& aicd_pairs,
                           const KeywordLocation& location)
 {
     auto new_segments = std::make_shared<WellSegments>(*this->segments);
@@ -1802,7 +1802,7 @@ bool Well::updateWSEGAICD(const std::vector<std::pair<int, AutoICD>>& aicd_pairs
     return false;
 }
 
-bool Well::updateWSEGVALV(const std::vector<std::pair<int, Valve>>& valve_pairs)
+bool Well::updateWSEGVALV(const std::vector<std::pair<long long, Valve>>& valve_pairs)
 {
     auto new_segments = std::make_shared<WellSegments>(*this->segments);
 
@@ -1965,7 +1965,7 @@ double Well::alq_value(const SummaryState& st) const
 // structs.  They are made available here to avoid passing a SummaryState
 // instance in situations where it is not really needed.
 
-int Well::vfp_table_number() const
+long long Well::vfp_table_number() const
 {
     return this->wtype.producer()
         ? this->production->VFPTableNumber
@@ -2079,7 +2079,7 @@ bool Well::operator==(const Well& data) const
 
 } // namespace Opm
 
-int Opm::Well::eclipseControlMode(const Well::InjectorCMode imode,
+long long Opm::Well::eclipseControlMode(const Well::InjectorCMode imode,
                                   const InjectorType        itype)
 {
     using IMode = ::Opm::Well::InjectorCMode;
@@ -2107,7 +2107,7 @@ int Opm::Well::eclipseControlMode(const Well::InjectorCMode imode,
     return Val::WMCtlUnk;
 }
 
-int Opm::Well::eclipseControlMode(const Opm::Well::ProducerCMode pmode)
+long long Opm::Well::eclipseControlMode(const Opm::Well::ProducerCMode pmode)
 {
     using PMode = ::Opm::Well::ProducerCMode;
     using Val   = ::Opm::RestartIO::Helpers::VectorItems::IWell::Value::WellCtrlMode;
@@ -2142,7 +2142,7 @@ int Opm::Well::eclipseControlMode(const Opm::Well::ProducerCMode pmode)
 // corresponding to the currently active control is written to the restart
 // file.
 
-int Opm::Well::eclipseControlMode(const Well&         well,
+long long Opm::Well::eclipseControlMode(const Well&         well,
                                   const SummaryState& st)
 {
     if (well.isProducer()) {

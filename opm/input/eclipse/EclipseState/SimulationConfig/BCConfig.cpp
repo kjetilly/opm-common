@@ -29,7 +29,7 @@ namespace Opm {
 
 using BC = ParserKeywords::BCCON;
 BCConfig::BCRegion::BCRegion(const DeckRecord& record, const GridDims& grid) :
-    index(record.getItem<BC::INDEX>().get<int>(0)),
+    index(record.getItem<BC::INDEX>().get<long long>(0)),
     i1(0),
     i2(grid.getNX() - 1),
     j1(0),
@@ -39,22 +39,22 @@ BCConfig::BCRegion::BCRegion(const DeckRecord& record, const GridDims& grid) :
     dir(FaceDir::FromString(record.getItem<BC::DIRECTION>().get<std::string>(0)))
 {
     if (const auto& I1 = record.getItem<BC::I1>(); ! I1.defaultApplied(0)) {
-        this->i1 = I1.get<int>(0) - 1;
+        this->i1 = I1.get<long long>(0) - 1;
     }
     if (const auto& I2 = record.getItem<BC::I2>(); ! I2.defaultApplied(0)) {
-        this->i2 = I2.get<int>(0) - 1;
+        this->i2 = I2.get<long long>(0) - 1;
     }
     if (const auto& J1 = record.getItem<BC::J1>(); ! J1.defaultApplied(0)) {
-        this->j1 = J1.get<int>(0) - 1;
+        this->j1 = J1.get<long long>(0) - 1;
     }
     if (const auto& J2 = record.getItem<BC::J2>(); ! J2.defaultApplied(0)) {
-        this->j2 = J2.get<int>(0) - 1;
+        this->j2 = J2.get<long long>(0) - 1;
     }
     if (const auto& K1 = record.getItem<BC::K1>(); ! K1.defaultApplied(0)) {
-        this->k1 = K1.get<int>(0) - 1;
+        this->k1 = K1.get<long long>(0) - 1;
     }
     if (const auto& K2 = record.getItem<BC::K2>(); ! K2.defaultApplied(0)) {
-        this->k2 = K2.get<int>(0) - 1;
+        this->k2 = K2.get<long long>(0) - 1;
     }
 }
 

@@ -35,9 +35,9 @@ namespace Opm {
 template<class Scalar, class Params, class ContainerT>
 BrineCo2Pvt<Scalar, Params, ContainerT>::
 BrineCo2Pvt(const ContainerT& salinity,
-            int activityModel,
-            int thermalMixingModelSalt,
-            int thermalMixingModelLiquid,
+            long long activityModel,
+            long long thermalMixingModelSalt,
+            long long thermalMixingModelLiquid,
             Scalar T_ref,
             Scalar P_ref)
     : salinity_(salinity)
@@ -49,11 +49,11 @@ BrineCo2Pvt(const ContainerT& salinity,
     }
     setActivityModelSalt(activityModel);
     setThermalMixingModel(thermalMixingModelSalt, thermalMixingModelLiquid);
-    int num_regions =  salinity_.size();
+    long long num_regions =  salinity_.size();
     co2ReferenceDensity_.resize(num_regions);
     brineReferenceDensity_.resize(num_regions);
 
-    for (int i = 0; i < num_regions; ++i) {
+    for (long long i = 0; i < num_regions; ++i) {
         co2ReferenceDensity_[i] = CO2::gasDensity(co2Tables_, T_ref, P_ref, true);
         brineReferenceDensity_[i] = Brine::liquidDensity(T_ref, P_ref, salinity_[i], true);
     }
@@ -172,7 +172,7 @@ setReferenceDensities(unsigned regionIdx,
 
 template<class Scalar, class Params, class ContainerT>
 void BrineCo2Pvt<Scalar, Params, ContainerT>::
-setActivityModelSalt(int activityModel)
+setActivityModelSalt(long long activityModel)
 {
     switch (activityModel) {
     case 1:
@@ -184,7 +184,7 @@ setActivityModelSalt(int activityModel)
 
 template<class Scalar, class Params, class ContainerT>
 void BrineCo2Pvt<Scalar, Params, ContainerT>::
-setThermalMixingModel(int thermalMixingModelSalt, int thermalMixingModelLiquid)
+setThermalMixingModel(long long thermalMixingModelSalt, long long thermalMixingModelLiquid)
 {
     switch (thermalMixingModelSalt) {
     case 0: saltMixType_ = Co2StoreConfig::SaltMixingType::NONE; break;

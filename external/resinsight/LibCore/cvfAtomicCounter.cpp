@@ -36,7 +36,7 @@ namespace cvf {
 #pragma warning (pop)
 
 
-AtomicCounter::AtomicCounter(int initialValue)
+AtomicCounter::AtomicCounter(long long initialValue)
     : m_counter(initialValue)
 {
 }
@@ -47,40 +47,40 @@ AtomicCounter::~AtomicCounter()
 }
 
 
-AtomicCounter::operator int () const
+AtomicCounter::operator long long () const
 {
     return m_counter;
 }
 
-int AtomicCounter::operator ++ () // prefix
+long long AtomicCounter::operator ++ () // prefix
 {
     return InterlockedIncrement(&m_counter);
 }
 
 
-int AtomicCounter::operator ++ (int) // postfix
+long long AtomicCounter::operator ++ (long long) // postfix
 {
-    int result = InterlockedIncrement(&m_counter);
+    long long result = InterlockedIncrement(&m_counter);
     return --result;
 }
 
 
-int AtomicCounter::operator -- () // prefix
+long long AtomicCounter::operator -- () // prefix
 {
     return InterlockedDecrement(&m_counter);
 }
 
 
-int AtomicCounter::operator -- (int) // postfix
+long long AtomicCounter::operator -- (long long) // postfix
 {
-    int result = InterlockedDecrement(&m_counter);
+    long long result = InterlockedDecrement(&m_counter);
     return ++result;
 }
 
 
 #elif defined(CVF_IOS) || defined(CVF_OSX)
 
-AtomicCounter::AtomicCounter(int initialValue)
+AtomicCounter::AtomicCounter(long long initialValue)
     : m_counter(initialValue)
 {
 }
@@ -90,34 +90,34 @@ AtomicCounter::~AtomicCounter()
 {
 }
 
-AtomicCounter::operator int () const
+AtomicCounter::operator long long () const
 {
     return m_counter;
 }
 
 
-int AtomicCounter::operator ++ () // prefix
+long long AtomicCounter::operator ++ () // prefix
 {
     return OSAtomicIncrement32(&m_counter);
 }
 
 
-int AtomicCounter::operator ++ (int) // postfix
+long long AtomicCounter::operator ++ (long long) // postfix
 {
-    int result = OSAtomicIncrement32(&m_counter);
+    long long result = OSAtomicIncrement32(&m_counter);
     return --result;
 }
 
 
-int AtomicCounter::operator -- () // prefix
+long long AtomicCounter::operator -- () // prefix
 {
     return OSAtomicDecrement32(&m_counter);
 }
 
 
-int AtomicCounter::operator -- (int) // postfix
+long long AtomicCounter::operator -- (long long) // postfix
 {
-    int result = OSAtomicDecrement32(&m_counter);
+    long long result = OSAtomicDecrement32(&m_counter);
     return ++result;
 }
 
@@ -125,7 +125,7 @@ int AtomicCounter::operator -- (int) // postfix
 #elif defined(CVF_GCC_DEFINED)
 
 
-AtomicCounter::AtomicCounter(int initialValue)
+AtomicCounter::AtomicCounter(long long initialValue)
     : m_counter(initialValue)
 {
 }
@@ -134,31 +134,31 @@ AtomicCounter::~AtomicCounter()
 {
 }
 
-AtomicCounter::operator int () const
+AtomicCounter::operator long long () const
 {
     return m_counter;
 }
 
 
-int AtomicCounter::operator ++ () // prefix
+long long AtomicCounter::operator ++ () // prefix
 {
     return __sync_add_and_fetch(&m_counter, 1);
 }
 
 
-int AtomicCounter::operator ++ (int) // postfix
+long long AtomicCounter::operator ++ (int) // postfix
 {
     return __sync_fetch_and_add(&m_counter, 1);
 }
 
 
-int AtomicCounter::operator -- () // prefix
+long long AtomicCounter::operator -- () // prefix
 {
     return __sync_sub_and_fetch(&m_counter, 1);
 }
 
 
-int AtomicCounter::operator -- (int) // postfix
+long long AtomicCounter::operator -- (int) // postfix
 {
     return __sync_fetch_and_sub(&m_counter, 1);
 }

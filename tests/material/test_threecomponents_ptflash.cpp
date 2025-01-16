@@ -120,14 +120,14 @@ for (const auto& sample : test_methods) {
         // p And z is the primary variables
         Evaluation z_last = 1.;
         for (unsigned compIdx = 0; compIdx < numComponents - 1; ++compIdx) {
-            z[compIdx] = Evaluation::createVariable(Opm::getValue(z[compIdx]), int(compIdx) + 1);
+            z[compIdx] = Evaluation::createVariable(Opm::getValue(z[compIdx]), (long long)(compIdx) + 1);
             z_last -= z[compIdx];
         }
         z[numComponents - 1] = z_last;
     }
 
     const double flash_tolerance = 1.e-12; // just to test the setup in co2-compositional
-    const int flash_verbosity = 0;
+    const long long flash_verbosity = 0;
 
     // TODO: should we set these?
     // Set initial K and L
@@ -151,17 +151,17 @@ for (const auto& sample : test_methods) {
     if (flash_verbosity >= 1) {
         for (unsigned comp_idx = 0; comp_idx < numComponents; ++comp_idx) {
             std::cout << " x for component: " << comp_idx << "is " << x[comp_idx] << std::endl;
-             for (int i = 0; i < 3; ++i) {
+             for (long long i = 0; i < 3; ++i) {
                  std::cout << " x deriv " << i << " is: " << x[comp_idx].derivative(i) << std::endl;
              }
 
             std::cout << " y for component: " << comp_idx << "is " << y[comp_idx] << std::endl;
-             for (int i = 0; i < 3; ++i) {
+             for (long long i = 0; i < 3; ++i) {
                  std::cout << " y deriv " << i << " is: " << y[comp_idx].derivative(i) << std::endl;
              }
         }
         std::cout << " L is " << L << std::endl;
-         for (int i = 0; i < L.size(); ++i) {
+         for (long long i = 0; i < L.size(); ++i) {
                  std::cout << " L deriv " << i << " is: " << L.derivative(i) << std::endl;
          }
     }

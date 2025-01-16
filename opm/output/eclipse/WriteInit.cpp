@@ -342,7 +342,7 @@ namespace {
         fp.get_int("EQLNUM");
         fp.get_int("FIPNUM");
 
-        for (const auto& keyword : fp.keys<int>()) {
+        for (const auto& keyword : fp.keys<long long>()) {
             initFile.write(keyword, fp.get_int(keyword));
         }
     }
@@ -501,7 +501,7 @@ namespace {
         initFile.write("TAB"    , tables.tab());
     }
 
-    void writeIntegerMaps(const std::map<std::string, std::vector<int>>& mapData,
+    void writeIntegerMaps(const std::map<std::string, std::vector<long long>>& mapData,
                           ::Opm::EclIO::OutputStream::Init&       initFile)
     {
         for (const auto& pair : mapData) {
@@ -585,7 +585,7 @@ namespace {
                                 const ::Opm::EclipseGrid&          grid,
                                 ::Opm::EclIO::OutputStream::Init&  initFile)
     {
-        std::vector<int> aquifern(grid.getNumActive(), 0);
+        std::vector<long long> aquifern(grid.getNumActive(), 0);
         // aquifer cells
         const auto& aquifer_cells = num_aquifers.allAquiferCells();
         for ([[maybe_unused]] const auto& [cell_idx, cell] : aquifer_cells) {
@@ -596,7 +596,7 @@ namespace {
         // aquifer connections
         for (const auto& [id, aqu] : num_aquifers.aquifers()) {
             const auto& connections = aqu.connections();
-            const int exp2_id_1 = 1 << (id - 1);
+            const long long exp2_id_1 = 1 << (id - 1);
             for (const auto& con : connections) {
                 const size_t active_index = grid.activeIndex(con.global_index);
                 aquifern[active_index] += exp2_id_1;
@@ -610,11 +610,11 @@ namespace {
                                            const ::Opm::EclipseGrid&          grid,
                                            ::Opm::EclIO::OutputStream::Init&  initFile)
     {
-        std::vector<int> aquifera(grid.getNumActive(), 0);
+        std::vector<long long> aquifera(grid.getNumActive(), 0);
 
         const auto& cons_data = aquifer.connections().data();
         for (const auto& [id, cons] : cons_data) {
-            const int exp2_id_1 = 1 << (id - 1);
+            const long long exp2_id_1 = 1 << (id - 1);
             for (const auto& con : cons) {
                 const size_t active_index = grid.activeIndex(con.global_index);
                 aquifera[active_index] += exp2_id_1;
@@ -642,7 +642,7 @@ void Opm::InitIO::write(const ::Opm::EclipseState&              es,
                         const ::Opm::EclipseGrid&               grid,
                         const ::Opm::Schedule&                  schedule,
                         const ::Opm::data::Solution&            simProps,
-                        std::map<std::string, std::vector<int>> int_data,
+                        std::map<std::string, std::vector<long long>> int_data,
                         const std::vector<::Opm::NNCdata>&      nnc,
                         ::Opm::EclIO::OutputStream::Init&       initFile)
 {

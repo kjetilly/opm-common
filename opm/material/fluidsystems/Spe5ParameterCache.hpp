@@ -56,16 +56,16 @@ class Spe5ParameterCache
     enum { oilPhaseIdx = FluidSystem::oilPhaseIdx };
     enum { gasPhaseIdx = FluidSystem::gasPhaseIdx };
 
-    static_assert(static_cast<int>(oilPhaseIdx) >= 0, "Oil phase index must be non-negative");
-    static_assert(static_cast<int>(oilPhaseIdx) < static_cast<int>(numPhases),
+    static_assert(static_cast<long long>(oilPhaseIdx) >= 0, "Oil phase index must be non-negative");
+    static_assert(static_cast<long long>(oilPhaseIdx) < static_cast<long long>(numPhases),
                   "Oil phase index must be strictly less than FluidSystem's number of phases");
 
-    static_assert(static_cast<int>(gasPhaseIdx) >= 0, "Gas phase index must be non-negative");
-    static_assert(static_cast<int>(gasPhaseIdx) < static_cast<int>(numPhases),
+    static_assert(static_cast<long long>(gasPhaseIdx) >= 0, "Gas phase index must be non-negative");
+    static_assert(static_cast<long long>(gasPhaseIdx) < static_cast<long long>(numPhases),
                   "Gas phase index must be strictly less than FluidSystem's number of phases");
 
-    static_assert(static_cast<int>(waterPhaseIdx) >= 0, "Water phase index must be non-negative");
-    static_assert(static_cast<int>(waterPhaseIdx) < static_cast<int>(numPhases),
+    static_assert(static_cast<long long>(waterPhaseIdx) >= 0, "Water phase index must be non-negative");
+    static_assert(static_cast<long long>(waterPhaseIdx) < static_cast<long long>(numPhases),
                   "Water phase index must be strictly less than FluidSystem's number of phases");
 
 public:
@@ -86,11 +86,11 @@ public:
     template <class FluidState>
     void updatePhase(const FluidState& fluidState,
                      unsigned phaseIdx,
-                     int exceptQuantities = ParentType::None)
+                     long long exceptQuantities = ParentType::None)
     {
-        assert ((phaseIdx == static_cast<unsigned int>(oilPhaseIdx)) ||
-                (phaseIdx == static_cast<unsigned int>(gasPhaseIdx)) ||
-                (phaseIdx == static_cast<unsigned int>(waterPhaseIdx)));
+        assert ((phaseIdx == static_cast<size_t>(oilPhaseIdx)) ||
+                (phaseIdx == static_cast<size_t>(gasPhaseIdx)) ||
+                (phaseIdx == static_cast<size_t>(waterPhaseIdx)));
 
         updateEosParams(fluidState, phaseIdx, exceptQuantities);
 
@@ -109,9 +109,9 @@ public:
                                   unsigned phaseIdx,
                                   unsigned compIdx)
     {
-        assert ((phaseIdx == static_cast<unsigned int>(oilPhaseIdx)) ||
-                (phaseIdx == static_cast<unsigned int>(gasPhaseIdx)) ||
-                (phaseIdx == static_cast<unsigned int>(waterPhaseIdx)));
+        assert ((phaseIdx == static_cast<size_t>(oilPhaseIdx)) ||
+                (phaseIdx == static_cast<size_t>(gasPhaseIdx)) ||
+                (phaseIdx == static_cast<size_t>(waterPhaseIdx)));
 
         if (phaseIdx == oilPhaseIdx)
             oilPhaseParams_.updateSingleMoleFraction(fluidState, compIdx);
@@ -248,11 +248,11 @@ public:
     template <class FluidState>
     void updateEosParams(const FluidState& fluidState,
                          unsigned phaseIdx,
-                         int exceptQuantities = ParentType::None)
+                         long long exceptQuantities = ParentType::None)
     {
-        assert ((phaseIdx == static_cast<unsigned int>(oilPhaseIdx)) ||
-                (phaseIdx == static_cast<unsigned int>(gasPhaseIdx)) ||
-                (phaseIdx == static_cast<unsigned int>(waterPhaseIdx)));
+        assert ((phaseIdx == static_cast<size_t>(oilPhaseIdx)) ||
+                (phaseIdx == static_cast<size_t>(gasPhaseIdx)) ||
+                (phaseIdx == static_cast<size_t>(waterPhaseIdx)));
 
         if (!(exceptQuantities & ParentType::Temperature))
         {

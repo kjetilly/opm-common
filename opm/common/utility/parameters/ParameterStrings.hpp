@@ -46,7 +46,7 @@ namespace Opm {
 	const std::string ID_xmltag__param          = "Parameter";
 
 	const std::string ID_param_type__bool       = "bool";
-	const std::string ID_param_type__int        = "int";
+	const std::string ID_param_type__int        = "long long";
 	const std::string ID_param_type__float      = "double";
 	const std::string ID_param_type__string     = "string";
 	const std::string ID_param_type__file       = "file";

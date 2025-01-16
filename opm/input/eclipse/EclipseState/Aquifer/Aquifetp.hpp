@@ -51,8 +51,8 @@ class Aquifetp {
 
         AQUFETP_data() = default;
         AQUFETP_data(const DeckRecord& record, const TableManager& tables);
-        AQUFETP_data(const int aquiferID_,
-                     const int pvttableID_,
+        AQUFETP_data(const long long aquiferID_,
+                     const long long pvttableID_,
                      const double J_,
                      const double C_t_,
                      const double V0_,
@@ -60,8 +60,8 @@ class Aquifetp {
                      const double p0_,
                      const double t0_);
 
-        int aquiferID{};
-        int pvttableID{};
+        long long aquiferID{};
+        long long pvttableID{};
 
         double prod_index{};
         double total_compr{};
@@ -119,7 +119,7 @@ class Aquifetp {
     std::vector<Aquifetp::AQUFETP_data>::const_iterator end() const;
     bool operator==(const Aquifetp& other) const;
 
-    bool hasAquifer(const int aquID) const;
+    bool hasAquifer(const long long aquID) const;
 
     template<class Serializer>
     void serializeOp(Serializer& serializer)

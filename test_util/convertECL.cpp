@@ -14,7 +14,7 @@ using EclEntry = EclFile::EclEntry;
 
 template <typename T>
 void write(EclOutput& outFile, EclFile& file1,
-           const std::string& name, int index)
+           const std::string& name, long long index)
 {
     auto vect = file1.get<T>(index);
     outFile.write(name, vect);
@@ -23,7 +23,7 @@ void write(EclOutput& outFile, EclFile& file1,
 
 template<typename T>
 void write(EclOutput& outFile, ERst& file1,
-           const std::string& name, int index, int reportStepNumber)
+           const std::string& name, long long index, long long reportStepNumber)
 {
     auto vect = file1.getRestartData<T>(index, reportStepNumber);
     outFile.write(name, vect);
@@ -31,7 +31,7 @@ void write(EclOutput& outFile, ERst& file1,
 
 template<typename T>
 void write(EclOutput& outFile, ERst& file1,
-           const std::string& name, int index)
+           const std::string& name, long long index)
 {
     auto vect = file1.get<T>(index);
     outFile.write(name, vect);
@@ -39,10 +39,10 @@ void write(EclOutput& outFile, ERst& file1,
 
 
 template <typename T>
-void writeArray(std::string name, eclArrType arrType, T& file1, int index, EclOutput& outFile) {
+void writeArray(std::string name, eclArrType arrType, T& file1, long long index, EclOutput& outFile) {
 
     if (arrType == INTE) {
-        write<int>(outFile, file1, name, index);
+        write<long long>(outFile, file1, name, index);
     } else if (arrType == REAL) {
         write<float>(outFile, file1, name,index);
     } else if (arrType == DOUB) {
@@ -63,10 +63,10 @@ void writeArray(std::string name, eclArrType arrType, T& file1, int index, EclOu
 
 
 template <typename T>
-void writeArray(std::string name, eclArrType arrType, T& file1, int index, int reportStepNumber, EclOutput& outFile) {
+void writeArray(std::string name, eclArrType arrType, T& file1, long long index, long long reportStepNumber, EclOutput& outFile) {
 
     if (arrType == INTE) {
-        write<int>(outFile, file1, name, index, reportStepNumber);
+        write<long long>(outFile, file1, name, index, reportStepNumber);
     } else if (arrType == REAL) {
         write<float>(outFile, file1, name, index, reportStepNumber);
     } else if (arrType == DOUB) {
@@ -84,7 +84,7 @@ void writeArray(std::string name, eclArrType arrType, T& file1, int index, int r
 }
 
 
-void writeC0nnArray(const std::string& name, int elementSize, EclFile& file1, int index, EclOutput& outFile)
+void writeC0nnArray(const std::string& name, long long elementSize, EclFile& file1, long long index, EclOutput& outFile)
 {
     auto vect = file1.get<std::string>(index);
     outFile.write(name, vect, elementSize);
@@ -92,7 +92,7 @@ void writeC0nnArray(const std::string& name, int elementSize, EclFile& file1, in
 
 
 void writeArrayList(std::vector<EclEntry>& arrayList,
-                    const std::vector<int>& elementSizeList,
+                    const std::vector<long long>& elementSizeList,
                     EclFile& file1, EclOutput& outFile)
 {
 
@@ -107,7 +107,7 @@ void writeArrayList(std::vector<EclEntry>& arrayList,
     }
 }
 
-void writeArrayList(std::vector<EclEntry>& arrayList, ERst file1, int reportStepNumber, EclOutput& outFile) {
+void writeArrayList(std::vector<EclEntry>& arrayList, ERst file1, long long reportStepNumber, EclOutput& outFile) {
 
     for (size_t index = 0; index < arrayList.size(); index++) {
         std::string name = std::get<0>(arrayList[index]);
@@ -131,9 +131,9 @@ static void printHelp() {
 
 struct GrdeclDataFormatParams
 {
-    int ncol;
-    int w;
-    int pre;
+    long long ncol;
+    long long w;
+    long long pre;
     bool is_string;
     bool is_int;
 };
@@ -145,7 +145,7 @@ GrdeclDataFormatParams getFormat()
         return {4, 11, 7, false, false};
     } else if constexpr (std::is_same<T, double>::value) {
         return {3, 21, 14, false, false};
-    } else if constexpr (std::is_same<T, int>::value) {
+    } else if constexpr (std::is_same<T, long long>::value) {
         return {8, 6, -1, false, true};
     } else if constexpr (std::is_same<T, std::string>::value) {
         return {5, -1, -1, true, false};
@@ -214,10 +214,10 @@ void open_grdecl_output(const std::string& output_fname, const std::string& inpu
 }
 
 
-int main(int argc, char **argv)
+long long main(long long argc, char **argv)
 {
-    int c                          = 0;
-    int reportStepNumber           = -1;
+    long long c                          = 0;
+    long long reportStepNumber           = -1;
     bool specificReportStepNumber  = false;
     bool listProperties            = false;
     bool enforce_ix_output         = false;
@@ -274,7 +274,7 @@ int main(int argc, char **argv)
         }
     }
 
-    int argOffset = optind;
+    long long argOffset = optind;
 
     if (!output_fname.empty() && !to_grdecl) {
         std::cout << "\n!Error, option -o only valid whit option -g \n\n";
@@ -288,8 +288,8 @@ int main(int argc, char **argv)
     EclFile file1(filename);
     bool formattedOutput = file1.formattedInput() ? false : true;
 
-    int p = filename.find_last_of(".");
-    int l = filename.length();
+    long long p = filename.find_last_of(".");
+    long long l = filename.length();
 
     std::string rootN = filename.substr(0,p);
     std::string extension = filename.substr(p,l-p);
@@ -318,7 +318,7 @@ int main(int argc, char **argv)
                 auto  data = file1.get<double>(n);
                 writeGrdeclData(ofileH, name, data);
             } else if (arr_type == Opm::EclIO::INTE) {
-                auto  data = file1.get<int>(n);
+                auto  data = file1.get<long long>(n);
                 writeGrdeclData(ofileH, name, data);
             } else if (arr_type == Opm::EclIO::CHAR) {
                 auto  data = file1.get<std::string>(n);
@@ -347,10 +347,10 @@ int main(int argc, char **argv)
             ERst rst1(filename);
             rst1.loadData("INTEHEAD");
 
-            std::vector<int> reportStepList = rst1.listOfReportStepNumbers();
+            std::vector<long long> reportStepList = rst1.listOfReportStepNumbers();
 
             for (auto seqn : reportStepList) {
-                std::vector<int> inteh = rst1.getRestartData<int>("INTEHEAD", seqn, 0);
+                std::vector<long long> inteh = rst1.getRestartData<long long>("INTEHEAD", seqn, 0);
 
                 std::cout << "Report step number: "
                           << std::setfill(' ') << std::setw(4) << seqn << "   Date: " << inteh[66] << "/"
@@ -431,7 +431,7 @@ int main(int argc, char **argv)
     else {
         file1.loadData();
         auto arrayList = file1.getList();
-        std::vector<int> elementSizeList = file1.getElementSizeList();
+        std::vector<long long> elementSizeList = file1.getElementSizeList();
         writeArrayList(arrayList, elementSizeList, file1, outFile);
     }
 

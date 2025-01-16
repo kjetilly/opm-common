@@ -241,7 +241,7 @@ BOOST_AUTO_TEST_CASE(ActiveCompletions)
     completions.add( completion2 );
     completions.add( completion3 );
 
-    std::vector<int> actnum(grid.getCartesianSize(), 1);
+    std::vector<long long> actnum(grid.getCartesianSize(), 1);
     actnum[0] = 0;
     grid.resetACTNUM(actnum);
 
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(loadCOMPDATTESTSPE1) {
 
 struct exp_conn {
     std::string well;
-    int ci;
+    long long ci;
     double CF;
     double Kh;
 };
@@ -730,7 +730,7 @@ BOOST_AUTO_TEST_CASE(loadCOMPTRAJTESTSPE1) {
        and adjusting the completion data in agreement with the COMPTRAJ data in the input file
      */
     const std::array<double, 4> connection_factor{311.783, 7.79428, 38.9674, 62.3465};
-    const std::array<int, 4> global_index{0, 100, 111, 211};
+    const std::array<long long, 4> global_index{0, 100, 111, 211};
     BOOST_CHECK_EQUAL(connections.size(), 4);
     for (size_t i = 0 ; i < connections.size();  ++i ) {
          BOOST_CHECK_CLOSE(connections[i].CF(), units.to_si(Opm::UnitSystem::measure::transmissibility, connection_factor[i]), 2e-2);
@@ -762,7 +762,7 @@ BOOST_AUTO_TEST_CASE(loadCOMPTRAJTESTSPE1_2) {
        and adjusting the completion data in agreement with the COMPTRAJ data in the input file
      */
     const std::array<double, 5> connection_factor{78.5921, 11.7884, 77.9007, 311.585, 155.784};
-    const std::array<int, 5> global_index{0, 100, 200, 211, 222};
+    const std::array<long long, 5> global_index{0, 100, 200, 211, 222};
     BOOST_CHECK_EQUAL(connections.size(), 5);
     for (size_t i = 0 ; i < connections.size();  ++i ) {
          BOOST_CHECK_CLOSE(connections[i].CF(), units.to_si(Opm::UnitSystem::measure::transmissibility, connection_factor[i]), 2e-2);

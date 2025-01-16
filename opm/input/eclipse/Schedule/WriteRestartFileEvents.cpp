@@ -51,7 +51,7 @@ namespace {
     //
     // Using compiler intrinsics this is __builtin_clzl in GCC and Clang,
     // __lzcnt in MSVC, and _bit_scan_reverse in ICC.  POSIX has ffs but
-    // only for 'int'.  Glibc additionally provides ffsl and ffsll, but
+    // only for 'long long'.  Glibc additionally provides ffsl and ffsll, but
     // these require signed integer inputs.
     //
     // Note: There are more efficient approaches to computing this quantity

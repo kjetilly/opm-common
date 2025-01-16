@@ -154,7 +154,7 @@ WSEGAICD
 
     const auto& aicd_vector = it->second;
     BOOST_CHECK_EQUAL(1U, aicd_vector.size());
-    const int segment_number = aicd_vector[0].first;
+    const long long segment_number = aicd_vector[0].first;
     const Opm::AutoICD& aicd0 = aicd_vector[0].second;
     BOOST_CHECK_EQUAL(8, segment_number);
 
@@ -177,7 +177,7 @@ WSEGAICD
     BOOST_CHECK_EQUAL(aicd.maxViscosityRatio(), 5.0);
     BOOST_CHECK_EQUAL(aicd.methodFlowScaling(), -1);
 
-    const int outlet_segment_number = segment.outletSegment();
+    const long long outlet_segment_number = segment.outletSegment();
     const double outlet_segment_length = segment_set.segmentLength(outlet_segment_number);
     // only one connection attached to the outlet segment in this case
     const Opm::Connection& connection = new_connection_set.getFromIJK(15, 0, 1);
@@ -194,31 +194,31 @@ WSEGAICD
     BOOST_CHECK_EQUAL(7U, new_connection_set.size());
 
     const Opm::Connection& connection1 = new_connection_set.get(0);
-    const int segment_number_connection1 = connection1.segment();
+    const long long segment_number_connection1 = connection1.segment();
     const double center_depth_connection1 = connection1.depth();
     BOOST_CHECK_EQUAL(segment_number_connection1, 1);
     BOOST_CHECK_EQUAL(center_depth_connection1, 2512.5);
 
     const Opm::Connection& connection3 = new_connection_set.get(2);
-    const int segment_number_connection3 = connection3.segment();
+    const long long segment_number_connection3 = connection3.segment();
     const double center_depth_connection3 = connection3.depth();
     BOOST_CHECK_EQUAL(segment_number_connection3, 3);
     BOOST_CHECK_EQUAL(center_depth_connection3, 2562.5);
 
     const Opm::Connection& connection5 = new_connection_set.get(4);
-    const int segment_number_connection5 = connection5.segment();
+    const long long segment_number_connection5 = connection5.segment();
     const double center_depth_connection5 = connection5.depth();
     BOOST_CHECK_EQUAL(segment_number_connection5, 6);
     BOOST_CHECK_CLOSE(center_depth_connection5, 2538.83, 0.001);
 
     const Opm::Connection& connection6 = new_connection_set.get(5);
-    const int segment_number_connection6 = connection6.segment();
+    const long long segment_number_connection6 = connection6.segment();
     const double center_depth_connection6 = connection6.depth();
     BOOST_CHECK_EQUAL(segment_number_connection6, 6);
     BOOST_CHECK_CLOSE(center_depth_connection6,  2537.83, 0.001);
 
     const Opm::Connection& connection7 = new_connection_set.get(6);
-    const int segment_number_connection7 = connection7.segment();
+    const long long segment_number_connection7 = connection7.segment();
     const double center_depth_connection7 = connection7.depth();
     BOOST_CHECK_EQUAL(segment_number_connection7, 8);
     BOOST_CHECK_EQUAL(center_depth_connection7, 2534.5);
@@ -314,8 +314,8 @@ WSEGSICD
     const Opm::DeckKeyword wsegsicd = deck["WSEGSICD"].back();
     BOOST_CHECK_EQUAL(1U, wsegsicd.size());
     const Opm::DeckRecord& record = wsegsicd.getRecord(0);
-    const int start_segment = record.getItem("SEGMENT1").get< int >(0);
-    const int end_segment = record.getItem("SEGMENT2").get< int >(0);
+    const long long start_segment = record.getItem("SEGMENT1").get< long long >(0);
+    const long long end_segment = record.getItem("SEGMENT2").get< long long >(0);
     BOOST_CHECK_EQUAL(8, start_segment);
     BOOST_CHECK_EQUAL(8, end_segment);
 
@@ -329,7 +329,7 @@ WSEGSICD
 
     const auto& sicd_vector = it->second;
     BOOST_CHECK_EQUAL(1U, sicd_vector.size());
-    const int segment_number = sicd_vector[0].first;
+    const long long segment_number = sicd_vector[0].first;
     const Opm::SICD& sicd0 = sicd_vector[0].second;
 
     BOOST_CHECK_EQUAL(8, segment_number);
@@ -353,7 +353,7 @@ WSEGSICD
     BOOST_CHECK_EQUAL(sicd.maxViscosityRatio(), 5.0);
     BOOST_CHECK_EQUAL(sicd.methodFlowScaling(), -1);
 
-    const int outlet_segment_number = segment.outletSegment();
+    const long long outlet_segment_number = segment.outletSegment();
     const double outlet_segment_length = segment_set.segmentLength(outlet_segment_number);
     // only one connection attached to the outlet segment in this case
     const Opm::Connection& connection = new_connection_set.getFromIJK(15, 0, 1);
@@ -370,31 +370,31 @@ WSEGSICD
     BOOST_CHECK_EQUAL(7U, new_connection_set.size());
 
     const Opm::Connection& connection1 = new_connection_set.get(0);
-    const int segment_number_connection1 = connection1.segment();
+    const long long segment_number_connection1 = connection1.segment();
     const double center_depth_connection1 = connection1.depth();
     BOOST_CHECK_EQUAL(segment_number_connection1, 1);
     BOOST_CHECK_EQUAL(center_depth_connection1, 2512.5);
 
     const Opm::Connection& connection3 = new_connection_set.get(2);
-    const int segment_number_connection3 = connection3.segment();
+    const long long segment_number_connection3 = connection3.segment();
     const double center_depth_connection3 = connection3.depth();
     BOOST_CHECK_EQUAL(segment_number_connection3, 3);
     BOOST_CHECK_EQUAL(center_depth_connection3, 2562.5);
 
     const Opm::Connection& connection5 = new_connection_set.get(4);
-    const int segment_number_connection5 = connection5.segment();
+    const long long segment_number_connection5 = connection5.segment();
     const double center_depth_connection5 = connection5.depth();
     BOOST_CHECK_EQUAL(segment_number_connection5, 6);
     BOOST_CHECK_CLOSE(center_depth_connection5, 2538.83, 0.001);
 
     const Opm::Connection& connection6 = new_connection_set.get(5);
-    const int segment_number_connection6 = connection6.segment();
+    const long long segment_number_connection6 = connection6.segment();
     const double center_depth_connection6 = connection6.depth();
     BOOST_CHECK_EQUAL(segment_number_connection6, 6);
     BOOST_CHECK_CLOSE(center_depth_connection6,  2537.83, 0.001);
 
     const Opm::Connection& connection7 = new_connection_set.get(6);
-    const int segment_number_connection7 = connection7.segment();
+    const long long segment_number_connection7 = connection7.segment();
     const double center_depth_connection7 = connection7.depth();
     BOOST_CHECK_EQUAL(segment_number_connection7, 8);
     BOOST_CHECK_EQUAL(center_depth_connection7, 2534.5);
@@ -654,11 +654,11 @@ BOOST_AUTO_TEST_CASE(testwsegvalv)
     BOOST_CHECK_EQUAL(2U, wsegvalv.size());
 
     const Opm::DeckRecord& record1 = wsegvalv.getRecord(0);
-    const int seg1 = record1.getItem("SEGMENT_NUMBER").get< int >(0);
+    const long long seg1 = record1.getItem("SEGMENT_NUMBER").get< long long >(0);
     BOOST_CHECK_EQUAL(8, seg1);
 
     const Opm::DeckRecord& record2 = wsegvalv.getRecord(1);
-    const int seg2 = record2.getItem("SEGMENT_NUMBER").get< int >(0);
+    const long long seg2 = record2.getItem("SEGMENT_NUMBER").get< long long >(0);
     BOOST_CHECK_EQUAL(9, seg2);
 
     const auto segvalv_map = Opm::Valve::fromWSEGVALV(wsegvalv);
@@ -671,7 +671,7 @@ BOOST_AUTO_TEST_CASE(testwsegvalv)
     const auto& segvalv_vector = it->second;
     BOOST_CHECK_EQUAL(2U, segvalv_vector.size());
 
-    const int segment_number1 = segvalv_vector[0].first;
+    const long long segment_number1 = segvalv_vector[0].first;
     BOOST_CHECK_EQUAL(8, segment_number1);
     const Opm::Valve& valve1 = segvalv_vector[0].second;
 
@@ -690,7 +690,7 @@ BOOST_AUTO_TEST_CASE(testwsegvalv)
     BOOST_CHECK_EQUAL(valv1.pipeCrossArea(), 0.031415926535897934);
     BOOST_CHECK(valv1.status()==Opm::ICDStatus::OPEN);
 
-    const int segment_number2 = segvalv_vector[1].first;
+    const long long segment_number2 = segvalv_vector[1].first;
     BOOST_CHECK_EQUAL(9, segment_number2);
     const Opm::Valve& valve2 = segvalv_vector[1].second;
     Opm::Segment segment2 = segment_set.getFromSegmentNumber(segment_number1);
@@ -756,20 +756,20 @@ BOOST_AUTO_TEST_CASE(MSW_BRANCH_SEGMENTS) {
     {
         auto seg1 = segments.branchSegments(1);
         BOOST_CHECK_EQUAL( seg1.size(), 6U );
-        const std::vector<int> expected = {1,2,3,4,5,6};
+        const std::vector<long long> expected = {1,2,3,4,5,6};
         for (std::size_t index = 0; index < seg1.size(); index++)
             BOOST_CHECK_EQUAL( expected[index], seg1[index].segmentNumber());
     }
     {
         auto seg2 = segments.branchSegments(2);
-        const std::vector<int> expected = {7,8,9,10,11};
+        const std::vector<long long> expected = {7,8,9,10,11};
         BOOST_CHECK_EQUAL( seg2.size(), 5U );
         for (std::size_t index = 0; index < seg2.size(); index++)
             BOOST_CHECK_EQUAL( expected[index], seg2[index].segmentNumber());
     }
     {
         auto seg5 = segments.branchSegments(5);
-        const std::vector<int> expected = {22,23,24,25,26};
+        const std::vector<long long> expected = {22,23,24,25,26};
         BOOST_CHECK_EQUAL( seg5.size(), 5U );
         for (std::size_t index = 0; index < seg5.size(); index++)
             BOOST_CHECK_EQUAL( expected[index], seg5[index].segmentNumber());
@@ -781,7 +781,7 @@ BOOST_AUTO_TEST_CASE(Branches) {
     const auto& sched = make_schedule("MSW.DATA");
     const auto& well = sched.getWell("PROD01", 0);
     const auto& segments = well.getSegments();
-    std::set<int> expected = {1,2,3,4,5};
+    std::set<long long> expected = {1,2,3,4,5};
     BOOST_CHECK( expected == segments.branches() );
 }
 

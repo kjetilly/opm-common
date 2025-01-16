@@ -86,12 +86,12 @@ public:
      ****************************************/
 
     //! The number of phases considered by the fluid system
-    static const int numPhases = 2;
+    static const long long numPhases = 2;
 
     //! The index of the liquid phase
-    static const int liquidPhaseIdx = 0;
+    static const long long liquidPhaseIdx = 0;
     //! The index of the gas phase
-    static const int gasPhaseIdx = 1;
+    static const long long gasPhaseIdx = 1;
 
     /*!
      * \copydoc BaseFluidSystem::phaseName
@@ -153,12 +153,12 @@ public:
      * Component related static parameters
      ****************************************/
     //! \copydoc BaseFluidSystem::numComponents
-    static const int numComponents = 2;
+    static const long long numComponents = 2;
 
     //! The index of the brine component
-    static const int BrineIdx = 0;
+    static const long long BrineIdx = 0;
     //! The index of the CO2 component
-    static const int CO2Idx = 1;
+    static const long long CO2Idx = 1;
 
     /*!
      * \copydoc BaseFluidSystem::componentName
@@ -329,7 +329,7 @@ public:
 
         // Activity model for salt-out effect in brine-CO2 mutual solubility
         // 2 = Duan & Sun as modified in Spycher & Pruess, Trans. Porous Media, (2009)
-        const int activityModel = 3;
+        const long long activityModel = 3;
 
         // calulate the equilibrium composition for the given
         // temperature and pressure. TODO: calculateMoleFractions()
@@ -610,8 +610,8 @@ private:
         Scalar m = 1E3/58.44 * S/(1-S);
         d_h = 0;
 
-        for (int i = 0; i <= 3; ++i) {
-            for (int j = 0; j <= 2; ++j) {
+        for (long long i = 0; i <= 3; ++i) {
+            for (long long j = 0; j <= 2; ++j) {
                 d_h = d_h + a[i][j] * pow(theta, static_cast<Scalar>(i)) * std::pow(m, j);
             }
         }

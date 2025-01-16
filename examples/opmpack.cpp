@@ -101,14 +101,14 @@ void copy_file(const fs::path& source_dir, fs::path fname, const fs::path& targe
 
 
 
-int main(int argc, char** argv) {
-    int arg_offset = 1;
+long long main(long long argc, char** argv) {
+    long long arg_offset = 1;
     bool stdout_output = true;
     bool copy_binary = false;
     const char * coutput_arg;
 
     while (true) {
-        int c;
+        long long c;
         c = getopt(argc, argv, "c:o:");
         if (c == -1)
             break;

@@ -57,7 +57,7 @@ public:
     {
         // THCONR + THCONSF approach.
         Scalar lambdaRef = params.referenceTotalThermalConductivity();
-        static constexpr int gasPhaseIdx = FluidSystem::gasPhaseIdx;
+        static constexpr long long gasPhaseIdx = FluidSystem::gasPhaseIdx;
         if (FluidSystem::phaseIsActive(gasPhaseIdx)) {
             Scalar alpha = params.dTotalThermalConductivity_dSg();
             const Evaluation& Sg = decay<Evaluation>(fluidState.saturation(gasPhaseIdx));

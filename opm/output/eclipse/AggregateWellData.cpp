@@ -76,12 +76,12 @@ namespace VI = Opm::RestartIO::Helpers::VectorItems;
 // ---------------------------------------------------------------------
 
 namespace {
-    std::size_t numWells(const std::vector<int>& inteHead)
+    std::size_t numWells(const std::vector<long long>& inteHead)
     {
         return inteHead[VI::intehead::NWELLS];
     }
 
-    int maxNumGroups(const std::vector<int>& inteHead)
+    long long maxNumGroups(const std::vector<long long>& inteHead)
     {
         return inteHead[VI::intehead::NWGMAX];
     }
@@ -114,15 +114,15 @@ namespace {
     }
 
     namespace IWell {
-        std::size_t entriesPerWell(const std::vector<int>& inteHead)
+        std::size_t entriesPerWell(const std::vector<long long>& inteHead)
         {
             return inteHead[VI::intehead::NIWELZ];
         }
 
-        Opm::RestartIO::Helpers::WindowedArray<int>
-        allocate(const std::vector<int>& inteHead)
+        Opm::RestartIO::Helpers::WindowedArray<long long>
+        allocate(const std::vector<long long>& inteHead)
         {
-            using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+            using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
             return WV {
                 WV::NumWindows{ numWells(inteHead) },
@@ -130,13 +130,13 @@ namespace {
             };
         }
 
-        std::map <const std::string, size_t>  currentGroupMapNameIndex(const Opm::Schedule& sched, const size_t simStep, const std::vector<int>& inteHead)
+        std::map <const std::string, size_t>  currentGroupMapNameIndex(const Opm::Schedule& sched, const size_t simStep, const std::vector<long long>& inteHead)
         {
             // make group name to index map for the current time step
             std::map <const std::string, size_t> groupIndexMap;
             for (const auto& group_name : sched.groupNames(simStep)) {
                 const auto& group = sched.getGroup(group_name, simStep);
-                int ind = (group.name() == "FIELD")
+                long long ind = (group.name() == "FIELD")
                     ? inteHead[VI::intehead::NGMAXZ]-1 : group.insert_index()-1;
                 std::pair<const std::string, size_t> groupPair = std::make_pair(group.name(), ind);
                 groupIndexMap.insert(groupPair);
@@ -144,10 +144,10 @@ namespace {
             return groupIndexMap;
         }
 
-        int groupIndex(const std::string&              grpName,
+        long long groupIndex(const std::string&              grpName,
                        const std::map <const std::string, size_t>&  currentGroupMapNameIndex)
         {
-            int ind = 0;
+            long long ind = 0;
             auto searchGTName = currentGroupMapNameIndex.find(grpName);
             if (searchGTName != currentGroupMapNameIndex.end()) {
                 ind = searchGTName->second + 1;
@@ -160,7 +160,7 @@ namespace {
         }
 
 
-        int wellVFPTab(const Opm::Well& well, const Opm::SummaryState& st)
+        long long wellVFPTab(const Opm::Well& well, const Opm::SummaryState& st)
         {
             if (well.isInjector()) {
                 return well.injectionControls(st).vfp_table_number;
@@ -179,7 +179,7 @@ namespace {
                 || (!curr.isProducer && (curr.inj != IMode::CMODE_UNDEFINED));
         }
 
-        int ctrlMode(const Opm::Well& well, const Opm::data::Well& xw)
+        long long ctrlMode(const Opm::Well& well, const Opm::data::Well& xw)
         {
             const auto& curr = xw.current_control;
 
@@ -191,7 +191,7 @@ namespace {
             }
         }
 
-        int compOrder(const Opm::Well& well)
+        long long compOrder(const Opm::Well& well)
         {
             using WCO   = ::Opm::Connection::Order;
             using COVal = ::Opm::RestartIO::Helpers::
@@ -206,7 +206,7 @@ namespace {
             return 0;
         }
 
-        int PLossMod(const Opm::Well& well)
+        long long PLossMod(const Opm::Well& well)
         {
             using CPD   = ::Opm::WellSegments::CompPressureDrop;
             using PLM = ::Opm::RestartIO::Helpers::
@@ -220,7 +220,7 @@ namespace {
             return 0;
         }
 
-        /*int MPhaseMod(const Opm::Well& well)
+        /*long long MPhaseMod(const Opm::Well& well)
         {
             using MPM   = ::Opm::WellSegments::MultiPhaseModel;
             using MUM = ::Opm::RestartIO::Helpers::
@@ -233,7 +233,7 @@ namespace {
             return 0;
         }*/
 
-        int wellStatus(Opm::Well::Status status) {
+        long long wellStatus(Opm::Well::Status status) {
             using Value = VI::IWell::Value::Status;
             switch (status) {
             case Opm::Well::Status::OPEN:
@@ -249,7 +249,7 @@ namespace {
             }
         }
 
-        int preferredPhase(const Opm::Well& well)
+        long long preferredPhase(const Opm::Well& well)
         {
             using PhaseVal = VI::IWell::Value::Preferred_Phase;
 
@@ -263,7 +263,7 @@ namespace {
             default:
                 throw std::invalid_argument {
                     "Unsupported Preferred Phase '" +
-                    std::to_string(static_cast<int>(well.getPreferredPhase()))
+                    std::to_string(static_cast<long long>(well.getPreferredPhase()))
                     + '\''
                 };
             }
@@ -271,7 +271,7 @@ namespace {
 
         template <typename IWellArray>
         void setHistoryControlMode(const Opm::Well& well,
-                                   const int        curr,
+                                   const long long        curr,
                                    IWellArray&      iWell)
         {
             iWell[VI::IWell::index::HistReqWCtrl] =
@@ -279,7 +279,7 @@ namespace {
         }
 
         template <typename IWellArray>
-        void setCurrentControl(const int   curr,
+        void setCurrentControl(const long long   curr,
                                IWellArray& iWell)
         {
             iWell[VI::IWell::index::ActWCtrl] = curr;
@@ -317,7 +317,7 @@ namespace {
             iWell[Ix::MSW_MulPhaseMod] = 0;  // Segment multi phase flow model
 
             if (well.isMultiSegment()) {
-                iWell[Ix::MsWID] = static_cast<int>(msWellID);
+                iWell[Ix::MsWID] = static_cast<long long>(msWellID);
                 iWell[Ix::NWseg] = well.getSegments().size();
                 iWell[Ix::MSW_PlossMod] = PLossMod(well);
                 iWell[Ix::MSW_MulPhaseMod] = 1;  // temporary solution - valid for HO - multiphase model - only implemented now
@@ -344,7 +344,7 @@ namespace {
             iWell[Ix::WTestRemaining] = wtest_rst->num_test;
         }
 
-        int wgrupConGuideratePhase(const Opm::Well::GuideRateTarget grTarget)
+        long long wgrupConGuideratePhase(const Opm::Well::GuideRateTarget grTarget)
         {
             using GRTarget = Opm::Well::GuideRateTarget;
             using GRPhase = VI::IWell::Value::WGrupCon::GRPhase;
@@ -395,22 +395,22 @@ namespace {
                 : Value::WVfpExp::Lookup::Implicit;
 
             iWell[Ix::CloseWellIfTHPStabilised] = options.shut()
-                ? static_cast<int>(Value::WVfpExp::CloseStabilised::Yes)
-                : static_cast<int>(Value::WVfpExp::CloseStabilised::No);
+                ? static_cast<long long>(Value::WVfpExp::CloseStabilised::Yes)
+                : static_cast<long long>(Value::WVfpExp::CloseStabilised::No);
 
             auto& prevent = iWell[Ix::PreventTHPIfUnstable];
             if (options.report_first()) {
-                prevent = static_cast<int>(Value::WVfpExp::PreventTHP::Yes1);
+                prevent = static_cast<long long>(Value::WVfpExp::PreventTHP::Yes1);
             }
             else if (options.report_every()) {
-                prevent = static_cast<int>(Value::WVfpExp::PreventTHP::Yes2);
+                prevent = static_cast<long long>(Value::WVfpExp::PreventTHP::Yes2);
             }
             else {
-                prevent = static_cast<int>(Value::WVfpExp::PreventTHP::No);
+                prevent = static_cast<long long>(Value::WVfpExp::PreventTHP::No);
             }
         }
 
-        int workoverProcedure(const Opm::WellEconProductionLimits::EconWorkover procedure)
+        long long workoverProcedure(const Opm::WellEconProductionLimits::EconWorkover procedure)
         {
             namespace Value = VI::IWell::Value;
             using WO = Opm::WellEconProductionLimits::EconWorkover;
@@ -430,7 +430,7 @@ namespace {
             }
         }
 
-        int econLimitQuantity(const Opm::WellEconProductionLimits::QuantityLimit quantity)
+        long long econLimitQuantity(const Opm::WellEconProductionLimits::QuantityLimit quantity)
         {
             namespace Value = VI::IWell::Value;
             using Quant = Opm::WellEconProductionLimits::QuantityLimit;
@@ -486,7 +486,7 @@ namespace {
             {
                 const auto& conn = well.getConnections();
 
-                iWell[Ix::NConn]  = static_cast<int>(conn.size());
+                iWell[Ix::NConn]  = static_cast<long long>(conn.size());
 
                 if (well.isMultiSegment()) {
                     // Set top and bottom connections to zero for multi
@@ -600,7 +600,7 @@ namespace {
     } // IWell
 
     namespace SWell {
-        std::size_t entriesPerWell(const std::vector<int>& inteHead)
+        std::size_t entriesPerWell(const std::vector<long long>& inteHead)
         {
             assert ((inteHead[VI::intehead::NSWELZ] > 121) &&
                     "SWEL must allocate at least 122 elements per well");
@@ -627,7 +627,7 @@ namespace {
         }
 
         Opm::RestartIO::Helpers::WindowedArray<float>
-        allocate(const std::vector<int>& inteHead)
+        allocate(const std::vector<long long>& inteHead)
         {
             using WV = Opm::RestartIO::Helpers::WindowedArray<float>;
 
@@ -1139,7 +1139,7 @@ namespace {
     } // SWell
 
     namespace XWell {
-        std::size_t entriesPerWell(const std::vector<int>& inteHead)
+        std::size_t entriesPerWell(const std::vector<long long>& inteHead)
         {
             assert ((inteHead[VI::intehead::NXWELZ] > 123) &&
                     "XWEL must allocate at least 124 elements per well");
@@ -1148,7 +1148,7 @@ namespace {
         }
 
         Opm::RestartIO::Helpers::WindowedArray<double>
-        allocate(const std::vector<int>& inteHead)
+        allocate(const std::vector<long long>& inteHead)
         {
             using WV = Opm::RestartIO::Helpers::WindowedArray<double>;
 
@@ -1438,7 +1438,7 @@ namespace {
     } // XWell
 
     namespace ZWell {
-        std::size_t entriesPerWell(const std::vector<int>& inteHead)
+        std::size_t entriesPerWell(const std::vector<long long>& inteHead)
         {
             assert ((inteHead[VI::intehead::NZWELZ] > 1) &&
                     "ZWEL must allocate at least 1 element per well");
@@ -1449,7 +1449,7 @@ namespace {
         Opm::RestartIO::Helpers::WindowedArray<
             Opm::EclIO::PaddedOutputString<8>
         >
-        allocate(const std::vector<int>& inteHead)
+        allocate(const std::vector<long long>& inteHead)
         {
             using WV = Opm::RestartIO::Helpers::WindowedArray<
                 Opm::EclIO::PaddedOutputString<8>
@@ -1486,7 +1486,7 @@ namespace {
 // =====================================================================
 
 Opm::RestartIO::Helpers::AggregateWellData::
-AggregateWellData(const std::vector<int>& inteHead)
+AggregateWellData(const std::vector<long long>& inteHead)
     : iWell_ (IWell::allocate(inteHead))
     , sWell_ (SWell::allocate(inteHead))
     , xWell_ (XWell::allocate(inteHead))
@@ -1504,7 +1504,7 @@ captureDeclaredWellData(const Schedule&             sched,
                         const ::Opm::Action::State& action_state,
                         const Opm::WellTestState&   wtest_state,
                         const ::Opm::SummaryState&  smry,
-                        const std::vector<int>&     inteHead)
+                        const std::vector<long long>&     inteHead)
 {
     const auto& wells = sched.wellNames(sim_step);
     const auto& step_glo = sched.glo(sim_step);

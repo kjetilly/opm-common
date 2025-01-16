@@ -187,7 +187,7 @@ public:
                 Evaluation alpha = (c1T + 2 * c2T * (temperature - Tref)) /
                     (1 + c1T  *(temperature - Tref) + c2T * (temperature - Tref) * (temperature - Tref));
 
-                constexpr const int N = 100; // value is experimental
+                constexpr const long long N = 100; // value is experimental
                 Evaluation deltaP = (pressure - Pref) / N;
                 Evaluation enthalpyPresPrev = 0;
                 for (std::size_t i = 0; i < N; ++i) {

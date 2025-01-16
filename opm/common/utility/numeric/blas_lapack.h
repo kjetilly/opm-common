@@ -31,7 +31,7 @@ extern "C" {
 #endif
 
 #ifndef MAT_SIZE_T
-#define MAT_SIZE_T int
+#define MAT_SIZE_T long long
 #endif
 
 

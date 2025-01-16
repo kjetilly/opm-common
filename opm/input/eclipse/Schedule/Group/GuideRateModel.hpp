@@ -41,7 +41,7 @@ public:
     };
 
     static Target TargetFromString(const std::string& s);
-    static Target TargetFromRestart(const int nominated_phase);
+    static Target TargetFromRestart(const long long nominated_phase);
 
     GuideRateModel(double time_interval_arg,
                    Target target_arg,

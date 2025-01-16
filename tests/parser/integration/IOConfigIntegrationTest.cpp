@@ -48,9 +48,9 @@ std::string path_prefix() {
 #endif
 }
 
-void verifyRestartConfig( const Schedule& sched, std::map<int, boost::gregorian::date>& rptConfig) {
+void verifyRestartConfig( const Schedule& sched, std::map<long long, boost::gregorian::date>& rptConfig) {
     auto last = *rptConfig.rbegin();
-    for (int step = 0; step <= last.first; step++) {
+    for (long long step = 0; step <= last.first; step++) {
         if (rptConfig.count(step) == 1) {
             BOOST_CHECK( sched.write_rst_file(step) );
 
@@ -70,7 +70,7 @@ void verifyRestartConfig( const Schedule& sched, std::map<int, boost::gregorian:
 }
 
 BOOST_AUTO_TEST_CASE( NorneRestartConfig ) {
-    std::map<int, boost::gregorian::date> rptConfig{};
+    std::map<long long, boost::gregorian::date> rptConfig{};
 
     rptConfig.emplace(std::piecewise_construct, std::forward_as_tuple(  0), std::forward_as_tuple(1997,11, 6));
     rptConfig.emplace(std::piecewise_construct, std::forward_as_tuple(  1), std::forward_as_tuple(1997,11,14));
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE( RestartConfig2 ) {
     const Schedule schedule(deck, state, std::make_shared<Python>());
 
     const auto keywords0 = schedule.rst_keywords(0);
-    const std::map<std::string, int> expected0 = {
+    const std::map<std::string, long long> expected0 = {
         {"BG", 1},
         {"BO", 1},
         {"BW", 1},
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE( RestartConfig2 ) {
         BOOST_CHECK_EQUAL( keywords0.at(kw), num );
 
     const auto keywords1 = schedule.rst_keywords(1);
-    const std::map<std::string, int> expected1 = {
+    const std::map<std::string, long long> expected1 = {
         {"BG", 1},
         {"BO", 1},
         {"BW", 1},

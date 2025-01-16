@@ -62,7 +62,7 @@ std::string RFTConfig::RFT2String(const RFT enumValue)
     }
 
     throw std::invalid_argument {
-        "unhandled enum value " + std::to_string(static_cast<int>(enumValue))
+        "unhandled enum value " + std::to_string(static_cast<long long>(enumValue))
     };
 }
 
@@ -103,7 +103,7 @@ std::string RFTConfig::PLT2String(const PLT enumValue)
     }
 
     throw std::invalid_argument {
-        "unhandled enum value " + std::to_string(static_cast<int>(enumValue))
+        "unhandled enum value " + std::to_string(static_cast<long long>(enumValue))
     };
 }
 

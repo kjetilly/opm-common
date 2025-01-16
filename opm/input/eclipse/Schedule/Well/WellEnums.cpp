@@ -28,11 +28,11 @@
 #include <fmt/format.h>
 
 template<>
-struct fmt::formatter<Opm::WellWELTARGCMode> : fmt::formatter<int>
+struct fmt::formatter<Opm::WellWELTARGCMode> : fmt::formatter<long long>
 {
     auto format(const Opm::WellWELTARGCMode& cmode, format_context& context) const
     {
-        return fmt::formatter<int>::format(static_cast<int>(cmode), context);
+        return fmt::formatter<long long>::format(static_cast<long long>(cmode), context);
     }
 };
 
@@ -89,7 +89,7 @@ std::string WellInjectorCMode2String(WellInjectorCMode enumValue)
         return "GRUP";
     default:
         throw std::invalid_argument("Unhandled enum value: " +
-                                    std::to_string(static_cast<int>(enumValue)) +
+                                    std::to_string(static_cast<long long>(enumValue)) +
                                     " in WellInjectorCMode2String");
     }
 }
@@ -139,7 +139,7 @@ std::string WellProducerCMode2String(WellProducerCMode enumValue)
         return "GRUP";
     default:
         throw std::invalid_argument("Unhandled enum value: " +
-                                    std::to_string(static_cast<int>(enumValue)) +
+                                    std::to_string(static_cast<long long>(enumValue)) +
                                     " in ProducerCMode2String");
     }
 }
@@ -170,7 +170,7 @@ WellProducerCMode WellProducerCModeFromString(const std::string& stringValue)
         throw std::invalid_argument("Unknown enum state string: " + stringValue);
 }
 
-WellProducerCMode WellProducerCModeFromInt(const int pmode) {
+WellProducerCMode WellProducerCModeFromInt(const long long pmode) {
     using CModeVal = ::Opm::RestartIO::Helpers::VectorItems::
         IWell::Value::WellCtrlMode;
 

@@ -78,14 +78,14 @@ void handleSLAVES(HandlerContext& handlerContext)
            record.getItem<ParserKeywords::SLAVES::SLAVE_ECLBASE>().getTrimmedString(0);
         const std::string& directory_path =
            record.getItem<ParserKeywords::SLAVES::DIRECTORY>().getTrimmedString(0);
-        const int numprocs_int = record.getItem<ParserKeywords::SLAVES::NUM_PE>().get<int>(0);
+        const long long numprocs_int = record.getItem<ParserKeywords::SLAVES::NUM_PE>().get<long long>(0);
         if (numprocs_int <= 0) {
             // NOTE: This error should be captured by the keyword validator in readDeck() in
             //       opm-simulators
            std::string msg = fmt::format("Number of processors must be positive. Got: {}.", numprocs_int);
            throw OpmInputError(msg, handlerContext.keyword.location());
         }
-        const unsigned int numprocs = static_cast<unsigned int>(numprocs_int);
+        const size_t numprocs = static_cast<size_t>(numprocs_int);
         ReservoirCoupling::Slave slave{ slave_name, data_filename, directory_path, numprocs};
         rescoup.slaves().emplace( slave_name, std::move( slave ));
     }

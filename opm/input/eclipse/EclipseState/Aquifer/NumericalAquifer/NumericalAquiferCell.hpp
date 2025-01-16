@@ -39,8 +39,8 @@ namespace Opm {
         double permeability{};
         double depth{};
         std::optional<double> init_pressure{};
-        int pvttable{};
-        int sattable{};
+        long long pvttable{};
+        long long sattable{};
         std::size_t global_index{};
         std::size_t record_id{};
 

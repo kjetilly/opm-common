@@ -73,7 +73,7 @@
 
 namespace {
 
-Opm::time_point make_date(const std::vector<int>& datetime) {
+Opm::time_point make_date(const std::vector<long long>& datetime) {
     auto day = datetime[0];
     auto month = datetime[1];
     auto year = datetime[2];
@@ -154,7 +154,7 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
     std::filesystem::path pathRstFile = path;
 
     std::set<std::string> keywList;
-    std::vector<std::pair<std::string,int>> smryArray;
+    std::vector<std::pair<std::string,long long>> smryArray;
 
     std::vector<EclFile> smspecList;
     std::vector<std::string> vectList = {"DIMENS", "RESTART", "KEYWORDS", "NUMS", "UNITS"};
@@ -164,15 +164,15 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
         smspecList.emplace_back(smspec_file.string());
 
         auto arrays = smspecList.back().getList();
-        std::vector<int> vectIndices;
+        std::vector<long long> vectIndices;
 
         for (size_t n = 0; n < arrays.size(); n++)
             if(std::find(vectList.begin(), vectList.end(), std::get<0>(arrays[n])) != vectList.end())
-               vectIndices.push_back(static_cast<int>(n));
+               vectIndices.push_back(static_cast<long long>(n));
 
         smspecList.back().loadData(vectIndices);
 
-        const std::vector<int> dimens = smspecList.back().get<int>("DIMENS");
+        const std::vector<long long> dimens = smspecList.back().get<long long>("DIMENS");
 
         nI = dimens[1]; // This is correct -- dimens[0] is something else!
         nJ = dimens[2];
@@ -187,19 +187,19 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
         else
             wgnames = smspecList.back().get<std::string>("NAMES");
 
-        const std::vector<int> nums = smspecList.back().get<int>("NUMS");
+        const std::vector<long long> nums = smspecList.back().get<long long>("NUMS");
         const std::vector<std::string> units = smspecList.back().get<std::string>("UNITS");
 
         std::vector<std::string> lgrs;
-        std::vector<int> numlx;
-        std::vector<int> numly;
-        std::vector<int> numlz;
+        std::vector<long long> numlx;
+        std::vector<long long> numly;
+        std::vector<long long> numlz;
 
         if (smspecList.back().hasKey("LGRS")){
             lgrs = smspecList.back().get<std::string>("LGRS");
-            numlx = smspecList.back().get<int>("NUMLX");
-            numly = smspecList.back().get<int>("NUMLY");
-            numlz = smspecList.back().get<int>("NUMLZ");
+            numlx = smspecList.back().get<long long>("NUMLX");
+            numly = smspecList.back().get<long long>("NUMLY");
+            numlz = smspecList.back().get<long long>("NUMLZ");
         }
 
         const bool have_lgr = !lgrs.empty();
@@ -207,11 +207,11 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
         std::vector<std::string> combindKeyList;
         combindKeyList.reserve(dimens[0]);
 
-        start_vect = smspecList.back().get<int>("STARTDAT");
+        start_vect = smspecList.back().get<long long>("STARTDAT");
         this->tp_startdat = make_date(start_vect);
 
         if ( have_lgr ) {
-            for (unsigned int i=0; i<keywords.size(); i++) {
+            for (size_t i=0; i<keywords.size(); i++) {
 
                 Opm::EclIO::lgr_info lgr { lgrs[i], {numlx[i], numly[i], numlz[i]}};
 
@@ -238,7 +238,7 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
             }
         } else {
 
-            for (unsigned int i=0; i<keywords.size(); i++) {
+            for (size_t i=0; i<keywords.size(); i++) {
                 const auto category = SummaryNode::category_from_keyword(keywords[i]);
                 const auto normKw = SummaryNode::normalise_keyword(category, keywords[i]);
 
@@ -309,15 +309,15 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
         smspecList.emplace_back(EclFile(rstFile.string()));
 
         auto arrays = smspecList.back().getList();
-        std::vector<int> vectIndices;
+        std::vector<long long> vectIndices;
 
         for (size_t n = 0; n < arrays.size(); n++)
             if(std::find(vectList.begin(), vectList.end(), std::get<0>(arrays[n])) != vectList.end())
-               vectIndices.push_back(static_cast<int>(n));
+               vectIndices.push_back(static_cast<long long>(n));
 
         smspecList.back().loadData(vectIndices);
 
-        const std::vector<int> dimens = smspecList.back().get<int>("DIMENS");
+        const std::vector<long long> dimens = smspecList.back().get<long long>("DIMENS");
         const std::vector<std::string> restartArray = smspecList.back().get<std::string>("RESTART");
         const std::vector<std::string> keywords = smspecList.back().get<std::string>("KEYWORDS");
         std::vector<std::string> wgnames;
@@ -327,19 +327,19 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
         else
             wgnames = smspecList.back().get<std::string>("NAMES");
 
-        const std::vector<int> nums = smspecList.back().get<int>("NUMS");
+        const std::vector<long long> nums = smspecList.back().get<long long>("NUMS");
         const std::vector<std::string> units = smspecList.back().get<std::string>("UNITS");
 
         std::vector<std::string> lgrs;
-        std::vector<int> numlx;
-        std::vector<int> numly;
-        std::vector<int> numlz;
+        std::vector<long long> numlx;
+        std::vector<long long> numly;
+        std::vector<long long> numlz;
 
         if (smspecList.back().hasKey("LGRS")){
             lgrs = smspecList.back().get<std::string>("LGRS");
-            numlx = smspecList.back().get<int>("NUMLX");
-            numly = smspecList.back().get<int>("NUMLY");
-            numlz = smspecList.back().get<int>("NUMLZ");
+            numlx = smspecList.back().get<long long>("NUMLX");
+            numly = smspecList.back().get<long long>("NUMLY");
+            numlz = smspecList.back().get<long long>("NUMLZ");
         }
 
         const bool have_lgr = !lgrs.empty();
@@ -407,14 +407,14 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
     }
 
 
-    nSpecFiles = static_cast<int>(smryArray.size());
+    nSpecFiles = static_cast<long long>(smryArray.size());
     nParamsSpecFile.resize(nSpecFiles, 0);
 
     // arrayPos std::vector of std::map, mapping position in summary file[n]
-    for (int i = 0; i < nSpecFiles; i++)
+    for (long long i = 0; i < nSpecFiles; i++)
         arrayPos.push_back({});
 
-    std::map<std::string, int> keyIndex;
+    std::map<std::string, long long> keyIndex;
     {
         size_t m = 0;
         for (const auto& key : keywList)
@@ -422,13 +422,13 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
                 keyIndex[key] = m++;
     }
 
-    int specInd = nSpecFiles - 1;
+    long long specInd = nSpecFiles - 1;
 
     while (specInd >= 0){
 
         auto smry = smryArray[specInd];
 
-        const std::vector<int> dimens = smspecList[specInd].get<int>("DIMENS");
+        const std::vector<long long> dimens = smspecList[specInd].get<long long>("DIMENS");
 
         nI = dimens[1];
         nJ = dimens[2];
@@ -444,18 +444,18 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
         else
             wgnames = smspecList.back().get<std::string>("NAMES");
 
-        const std::vector<int> nums = smspecList[specInd].get<int>("NUMS");
+        const std::vector<long long> nums = smspecList[specInd].get<long long>("NUMS");
 
         std::vector<std::string> lgrs;
-        std::vector<int> numlx;
-        std::vector<int> numly;
-        std::vector<int> numlz;
+        std::vector<long long> numlx;
+        std::vector<long long> numly;
+        std::vector<long long> numlz;
 
         if (smspecList[specInd].hasKey("LGRS")){
             lgrs = smspecList[specInd].get<std::string>("LGRS");
-            numlx = smspecList[specInd].get<int>("NUMLX");
-            numly = smspecList[specInd].get<int>("NUMLY");
-            numlz = smspecList[specInd].get<int>("NUMLZ");
+            numlx = smspecList[specInd].get<long long>("NUMLX");
+            numly = smspecList[specInd].get<long long>("NUMLY");
+            numlz = smspecList[specInd].get<long long>("NUMLZ");
         }
 
         const bool have_lgr = !lgrs.empty();
@@ -481,12 +481,12 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
         specInd--;
     }
 
-    int fromReportStepNumber = 0;
-    int toReportStepNumber;
-    int step = 0;
+    long long fromReportStepNumber = 0;
+    long long toReportStepNumber;
+    long long step = 0;
     specInd = nSpecFiles - 1;
 
-    int index = 0;
+    long long index = 0;
     for (const auto& keyw : keywList) {
         if (!keyw.empty()) {
             keyword.push_back(keyw);
@@ -505,17 +505,17 @@ ESmry::ESmry(const std::string &filename, bool loadBaseRunData) :
     }
 
 
-    int dataFileIndex = -1;
+    long long dataFileIndex = -1;
 
     while (specInd >= 0) {
 
-        int reportStepNumber = fromReportStepNumber;
+        long long reportStepNumber = fromReportStepNumber;
 
         if (specInd > 0) {
             auto rstFrom = smryArray[specInd-1];
             toReportStepNumber = std::get<1>(rstFrom);
         } else {
-            toReportStepNumber = std::numeric_limits<int>::max();
+            toReportStepNumber = std::numeric_limits<long long>::max();
         }
 
         std::filesystem::path smspecFile(std::get<0>(smryArray[specInd]));
@@ -647,7 +647,7 @@ void ESmry::read_ministeps_from_disk()
     else
         fileH.open(dataFileList[dataFileIndex], std::ios::in |  std::ios::binary);
 
-    int ministep_value;
+    long long ministep_value;
 
     for (size_t n = 0; n < miniStepList.size(); n++) {
 
@@ -669,8 +669,8 @@ void ESmry::read_ministeps_from_disk()
         if (formattedFiles[specInd]) {
             ministep_value = read_ministep_formatted(fileH);
         } else {
-            std::function<int(int)> f = Opm::EclIO::flipEndianInt;
-            auto ministep_vect = readBinaryArray<int,int>(fileH, 1, Opm::EclIO::INTE, f, sizeOfInte);
+            std::function< std::common_type<long long>::type(long long)> f = Opm::EclIO::flipEndianInt;
+            auto ministep_vect = readBinaryArray<long long,long long>(fileH, 1, Opm::EclIO::INTE, f, sizeOfInte);
             ministep_value = ministep_vect[0];
         }
 
@@ -692,7 +692,7 @@ bool ESmry::all_steps_available()
     return true;
 }
 
-int ESmry::read_ministep_formatted(std::fstream& fileH)
+long long ESmry::read_ministep_formatted(std::fstream& fileH)
 {
     const std::size_t size = sizeOnDiskFormatted(1, Opm::EclIO::INTE, 4)+1;
     auto buffer = std::vector<char>(size);
@@ -720,7 +720,7 @@ void ESmry::loadData(const std::vector<std::string>& vectList) const
     auto start = std::chrono::system_clock::now();
     size_t nvect = vectList.size();
 
-    std::vector<int> keywIndVect;
+    std::vector<long long> keywIndVect;
     keywIndVect.reserve(nvect);
 
     for (auto key : vectList) {
@@ -743,7 +743,7 @@ void ESmry::loadData(const std::vector<std::string>& vectList) const
     std::uint64_t blockSize_f;
 
     {
-        const int nLinesBlock = MaxBlockSizeReal / numColumnsReal;
+        const long long nLinesBlock = MaxBlockSizeReal / numColumnsReal;
 
         blockSize_f= static_cast<std::uint64_t>(MaxNumBlockReal * numColumnsReal * columnWidthReal + nLinesBlock);
     }
@@ -775,17 +775,17 @@ void ESmry::loadData(const std::vector<std::string>& vectList) const
                 vectorData[ind].push_back(std::nanf(""));
             }
             else {
-                int paramPos = it->second;
+                long long paramPos = it->second;
 
                 if (formattedFiles[specInd]) {
                     std::uint64_t elementPos = 0;
-                    int nBlocks = paramPos / MaxBlockSizeReal;
-                    int sizeOfLastBlock = paramPos %  MaxBlockSizeReal;
+                    long long nBlocks = paramPos / MaxBlockSizeReal;
+                    long long sizeOfLastBlock = paramPos %  MaxBlockSizeReal;
 
                     if (nBlocks > 0)
                         elementPos = static_cast<uint64_t>(nBlocks * blockSize_f);
 
-                    int nLines = sizeOfLastBlock / numColumnsReal;
+                    long long nLines = sizeOfLastBlock / numColumnsReal;
                     elementPos = stepFilePos + elementPos + static_cast<std::uint64_t>(sizeOfLastBlock*columnWidthReal + nLines);
 
                     fileH.seekg (elementPos, fileH.beg);
@@ -820,17 +820,17 @@ void ESmry::loadData(const std::vector<std::string>& vectList) const
     m_io_loading += elapsed_seconds.count();
 }
 
-std::vector<int> ESmry::makeKeywPosVector(int specInd) const
+std::vector<long long> ESmry::makeKeywPosVector(long long specInd) const
 {
-    std::vector<int> keywpos(nParamsSpecFile[specInd], -1);
+    std::vector<long long> keywpos(nParamsSpecFile[specInd], -1);
 
-    auto has_index = [&keywpos](const int ix)
+    auto has_index = [&keywpos](const long long ix)
     {
         return std::find(keywpos.begin(), keywpos.end(), ix) != keywpos.end();
     };
 
     const auto& kwList = keywordListSpecFile[specInd];
-    for (int n = 0; n < nParamsSpecFile[specInd]; ++n) {
+    for (long long n = 0; n < nParamsSpecFile[specInd]; ++n) {
         auto it = keyword_index.find(kwList[n]);
         if ((it == keyword_index.end()) || has_index(it->second)) {
             continue;
@@ -852,7 +852,7 @@ void ESmry::loadData() const
     auto specInd = std::get<0>(timeStepList[0]);
     auto dataFileIndex = std::get<1>(timeStepList[0]);
 
-    std::vector<int> keywpos = makeKeywPosVector(specInd);
+    std::vector<long long> keywpos = makeKeywPosVector(specInd);
 
     auto openMode = formattedFiles[specInd]
                     ? std::ios::in
@@ -891,7 +891,7 @@ void ESmry::loadData() const
             std::size_t p = 0;
             std::size_t p1= 0;
 
-            for (int i=0; i< nParamsSpecFile[specInd]; ++i, ++p) {
+            for (long long i=0; i< nParamsSpecFile[specInd]; ++i, ++p) {
                 p1 = fileStr.find_first_not_of(' ',p1);
                 const std::size_t p2 = fileStr.find_first_of(' ', p1);
 
@@ -916,15 +916,15 @@ void ESmry::loadData() const
             std::size_t p = 0;
 
             while (rest > 0) {
-                int dhead;
+                long long dhead;
                 fileH.read(reinterpret_cast<char*>(&dhead), sizeof(dhead));
                 dhead = Opm::EclIO::flipEndianInt(dhead);
 
-                const int num = dhead / sizeOfInte;
+                const long long num = dhead / sizeOfInte;
                 if ((num > maxNumberOfElements) || (num < 0))
                     OPM_THROW(std::runtime_error, "??Error reading binary data, inconsistent header data or incorrect number of elements");
 
-                for (int i = 0; i < num; ++i, ++p) {
+                for (long long i = 0; i < num; ++i, ++p) {
                     float value;
                     fileH.read(reinterpret_cast<char*>(&value), sizeOfReal);
 
@@ -941,7 +941,7 @@ void ESmry::loadData() const
                     OPM_THROW(std::runtime_error, message);
                 }
 
-                int dtail;
+                long long dtail;
                 fileH.read(reinterpret_cast<char*>(&dtail), sizeof(dtail));
                 dtail = Opm::EclIO::flipEndianInt(dtail);
 
@@ -993,7 +993,7 @@ ESmry::getListOfArrays(const std::string& filename, bool formatted)
 
             numstr[12]='\0';
 
-            int num_int = std::stoi(numstr);
+            long long num_int = std::stoi(numstr);
             num = static_cast<int64_t>(num_int);
 
             fseek(ptr, 8, SEEK_CUR);
@@ -1007,7 +1007,7 @@ ESmry::getListOfArrays(const std::string& filename, bool formatted)
             }
 
         } else {
-            int num_int;
+            long long num_int;
 
             fseek(ptr, 4, SEEK_CUR);
 
@@ -1041,10 +1041,10 @@ ESmry::getListOfArrays(const std::string& filename, bool formatted)
         if (num > 0) {
             if (formatted) {
                 uint64_t sizeOfNextArray = sizeOnDiskFormatted(num, arrType, 4);
-                fseek(ptr, static_cast<long int>(sizeOfNextArray), SEEK_CUR);
+                fseek(ptr, static_cast<long long>(sizeOfNextArray), SEEK_CUR);
             } else {
                 uint64_t sizeOfNextArray = sizeOnDiskBinary(num, arrType, 4);
-                fseek(ptr, static_cast<long int>(sizeOfNextArray), SEEK_CUR);
+                fseek(ptr, static_cast<long long>(sizeOfNextArray), SEEK_CUR);
             }
         }
 
@@ -1082,7 +1082,7 @@ bool ESmry::make_esmry_file()
 
     } else {
 
-        std::vector<int> is_rstep;
+        std::vector<long long> is_rstep;
         is_rstep.reserve(timeStepList.size());
 
         for (size_t i = 0; i < timeStepList.size(); i++)
@@ -1094,13 +1094,13 @@ bool ESmry::make_esmry_file()
         this->loadData();
 
         {
-            std::vector<int> start_date_vect = start_vect;
+            std::vector<long long> start_date_vect = start_vect;
             if (start_date_vect.size() < 6) {
                 start_date_vect.resize(6);
             }
 
-            int sec = start_date_vect[5] / 1000000;
-            int millisec = (start_date_vect[5] % 1000000) / 1000;
+            long long sec = start_date_vect[5] / 1000000;
+            long long millisec = (start_date_vect[5] % 1000000) / 1000;
 
             start_date_vect[5] = sec;
             start_date_vect.push_back(millisec);
@@ -1113,18 +1113,18 @@ bool ESmry::make_esmry_file()
 
             Opm::EclIO::EclOutput outFile(smryDataFile.generic_string(), false, std::ios::out);
 
-            outFile.write<int>("START", start_date_vect);
+            outFile.write<long long>("START", start_date_vect);
 
             if (std::get<0>(restart_info) != ""){
                 auto rst_file = std::get<0>(restart_info);
                 outFile.write<std::string>("RESTART", {rst_file});
-                outFile.write<int>("RSTNUM", {std::get<1>(restart_info)});
+                outFile.write<long long>("RSTNUM", {std::get<1>(restart_info)});
             }
 
             outFile.write("KEYCHECK", keyword);
             outFile.write("UNITS", units);
-            outFile.write<int>("RSTEP", is_rstep);
-            outFile.write<int>("TSTEP", mini_steps);
+            outFile.write<long long>("RSTEP", is_rstep);
+            outFile.write<long long>("TSTEP", mini_steps);
 
             for (size_t n = 0; n < vectorData.size(); n++ ) {
                 const std::string vect_name = fmt::format("V{}", n);
@@ -1190,7 +1190,7 @@ bool ESmry::hasKey(const std::string &key) const
 }
 
 
-void ESmry::ijk_from_global_index(int glob, int &i, int &j, int &k) const
+void ESmry::ijk_from_global_index(long long glob, long long &i, long long &j, long long &k) const
 {
     glob -= 1;
 
@@ -1200,7 +1200,7 @@ void ESmry::ijk_from_global_index(int glob, int &i, int &j, int &k) const
 }
 
 
-std::string ESmry::makeKeyString(const std::string& keywordArg, const std::string& wgname, int num,
+std::string ESmry::makeKeyString(const std::string& keywordArg, const std::string& wgname, long long num,
                                  const std::optional<Opm::EclIO::lgr_info> lgr) const
 {
     const auto no_wgname = std::string_view(":+:+:+:+");
@@ -1220,7 +1220,7 @@ std::string ESmry::makeKeyString(const std::string& keywordArg, const std::strin
             return "";
         }
 
-        int _i, _j, _k;
+        long long _i, _j, _k;
         ijk_from_global_index(num, _i, _j, _k);
 
         return fmt::format("{}:{},{},{}", keywordArg, _i, _j, _k);
@@ -1231,7 +1231,7 @@ std::string ESmry::makeKeyString(const std::string& keywordArg, const std::strin
             return "";
         }
 
-        int _i, _j, _k;
+        long long _i, _j, _k;
         ijk_from_global_index(num, _i, _j, _k);
 
         return fmt::format("{}:{}:{},{},{}", keywordArg, wgname, _i, _j, _k);
@@ -1324,7 +1324,7 @@ std::string ESmry::unpackNumber(const SummaryNode& node) const
         ((node.category == SummaryNode::Category::Completion) &&
          is_connection_completion(node.keyword)))
     {
-        int _i,_j,_k;
+        long long _i,_j,_k;
         ijk_from_global_index(node.number, _i, _j, _k);
 
         return fmt::format("{},{},{}", _i, _j, _k);
@@ -1366,7 +1366,7 @@ const std::vector<float>& ESmry::get(const std::string& name) const
         OPM_THROW(std::invalid_argument, message);
     }
 
-    int ind = std::distance(keyword.begin(), it);
+    long long ind = std::distance(keyword.begin(), it);
 
     if (!vectorLoaded[ind]){
         loadData({name});
@@ -1382,9 +1382,9 @@ std::vector<float> ESmry::get_at_rstep(const std::string& name) const
 }
 
 
-int ESmry::timestepIdxAtReportstepStart(const int reportStep) const
+long long ESmry::timestepIdxAtReportstepStart(const long long reportStep) const
 {
-    const auto nReport = static_cast<int>(seqIndex.size());
+    const auto nReport = static_cast<long long>(seqIndex.size());
 
     if ((reportStep < 1) || (reportStep > nReport)) {
         throw std::invalid_argument {

@@ -30,23 +30,23 @@ namespace Opm {
 
 struct WellInjectionControls {
 public:
-    explicit WellInjectionControls(int controls_arg) :
+    explicit WellInjectionControls(long long controls_arg) :
         controls(controls_arg)
     {}
 
     bool hasControl(WellInjectorCMode cmode_arg) const
     {
-        return (this->controls & static_cast<int>(cmode_arg)) != 0;
+        return (this->controls & static_cast<long long>(cmode_arg)) != 0;
     }
 
     void skipControl(WellInjectorCMode cmode_arg) {
-        auto int_arg = static_cast<int>(cmode_arg);
+        auto int_arg = static_cast<long long>(cmode_arg);
         if ((this->controls & int_arg) != 0)
             this->controls -= int_arg;
     }
 
     void addControl(WellInjectorCMode cmode_arg) {
-        auto int_arg = static_cast<int>(cmode_arg);
+        auto int_arg = static_cast<long long>(cmode_arg);
         if ((this->controls & int_arg) == 0)
             this->controls += int_arg;
     }
@@ -79,12 +79,12 @@ public:
     WellInjectorCMode cmode = WellInjectorCMode::CMODE_UNDEFINED;
     double surface_rate{};
     double reservoir_rate{};
-    int    vfp_table_number{};
+    long long    vfp_table_number{};
     bool   prediction_mode{false};
     double rs_rv_inj{};
 
 private:
-    int controls{};
+    long long controls{};
 };
 
 }

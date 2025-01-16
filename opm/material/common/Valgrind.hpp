@@ -61,7 +61,7 @@ OPM_HOST_DEVICE inline bool IsRunning()
  * Example:
  *
  * \code
- * int i;
+ * long long i;
  * Valgrind::CheckDefined(i); // Valgrind complains!
  * \endcode
  *
@@ -93,7 +93,7 @@ OPM_HOST_DEVICE inline bool CheckDefined([[maybe_unused]] const T& value)
  * Example:
  *
  * \code
- * int* i = nullptr;
+ * long long* i = nullptr;
  * Valgrind::CheckAddressable(*i); // Valgrind complains!
  * \endcode
  *
@@ -129,7 +129,7 @@ OPM_HOST_DEVICE inline bool CheckAddressable([[maybe_unused]] const T& value)
  * Example:
  *
  * \code
- * int i[2];
+ * long long i[2];
  * Valgrind::CheckDefined(i, 2); // Valgrind complains!
  * \endcode
  *
@@ -143,7 +143,7 @@ OPM_HOST_DEVICE inline bool CheckAddressable([[maybe_unused]] const T& value)
  */
 template <class T>
 OPM_HOST_DEVICE inline bool CheckDefined([[maybe_unused]] const T* value,
-                         [[maybe_unused]] int size)
+                         [[maybe_unused]] long long size)
 {
 #if !defined NDEBUG && HAVE_VALGRIND && !OPM_IS_INSIDE_DEVICE_FUNCTION
     auto tmp = VALGRIND_CHECK_MEM_IS_DEFINED(value, size*sizeof(T));
@@ -161,7 +161,7 @@ OPM_HOST_DEVICE inline bool CheckDefined([[maybe_unused]] const T* value,
  * Example:
  *
  * \code
- * int i = 0;
+ * long long i = 0;
  * Valgrind::SetUndefined(i);
  * Valgrind::CheckDefined(i); // Valgrind complains!
  * \endcode
@@ -186,7 +186,7 @@ OPM_HOST_DEVICE inline void SetUndefined([[maybe_unused]] const T& value)
  * Example:
  *
  * \code
- * int i[3] = {0, 1, 3};
+ * long long i[3] = {0, 1, 3};
  * Valgrind::SetUndefined(&i[1], 2);
  * Valgrind::CheckDefined(i, 3); // Valgrind complains!
  * \endcode
@@ -198,7 +198,7 @@ OPM_HOST_DEVICE inline void SetUndefined([[maybe_unused]] const T& value)
  */
 template <class T>
 OPM_HOST_DEVICE inline void SetUndefined([[maybe_unused]] const T* value,
-                         [[maybe_unused]] int size)
+                         [[maybe_unused]] long long size)
 {
 #if !defined NDEBUG && HAVE_VALGRIND && !OPM_IS_INSIDE_DEVICE_FUNCTION
     VALGRIND_MAKE_MEM_UNDEFINED(value, size*sizeof(T));
@@ -212,7 +212,7 @@ OPM_HOST_DEVICE inline void SetUndefined([[maybe_unused]] const T* value,
  * Example:
  *
  * \code
- * int i;
+ * long long i;
  * Valgrind::SetDefined(i);
  * Valgrind::CheckDefined(i); // Valgrind does not complain!
  * \endcode
@@ -237,7 +237,7 @@ OPM_HOST_DEVICE inline void SetDefined([[maybe_unused]] const T& value)
  * Example:
  *
  * \code
- * int i[3];
+ * long long i[3];
  * Valgrind::SetDefined(i, 3);
  * Valgrind::CheckDefined(i, 3); // Valgrind does not complain!
  * \endcode
@@ -249,7 +249,7 @@ OPM_HOST_DEVICE inline void SetDefined([[maybe_unused]] const T& value)
  */
 template <class T>
 OPM_HOST_DEVICE inline void SetDefined([[maybe_unused]] const T* value,
-                       [[maybe_unused]] int n)
+                       [[maybe_unused]] long long n)
 {
 #if !defined NDEBUG && HAVE_VALGRIND && !OPM_IS_INSIDE_DEVICE_FUNCTION
     VALGRIND_MAKE_MEM_DEFINED(value, n*sizeof(T));
@@ -263,9 +263,9 @@ OPM_HOST_DEVICE inline void SetDefined([[maybe_unused]] const T* value,
  * Example:
  *
  * \code
- * int i = 1;
+ * long long i = 1;
  * Valgrind::SetNoAccess(i);
- * int j = i; // Valgrind complains!
+ * long long j = i; // Valgrind complains!
  * \endcode
  *
  * \tparam T The type of the object which valgrind should complain if accessed
@@ -288,9 +288,9 @@ OPM_HOST_DEVICE inline void SetNoAccess([[maybe_unused]] const T& value)
  * Example:
  *
  * \code
- * int i[3] = {0, 1, 2};
+ * long long i[3] = {0, 1, 2};
  * Valgrind::SetNoAccess(i, 2);
- * int j = i[1]; // Valgrind complains!
+ * long long j = i[1]; // Valgrind complains!
  * \endcode
  *
  * \param value Pointer to the first object of the array.
@@ -298,7 +298,7 @@ OPM_HOST_DEVICE inline void SetNoAccess([[maybe_unused]] const T& value)
  */
 template <class T>
 OPM_HOST_DEVICE inline void SetNoAccess([[maybe_unused]] const T* value,
-                        [[maybe_unused]] int size)
+                        [[maybe_unused]] long long size)
 {
 #if !defined NDEBUG && HAVE_VALGRIND && !OPM_IS_INSIDE_DEVICE_FUNCTION
     VALGRIND_MAKE_MEM_NOACCESS(value, size*sizeof(T));

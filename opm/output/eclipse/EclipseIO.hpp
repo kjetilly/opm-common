@@ -112,7 +112,7 @@ public:
     /// In addition:
     ///   - The NNC argument is distributed between the EGRID and INIT files.
     void writeInitial(data::Solution simProps = data::Solution(),
-                      std::map<std::string, std::vector<int>> int_data = {},
+                      std::map<std::string, std::vector<long long>> int_data = {},
                       const std::vector<NNCdata>& nnc = {});
 
     /// \brief Overwrite the initial OIP values.
@@ -144,12 +144,12 @@ public:
                        const WellTestState& wtest_state,
                        const SummaryState&  st,
                        const UDQState&      udq_state,
-                       int                  report_step,
+                       long long                  report_step,
                        bool                 isSubstep,
                        double               seconds_elapsed,
                        RestartValue         value,
                        const bool write_double = false,
-                       std::optional<int>   time_step = std::nullopt);
+                       std::optional<long long>   time_step = std::nullopt);
 
     /// Will load solution data and wellstate from the restart file.  This
     /// method will consult the IOConfig object to get filename and report

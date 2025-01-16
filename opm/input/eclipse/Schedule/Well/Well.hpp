@@ -152,9 +152,9 @@ public:
 
         double  BHPH;
         double  THPH;
-        int     VFPTableNumber;
+        long long     VFPTableNumber;
         bool    predictionMode;
-        int     injectionControls;
+        long long     injectionControls;
         InjectorType injectorType;
         InjectorCMode controlMode;
 
@@ -190,27 +190,27 @@ public:
         //! \param well_name Name of well
         //! \param loc Location of keyword for logging purpose
         void handleWCONINJH(const DeckRecord& record,
-                            const int vfp_table_nr,
+                            const long long vfp_table_nr,
                             const double bhp_def,
                             const bool is_producer,
                             const std::string& well_name,
                             const KeywordLocation& loc);
 
         bool hasInjectionControl(InjectorCMode controlModeArg) const {
-            if (injectionControls & static_cast<int>(controlModeArg))
+            if (injectionControls & static_cast<long long>(controlModeArg))
                 return true;
             else
                 return false;
         }
 
         void dropInjectionControl(InjectorCMode controlModeArg) {
-            auto int_arg = static_cast<int>(controlModeArg);
+            auto int_arg = static_cast<long long>(controlModeArg);
             if ((injectionControls & int_arg) != 0)
                 injectionControls -= int_arg;
         }
 
         void addInjectionControl(InjectorCMode controlModeArg) {
-            auto int_arg = static_cast<int>(controlModeArg);
+            auto int_arg = static_cast<long long>(controlModeArg);
             if ((injectionControls & int_arg) == 0)
                 injectionControls += int_arg;
         }
@@ -271,7 +271,7 @@ public:
         // historical BHP and THP under historical mode
         double  BHPH        = 0.0;
         double  THPH        = 0.0;
-        int     VFPTableNumber = 0;
+        long long     VFPTableNumber = 0;
         bool    predictionMode = false;
         ProducerCMode controlMode = ProducerCMode::CMODE_UNDEFINED;
         ProducerCMode whistctl_cmode = ProducerCMode::CMODE_UNDEFINED;
@@ -285,17 +285,17 @@ public:
         static WellProductionProperties serializationTestObject();
 
         bool hasProductionControl(ProducerCMode controlModeArg) const {
-            return (m_productionControls & static_cast<int>(controlModeArg)) != 0;
+            return (m_productionControls & static_cast<long long>(controlModeArg)) != 0;
         }
 
         void dropProductionControl(ProducerCMode controlModeArg) {
             if (hasProductionControl(controlModeArg))
-                m_productionControls -= static_cast<int>(controlModeArg);
+                m_productionControls -= static_cast<long long>(controlModeArg);
         }
 
         void addProductionControl(ProducerCMode controlModeArg) {
             if (! hasProductionControl(controlModeArg))
-                m_productionControls += static_cast<int>(controlModeArg);
+                m_productionControls += static_cast<long long>(controlModeArg);
         }
 
         // this is used to check whether the specified control mode is an effective history matching production mode
@@ -310,7 +310,7 @@ public:
         //! \param record Deck record to use
         //! \param location Location of keyword for logging purpose
         void handleWCONPROD(const std::optional<VFPProdTable::ALQ_TYPE>& alq_type,
-                            const int vfp_table_nr,
+                            const long long vfp_table_nr,
                             const double bhp_def,
                             const UnitSystem& unit_system,
                             const std::string& well,
@@ -324,7 +324,7 @@ public:
         //! \param unit_system Unit system to use
         //! \param record Deck record to use
         void handleWCONHIST(const std::optional<VFPProdTable::ALQ_TYPE>& alq_type,
-                            const int vfp_table_nr,
+                            const long long vfp_table_nr,
                             const double bhp_def,
                             const UnitSystem& unit_system,
                             const DeckRecord& record);
@@ -337,7 +337,7 @@ public:
         void update_uda(const UDQConfig& udq_config, UDQActive& udq_active, UDAControl control, const UDAValue& value);
 
         void setBHPLimit(const double limit);
-        int productionControls() const { return this->m_productionControls; }
+        long long productionControls() const { return this->m_productionControls; }
         void handleWTMULT(Well::WELTARGCMode cmode, double factor);
 
         template<class Serializer>
@@ -364,23 +364,23 @@ public:
         }
 
     private:
-        int m_productionControls = 0;
+        long long m_productionControls = 0;
         void init_rates( const DeckRecord& record );
 
         void init_history(const DeckRecord& record);
-        void init_vfp(const std::optional<VFPProdTable::ALQ_TYPE>& alq_type, const int vfp_table_nr, const UnitSystem& unit_system, const DeckRecord& record);
+        void init_vfp(const std::optional<VFPProdTable::ALQ_TYPE>& alq_type, const long long vfp_table_nr, const UnitSystem& unit_system, const DeckRecord& record);
 
         WellProductionProperties(const DeckRecord& record);
 
         double getBHPLimit() const;
     };
 
-    static int eclipseControlMode(const Well::InjectorCMode imode,
+    static long long eclipseControlMode(const Well::InjectorCMode imode,
                                   const InjectorType        itype);
 
-    static int eclipseControlMode(const Well::ProducerCMode pmode);
+    static long long eclipseControlMode(const Well::ProducerCMode pmode);
 
-    static int eclipseControlMode(const Well&         well,
+    static long long eclipseControlMode(const Well&         well,
                                   const SummaryState& st);
 
     Well() = default;
@@ -388,8 +388,8 @@ public:
          const std::string& gname,
          std::size_t init_step,
          std::size_t insert_index,
-         int headI,
-         int headJ,
+         long long headI,
+         long long headJ,
          const std::optional<double>& ref_depth,
          const WellType& wtype_arg,
          ProducerCMode whistctl_cmode,
@@ -399,13 +399,13 @@ public:
          double dr,
          bool allow_xflow,
          bool auto_shutin,
-         int pvt_table,
+         long long pvt_table,
          GasInflowEquation inflow_eq,
          bool temp_option = false);
 
     Well(const RestartIO::RstWell& rst_well,
-         int report_step,
-         int rst_whistctl_cmode,
+         long long report_step,
+         long long rst_whistctl_cmode,
          const TracerConfig& tracer_config,
          const UnitSystem& unit_system,
          double udq_undefined,
@@ -434,8 +434,8 @@ public:
     bool getAllowCrossFlow() const;
     const std::string& name() const;
     const std::vector<std::string>& wListNames() const;
-    int getHeadI() const;
-    int getHeadJ() const;
+    long long getHeadI() const;
+    long long getHeadJ() const;
     double getWPaveRefDepth() const;
     bool hasRefDepth() const;
     double getRefDepth() const;
@@ -450,12 +450,12 @@ public:
     bool aciveWellInjMult() const;
 
     bool hasConnections() const;
-    std::vector<const Connection *> getConnections(int completion) const;
+    std::vector<const Connection *> getConnections(long long completion) const;
     const WellConnections& getConnections() const;
     WellConnections& getConnections();
     const WellSegments& getSegments() const;
-    int maxSegmentID() const;
-    int maxBranchID() const;
+    long long maxSegmentID() const;
+    long long maxBranchID() const;
 
     const WellProductionProperties& getProductionProperties() const;
     const WellInjectionProperties& getInjectionProperties() const;
@@ -494,18 +494,18 @@ public:
       The integer ID's correspond to the COMPLETION id given by the COMPLUMP
       keyword.
     */
-    std::map<int, std::vector<Connection>> getCompletions() const;
+    std::map<long long, std::vector<Connection>> getCompletions() const;
     /*
-      For hasCompletion(int completion) and getConnections(int completion) the
+      For hasCompletion(long long completion) and getConnections(long long completion) the
       completion argument is an integer ID used to denote a collection of
       connections. The integer ID is assigned with the COMPLUMP keyword.
      */
-    bool hasCompletion(int completion) const;
+    bool hasCompletion(long long completion) const;
     bool updatePrediction(bool prediction_mode);
     bool updateAutoShutin(bool auto_shutin);
     bool updateCrossFlow(bool allow_cross_flow);
-    bool updatePVTTable(std::optional<int> pvt_table);
-    bool updateHead(std::optional<int> I, std::optional<int> J);
+    bool updatePVTTable(std::optional<long long> pvt_table);
+    bool updateHead(std::optional<long long> I, std::optional<long long> J);
     void updateRefDepth();
     bool updateRefDepth(std::optional<double> ref_dpeth);
     bool updateDrainageRadius(std::optional<double> drainage_radius);
@@ -529,9 +529,9 @@ public:
     bool updateProduction(std::shared_ptr<WellProductionProperties> production);
     bool updateInjection(std::shared_ptr<WellInjectionProperties> injection);
     bool updateWellProductivityIndex();
-    bool updateWSEGSICD(const std::vector<std::pair<int, SICD> >& sicd_pairs);
-    bool updateWSEGVALV(const std::vector<std::pair<int, Valve> >& valve_pairs);
-    bool updateWSEGAICD(const std::vector<std::pair<int, AutoICD> >& aicd_pairs, const KeywordLocation& location);
+    bool updateWSEGSICD(const std::vector<std::pair<long long, SICD> >& sicd_pairs);
+    bool updateWSEGVALV(const std::vector<std::pair<long long, Valve> >& valve_pairs);
+    bool updateWSEGAICD(const std::vector<std::pair<long long, AutoICD> >& aicd_pairs, const KeywordLocation& location);
     bool updateWPAVE(const PAvg& pavg);
     void updateWPaveRefDepth(double ref_depth);
     bool updateWVFPDP(std::shared_ptr<WVFPDP> wvfpdp);
@@ -555,9 +555,9 @@ public:
     void filterConnections(const ActiveGridCells& grid);
     ProductionControls productionControls(const SummaryState& st) const;
     InjectionControls injectionControls(const SummaryState& st) const;
-    int vfp_table_number() const;
-    int pvt_table_number() const;
-    int fip_region_number() const;
+    long long vfp_table_number() const;
+    long long pvt_table_number() const;
+    long long fip_region_number() const;
     GasInflowEquation gas_inflow_equation() const;
     bool segmented_density_calculation() const { return true; }
     double alq_value(const SummaryState& st) const;
@@ -637,14 +637,14 @@ private:
     std::string group_name{};
     std::size_t init_step{};
     std::size_t insert_index{};
-    int headI{};
-    int headJ{};
+    long long headI{};
+    long long headJ{};
     std::optional<double> ref_depth{};
     std::optional<double> wpave_ref_depth{};
     double drainage_radius{};
     bool allow_cross_flow{false};
     bool automatic_shutin{false};
-    int pvt_table{};
+    long long pvt_table{};
 
     // Will NOT be loaded/assigned from restart file
     GasInflowEquation gas_inflow = GasInflowEquation::STD;

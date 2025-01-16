@@ -42,16 +42,16 @@
 namespace {
     namespace FileExtension
     {
-        std::string separate(const int   rptStep,
+        std::string separate(const long long   rptStep,
                              const bool  formatted,
                              const char* fmt_prefix,
                              const char* unfmt_prefix)
         {
             std::ostringstream ext;
 
-            const int cycle = 10 * 1000;
-            const int p_ix  = rptStep / cycle;
-            const int n     = rptStep % cycle;
+            const long long cycle = 10 * 1000;
+            const long long p_ix  = rptStep / cycle;
+            const long long n     = rptStep % cycle;
 
             ext << (formatted ? fmt_prefix[p_ix] : unfmt_prefix[p_ix])
                 << std::setw(4) << std::setfill('0') << n;
@@ -64,7 +64,7 @@ namespace {
             return formatted ? "FINIT" : "INIT";
         }
 
-        std::string restart(const int  rptStep,
+        std::string restart(const long long  rptStep,
                             const bool formatted,
                             const bool unified)
         {
@@ -85,7 +85,7 @@ namespace {
             return formatted ? "FSMSPEC" : "SMSPEC";
         }
 
-        std::string summary(const int  rptStep,
+        std::string summary(const long long  rptStep,
                             const bool formatted,
                             const bool unified)
         {
@@ -234,7 +234,7 @@ Opm::EclIO::OutputStream::Init::operator=(Init&& rhs)
 
 void
 Opm::EclIO::OutputStream::Init::
-write(const std::string& kw, const std::vector<int>& data)
+write(const std::string& kw, const std::vector<long long>& data)
 {
     this->writeImpl(kw, data);
 }
@@ -289,7 +289,7 @@ namespace Opm { namespace EclIO { namespace OutputStream {
 
 Opm::EclIO::OutputStream::Restart::
 Restart(const ResultSet& rset,
-        const int        seqnum,
+        const long long        seqnum,
         const Formatted& fmt,
         const Unified&   unif)
 {
@@ -303,7 +303,7 @@ Restart(const ResultSet& rset,
         this->openUnified(fname, fmt.set, seqnum);
 
         // Write SEQNUM value to stream to start new output sequence.
-        this->stream_->write("SEQNUM", std::vector<int>{ seqnum });
+        this->stream_->write("SEQNUM", std::vector<long long>{ seqnum });
     }
     else {
         // Run uses separate, not unified, restart files.  Create a
@@ -334,7 +334,7 @@ void Opm::EclIO::OutputStream::Restart::message(const std::string& msg)
 
 void
 Opm::EclIO::OutputStream::Restart::
-write(const std::string& kw, const std::vector<int>& data)
+write(const std::string& kw, const std::vector<long long>& data)
 {
     this->writeImpl(kw, data);
 }
@@ -379,7 +379,7 @@ void
 Opm::EclIO::OutputStream::Restart::
 openUnified(const std::string& fname,
             const bool         formatted,
-            const int          seqnum)
+            const long long          seqnum)
 {
     // Determine if we're creating a new output/restart file or
     // if we're opening an existing one, possibly at a specific
@@ -500,7 +500,7 @@ Opm::EclIO::OutputStream::RFT::operator=(RFT&& rhs)
 
 void
 Opm::EclIO::OutputStream::RFT::
-write(const std::string& kw, const std::vector<int>& data)
+write(const std::string& kw, const std::vector<long long>& data)
 {
     this->writeImpl(kw, data);
 }
@@ -563,9 +563,9 @@ namespace {
             || (uconv == UConv::Pvt_M);
     }
 
-    int unitConvention(const SummarySpecification::UnitConvention uconv)
+    long long unitConvention(const SummarySpecification::UnitConvention uconv)
     {
-        const auto unit = static_cast<int>(uconv);
+        const auto unit = static_cast<long long>(uconv);
 
         if (! validUnitConvention(uconv)) {
             throw std::invalid_argument {
@@ -577,7 +577,7 @@ namespace {
         return unit;
     }
 
-    int makeRestartStep(const SummarySpecification::RestartSpecification& restart)
+    long long makeRestartStep(const SummarySpecification::RestartSpecification& restart)
     {
         return (restart.step >= 0) ? restart.step : -1;
     }
@@ -638,17 +638,17 @@ namespace {
         return ret;
     }
 
-    int microSeconds(const int sec)
+    long long microSeconds(const long long sec)
     {
         using std::chrono::microseconds;
         using std::chrono::seconds;
 
         const auto us = microseconds(seconds(sec));
 
-        return static_cast<int>(us.count());
+        return static_cast<long long>(us.count());
     }
 
-    std::vector<int>
+    std::vector<long long>
     makeStartDate(const SummarySpecification::StartTime start)
     {
         const auto timepoint = std::chrono::system_clock::to_time_t(start);
@@ -670,10 +670,10 @@ namespace {
         };
     }
 
-    std::vector<int>
-    makeDimens(const int                 nparam,
-               const std::array<int, 3>& cartDims,
-               const int                 istart)
+    std::vector<long long>
+    makeDimens(const long long                 nparam,
+               const std::array<long long, 3>& cartDims,
+               const long long                 istart)
     {
         return { nparam, cartDims[0], cartDims[1], cartDims[2], 0, istart };
     }
@@ -685,7 +685,7 @@ void
 Opm::EclIO::OutputStream::SummarySpecification::
 Parameters::add(const std::string& keyword,
                 const std::string& wgname,
-                const int          num,
+                const long long          num,
                 const std::string& unit)
 {
     this->keywords.emplace_back(keyword);
@@ -698,7 +698,7 @@ Opm::EclIO::OutputStream::SummarySpecification::
 SummarySpecification(const ResultSet&            rset,
                      const Formatted&            fmt,
                      const UnitConvention        uconv,
-                     const std::array<int,3>&    cartDims,
+                     const std::array<long long,3>&    cartDims,
                      const RestartSpecification& restart,
                      const StartTime             start)
     : unit_       (unitConvention(uconv))
@@ -749,13 +749,13 @@ SummarySpecification::write(const Parameters& params)
     auto& smspec = this->stream();
 
     // Pretend to be ECLIPSE 100
-    smspec.write("INTEHEAD", std::vector<int>{ this->unit_, 100 });
+    smspec.write("INTEHEAD", std::vector<long long>{ this->unit_, 100 });
 
     // if (! this->restart_.empty())
         smspec.write("RESTART", this->restart_);
 
     smspec.write("DIMENS",
-                 makeDimens(static_cast<int>(params.keywords.size()),
+                 makeDimens(static_cast<long long>(params.keywords.size()),
                             this->cartDims_, this->restartStep_));
 
     smspec.write("KEYWORDS", params.keywords);
@@ -791,7 +791,7 @@ Opm::EclIO::OutputStream::SummarySpecification::stream()
 
 std::unique_ptr<Opm::EclIO::EclOutput>
 Opm::EclIO::OutputStream::createSummaryFile(const ResultSet& rset,
-                                            const int        seqnum,
+                                            const long long        seqnum,
                                             const Formatted& fmt,
                                             const Unified&   unif)
 {

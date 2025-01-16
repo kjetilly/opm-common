@@ -33,16 +33,16 @@ namespace Opm { namespace RestartIO {
 struct RstSegment
 {
     RstSegment(const UnitSystem& unit_system,
-               int               segment_number,
-               const int*        iseg,
+               long long               segment_number,
+               const long long*        iseg,
                const double*     rseg);
 
-    int segment{};
-    int outlet_segment{};
-    int branch{};
-    int segment_type{};
-    int icd_scaling_mode{};
-    int icd_status{};
+    long long segment{};
+    long long outlet_segment{};
+    long long branch{};
+    long long segment_type{};
+    long long icd_scaling_mode{};
+    long long icd_status{};
 
     double dist_outlet{};
     double outlet_dz{};
@@ -80,7 +80,7 @@ struct RstSegment
     double aicd_wat_visc_exponent{};
     double aicd_gas_visc_exponent{};
 
-    std::vector<int> inflow_segments;
+    std::vector<long long> inflow_segments;
 };
 
 }} // namespace Opm::RestartIO

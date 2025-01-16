@@ -46,7 +46,7 @@ namespace {
             : rst_value;
     }
 
-    Opm::Segment::SegmentType segmentTypeFromInt(const int ecl_id)
+    Opm::Segment::SegmentType segmentTypeFromInt(const long long ecl_id)
     {
         using SType = Opm::Segment::SegmentType;
         using IType = Opm::RestartIO::Helpers::VectorItems::ISeg::Value::Type;
@@ -113,9 +113,9 @@ namespace Opm {
         // default constructor.
     }
 
-    Segment::Segment(const int    segment_number_in,
-                     const int    branch_in,
-                     const int    outlet_segment_in,
+    Segment::Segment(const long long    segment_number_in,
+                     const long long    branch_in,
+                     const long long    outlet_segment_in,
                      const double length_in,
                      const double depth_in,
                      const double internal_diameter_in,
@@ -208,17 +208,17 @@ namespace Opm {
         return result;
     }
 
-    int Segment::segmentNumber() const
+    long long Segment::segmentNumber() const
     {
         return m_segment_number;
     }
 
-    int Segment::branchNumber() const
+    long long Segment::branchNumber() const
     {
         return m_branch;
     }
 
-    int Segment::outletSegment() const
+    long long Segment::outletSegment() const
     {
         return m_outlet_segment;
     }
@@ -283,12 +283,12 @@ namespace Opm {
         throw std::logic_error("This just should not happen ");
     }
 
-    const std::vector<int>& Segment::inletSegments() const
+    const std::vector<long long>& Segment::inletSegments() const
     {
         return m_inlet_segments;
     }
 
-    void Segment::addInletSegment(const int segment_number_in)
+    void Segment::addInletSegment(const long long segment_number_in)
     {
         auto segPos = std::find(this->m_inlet_segments.begin(),
                                 this->m_inlet_segments.end(),
@@ -405,7 +405,7 @@ namespace Opm {
         return std::get<Valve>(this->m_icd);
     }
 
-    int Segment::ecl_type_id() const
+    long long Segment::ecl_type_id() const
     {
         using IType = RestartIO::Helpers::VectorItems::ISeg::Value::Type;
 
@@ -418,7 +418,7 @@ namespace Opm {
 
         throw std::invalid_argument {
             fmt::format("Unhandled segment type '{}'",
-                        static_cast<int>(this->segmentType()))
+                        static_cast<long long>(this->segmentType()))
         };
     }
 

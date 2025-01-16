@@ -28,7 +28,7 @@ namespace Opm {
     class SgwfnTable : public SimpleTable {
 
     public:
-        SgwfnTable( const DeckItem& item, const int tableID );
+        SgwfnTable( const DeckItem& item, const long long tableID );
         const TableColumn& getSgColumn() const;
         const TableColumn& getKrgColumn() const;
         const TableColumn& getKrgwColumn() const;

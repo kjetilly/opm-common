@@ -111,21 +111,21 @@ namespace Opm {
 		throw std::exception();
 	    }
 	    std::string parameter;
-	    int lineno = 0;
+	    long long lineno = 0;
 	    while (samcode_readline(is, parameter)) {
 		++lineno;
-                int commentpos = parameter.find(ID_comment);
+                long long commentpos = parameter.find(ID_comment);
                 if (commentpos != 0) {
-                    if (commentpos != int(std::string::npos)) {
+                    if (commentpos != (long long)(std::string::npos)) {
                         parameter.resize(commentpos);
                     }
-                    int fpos = parameter.find(ID_delimiter_assignment);
-                    if (fpos == int(std::string::npos)) {
+                    long long fpos = parameter.find(ID_delimiter_assignment);
+                    if (fpos == (long long)(std::string::npos)) {
                         std::cerr << "WARNING: No '" << ID_delimiter_assignment << "' found on line " << lineno << ".\n";
                     }
-                    int pos = fpos + ID_delimiter_assignment.size();
-                    int spos = parameter.find(ID_delimiter_assignment, pos);
-                    if (spos == int(std::string::npos)) {
+                    long long pos = fpos + ID_delimiter_assignment.size();
+                    long long spos = parameter.find(ID_delimiter_assignment, pos);
+                    if (spos == (long long)(std::string::npos)) {
                         std::string name = parameter.substr(0, fpos);
                         std::string value = parameter.substr(pos, spos);
                         this->insertParameter(name, value);

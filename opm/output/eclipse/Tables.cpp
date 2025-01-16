@@ -590,7 +590,7 @@ namespace { namespace SatFunc {
         {
             std::size_t nCol = 1;
             std::size_t numTab = 0;
-            int dOff = -1;
+            long long dOff = -1;
 
             if (! swofLET.empty()) {
                 numTab = swofLET.size();
@@ -752,7 +752,7 @@ namespace { namespace SatFunc {
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SGFN tables.  A unit-converted copy of the
         ///    input table \p sgfn with added derivatives.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromSGFN(const std::size_t          numRows,
                  const double               tolcrit,
                  const Opm::UnitSystem&     units,
@@ -766,8 +766,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krg, Pcgo
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &units, &sgfn](const std::size_t           tableID,
                                              const std::size_t           primID,
@@ -835,7 +835,7 @@ namespace { namespace SatFunc {
         ///    values for output SGFN tables.  Corresponds to unit-converted
         ///    copies of columns 1, 2, and 4--with added derivatives--of the
         ///    input SGWFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromSGWFN(const std::size_t          numRows,
                   const double               tolcrit,
                   const Opm::UnitSystem&     units,
@@ -849,8 +849,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krg, Pcgw
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &units, &sgwfn](const std::size_t           tableID,
                                               const std::size_t           primID,
@@ -917,7 +917,7 @@ namespace { namespace SatFunc {
         ///
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SGFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         normalisedTable_Two(const std::size_t        numRows,
                             const double             tolcrit,
                             const Opm::UnitSystem&   units,
@@ -956,7 +956,7 @@ namespace { namespace SatFunc {
         ///    values for output SGFN tables.  Corresponds to unit-converted
         ///    copies of columns 1, 2, and 4--with added derivatives--of the
         ///    input SGOF tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromSGOF(const std::size_t          numRows,
                  const double               tolcrit,
                  const Opm::UnitSystem&     units,
@@ -970,8 +970,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krg, Pcgo
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &units, &sgof](const std::size_t           tableID,
                                              const std::size_t           primID,
@@ -1039,7 +1039,7 @@ namespace { namespace SatFunc {
         ///    values for output SGFN tables.  Corresponds to unit-converted
         ///    copies of columns 1, 2, and 4--with added derivatives--of the
         ///    input SLGOF tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromSLGOF(const std::size_t          numRows,
                  const double               tolcrit,
                  const Opm::UnitSystem&     units,
@@ -1053,8 +1053,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krg, Pcgo
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &units, &slgof](const std::size_t           tableID,
                                                     const std::size_t           primID,
@@ -1127,7 +1127,7 @@ namespace { namespace SatFunc {
         ///
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SGFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         normalisedTable_One(const std::size_t        numRows,
                             const double             tolcrit,
                             const Opm::UnitSystem&   units,
@@ -1163,8 +1163,8 @@ namespace { namespace SatFunc {
             }();
 
             return {
-                static_cast<int>(numRows),
-                static_cast<int>(letTables.size()),
+                static_cast<long long>(numRows),
+                static_cast<long long>(letTables.size()),
                 detail::sampleLET(numRows, tolcrit, units, letTables, swco)
             };
         }
@@ -1192,7 +1192,7 @@ namespace { namespace SatFunc {
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SGFN tables.  A unit-converted copy of the
         ///    input table \p gsf with added derivatives.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromGSF(const std::size_t          numRows,
                 const double               tolcrit,
                 const Opm::UnitSystem&     units,
@@ -1206,8 +1206,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krg, Pcgw
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &units, &gsf](const std::size_t           tableID,
                                             const std::size_t           primID,
@@ -1275,7 +1275,7 @@ namespace { namespace SatFunc {
         ///
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SGFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         normalisedTable(const Family&            family,
                         const std::size_t        numRows,
                         const double             tolcrit,
@@ -1320,7 +1320,7 @@ namespace { namespace SatFunc {
             ///    vector values for output SOFN tables.  Essentially just a
             ///    padded copy of the input SOF2 table--with added
             ///    derivatives.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             fromSOF2(const std::size_t          numRows,
                      const double               tolcrit,
                      const Opm::TableContainer& sof2)
@@ -1333,8 +1333,8 @@ namespace { namespace SatFunc {
                 const auto numDep = std::size_t{1}; // Kro
 
                 return {
-                    static_cast<int>(tableSize),
-                    static_cast<int>(numTab),
+                    static_cast<long long>(tableSize),
+                    static_cast<long long>(numTab),
                     detail::createSatfuncTable(numTab, tableSize, numDep,
                         [tolcrit, &sof2](const std::size_t           tableID,
                                          const std::size_t           primID,
@@ -1387,7 +1387,7 @@ namespace { namespace SatFunc {
             ///    and reverse column of relative permeability for oil
             ///    (column 3) from the input SGOF table--with added
             ///    derivatives.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             fromSGOF(const std::size_t          numRows,
                      const double               tolcrit,
                      const Opm::TableContainer& sgof)
@@ -1400,8 +1400,8 @@ namespace { namespace SatFunc {
                 const auto numDep = std::size_t{1}; // Kro
 
                 return {
-                    static_cast<int>(tableSize),
-                    static_cast<int>(numTab),
+                    static_cast<long long>(tableSize),
+                    static_cast<long long>(numTab),
                     detail::createSatfuncTable(numTab, tableSize, numDep,
                         [tolcrit, &sgof](const std::size_t           tableID,
                                          const std::size_t           primID,
@@ -1474,7 +1474,7 @@ namespace { namespace SatFunc {
             ///    and reverse column of relative permeability for oil
             ///    (column 3) from the input SLGOF table--with added
             ///    derivatives.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             fromSLGOF(const std::size_t          numRows,
                      const double               tolcrit,
                      const Opm::TableContainer& slgof)
@@ -1487,8 +1487,8 @@ namespace { namespace SatFunc {
                 const auto numDep = std::size_t{1}; // Kro
 
                 return {
-                    static_cast<int>(tableSize),
-                    static_cast<int>(numTab),
+                    static_cast<long long>(tableSize),
+                    static_cast<long long>(numTab),
                     detail::createSatfuncTable(numTab, tableSize, numDep,
                         [tolcrit, &slgof](const std::size_t           tableID,
                                          const std::size_t           primID,
@@ -1543,7 +1543,7 @@ namespace { namespace SatFunc {
             ///
             /// \return Descriptor and linearised/normalised/padded 'TAB' vector
             ///    values for output SOFN tables.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             normalisedTable_Gas(const std::size_t        numRows,
                                 const double             tolcrit,
                                 const Opm::TableManager& tabMgr)
@@ -1563,8 +1563,8 @@ namespace { namespace SatFunc {
                 }
 
                 return {
-                    static_cast<int>(numRows),
-                    static_cast<int>(gasLET.size()),
+                    static_cast<long long>(numRows),
+                    static_cast<long long>(gasLET.size()),
                     detail::sampleLET(numRows, tolcrit,
                                       tabMgr.getSwofletTable(),
                                       gasLET)
@@ -1592,7 +1592,7 @@ namespace { namespace SatFunc {
             ///    reverse saturation column (column 1) and reverse column
             ///    of relative permeability for oil (column 3) from the
             ///    input SWOF table--with added derivatives.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             fromSWOF(const std::size_t          numRows,
                      const double               tolcrit,
                      const Opm::TableContainer& swof)
@@ -1605,8 +1605,8 @@ namespace { namespace SatFunc {
                 const auto numDep = std::size_t{1}; // Kro
 
                 return {
-                    static_cast<int>(tableSize),
-                    static_cast<int>(numTab),
+                    static_cast<long long>(tableSize),
+                    static_cast<long long>(numTab),
                     detail::createSatfuncTable(numTab, tableSize, numDep,
                         [tolcrit, &swof](const std::size_t           tableID,
                                          const std::size_t           primID,
@@ -1674,7 +1674,7 @@ namespace { namespace SatFunc {
             ///
             /// \return Descriptor and linearised/normalised/padded 'TAB' vector
             ///    values for output SOFN tables.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             normalisedTable_Water(const std::size_t        numRows,
                                   const double             tolcrit,
                                   const Opm::TableManager& tabMgr)
@@ -1686,8 +1686,8 @@ namespace { namespace SatFunc {
                 }
 
                 return {
-                    static_cast<int>(numRows),
-                    static_cast<int>(watLET.size()),
+                    static_cast<long long>(numRows),
+                    static_cast<long long>(watLET.size()),
                     detail::sampleLET(numRows, tolcrit, watLET,
                                       tabMgr.getSgofletTable())
                 };
@@ -1718,7 +1718,7 @@ namespace { namespace SatFunc {
             ///
             /// \return Descriptor and linearised/normalised/padded 'TAB' vector
             ///    values for output SOFN tables.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             normalisedTable(const Family&            family,
                             const ActivePhases&      active,
                             const std::size_t        numRows,
@@ -2054,7 +2054,7 @@ namespace { namespace SatFunc {
             ///    3 from the input SWOF table and column 3 from the input
             ///    SGOF table--expanded so as to have values for all oil
             ///    saturation nodes.  Derivatives added in columns 4 and 5.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             fromSGOFandSWOF(const std::size_t          numRows,
                             const double               tolcrit,
                             const Opm::TableContainer& sgof,
@@ -2075,8 +2075,8 @@ namespace { namespace SatFunc {
                 const auto numDep = std::size_t{2}; // Krow, Krog
 
                 return {
-                    static_cast<int>(tableSize),
-                    static_cast<int>(numTab),
+                    static_cast<long long>(tableSize),
+                    static_cast<long long>(numTab),
                     detail::createSatfuncTable(numTab, tableSize, numDep,
                         [tolcrit, &sgof, &swof]
                         (const std::size_t           tableID,
@@ -2140,7 +2140,7 @@ namespace { namespace SatFunc {
             ///    3 from the input SWOF table and column 3 from the input
             ///    SGOF table--expanded so as to have values for all oil
             ///    saturation nodes.  Derivatives added in columns 4 and 5.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             fromSLGOFandSWOF(const std::size_t          numRows,
                              const double               tolcrit,
                              const Opm::TableContainer& slgof,
@@ -2161,8 +2161,8 @@ namespace { namespace SatFunc {
                 const auto numDep = std::size_t{2}; // Krow, Krog
 
                 return {
-                    static_cast<int>(tableSize),
-                    static_cast<int>(numTab),
+                    static_cast<long long>(tableSize),
+                    static_cast<long long>(numTab),
                     detail::createSatfuncTable(numTab, tableSize, numDep,
                         [tolcrit, &slgof, &swof]
                         (const std::size_t           tableID,
@@ -2222,7 +2222,7 @@ namespace { namespace SatFunc {
             ///
             /// \return Descriptor and linearised/normalised/padded 'TAB' vector
             ///    values for output SOFN tables.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             normalisedTable_One(const std::size_t        numRows,
                                 const double             tolcrit,
                                 const Opm::TableManager& tabMgr)
@@ -2250,8 +2250,8 @@ namespace { namespace SatFunc {
 
                 // Saturation functions for oil entered in S[GW]OFLET tables.
                 return {
-                    static_cast<int>(2 * numRows),
-                    static_cast<int>(gasLET.size()),
+                    static_cast<long long>(2 * numRows),
+                    static_cast<long long>(gasLET.size()),
                     detail::sampleLET(2 * numRows, tolcrit, watLET, gasLET)
                 };
             }
@@ -2276,7 +2276,7 @@ namespace { namespace SatFunc {
             ///    vector values for output SOFN tables.  Essentially a
             ///    padded copy of the input SOF3 tables, \p sof3, with added
             ///    derivatives.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             fromSOF3(const std::size_t          numRows,
                      const double               tolcrit,
                      const Opm::TableContainer& sof3)
@@ -2289,8 +2289,8 @@ namespace { namespace SatFunc {
                 const auto numDep = std::size_t{2}; // Krow, Krog
 
                 return {
-                    static_cast<int>(tableSize),
-                    static_cast<int>(numTab),
+                    static_cast<long long>(tableSize),
+                    static_cast<long long>(numTab),
                     detail::createSatfuncTable(numTab, tableSize, numDep,
                         [tolcrit, &sof3](const std::size_t           tableID,
                                          const std::size_t           primID,
@@ -2346,7 +2346,7 @@ namespace { namespace SatFunc {
             ///
             /// \return Descriptor and linearised/normalised/padded 'TAB' vector
             ///    values for output SOFN tables.
-            std::tuple<int, int, std::vector<double>>
+            std::tuple<long long, long long, std::vector<double>>
             normalisedTable(const Family&            family,
                             const std::size_t        numRows,
                             const double             tolcrit,
@@ -2386,7 +2386,7 @@ namespace { namespace SatFunc {
         ///
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SOFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         normalisedTable(const Family&            family,
                         const ActivePhases&      active,
                         const std::size_t        numRows,
@@ -2429,7 +2429,7 @@ namespace { namespace SatFunc {
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SWFN tables.  A unit-converted copy of the
         ///    input table \p swfn with added derivatives.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromSWFN(const std::size_t          numRows,
                  const double               tolcrit,
                  const Opm::UnitSystem&     units,
@@ -2443,8 +2443,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krw, Pcow
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &swfn, &units]
                         (const std::size_t           tableID,
@@ -2509,7 +2509,7 @@ namespace { namespace SatFunc {
         ///    values for output SWFN tables.  Corresponds to unit-converted
         ///    copies of columns 1, 3, and 4--with added derivatives--of the
         ///    input SGWFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromSGWFN(const std::size_t          numRows,
                   const double               tolcrit,
                   const Opm::TableContainer& sgwfn)
@@ -2522,8 +2522,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krw, Pcow
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &sgwfn]
                         (const std::size_t           tableID,
@@ -2605,7 +2605,7 @@ namespace { namespace SatFunc {
         ///
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SWFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         normalisedTable_Two(const std::size_t        numRows,
                             const double             tolcrit,
                             const Opm::UnitSystem&   units,
@@ -2644,7 +2644,7 @@ namespace { namespace SatFunc {
         ///    values for output SWFN tables.  Corresponds to unit-converted
         ///    copies of columns 1, 2, and 4--with added derivatives--of the
         ///    input SWOF tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromSWOF(const std::size_t          numRows,
                  const double               tolcrit,
                  const Opm::UnitSystem&     units,
@@ -2658,8 +2658,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krw, Pcow
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &swof, &units]
                         (const std::size_t           tableID,
@@ -2727,7 +2727,7 @@ namespace { namespace SatFunc {
         ///
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SWFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         normalisedTable_One(const std::size_t        numRows,
                             const double             tolcrit,
                             const Opm::UnitSystem&   units,
@@ -2741,8 +2741,8 @@ namespace { namespace SatFunc {
             }
 
             return { // LET-based saturation functions for water
-                static_cast<int>(numRows),
-                static_cast<int>(letTables.size()),
+                static_cast<long long>(numRows),
+                static_cast<long long>(letTables.size()),
                 detail::sampleLET(numRows, tolcrit, units, letTables,
                                   std::vector<double>(letTables.size(), 0.0))
             };
@@ -2771,7 +2771,7 @@ namespace { namespace SatFunc {
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SWFN tables.  A unit-converted copy of the
         ///    input table \p wsf with added derivatives.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         fromWSF(const std::size_t          numRows,
                 const double               tolcrit,
                 const Opm::TableContainer& wsf)
@@ -2784,8 +2784,8 @@ namespace { namespace SatFunc {
             const auto numDep = std::size_t{2}; // Krw, {zero pc}
 
             return {
-                static_cast<int>(tableSize),
-                static_cast<int>(numTab),
+                static_cast<long long>(tableSize),
+                static_cast<long long>(numTab),
                 detail::createSatfuncTable(numTab, tableSize, numDep,
                     [tolcrit, &wsf]
                         (const std::size_t           tableID,
@@ -2849,7 +2849,7 @@ namespace { namespace SatFunc {
         ///
         /// \return Descriptor and linearised/normalised/padded 'TAB' vector
         ///    values for output SWFN tables.
-        std::tuple<int, int, std::vector<double>>
+        std::tuple<long long, long long, std::vector<double>>
         normalisedTable(const Family&            family,
                         const std::size_t        numRows,
                         const double             tolcrit,
@@ -3826,7 +3826,7 @@ namespace Opm {
         }
     }
 
-    const std::vector<int>& Tables::tabdims() const
+    const std::vector<long long>& Tables::tabdims() const
     {
         return this->tabdims_;
     }
@@ -3852,7 +3852,7 @@ namespace Opm {
         this->tabdims_[Ix::TabSize] = this->data_.size();
     }
 
-    void Tables::addSatFuncGas(const std::tuple<int, int, std::vector<double>>& sgfn)
+    void Tables::addSatFuncGas(const std::tuple<long long, long long, std::vector<double>>& sgfn)
     {
         this->addData(Ix::SgfnTableStart, std::get<std::vector<double>>(sgfn));
 
@@ -3860,7 +3860,7 @@ namespace Opm {
         this->tabdims_[Ix::SgfnNumTables]   = std::get<1>(sgfn);
     }
 
-    void Tables::addSatFuncOil(const std::tuple<int, int, std::vector<double>>& sofn)
+    void Tables::addSatFuncOil(const std::tuple<long long, long long, std::vector<double>>& sofn)
     {
         this->addData(Ix::SofnTableStart, std::get<std::vector<double>>(sofn));
 
@@ -3868,7 +3868,7 @@ namespace Opm {
         this->tabdims_[Ix::SofnNumTables]   = std::get<1>(sofn);
     }
 
-    void Tables::addSatFuncWater(const std::tuple<int, int, std::vector<double>>& swfn)
+    void Tables::addSatFuncWater(const std::tuple<long long, long long, std::vector<double>>& swfn)
     {
         this->addData(Ix::SwfnTableStart, std::get<std::vector<double>>(swfn));
 

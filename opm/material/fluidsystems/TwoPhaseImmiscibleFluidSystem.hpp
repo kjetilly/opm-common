@@ -74,12 +74,12 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numPhases
-    static const int numPhases = 2;
+    static const long long numPhases = 2;
 
     //! Index of the wetting phase
-    static const int wettingPhaseIdx = 0;
+    static const long long wettingPhaseIdx = 0;
     //! Index of the non-wetting phase
-    static const int nonWettingPhaseIdx = 1;
+    static const long long nonWettingPhaseIdx = 1;
 
     //! \copydoc BaseFluidSystem::phaseName
     static std::string_view phaseName(unsigned phaseIdx)
@@ -140,12 +140,12 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numComponents
-    static const int numComponents = 2;
+    static const long long numComponents = 2;
 
     //! Index of the wetting phase's component
-    static const int wettingCompIdx = 0;
+    static const long long wettingCompIdx = 0;
     //! Index of the non-wetting phase's component
-    static const int nonWettingCompIdx = 1;
+    static const long long nonWettingCompIdx = 1;
 
     //! \copydoc BaseFluidSystem::componentName
     static std::string_view componentName(unsigned compIdx)

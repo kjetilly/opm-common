@@ -167,7 +167,7 @@ bool Ray::triangleIntersect(const Vec3d& v1, const Vec3d& v2, const Vec3d& v3, V
     Vec3d fp = origin() + direction()*t;
     const Vec3d pts[] = { v1, v2, v3, v1 };
     
-    int i;
+    long long i;
     for(i = 0; i <  3; i++)
     {
         Vec3d bi_norm = -((pts[i+1]-pts[i]) ^ n).getNormalized();
@@ -232,7 +232,7 @@ bool Ray::quadIntersect(const Vec3d& v1, const Vec3d& v2, const Vec3d& v3, const
     Vec3d fp = origin() + direction()*t;
     const Vec3d pts[] = { v1, v2, v3, v4, v1 };
 
-    int i;
+    long long i;
     for(i = 0; i <  4; i++)
     {
         Vec3d bi_norm = -((pts[i+1] - pts[i]) ^ n).getNormalized(); // - (Edge x Quad normal) : Unit Vector in quad plane from edge into the quad
@@ -277,9 +277,9 @@ bool Ray::boxIntersect(const BoundingBox& box, Vec3d* intersectionPoint) const
 {
     if (!box.isValid()) return false;
 
-    const int RIGHT = 0;
-    const int LEFT = 1;
-    const int MIDDLE = 2;
+    const long long RIGHT = 0;
+    const long long LEFT = 1;
+    const long long MIDDLE = 2;
 
 
     // Find candidate planes; this loop can be avoided if rays cast all from the eye(assume perpsective view)
@@ -290,7 +290,7 @@ bool Ray::boxIntersect(const BoundingBox& box, Vec3d* intersectionPoint) const
     Vec3d min = box.min();
     Vec3d max = box.max();
 
-    int i;
+    long long i;
     for (i = 0; i < 3; i++)
     {
         if(m_origin[i] < min[i]) 
@@ -331,7 +331,7 @@ bool Ray::boxIntersect(const BoundingBox& box, Vec3d* intersectionPoint) const
     }
 
     // Get largest of the maxT's for final choice of intersection
-    int whichPlane = 0;
+    long long whichPlane = 0;
     for (i = 1; i < 3; i++)
     {
         if (maxT[whichPlane] < maxT[i]) whichPlane = i;

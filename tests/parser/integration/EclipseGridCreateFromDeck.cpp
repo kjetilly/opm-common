@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(ExportFromCPGridAllActive) {
     EclipseState es(deck);
     const auto& grid = es.getInputGrid();
 
-    std::vector<int> actnum;
+    std::vector<long long> actnum;
 
     actnum = grid.getACTNUM();
     BOOST_CHECK_EQUAL( actnum.size() , 500U );
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(ExportFromCPGridACTNUM) {
 
     std::vector<double> coord;
     std::vector<double> zcorn;
-    std::vector<int> actnum;
+    std::vector<long long> actnum;
     size_t volume = grid.getNX()*grid.getNY()*grid.getNZ();
 
     coord = grid.getCOORD();
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(ExportFromCPGridACTNUM) {
     BOOST_CHECK_EQUAL( actnum.size() , volume );
 
     {
-        const std::vector<int>& deckActnum = deck["ACTNUM"].back().getIntData();
+        const std::vector<long long>& deckActnum = deck["ACTNUM"].back().getIntData();
         const std::vector<double>& deckZCORN = deck["ZCORN"].back().getSIDoubleData();
 
         for (size_t i = 0; i < volume; i++) {

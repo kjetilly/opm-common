@@ -443,7 +443,7 @@ namespace Opm {
         ///
         /// \param[out] count Count of all active UDQs of all categories in
         /// the current run.
-        void exportTypeCount(std::array<int, static_cast<std::size_t>(UDQVarType::NumTypes)>& count) const;
+        void exportTypeCount(std::array<long long, static_cast<std::size_t>(UDQVarType::NumTypes)>& count) const;
 
         /// Total number of active DEFINE and ASSIGN statements.
         ///

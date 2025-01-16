@@ -119,7 +119,7 @@ namespace {
     }
 
     std::string convert_wstat(double numeric_wstat) {
-        static const std::unordered_map<int, std::string> wstat_map = {
+        static const std::unordered_map<long long, std::string> wstat_map = {
             {Opm::WStat::numeric::UNKNOWN, Opm::WStat::symbolic::UNKNOWN},
             {Opm::WStat::numeric::PROD,    Opm::WStat::symbolic::PROD},
             {Opm::WStat::numeric::INJ,     Opm::WStat::symbolic::INJ},
@@ -128,10 +128,10 @@ namespace {
             {Opm::WStat::numeric::PSHUT,   Opm::WStat::symbolic::PSHUT},
             {Opm::WStat::numeric::PSTOP,   Opm::WStat::symbolic::PSTOP},
         };
-        return wstat_map.at(static_cast<int>(numeric_wstat));
+        return wstat_map.at(static_cast<long long>(numeric_wstat));
     }
 
-    void write_data_row(std::ostream& os, const std::vector<std::string>& time_column, const std::vector<Opm::EclIO::SummaryNode>& summary_nodes, const std::vector<std::pair<std::vector<float>, int>>& data, std::size_t time_index, char prefix = ' ') {
+    void write_data_row(std::ostream& os, const std::vector<std::string>& time_column, const std::vector<Opm::EclIO::SummaryNode>& summary_nodes, const std::vector<std::pair<std::vector<float>, long long>>& data, std::size_t time_index, char prefix = ' ') {
         os << prefix;
 
         print_time_element( os, time_column[time_index] );
@@ -150,7 +150,7 @@ namespace {
     }
 
     void write_scale_columns(std::ostream& os,
-                             const std::vector<std::pair<std::vector<float>, int>>& data,
+                             const std::vector<std::pair<std::vector<float>, long long>>& data,
                              char prefix = ' ')
     {
         os << prefix;
@@ -182,7 +182,7 @@ void ESmry::write_block(std::ostream& os,
     write_line(os, block_header_line(inputFileName.stem().generic_string()));
     write_line(os, divider_line);
 
-    std::vector<std::pair<std::vector<float>, int>> data;
+    std::vector<std::pair<std::vector<float>, long long>> data;
 
     bool has_scale_factors { false } ;
     for (const auto& vector : vectors) {
@@ -191,12 +191,12 @@ void ESmry::write_block(std::ostream& os,
         auto max = *std::max_element(vector_data.begin(), vector_data.end());
         // log10 for 0 is undefined and log10 for negative values yields nan.
         // We skip the scale factor in these cases to prevent undefined behavior
-        int scale_factor {
+        long long scale_factor {
             max <= 0 ? 0 :
-            std::max(0, 3 * static_cast<int>(std::floor(( std::log10(max) - 4 ) / 3 ))) } ;
+            std::max(0LL, 3 * static_cast<long long>(std::floor(( std::log10(max) - 4 ) / 3 ))) } ;
 
         // Make sure that 10**scale_factor is less than 13 character
-        scale_factor = std::min(99999999, scale_factor);
+        scale_factor = std::min(99999999LL, scale_factor);
 
         if (scale_factor) {
             has_scale_factors = true;

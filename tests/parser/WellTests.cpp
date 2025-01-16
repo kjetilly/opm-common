@@ -111,12 +111,12 @@ BOOST_AUTO_TEST_CASE(WellCOMPDATtestTRACK) {
 
     //Verify TRACK completion ordering
     for (size_t k = 0; k < completions.size(); ++k) {
-        BOOST_CHECK_EQUAL(completions.get( k ).getK(), int(k));
+        BOOST_CHECK_EQUAL(completions.get( k ).getK(), (long long)(k));
     }
 
     // Output / input ordering
     const auto& output_connections = completions.output(grid);
-    std::vector<int> expected = {0,2,3,4,5,6,7,8,1};
+    std::vector<long long> expected = {0,2,3,4,5,6,7,8,1};
     for (size_t k = 0; k < completions.size(); ++k)
         BOOST_CHECK_EQUAL( expected[k], output_connections[k]->getK());
 }
@@ -175,7 +175,7 @@ DATES             -- 2
 
     // Output / input ordering
     const auto& output_connections = completions.output(grid);
-    std::vector<int> expected = {0,2,3,4,5,6,7,8,1};
+    std::vector<long long> expected = {0,2,3,4,5,6,7,8,1};
     for (size_t k = 0; k < completions.size(); ++k)
         BOOST_CHECK_EQUAL( expected[k], output_connections[k]->getK());
 }
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE(WellCOMPDATtestDefaultTRACK) {
 
     //Verify TRACK completion ordering
     for (size_t k = 0; k < completions.size(); ++k) {
-        BOOST_CHECK_EQUAL(completions.get( k ).getK(), int(k));
+        BOOST_CHECK_EQUAL(completions.get( k ).getK(), (long long)(k));
     }
 }
 
@@ -590,7 +590,7 @@ namespace {
             Opm::UnitSystem unit_system(Opm::UnitSystem::UnitType::UNIT_TYPE_METRIC);
             auto deck = parser.parseString(input);
             const auto& record = deck["WCONHIST"].back().getRecord(0);
-            auto table_nr = record.getItem("VFP_TABLE").get< int >(0);
+            auto table_nr = record.getItem("VFP_TABLE").get< long long >(0);
             Opm::Well::WellProductionProperties hist(unit_system, "W");
             hist.handleWCONHIST(alq_type, table_nr, 
                                 Opm::ParserKeywords::FBHPDEF::TARGET_BHP::defaultValue * unit::barsa,
@@ -646,7 +646,7 @@ namespace {
             auto deck = parser.parseString(input);
             const auto& kwd     = deck["WCONPROD"].back();
             const auto&  record = kwd.getRecord(0);
-            auto table_nr = record.getItem("VFP_TABLE").get< int >(0);
+            auto table_nr = record.getItem("VFP_TABLE").get< long long >(0);
             Opm::Well::WellProductionProperties pred(unit_system, "W");
             pred.handleWCONPROD(alq_type, table_nr,
                                 Opm::ParserKeywords::FBHPDEF::TARGET_BHP::defaultValue * unit::barsa,

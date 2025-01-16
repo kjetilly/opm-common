@@ -107,9 +107,9 @@ friend FileDeck;
     const Index start() const;
     const Index stop() const;
 
-    void rst_solution(const std::string& rst_base, int report_step);
+    void rst_solution(const std::string& rst_base, long long report_step);
     void insert_skiprest();
-    void skip(int report_step);
+    void skip(long long report_step);
 
 private:
     std::vector<Block> blocks;

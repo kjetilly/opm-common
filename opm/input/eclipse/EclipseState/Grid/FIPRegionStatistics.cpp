@@ -60,7 +60,7 @@ namespace {
         return strings;
     }
 
-    int localMaxRegionID(const std::string& regSet, const Opm::FieldPropsManager& fldPropsMgr)
+    long long localMaxRegionID(const std::string& regSet, const Opm::FieldPropsManager& fldPropsMgr)
     {
         const auto& regID = fldPropsMgr.get_int(regSet);
 
@@ -69,10 +69,10 @@ namespace {
             : *std::max_element(regID.begin(), regID.end());
     }
 
-    std::vector<int> localMaxRegionID(const std::vector<std::string>& regSets,
+    std::vector<long long> localMaxRegionID(const std::vector<std::string>& regSets,
                                       const Opm::FieldPropsManager&   fldPropsMgr)
     {
-        auto maxRegionID = std::vector<int>(regSets.size());
+        auto maxRegionID = std::vector<long long>(regSets.size());
 
         std::transform(regSets.begin(), regSets.end(), maxRegionID.begin(),
                        [&fldPropsMgr](const std::string& regSet)
@@ -87,8 +87,8 @@ namespace {
 
 Opm::FIPRegionStatistics::FIPRegionStatistics(const std::size_t                      declaredMaxRegID,
                                               const FieldPropsManager&               fldPropsMgr,
-                                              std::function<void(std::vector<int>&)> computeGlobalMax)
-    : minimumMaximumRegionID_(static_cast<int>(declaredMaxRegID))
+                                              std::function<void(std::vector<long long>&)> computeGlobalMax)
+    : minimumMaximumRegionID_(static_cast<long long>(declaredMaxRegID))
     , regionSets_  { sorted(normalisedRegsetNames(fldPropsMgr.fip_regions())) }
     , maxRegionID_ { localMaxRegionID(regionSets_, fldPropsMgr) }
 {
@@ -113,12 +113,12 @@ Opm::FIPRegionStatistics::serializationTestObject()
     stats.minimumMaximumRegionID_ = 42;
 
     stats.regionSets_  = std::vector { "ABC"s, "NUM"s, "XYZ"s, };
-    stats.maxRegionID_ = std::vector { 11,     22,     33,     };
+    stats.maxRegionID_ = std::vector { 11LL,     22LL,     33LL,     };
 
     return stats;
 }
 
-int Opm::FIPRegionStatistics::maximumRegionID(std::string_view regionSet) const
+long long Opm::FIPRegionStatistics::maximumRegionID(std::string_view regionSet) const
 {
     const auto rset = normalisedRegsetName(std::string { regionSet });
     auto regSetPos = std::lower_bound(this->regionSets_.begin(),

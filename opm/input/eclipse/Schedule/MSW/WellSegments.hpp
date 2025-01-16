@@ -76,8 +76,8 @@ namespace Opm {
 
         std::size_t size() const;
         bool empty() const;
-        int maxSegmentID() const;
-        int maxBranchID() const;
+        long long maxSegmentID() const;
+        long long maxBranchID() const;
         double depthTopSegment() const;
         double lengthTopSegment() const;
         double volumeTopSegment() const;
@@ -85,11 +85,11 @@ namespace Opm {
         CompPressureDrop compPressureDrop() const;
 
         // mapping the segment number to the index in the vector of segments
-        int segmentNumberToIndex(const int segment_number) const;
+        long long segmentNumberToIndex(const long long segment_number) const;
 
 
 
-        const Segment& getFromSegmentNumber(const int segment_number) const;
+        const Segment& getFromSegmentNumber(const long long segment_number) const;
 
         const Segment& operator[](size_t idx) const;
         void orderSegments();
@@ -98,16 +98,16 @@ namespace Opm {
         bool operator==( const WellSegments& ) const;
         bool operator!=( const WellSegments& ) const;
 
-        double segmentLength(const int segment_number) const;
-        double segmentDepthChange(const int segment_number) const;
-        std::vector<Segment> branchSegments(int branch) const;
-        std::set<int> branches() const;
+        double segmentLength(const long long segment_number) const;
+        double segmentDepthChange(const long long segment_number) const;
+        std::vector<Segment> branchSegments(long long branch) const;
+        std::set<long long> branches() const;
 
         // it returns true if there is no error encountered during the update
-        bool updateWSEGSICD(const std::vector<std::pair<int, SICD> >& sicd_pairs);
+        bool updateWSEGSICD(const std::vector<std::pair<long long, SICD> >& sicd_pairs);
 
-        bool updateWSEGVALV(const std::vector<std::pair<int, Valve> >& valve_pairs);
-        bool updateWSEGAICD(const std::vector<std::pair<int, AutoICD> >& aicd_pairs, const KeywordLocation& location);
+        bool updateWSEGVALV(const std::vector<std::pair<long long, Valve> >& valve_pairs);
+        bool updateWSEGAICD(const std::vector<std::pair<long long, AutoICD> >& aicd_pairs, const KeywordLocation& location);
         const std::vector<Segment>::const_iterator begin() const;
         const std::vector<Segment>::const_iterator end() const;
 
@@ -124,9 +124,9 @@ namespace Opm {
         void processINC(double depth_top, double length_top);
         void process(LengthDepth length_depth, double depth_top, double length_top);
         void addSegment(const Segment& new_segment);
-        void addSegment(const int segment_number,
-                        const int branch,
-                        const int outlet_segment,
+        void addSegment(const long long segment_number,
+                        const long long branch,
+                        const long long outlet_segment,
                         const double length,
                         const double depth,
                         const double internal_diameter,
@@ -146,7 +146,7 @@ namespace Opm {
         std::vector< Segment > m_segments{};
         // the mapping from the segment number to the
         // storage index in the vector
-        std::map<int, int> segment_number_to_index{};
+        std::map<long long, long long> segment_number_to_index{};
     };
 }
 

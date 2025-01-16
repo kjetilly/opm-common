@@ -37,8 +37,8 @@ namespace Opm {
         double pore_volume;
         double depth;
         double porosity;
-        int satnum;
-        int pvtnum;
+        long long satnum;
+        long long pvtnum;
     };
 
     class SingleNumericalAquifer
@@ -50,7 +50,7 @@ namespace Opm {
         void addAquiferCell(const NumericalAquiferCell& aqu_cell);
         void addAquiferConnection(const NumericalAquiferConnection& aqu_con);
 
-        void postProcessConnections(const EclipseGrid& grid, const std::vector<int>& actnum);
+        void postProcessConnections(const EclipseGrid& grid, const std::vector<long long>& actnum);
 
         // TODO: the following two can be made one function. Let us see
         // how we use them at the end

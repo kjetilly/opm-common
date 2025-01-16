@@ -89,7 +89,7 @@ T sum(const std::vector<T>& array)
     return std::accumulate(array.begin(), array.end(), T(0));
 }
 
-data::Solution createBlackoilState( int timeStepIdx, int numCells ) {
+data::Solution createBlackoilState( long long timeStepIdx, long long numCells ) {
 
     std::vector< double > pressure( numCells );
     std::vector< double > swat( numCells );
@@ -97,7 +97,7 @@ data::Solution createBlackoilState( int timeStepIdx, int numCells ) {
     std::vector< double > rs( numCells );
     std::vector< double > rv( numCells );
 
-    for( int cellIdx = 0; cellIdx < numCells; ++cellIdx) {
+    for( long long cellIdx = 0; cellIdx < numCells; ++cellIdx) {
 
         pressure[cellIdx] = timeStepIdx*1e5 + 1e4 + cellIdx;
         sgas[cellIdx] = timeStepIdx*1e5 +2.2e4 + cellIdx;
@@ -130,7 +130,7 @@ void compareErtData(const std::vector< T > &src,
         BOOST_CHECK_CLOSE(src[i], dst[i], tolerance);
 }
 
-void compareErtData(const std::vector<int> &src, const std::vector<int> &dst)
+void compareErtData(const std::vector<long long> &src, const std::vector<long long> &dst)
 {
     BOOST_CHECK_EQUAL_COLLECTIONS( src.begin(), src.end(),
                                    dst.begin(), dst.end() );
@@ -153,7 +153,7 @@ void checkEgridFile(const EclipseGrid& eclGrid)
     }
 
     if (egridFile.hasKey("ACTNUM")) {
-        const auto& actnum = egridFile.get<int>("ACTNUM");
+        const auto& actnum = egridFile.get<long long>("ACTNUM");
         auto expect = eclGrid.getACTNUM();
 
         if (expect.empty()) {
@@ -201,10 +201,10 @@ void checkInitFile(const Deck& deck, const data::Solution& simProps)
     }
 }
 
-void checkRestartFile( int timeStepIdx ) {
+void checkRestartFile( long long timeStepIdx ) {
     EclIO::ERst rstFile{ "FOO.UNRST" };
 
-    for (int i = 1; i <= timeStepIdx; ++i) {
+    for (long long i = 1; i <= timeStepIdx; ++i) {
         if (! rstFile.hasReportStepNumber(i))
             continue;
 
@@ -246,7 +246,7 @@ void checkRestartFile( int timeStepIdx ) {
     }
 }
 
-time_t ecl_util_make_date( const int day, const int month, const int year )
+time_t ecl_util_make_date( const long long day, const long long month, const long long year )
 {
     const auto ymd = Opm::TimeStampUTC::YMD{ year, month, day };
     return static_cast<time_t>(asTimeT(Opm::TimeStampUTC{ymd}));
@@ -303,7 +303,7 @@ WELSPECS
 /
 )" };
 
-    auto write_and_check = [&deckString]( int first = 1, int last = 5 ) {
+    auto write_and_check = [&deckString]( long long first = 1, long long last = 5 ) {
         const auto deck = Parser().parseString( deckString);
         auto es = EclipseState( deck );
         const auto& eclGrid = es.getInputGrid();
@@ -326,9 +326,9 @@ WELSPECS
             { "TRANZ", data::CellData { measure::transmissibility, tranz, TargetType::INIT } },
         };
 
-        std::map<std::string, std::vector<int>> int_data =  {{"STR_ULONGNAME" , {1,1,1,1,1,1,1,1} } };
+        std::map<std::string, std::vector<long long>> int_data =  {{"STR_ULONGNAME" , {1,1,1,1,1,1,1,1} } };
 
-        std::vector<int> v(27); v[2] = 67; v[26] = 89;
+        std::vector<long long> v(27); v[2] = 67; v[26] = 89;
         int_data["STR_V"] = v;
 
         eclWriter.writeInitial( );
@@ -341,7 +341,7 @@ WELSPECS
         data::Wells wells;
         data::GroupAndNetworkValues grp_nwrk;
 
-        for (int i = first; i < last; ++i) {
+        for (long long i = first; i < last; ++i) {
             data::Solution sol = createBlackoilState(i, 3 * 3 * 3);
             sol.insert("KRO", measure::identity, std::vector<double>(3*3*3, i), TargetType::RESTART_AUXILIARY);
             sol.insert("KRG", measure::identity, std::vector<double>(3*3*3, i*10), TargetType::RESTART_AUXILIARY);
@@ -371,7 +371,7 @@ WELSPECS
         {
             BOOST_CHECK_MESSAGE(initFile.hasKey("STR_V"), R"(INIT file must have "STR_V" array)" );
 
-            const auto& kw = initFile.get<int>("STR_V");
+            const auto& kw = initFile.get<long long>("STR_V");
             BOOST_CHECK_EQUAL(67, kw[ 2]);
             BOOST_CHECK_EQUAL(89, kw[26]);
         }
@@ -421,7 +421,7 @@ WELSPECS
     WorkArea work_area("test_ecl_writer");
     const auto file_size = write_and_check();
 
-    for (int i = 0; i < 3; ++i) {
+    for (long long i = 0; i < 3; ++i) {
         BOOST_CHECK_EQUAL(file_size, write_and_check());
     }
 
@@ -712,7 +712,7 @@ void testMultxyz(std::array<std::bitset<2>,3> doxyz, bool write_all_multminus = 
     EclIO::EclFile initFile { "MULTXFOO.INIT" };
 
     std::array<std::string, 6> multipliers{"MULTX", "MULTX-", "MULTY", "MULTY-", "MULTZ", "MULTZ-"};
-    int i=0;
+    long long i=0;
     for (const auto& mult: multipliers) {
         if (i%2==0 || write_all_multminus || doxyz[i/2].test(1)) {
             BOOST_CHECK_MESSAGE( initFile.hasKey(mult), R"(INIT file must have ")" + mult + R"(" array)" );

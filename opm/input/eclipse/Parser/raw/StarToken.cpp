@@ -77,8 +77,8 @@ namespace Opm {
     }
 
     template<>
-    int readValueToken< int >( std::string_view view ) {
-        int n = 0;
+    long long readValueToken< long long >( std::string_view view ) {
+        long long n = 0;
         auto cursor = view.begin();
         const bool ok = qi::parse( cursor, view.end(), qi::int_, n );
 

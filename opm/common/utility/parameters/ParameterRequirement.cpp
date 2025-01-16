@@ -71,7 +71,7 @@ operator()(const std::string& x) const
         }
         std::ostringstream stream;
         stream << "The string '" << x << "' is not among '";
-        for (int i = 0; i < int(elements_.size()) - 2; ++i) {
+        for (long long i = 0; i < (long long)(elements_.size()) - 2; ++i) {
             stream << elements_[i] << "', '";
         }
         stream << elements_[elements_.size() - 2]

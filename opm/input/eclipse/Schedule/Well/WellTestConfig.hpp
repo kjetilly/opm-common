@@ -37,20 +37,20 @@ namespace WTest {
 */
 
 namespace EclConfigReason {
-constexpr int NONE      =  1;
-constexpr int PHYSICAL   = 2;
-constexpr int ECONOMIC   = 3;
-constexpr int GCON       = 5;
-constexpr int THPLimit   = 7;
-constexpr int CONNECTION = 11;
+constexpr long long NONE      =  1;
+constexpr long long PHYSICAL   = 2;
+constexpr long long ECONOMIC   = 3;
+constexpr long long GCON       = 5;
+constexpr long long THPLimit   = 7;
+constexpr long long CONNECTION = 11;
 }
 
 namespace EclCloseReason {
-constexpr int NONE     = 1; // May be written to UNRST during history
-constexpr int PHYSICAL = 3;
-constexpr int ECONOMIC = 5;
-constexpr int GCON     = 6;
-constexpr int THPLimit = 9;
+constexpr long long NONE     = 1; // May be written to UNRST during history
+constexpr long long PHYSICAL = 3;
+constexpr long long ECONOMIC = 5;
+constexpr long long GCON     = 6;
+constexpr long long THPLimit = 9;
 }
 
 enum class Reason {
@@ -70,13 +70,13 @@ public:
     using Reason = WTest::Reason;
     struct WTESTWell {
         std::string name{};
-        int reasons{};
+        long long reasons{};
         double test_interval{};
-        int num_test{};
+        long long num_test{};
         double startup_time{};
         // the related WTEST keywords is entered and will begin
         // taking effects since this report step
-        int begin_report_step{};
+        long long begin_report_step{};
 
         bool operator==(const WTESTWell& data) const {
             return name == data.name &&
@@ -88,12 +88,12 @@ public:
         }
 
         WTESTWell() = default;
-        WTESTWell(const std::string& name, int reasons, double test_interval, int num_test, double startup_time, int begin_report_step);
-        bool test_well(int num_attempt, double elapsed) const;
+        WTESTWell(const std::string& name, long long reasons, double test_interval, long long num_test, double startup_time, long long begin_report_step);
+        bool test_well(long long num_attempt, double elapsed) const;
 
-        static int inverse_ecl_reasons(int ecl_reasons);
+        static long long inverse_ecl_reasons(long long ecl_reasons);
         static WTESTWell serializationTestObject();
-        int ecl_reasons() const;
+        long long ecl_reasons() const;
 
         template<class Serializer>
         void serializeOp(Serializer& serializer)
@@ -110,11 +110,11 @@ public:
     static WellTestConfig serializationTestObject();
 
     WellTestConfig() = default;
-    WellTestConfig(const RestartIO::RstState& rst_state, int report_step);
-    void add_well(const std::string& well, int reasons, double test_interval,
-                  int num_test, double startup_time, int current_step);
+    WellTestConfig(const RestartIO::RstState& rst_state, long long report_step);
+    void add_well(const std::string& well, long long reasons, double test_interval,
+                  long long num_test, double startup_time, long long current_step);
     void add_well(const std::string& well, const std::string& reasons, double test_interval,
-                  int num_test, double startup_time, int current_step);
+                  long long num_test, double startup_time, long long current_step);
     void drop_well(const std::string& well);
     bool has(const std::string& well) const;
     bool has(const std::string& well, Reason reason) const;

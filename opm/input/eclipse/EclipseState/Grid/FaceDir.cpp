@@ -48,7 +48,7 @@ namespace Opm {
         }
 
 
-        int FromMULTREGTString(const std::string& stringValue) {
+        long long FromMULTREGTString(const std::string& stringValue) {
             if (stringValue == "X")
                 return XPlus + XMinus;
 
@@ -98,7 +98,7 @@ namespace Opm {
             return fmt::format("{}",fmt::join(ret, "|"));
         }
 
-        DirEnum FromIntersectionIndex(int idx)
+        DirEnum FromIntersectionIndex(long long idx)
         {
             const std::vector<FaceDir::DirEnum> mapping =
                 {XMinus, XPlus, YMinus, YPlus, ZMinus, ZPlus};
@@ -110,7 +110,7 @@ namespace Opm {
         }
 
 
-        int ToIntersectionIndex(DirEnum dir)
+        long long ToIntersectionIndex(DirEnum dir)
         {
             switch(dir) {
                 case XMinus:

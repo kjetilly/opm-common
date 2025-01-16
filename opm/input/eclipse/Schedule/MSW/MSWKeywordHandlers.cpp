@@ -107,7 +107,7 @@ File {} line {}.)", wname, location.keyword, location.filename, location.lineno)
 
 void handleWSEGAICD(HandlerContext& handlerContext)
 {
-    std::map<std::string, std::vector<std::pair<int, AutoICD> > > auto_icds = AutoICD::fromWSEGAICD(handlerContext.keyword);
+    std::map<std::string, std::vector<std::pair<long long, AutoICD> > > auto_icds = AutoICD::fromWSEGAICD(handlerContext.keyword);
 
     for (auto& [well_name_pattern, aicd_pairs] : auto_icds) {
         const auto well_names = handlerContext.wellNames(well_name_pattern, true);
@@ -133,8 +133,8 @@ void handleWSEGITER(HandlerContext& handlerContext)
     const auto& record = handlerContext.keyword.getRecord(0);
     auto& tuning = handlerContext.state().tuning();
 
-    tuning.MXWSIT = record.getItem<ParserKeywords::WSEGITER::MAX_WELL_ITERATIONS>().get<int>(0);
-    tuning.WSEG_MAX_RESTART = record.getItem<ParserKeywords::WSEGITER::MAX_TIMES_REDUCED>().get<int>(0);
+    tuning.MXWSIT = record.getItem<ParserKeywords::WSEGITER::MAX_WELL_ITERATIONS>().get<long long>(0);
+    tuning.WSEG_MAX_RESTART = record.getItem<ParserKeywords::WSEGITER::MAX_TIMES_REDUCED>().get<long long>(0);
     tuning.WSEG_REDUCTION_FACTOR = record.getItem<ParserKeywords::WSEGITER::REDUCTION_FACTOR>().get<double>(0);
     tuning.WSEG_INCREASE_FACTOR = record.getItem<ParserKeywords::WSEGITER::INCREASING_FACTOR>().get<double>(0);
 
@@ -143,13 +143,13 @@ void handleWSEGITER(HandlerContext& handlerContext)
 
 void handleWSEGSICD(HandlerContext& handlerContext)
 {
-    std::map<std::string, std::vector<std::pair<int, SICD> > > spiral_icds = SICD::fromWSEGSICD(handlerContext.keyword);
+    std::map<std::string, std::vector<std::pair<long long, SICD> > > spiral_icds = SICD::fromWSEGSICD(handlerContext.keyword);
 
     for (auto& map_elem : spiral_icds) {
         const std::string& well_name_pattern = map_elem.first;
         const auto well_names = handlerContext.wellNames(well_name_pattern, false);
 
-        std::vector<std::pair<int, SICD> >& sicd_pairs = map_elem.second;
+        std::vector<std::pair<long long, SICD> >& sicd_pairs = map_elem.second;
 
         for (const auto& well_name : well_names) {
             auto well = handlerContext.state().wells( well_name );
@@ -170,13 +170,13 @@ void handleWSEGSICD(HandlerContext& handlerContext)
 void handleWSEGVALV(HandlerContext& handlerContext)
 {
     const double udq_default = handlerContext.state().udq.get().params().undefinedValue();
-    const std::map<std::string, std::vector<std::pair<int, Valve> > > valves = Valve::fromWSEGVALV(handlerContext.keyword, udq_default);
+    const std::map<std::string, std::vector<std::pair<long long, Valve> > > valves = Valve::fromWSEGVALV(handlerContext.keyword, udq_default);
 
     for (const auto& map_elem : valves) {
         const std::string& well_name_pattern = map_elem.first;
         const auto well_names = handlerContext.wellNames(well_name_pattern);
 
-        const std::vector<std::pair<int, Valve> >& valve_pairs = map_elem.second;
+        const std::vector<std::pair<long long, Valve> >& valve_pairs = map_elem.second;
 
         for (const auto& well_name : well_names) {
             auto well = handlerContext.state().wells( well_name );

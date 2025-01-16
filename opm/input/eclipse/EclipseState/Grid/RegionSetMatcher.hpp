@@ -55,16 +55,16 @@ public:
             using iterator_category = std::forward_iterator_tag;
 
             /// Iterator's value type
-            using value_type = int;
+            using value_type = long long;
 
             /// Iterator's difference type
-            using difference_type = int;
+            using difference_type = long long;
 
             /// Iterator's pointer type (return type from operator->())
-            using pointer = int*;
+            using pointer = long long*;
 
             /// Iterator's reference type (return type from operator*())
-            using reference = int&;
+            using reference = long long&;
 
             /// Pre-increment operator.
             ///
@@ -126,10 +126,10 @@ public:
             /// Accessible to RegionIndexRange only.
             ///
             /// \param[in] index range element value.
-            explicit Iterator(int i) : i_{i} {}
+            explicit Iterator(long long i) : i_{i} {}
 
             /// Index range element value
-            int i_;
+            long long i_;
         };
 
         /// Start of Range.
@@ -148,10 +148,10 @@ public:
 
     private:
         /// Beginning of index range
-        int begin_{};
+        long long begin_{};
 
         /// End of Range
-        int end_{};
+        long long end_{};
 
         /// Name of region set to which this region index range is attached
         std::string_view region_{};
@@ -173,7 +173,7 @@ public:
         ///
         /// \param[in] region Name of region set to which this index range
         ///    is attached.
-        RegionIndexRange(int beginID, int endID, std::string_view region)
+        RegionIndexRange(long long beginID, long long endID, std::string_view region)
             : begin_  { beginID }
             , end_    { endID }
             , region_ { region }
@@ -197,7 +197,7 @@ public:
     ///   level UDQ.
     bool isScalar() const
     {
-        return (this->regionIDRange_.size() == std::vector<int>::size_type{2})
+        return (this->regionIDRange_.size() == std::vector<long long>::size_type{2})
             && (this->regionIDRange_.back() == this->regionIDRange_.front() + 1);
     }
 
@@ -248,7 +248,7 @@ private:
     std::vector<std::vector<std::string>::size_type> regionSetIndex_{};
 
     /// Minimum and maximum region IDs for all region sets in this result set.
-    std::vector<int> regionIDRange_{};
+    std::vector<long long> regionIDRange_{};
 
     /// Build region set name to region set number lookup index.
     ///
@@ -267,8 +267,8 @@ private:
     /// \param[in] endRegID One more than the maximum region ID in match
     ///   result for \p regSet.  Must not be less than \p minRegID.
     void addRegionIndices(const std::string& regSet,
-                          int                beginRegID,
-                          int                endRegID);
+                          long long                beginRegID,
+                          long long                endRegID);
 };
 
 /// Encapsulation of Matching Process for Region Level Expressions
@@ -310,7 +310,7 @@ public:
         /// \param[in] region Requests's region number.
         ///
         /// \return \code *this \endcode.
-        SetDescriptor& regionID(const int region);
+        SetDescriptor& regionID(const long long region);
 
         /// Assign request's region number.
         ///
@@ -328,7 +328,7 @@ public:
         /// Retrieve request's region number
         ///
         /// \return Region number.  Unset if request matches all regions.
-        const std::optional<int>& regionID() const
+        const std::optional<long long>& regionID() const
         {
             return this->regionId_;
         }
@@ -356,7 +356,7 @@ public:
 
         /// Request's region index.  Unset if request applies to all
         /// regions of pertinent region set.
-        std::optional<int> regionId_{};
+        std::optional<long long> regionId_{};
     };
 
     /// Default constructor

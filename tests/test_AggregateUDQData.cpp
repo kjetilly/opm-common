@@ -70,7 +70,7 @@ namespace {
 #if 0
     Opm::UDQActive udq_active()
     {
-        int update_count = 0;
+        long long update_count = 0;
         // construct record data for udq_active
         Opm::UDQParams params;
         Opm::UDQConfig conf(params);

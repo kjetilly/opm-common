@@ -58,7 +58,7 @@ ImportContainer::ImportContainer(const Parser& parser, const UnitSystem& unit_sy
                 this->keywords.emplace_back(parser_kw, double_data, unit_system, unit_system);
             }
         } else if (parser_item.dataType() == type_tag::integer) {
-            const auto& data = ecl_file.get<int>(kw_index);
+            const auto& data = ecl_file.get<long long>(kw_index);
             this->keywords.emplace_back(parser_kw, data);
         } else
             throw std::logic_error(fmt::format("File: {} keyword:{}\nIMPORT keyword only supports integer and floating point data keywords", fname, name));

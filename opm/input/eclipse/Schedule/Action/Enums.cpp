@@ -25,7 +25,7 @@
 namespace Opm {
 namespace Action {
 
-Logical logic_from_int(int int_logic) {
+Logical logic_from_int(long long int_logic) {
     if (int_logic == 0)
         return Logical::END;
 
@@ -41,7 +41,7 @@ Logical logic_from_int(int int_logic) {
 
 
 
-Comparator comparator_from_int(int cmp_int) {
+Comparator comparator_from_int(long long cmp_int) {
     switch (cmp_int) {
     case 1:
         return Comparator::GREATER;

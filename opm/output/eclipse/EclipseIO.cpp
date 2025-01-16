@@ -108,14 +108,14 @@ public:
          const bool writeEsmry);
 
     void writeINITFile(const data::Solution&                   simProps,
-                       std::map<std::string, std::vector<int>> int_data,
+                       std::map<std::string, std::vector<long long>> int_data,
                        const std::vector<NNCdata>&             nnc) const;
 
     void writeEGRIDFile(const std::vector<NNCdata>& nnc);
 
-    std::pair<bool, bool> wantRFTOutput(const int report_step, const bool isSubstep) const;
+    std::pair<bool, bool> wantRFTOutput(const long long report_step, const bool isSubstep) const;
 
-    bool wantSummaryOutput(const int    report_step,
+    bool wantSummaryOutput(const long long    report_step,
                            const bool   isSubstep,
                            const double secs_elapsed) const;
 
@@ -138,9 +138,9 @@ private:
     mutable bool sumthin_triggered_{false};
     double last_sumthin_output_{std::numeric_limits<double>::lowest()};
 
-    bool checkAndRecordIfSumthinTriggered(const int report_step,
+    bool checkAndRecordIfSumthinTriggered(const long long report_step,
                                           const double secs_elapsed) const;
-    bool summaryAtRptOnly(const int report_step) const;
+    bool summaryAtRptOnly(const long long report_step) const;
 };
 
 Opm::EclipseIO::Impl::Impl(const EclipseState& eclipseState,
@@ -168,7 +168,7 @@ Opm::EclipseIO::Impl::Impl(const EclipseState& eclipseState,
 }
 
 void Opm::EclipseIO::Impl::writeINITFile(const data::Solution&                   simProps,
-                                         std::map<std::string, std::vector<int>> int_data,
+                                         std::map<std::string, std::vector<long long>> int_data,
                                          const std::vector<NNCdata>&             nnc) const
 {
     EclIO::OutputStream::Init initFile {
@@ -195,7 +195,7 @@ void Opm::EclipseIO::Impl::writeEGRIDFile(const std::vector<NNCdata>& nnc)
 }
 
 std::pair<bool, bool>
-Opm::EclipseIO::Impl::wantRFTOutput(const int  report_step,
+Opm::EclipseIO::Impl::wantRFTOutput(const long long  report_step,
                                     const bool isSubstep) const
 {
     if (isSubstep)
@@ -211,7 +211,7 @@ Opm::EclipseIO::Impl::wantRFTOutput(const int  report_step,
     return std::make_pair(step >= first_rft_out, step > first_rft_out);
 }
 
-bool Opm::EclipseIO::Impl::wantSummaryOutput(const int    report_step,
+bool Opm::EclipseIO::Impl::wantSummaryOutput(const long long    report_step,
                                              const bool   isSubstep,
                                              const double secs_elapsed) const
 {
@@ -232,7 +232,7 @@ void Opm::EclipseIO::Impl::recordSummaryOutput(const double secs_elapsed)
         this->last_sumthin_output_ = secs_elapsed;
 }
 
-bool Opm::EclipseIO::Impl::checkAndRecordIfSumthinTriggered(const int    report_step,
+bool Opm::EclipseIO::Impl::checkAndRecordIfSumthinTriggered(const long long    report_step,
                                                             const double secs_elapsed) const
 {
     const auto& sumthin = this->schedule[report_step - 1].sumthin();
@@ -243,7 +243,7 @@ bool Opm::EclipseIO::Impl::checkAndRecordIfSumthinTriggered(const int    report_
         && ! (secs_elapsed < this->last_sumthin_output_ + sumthin.value());
 }
 
-bool Opm::EclipseIO::Impl::summaryAtRptOnly(const int report_step) const
+bool Opm::EclipseIO::Impl::summaryAtRptOnly(const long long report_step) const
 {
     return this->schedule[report_step - 1].rptonly();
 }
@@ -273,7 +273,7 @@ Opm::EclipseIO::~EclipseIO() = default;
 //  - Key: Max 8 chars.
 //  - Wrong input: invalid_argument exception.
 void Opm::EclipseIO::writeInitial(data::Solution                          simProps,
-                                  std::map<std::string, std::vector<int>> int_data,
+                                  std::map<std::string, std::vector<long long>> int_data,
                                   const std::vector<NNCdata>&             nnc)
 {
     if (! this->impl->output_enabled) {
@@ -299,12 +299,12 @@ void Opm::EclipseIO::writeTimeStep(const Action::State& action_state,
                                    const WellTestState& wtest_state,
                                    const SummaryState&  st,
                                    const UDQState&      udq_state,
-                                   const int            report_step,
+                                   const long long            report_step,
                                    const bool           isSubstep,
                                    const double         secs_elapsed,
                                    RestartValue         value,
                                    const bool           write_double,
-                                   std::optional<int>   time_step)
+                                   std::optional<long long>   time_step)
 {
     if (! this->impl->output_enabled) {
         return;
@@ -315,11 +315,11 @@ void Opm::EclipseIO::writeTimeStep(const Action::State& action_state,
     const auto& schedule = this->impl->schedule;
     const auto& ioConfig = es.cfg().io();
 
-    const bool final_step { report_step == static_cast<int>(schedule.size()) - 1 };
+    const bool final_step { report_step == static_cast<long long>(schedule.size()) - 1 };
     const bool is_final_summary = final_step && !isSubstep;
 
     // If --enable-write-all-solutions=true we will output every timestep
-    int report_index = time_step ? (*time_step+1) : report_step;
+    long long report_index = time_step ? (*time_step+1) : report_step;
     if (((report_step > 0) &&
         this->impl->wantSummaryOutput(report_step, isSubstep, secs_elapsed)) || time_step)
     {

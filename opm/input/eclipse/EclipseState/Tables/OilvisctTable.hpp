@@ -27,7 +27,7 @@ namespace Opm {
 
     class OilvisctTable : public SimpleTable {
         public:
-            OilvisctTable( const DeckItem& item, const int tableID );
+            OilvisctTable( const DeckItem& item, const long long tableID );
 
             const TableColumn& getTemperatureColumn() const;
             const TableColumn& getOilViscosityColumn() const;

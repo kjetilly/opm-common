@@ -315,7 +315,7 @@ namespace Opm { namespace data {
 
     struct AquiferData
     {
-        int aquiferID = 0;         //< One-based ID, range 1..NANAQ
+        long long aquiferID = 0;         //< One-based ID, range 1..NANAQ
         double pressure = 0.0;     //< Aquifer pressure
         double fluxRate = 0.0;     //< Aquifer influx rate (liquid aquifer)
         double volume = 0.0;       //< Produced liquid volume
@@ -398,7 +398,7 @@ namespace Opm { namespace data {
     };
 
     // TODO: not sure what extension we will need
-    using Aquifers = std::map<int, AquiferData>;
+    using Aquifers = std::map<long long, AquiferData>;
 
     template <class MessageBufferType>
     void FetkovichData::write(MessageBufferType& buffer) const

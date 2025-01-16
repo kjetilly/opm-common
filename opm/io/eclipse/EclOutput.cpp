@@ -55,7 +55,7 @@ void EclOutput::write<std::string>(const std::string& name,
     // If maximum string length is > 8, C0nn will be used with element size equal to
     // maximum string length
 
-    int maximum_length = 8;
+    long long maximum_length = 8;
 
     if (data.size() > 0) {
         auto it = std::max_element(data.begin(), data.end(), []
@@ -90,7 +90,7 @@ void EclOutput::write<std::string>(const std::string& name,
     }
 }
 
-void EclOutput::write(const std::string& name, const std::vector<std::string>& data, int element_size)
+void EclOutput::write(const std::string& name, const std::vector<std::string>& data, long long element_size)
 {
     // array type will be assumed C0NN (not CHAR). Also in cases where element size is 8 or less
 
@@ -156,17 +156,17 @@ void EclOutput::flushStream()
     this->ofileH.flush();
 }
 
-void EclOutput::writeBinaryHeader(const std::string&arrName, int64_t size, eclArrType arrType, int element_size)
+void EclOutput::writeBinaryHeader(const std::string&arrName, int64_t size, eclArrType arrType, long long element_size)
 {
-    int bhead = flipEndianInt(16);
+    long long bhead = flipEndianInt(16);
     std::string name = arrName + std::string(8 - arrName.size(),' ');
 
     // write X231 header if size larger that limits for 4 byte integers
-    if (size > std::numeric_limits<int>::max()) {
+    if (size > std::numeric_limits<long long>::max()) {
         int64_t val231 = std::pow(2,31);
         int64_t x231 = size / val231;
 
-        int flippedx231 = flipEndianInt(static_cast<int>( (-1)*x231 ));
+        long long flippedx231 = flipEndianInt(static_cast<long long>( (-1)*x231 ));
 
         ofileH.write(reinterpret_cast<char*>(&bhead), sizeof(bhead));
         ofileH.write(name.c_str(), 8);
@@ -177,7 +177,7 @@ void EclOutput::writeBinaryHeader(const std::string&arrName, int64_t size, eclAr
         size = size - (x231 * val231);
     }
 
-    int flippedSize = flipEndianInt(size);
+    long long flippedSize = flipEndianInt(size);
 
     ofileH.write(reinterpret_cast<char*>(&bhead), sizeof(bhead));
 
@@ -222,14 +222,14 @@ void EclOutput::writeBinaryHeader(const std::string&arrName, int64_t size, eclAr
 template <typename T>
 void EclOutput::writeBinaryArray(const std::vector<T>& data)
 {
-    int num;
+    long long num;
     int64_t rest, offset;
-    int dhead;
+    long long dhead;
     int64_t size = data.size();
 
     eclArrType arrType = MESS;
 
-    if (typeid(std::vector<T>) == typeid(std::vector<int>)) {
+    if (typeid(std::vector<T>) == typeid(std::vector<long long>)) {
         arrType = INTE;
     } else if (typeid(std::vector<T>) == typeid(std::vector<float>)) {
         arrType = REAL;
@@ -241,15 +241,15 @@ void EclOutput::writeBinaryArray(const std::vector<T>& data)
 
     auto sizeData = block_size_data_binary(arrType);
 
-    int sizeOfElement = std::get<0>(sizeData);
-    int maxBlockSize = std::get<1>(sizeData);
-    int maxNumberOfElements = maxBlockSize / sizeOfElement;
+    long long sizeOfElement = std::get<0>(sizeData);
+    long long maxBlockSize = std::get<1>(sizeData);
+    long long maxNumberOfElements = maxBlockSize / sizeOfElement;
 
     if (!ofileH.is_open()) {
         OPM_THROW(std::runtime_error, "fstream fileH not open for writing");
     }
 
-    int logi_true_val = ix_standard ? true_value_ix : true_value_ecl;
+    long long logi_true_val = ix_standard ? true_value_ix : true_value_ecl;
 
     rest = size * static_cast<int64_t>(sizeOfElement);
 
@@ -260,7 +260,7 @@ void EclOutput::writeBinaryArray(const std::vector<T>& data)
             rest -= maxBlockSize;
             num = maxNumberOfElements;
         } else {
-            num = static_cast<int>(rest) / sizeOfElement;
+            num = static_cast<long long>(rest) / sizeOfElement;
             rest = 0;
         }
 
@@ -270,20 +270,20 @@ void EclOutput::writeBinaryArray(const std::vector<T>& data)
 
         if (arrType == INTE) {
 
-            std::vector<int> flipped_data;
+            std::vector<long long> flipped_data;
             flipped_data.resize(num, 0);
 
-            for (int m = 0; m < num; m++)
+            for (long long m = 0; m < num; m++)
                 flipped_data[m] = flipEndianInt(data[m + offset]);
 
-            ofileH.write(reinterpret_cast<char*>(flipped_data.data()), flipped_data.size() * sizeof(int)) ;
+            ofileH.write(reinterpret_cast<char*>(flipped_data.data()), flipped_data.size() * sizeof(long long)) ;
 
         } else if (arrType == REAL) {
 
             std::vector<float> flipped_data;
             flipped_data.resize(num, 0);
 
-            for (int m = 0; m < num; m++)
+            for (long long m = 0; m < num; m++)
                 flipped_data[m] = flipEndianFloat(data[m + offset]);
 
             ofileH.write(reinterpret_cast<char*>(flipped_data.data()), flipped_data.size() * sizeof(float)) ;
@@ -293,23 +293,23 @@ void EclOutput::writeBinaryArray(const std::vector<T>& data)
             std::vector<double> flipped_data;
             flipped_data.resize(num, 0);
 
-            for (int m = 0; m < num; m++)
+            for (long long m = 0; m < num; m++)
                 flipped_data[m] = flipEndianDouble(data[m + offset]);
 
             ofileH.write(reinterpret_cast<char*>(flipped_data.data()), flipped_data.size() * sizeof(double)) ;
 
         } else if (arrType == LOGI) {
 
-            std::vector<int> logi_data;
+            std::vector<long long> logi_data;
             logi_data.resize(num, 0);
 
-            for (int m = 0; m < num; m++)
+            for (long long m = 0; m < num; m++)
                 if (data[m + offset])
                     logi_data[m] = logi_true_val;
                 else
                     logi_data[m] = false_value;
 
-            ofileH.write(reinterpret_cast<char*>(logi_data.data()), logi_data.size() * sizeof(int)) ;
+            ofileH.write(reinterpret_cast<char*>(logi_data.data()), logi_data.size() * sizeof(long long)) ;
 
         } else {
 
@@ -323,19 +323,19 @@ void EclOutput::writeBinaryArray(const std::vector<T>& data)
 }
 
 
-template void EclOutput::writeBinaryArray<int>(const std::vector<int>& data);
+template void EclOutput::writeBinaryArray<long long>(const std::vector<long long>& data);
 template void EclOutput::writeBinaryArray<float>(const std::vector<float>& data);
 template void EclOutput::writeBinaryArray<double>(const std::vector<double>& data);
 template void EclOutput::writeBinaryArray<bool>(const std::vector<bool>& data);
 template void EclOutput::writeBinaryArray<char>(const std::vector<char>& data);
 
 
-void EclOutput::writeBinaryCharArray(const std::vector<std::string>& data, int element_size)
+void EclOutput::writeBinaryCharArray(const std::vector<std::string>& data, long long element_size)
 {
-    int num,dhead;
+    long long num,dhead;
 
-    int n = 0;
-    int size = data.size();
+    long long n = 0;
+    long long size = data.size();
 
     auto sizeData = block_size_data_binary(CHAR);
 
@@ -344,11 +344,11 @@ void EclOutput::writeBinaryCharArray(const std::vector<std::string>& data, int e
         std::get<0>(sizeData) = element_size;
     }
 
-    int sizeOfElement = std::get<0>(sizeData);
-    int maxBlockSize = std::get<1>(sizeData);
-    int maxNumberOfElements = maxBlockSize / sizeOfElement;
+    long long sizeOfElement = std::get<0>(sizeData);
+    long long maxBlockSize = std::get<1>(sizeData);
+    long long maxNumberOfElements = maxBlockSize / sizeOfElement;
 
-    int rest = size * sizeOfElement;
+    long long rest = size * sizeOfElement;
 
     if (!ofileH.is_open()) {
         OPM_THROW(std::runtime_error,"fstream fileH not open for writing");
@@ -367,7 +367,7 @@ void EclOutput::writeBinaryCharArray(const std::vector<std::string>& data, int e
 
         ofileH.write(reinterpret_cast<char*>(&dhead), sizeof(dhead));
 
-        for (int i = 0; i < num; i++) {
+        for (long long i = 0; i < num; i++) {
             std::string tmpStr = data[n] + std::string(sizeOfElement - data[n].size(),' ');
             ofileH.write(tmpStr.c_str(), sizeOfElement);
             n++;
@@ -383,11 +383,11 @@ void EclOutput::writeBinaryCharArray(const std::vector<PaddedOutputString<8>>& d
 
     const auto sizeData = block_size_data_binary(CHAR);
 
-    const int sizeOfElement       = std::get<0>(sizeData);
-    const int maxBlockSize        = std::get<1>(sizeData);
-    const int maxNumberOfElements = maxBlockSize / sizeOfElement;
+    const long long sizeOfElement       = std::get<0>(sizeData);
+    const long long maxBlockSize        = std::get<1>(sizeData);
+    const long long maxNumberOfElements = maxBlockSize / sizeOfElement;
 
-    int rest = size * sizeOfElement;
+    long long rest = size * sizeOfElement;
 
     if (!ofileH.is_open()) {
         OPM_THROW(std::runtime_error,"fstream fileH not open for writing");
@@ -413,7 +413,7 @@ void EclOutput::writeBinaryCharArray(const std::vector<PaddedOutputString<8>>& d
     }
 }
 
-void EclOutput::writeFormattedHeader(const std::string& arrName, int size, eclArrType arrType, int element_size)
+void EclOutput::writeFormattedHeader(const std::string& arrName, long long size, eclArrType arrType, long long element_size)
 {
     std::string name = arrName + std::string(8 - arrName.size(),' ');
 
@@ -475,7 +475,7 @@ std::string EclOutput::make_real_string_ecl(float value) const
 
         std::string tmpstr(buffer);
 
-        int exp =  value < 0.0 ? std::stoi(tmpstr.substr(11, 3)) :  std::stoi(tmpstr.substr(10, 3));
+        long long exp =  value < 0.0 ? std::stoi(tmpstr.substr(11, 3)) :  std::stoi(tmpstr.substr(10, 3));
 
         if (value < 0.0) {
             tmpstr = "-0." + tmpstr.substr(1, 1) + tmpstr.substr(3, 7) + "E";
@@ -535,7 +535,7 @@ std::string EclOutput::make_doub_string_ecl(double value) const
         }
 
         std::string tmpstr(buffer);
-        int exp = value < 0.0 ? std::stoi(tmpstr.substr(17, 4)) : std::stoi(tmpstr.substr(16, 4));
+        long long exp = value < 0.0 ? std::stoi(tmpstr.substr(17, 4)) : std::stoi(tmpstr.substr(16, 4));
         const bool use_exp_char = (exp >= -100) && (exp < 99);
 
         if (value < 0.0) {
@@ -586,11 +586,11 @@ std::string EclOutput::make_doub_string_ix(double value) const
 template <typename T>
 void EclOutput::writeFormattedArray(const std::vector<T>& data)
 {
-    int size = data.size();
-    int n = 0;
+    long long size = data.size();
+    long long n = 0;
 
     eclArrType arrType = MESS;
-    if (typeid(T) == typeid(int)) {
+    if (typeid(T) == typeid(long long)) {
         arrType = INTE;
     } else if (typeid(T) == typeid(float)) {
         arrType = REAL;
@@ -603,11 +603,11 @@ void EclOutput::writeFormattedArray(const std::vector<T>& data)
 
     auto sizeData = block_size_data_formatted(arrType);
 
-    int maxBlockSize = std::get<0>(sizeData);
-    int nColumns = std::get<1>(sizeData);
-    int columnWidth = std::get<2>(sizeData);
+    long long maxBlockSize = std::get<0>(sizeData);
+    long long nColumns = std::get<1>(sizeData);
+    long long columnWidth = std::get<2>(sizeData);
 
-    for (int i = 0; i < size; i++) {
+    for (long long i = 0; i < size; i++) {
         n++;
 
         switch (arrType) {
@@ -652,19 +652,19 @@ void EclOutput::writeFormattedArray(const std::vector<T>& data)
 }
 
 
-template void EclOutput::writeFormattedArray<int>(const std::vector<int>& data);
+template void EclOutput::writeFormattedArray<long long>(const std::vector<long long>& data);
 template void EclOutput::writeFormattedArray<float>(const std::vector<float>& data);
 template void EclOutput::writeFormattedArray<double>(const std::vector<double>& data);
 template void EclOutput::writeFormattedArray<bool>(const std::vector<bool>& data);
 template void EclOutput::writeFormattedArray<char>(const std::vector<char>& data);
 
 
-void EclOutput::writeFormattedCharArray(const std::vector<std::string>& data, int element_size)
+void EclOutput::writeFormattedCharArray(const std::vector<std::string>& data, long long element_size)
 {
     auto sizeData = block_size_data_formatted(CHAR);
-    int maxBlockSize = std::get<0>(sizeData);
+    long long maxBlockSize = std::get<0>(sizeData);
 
-    int nColumns;
+    long long nColumns;
 
     if (element_size < 9)
     {
@@ -673,16 +673,16 @@ void EclOutput::writeFormattedCharArray(const std::vector<std::string>& data, in
     } else
         nColumns = 80 / (element_size + 3);
 
-    int rest = data.size();
-    int n = 0;
+    long long rest = data.size();
+    long long n = 0;
 
     while (rest > 0) {
-        int size = rest;
+        long long size = rest;
 
         if (size > maxBlockSize)
             size = maxBlockSize;
 
-        for (int i = 0; i < size; i++) {
+        for (long long i = 0; i < size; i++) {
             std::string str1(element_size,' ');
             str1 = data[n] + std::string(element_size - data[n].size(),' ');
 
@@ -707,7 +707,7 @@ void EclOutput::writeFormattedCharArray(const std::vector<PaddedOutputString<8>>
 {
     const auto sizeData = block_size_data_formatted(CHAR);
 
-    const int nColumns = std::get<1>(sizeData);
+    const long long nColumns = std::get<1>(sizeData);
 
     const auto size = data.size();
 

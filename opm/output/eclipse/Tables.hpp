@@ -69,7 +69,7 @@ namespace Opm {
         void addSatFunc(const EclipseState& es);
 
         /// Acquire read-only reference to internal TABDIMS vector.
-        const std::vector<int>& tabdims() const;
+        const std::vector<long long>& tabdims() const;
 
         /// Acquire read-only reference to internal TAB vector.
         const std::vector<double>& tab() const;
@@ -79,7 +79,7 @@ namespace Opm {
         const UnitSystem& units_;
 
         /// Offset and size information for the tabular data.
-        std::vector<int> tabdims_;
+        std::vector<long long> tabdims_;
 
         /// Linearised tabular data of PVT and saturation functions.
         std::vector<double> data_;
@@ -105,7 +105,7 @@ namespace Opm {
         ///    NSSFUN=TABDIMS(3).  Element at index 1 (i.e., \code
         ///    get<1>(sgfn) \endcode) is the number of individual tables.
         ///    Normalised table data is at index 2.
-        void addSatFuncGas(const std::tuple<int, int, std::vector<double>>& sgfn);
+        void addSatFuncGas(const std::tuple<long long, long long, std::vector<double>>& sgfn);
 
         /// Add saturation functions for oil (keywords SOF2, SOF3, SGOF,
         /// SWOF &c) to the tabular data (TABDIMS and TAB vectors).
@@ -117,7 +117,7 @@ namespace Opm {
         ///    NSSFUN=TABDIMS(3).  Element at index 1 (i.e., \code
         ///    get<1>(sofn) \endcode) is the number of individual tables.
         ///    Normalised table data is at index 2.
-        void addSatFuncOil(const std::tuple<int, int, std::vector<double>>& sofn);
+        void addSatFuncOil(const std::tuple<long long, long long, std::vector<double>>& sofn);
 
         /// Add saturation functions for water (keywords SWFN, SWOF &c) to
         /// the tabular data (TABDIMS and TAB vectors).
@@ -129,7 +129,7 @@ namespace Opm {
         ///    NSSFUN=TABDIMS(3).  Element at index 1 (i.e., \code
         ///    get<1>(swfn) \endcode) is the number of individual tables.
         ///    Normalised table data is at index 2.
-        void addSatFuncWater(const std::tuple<int, int, std::vector<double>>& swfn);
+        void addSatFuncWater(const std::tuple<long long, long long, std::vector<double>>& swfn);
 
         /// Add gas PVT tables (keywords PVDG and PVTG) to the tabular data
         /// (TABDIMS and TAB vectors).

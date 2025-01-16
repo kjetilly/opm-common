@@ -56,7 +56,7 @@ namespace Json {
         cJSON_AddStringToObject(this->root, key.c_str(), value.c_str());
     }
 
-    void JsonObject::add_item(const std::string& key, int value) {
+    void JsonObject::add_item(const std::string& key, long long value) {
         cJSON_AddNumberToObject(this->root, key.c_str(), value);
     }
 
@@ -79,7 +79,7 @@ namespace Json {
             throw std::invalid_argument("Item is not an array");
     }
 
-    void JsonObject::add(int value) {
+    void JsonObject::add(long long value) {
         if (this->is_array())
             cJSON_AddItemToArray(this->root, cJSON_CreateNumber( value ));
         else
@@ -190,7 +190,7 @@ namespace Json {
 
 
     std::size_t JsonObject::size() const {
-        int int_size = cJSON_GetArraySize( this->root );
+        long long int_size = cJSON_GetArraySize( this->root );
         return static_cast<std::size_t>(int_size);
     }
 
@@ -230,13 +230,13 @@ namespace Json {
     }
 
 
-    int JsonObject::get_int(const std::string& key) const {
+    long long JsonObject::get_int(const std::string& key) const {
         JsonObject child = get_scalar_object( key );
         return child.as_int( );
     }
 
 
-    int JsonObject::as_int() const {
+    long long JsonObject::as_int() const {
         if (this->root->type == cJSON_Number)
             return this->root->valueint;
         else

@@ -47,7 +47,7 @@ namespace Opm { namespace data {
     {
     private:
         /// Representation of neighbouring regions.
-        using Neighbours = std::vector<int>;
+        using Neighbours = std::vector<long long>;
 
         /// Offset into neighbour array.
         using Offset = Neighbours::size_type;
@@ -83,7 +83,7 @@ namespace Opm { namespace data {
         /// \param[in] rates Flow rates associated to single connection.
         ///
         /// If both region IDs are the same then this function does nothing.
-        void addConnection(const int r1, const int r2, const FlowRates& rates);
+        void addConnection(const long long r1, const long long r2, const FlowRates& rates);
 
         /// Form CSR adjacency matrix representation of input graph from
         /// connections established in previous calls to addConnection().
@@ -113,7 +113,7 @@ namespace Opm { namespace data {
         ///    associated flow direction sign.  \code std::nullopt \endcode
         ///    if no such rates exist.
         std::optional<std::pair<ReadOnlyWindow, ReadOnlyWindow::ElmT>>
-        getInterRegFlows(const int r1, const int r2) const;
+        getInterRegFlows(const long long r1, const long long r2) const;
 
         // MessageBufferType API should be similar to Dune::MessageBufferIF
         template <class MessageBufferType>
@@ -138,8 +138,8 @@ namespace Opm { namespace data {
         void clear();
 
     private:
-        // VertexID = int, TrackCompressedIdx = true.
-        using Graph = utility::CSRGraphFromCoordinates<int, true>;
+        // VertexID = long long, TrackCompressedIdx = true.
+        using Graph = utility::CSRGraphFromCoordinates<long long, true>;
 
         Graph connections_{};
         RateBuffer rates_{};

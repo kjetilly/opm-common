@@ -110,7 +110,7 @@ public:
     void compsegs_handled(const std::string& well_name);
 
     //! \brief Set exit code.
-    void setExitCode(int code);
+    void setExitCode(long long code);
 
     //! \brief Update status of a well.
     bool updateWellStatus(const std::string& well,

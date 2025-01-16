@@ -45,9 +45,9 @@ namespace Opm { namespace RestartIO {
     {
     public:
         struct CarterTracy {
-            int aquiferID{};
-            int inftableID{};
-            int pvttableID{};
+            long long aquiferID{};
+            long long inftableID{};
+            long long pvttableID{};
 
             double porosity{};
             double datum_depth{};
@@ -65,8 +65,8 @@ namespace Opm { namespace RestartIO {
         };
 
         struct Fetkovich {
-            int aquiferID{};
-            int pvttableID{};
+            long long aquiferID{};
+            long long pvttableID{};
 
             double prod_index{};
             double total_compr{};
@@ -78,7 +78,7 @@ namespace Opm { namespace RestartIO {
         };
 
         struct ConstantFlux {
-            int aquiferID{};
+            long long aquiferID{};
 
             double flow_rate{};
         };
@@ -128,7 +128,7 @@ namespace Opm { namespace RestartIO {
         const std::vector<CarterTracy>&             carterTracy() const;
         const std::vector<ConstantFlux>&            constantFlux() const;
         const std::vector<Fetkovich>&               fetkovich() const;
-        const std::unordered_map<int, Connections>& connections() const;
+        const std::unordered_map<long long, Connections>& connections() const;
 
     private:
         class Implementation;

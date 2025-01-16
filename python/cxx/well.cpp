@@ -27,7 +27,7 @@ namespace {
         }
     }
 
-    std::tuple<int, int, double> get_pos( const Well& w ) {
+    std::tuple<long long, long long, double> get_pos( const Well& w ) {
         return std::make_tuple(w.getHeadI(), w.getHeadJ(), w.getRefDepth());
     }
 

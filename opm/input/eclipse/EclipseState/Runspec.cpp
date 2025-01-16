@@ -172,7 +172,7 @@ Phases Phases::serializationTestObject()
 }
 
 bool Phases::active( Phase p ) const noexcept {
-    return this->bits[ static_cast< int >( p ) ];
+    return this->bits[ static_cast< long long >( p ) ];
 }
 
 size_t Phases::size() const noexcept {
@@ -190,24 +190,24 @@ Welldims::Welldims(const Deck& deck)
         const auto& keyword = deck.get<WD>().front();
         const auto& wd = keyword.getRecord(0);
 
-        this->nCWMax = wd.getItem<WD::MAXCONN>().get<int>(0);
-        this->nWGMax = wd.getItem<WD::MAX_GROUPSIZE>().get<int>(0);
+        this->nCWMax = wd.getItem<WD::MAXCONN>().get<long long>(0);
+        this->nWGMax = wd.getItem<WD::MAX_GROUPSIZE>().get<long long>(0);
 
         // Note: nGMax uses the E100 definition.  E300 instead uses
         //
         //   Max{ "MAXGROUPS", "MAXWELLS" }
         //
         // i.e., the maximum of item 1 and item 4 here.
-        this->nGMax = wd.getItem<WD::MAXGROUPS>().get<int>(0);
-        this->nWMax = wd.getItem<WD::MAXWELLS>().get<int>(0);
+        this->nGMax = wd.getItem<WD::MAXGROUPS>().get<long long>(0);
+        this->nWMax = wd.getItem<WD::MAXWELLS>().get<long long>(0);
 
         // Maximum number of well lists pr well.  Always at least 1.
         this->nWlistPrWellMax =
             std::max(WD::MAX_WELLIST_PR_WELL::defaultValue,
-                     wd.getItem<WD::MAX_WELLIST_PR_WELL>().get<int>(0));
+                     wd.getItem<WD::MAX_WELLIST_PR_WELL>().get<long long>(0));
 
         // Maximum number of dynamic well lists
-        this->nDynWlistMax = wd.getItem<WD::MAX_DYNAMIC_WELLIST>().get<int>(0);
+        this->nDynWlistMax = wd.getItem<WD::MAX_DYNAMIC_WELLIST>().get<long long>(0);
 
 
         this->m_location = keyword.location();
@@ -245,19 +245,19 @@ WellSegmentDims::WellSegmentDims(const Deck& deck)
         if (const auto& maxMSW = wsd.getItem<WSD::NSWLMX>();
             ! maxMSW.defaultApplied(0))
         {
-            this->nSegWellMax = maxMSW.get<int>(0);
+            this->nSegWellMax = maxMSW.get<long long>(0);
         }
 
         if (const auto& maxSeg = wsd.getItem<WSD::NSEGMX>();
             ! maxSeg.defaultApplied(0))
         {
-            this->nSegmentMax = maxSeg.get<int>(0);
+            this->nSegmentMax = maxSeg.get<long long>(0);
         }
 
         if (const auto& maxBranch = wsd.getItem<WSD::NLBRMX>();
             ! maxBranch.defaultApplied(0))
         {
-            this->nLatBranchMax = maxBranch.get<int>(0);
+            this->nLatBranchMax = maxBranch.get<long long>(0);
         }
 
         this->location_ = keyword.location();
@@ -296,9 +296,9 @@ NetworkDims::NetworkDims(const Deck& deck)
     if (deck.hasKeyword<ParserKeywords::NETWORK>()) {
         const auto& wsd = deck.get<ParserKeywords::NETWORK>()[0].getRecord(0);
 
-        this->nMaxNoNodes    = wsd.getItem<ParserKeywords::NETWORK::NODMAX>().get<int>(0);
-        this->nMaxNoBranches = wsd.getItem<ParserKeywords::NETWORK::NBRMAX>().get<int>(0);
-        this->nMaxNoBranchesConToNode = wsd.getItem<ParserKeywords::NETWORK::NBCMAX>().get<int>(0);
+        this->nMaxNoNodes    = wsd.getItem<ParserKeywords::NETWORK::NODMAX>().get<long long>(0);
+        this->nMaxNoBranches = wsd.getItem<ParserKeywords::NETWORK::NBRMAX>().get<long long>(0);
+        this->nMaxNoBranchesConToNode = wsd.getItem<ParserKeywords::NETWORK::NBCMAX>().get<long long>(0);
 
         this->type_ = Type::Extended;
     }
@@ -338,8 +338,8 @@ AquiferDimensions::AquiferDimensions(const Deck& deck)
         const auto& keyword = deck.get<AD>().front();
         const auto& ad = keyword.getRecord(0);
 
-        this->maxNumAnalyticAquifers    = ad.getItem<AD::NANAQU>().get<int>(0);
-        this->maxNumAnalyticAquiferConn = ad.getItem<AD::NCAMAX>().get<int>(0);
+        this->maxNumAnalyticAquifers    = ad.getItem<AD::NANAQU>().get<long long>(0);
+        this->maxNumAnalyticAquiferConn = ad.getItem<AD::NCAMAX>().get<long long>(0);
     }
 }
 
@@ -418,7 +418,7 @@ EclHysterConfig::EclHysterConfig(const Opm::Deck& deck)
         if (deck.hasKeyword("NOHYKR") || whereFlag == "PC")
             krHystMod = -1;
         else {
-            krHystMod = ehystrKeyword.getRecord(0).getItem("relative_perm_hyst").get<int>(0);
+            krHystMod = ehystrKeyword.getRecord(0).getItem("relative_perm_hyst").get<long long>(0);
         }
 
         // this is slightly screwed: it is possible to specify contradicting hysteresis
@@ -464,10 +464,10 @@ EclHysterConfig EclHysterConfig::serializationTestObject()
 bool EclHysterConfig::active() const
 { return activeHyst; }
 
-int EclHysterConfig::pcHysteresisModel() const
+long long EclHysterConfig::pcHysteresisModel() const
 { return pcHystMod; }
 
-int EclHysterConfig::krHysteresisModel() const
+long long EclHysterConfig::krHysteresisModel() const
 { return krHystMod; }
 
 double EclHysterConfig::modParamTrapped() const
@@ -536,13 +536,13 @@ Nupcol::Nupcol()
     : Nupcol { ParserKeywords::MINNPCOL::VALUE::defaultValue }
 {}
 
-Nupcol::Nupcol(int min_value)
+Nupcol::Nupcol(long long min_value)
     : min_nupcol(min_value)
 {
     this->update(ParserKeywords::NUPCOL::NUM_ITER::defaultValue);
 }
 
-void Nupcol::update(int value)
+void Nupcol::update(long long value)
 {
     if ((value < this->min_nupcol) &&
         (this->min_nupcol == ParserKeywords::MINNPCOL::VALUE::defaultValue))
@@ -561,7 +561,7 @@ Nupcol Nupcol::serializationTestObject() {
     return nc;
 }
 
-int Nupcol::value() const
+long long Nupcol::value() const
 {
     return this->nupcol_value;
 }
@@ -595,7 +595,7 @@ Tracers Tracers::serializationTestObject() {
     return tracers;
 }
 
-int Tracers::water_tracers() const {
+long long Tracers::water_tracers() const {
     return this->m_water_tracers;
 }
 
@@ -606,12 +606,12 @@ Tracers::Tracers(const Deck& deck) {
     if (deck.hasKeyword<TR>()) {
         const auto& keyword = deck.get<TR>().back();
         const auto& record = keyword[0];
-        this->m_oil_tracers = record.getItem<TR::MAX_OIL_TRACERS>().get<int>(0);
-        this->m_water_tracers = record.getItem<TR::MAX_WATER_TRACERS>().get<int>(0);
-        this->m_gas_tracers = record.getItem<TR::MAX_GAS_TRACERS>().get<int>(0);
-        this->m_env_tracers = record.getItem<TR::MAX_ENV_TRACERS>().get<int>(0);
-        this->max_iter = record.getItem<TR::MAX_ITER>().get<int>(0);
-        this->min_iter = record.getItem<TR::MIN_ITER>().get<int>(0);
+        this->m_oil_tracers = record.getItem<TR::MAX_OIL_TRACERS>().get<long long>(0);
+        this->m_water_tracers = record.getItem<TR::MAX_WATER_TRACERS>().get<long long>(0);
+        this->m_gas_tracers = record.getItem<TR::MAX_GAS_TRACERS>().get<long long>(0);
+        this->m_env_tracers = record.getItem<TR::MAX_ENV_TRACERS>().get<long long>(0);
+        this->max_iter = record.getItem<TR::MAX_ITER>().get<long long>(0);
+        this->min_iter = record.getItem<TR::MIN_ITER>().get<long long>(0);
 
         const auto& diff_control = record.getItem<TR::NUMERIC_DIFF>().get<std::string>(0);
         this->diffusion_control = (diff_control == "DIFF" || diff_control == "SPECIAL");
@@ -661,7 +661,7 @@ Runspec::Runspec(const Deck& deck)
             const auto& min_item = runspecSection.get<ParserKeywords::MINNPCOL>()
                 .back().getRecord(0).getItem<ParserKeywords::MINNPCOL::VALUE>();
 
-            auto min_value = min_item.get<int>(0);
+            auto min_value = min_item.get<long long>(0);
             this->m_nupcol = Nupcol(min_value);
         }
 
@@ -675,7 +675,7 @@ Runspec::Runspec(const Deck& deck)
                 OpmLog::note(msg);
             }
 
-            auto deck_nupcol = item.get<int>(0);
+            auto deck_nupcol = item.get<long long>(0);
             this->m_nupcol.update(deck_nupcol);
         }
 
@@ -717,7 +717,7 @@ Runspec::Runspec(const Deck& deck)
 
         if (runspecSection.hasKeyword<ParserKeywords::COMPS>()) {
             const auto& comps_item = runspecSection.get<ParserKeywords::COMPS>().back().getRecord(0).getItem<ParserKeywords::COMPS::NUM_COMPS>();
-            const auto num_comps = comps_item.get<int>(0);
+            const auto num_comps = comps_item.get<long long>(0);
             if (num_comps < 1) {
                 throw std::logic_error(fmt::format("non-positive COMPS value {} is specified", num_comps));
             }
@@ -924,11 +924,11 @@ std::time_t Runspec::start_time() const noexcept
 
 // Returns an integer in the range 0...7 which can be used to indicate
 // available phases in Eclipse restart and init files.
-int Runspec::eclPhaseMask() const noexcept
+long long Runspec::eclPhaseMask() const noexcept
 {
-    const int water = 1 << 2;
-    const int oil   = 1 << 0;
-    const int gas   = 1 << 1;
+    const long long water = 1 << 2;
+    const long long oil   = 1 << 0;
+    const long long gas   = 1 << 1;
 
     return ( active_phases.active( Phase::WATER ) ? water : 0 )
          | ( active_phases.active( Phase::OIL ) ? oil : 0 )

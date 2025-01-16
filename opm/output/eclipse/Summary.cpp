@@ -301,7 +301,7 @@ namespace {
                                            Cat::Connection,
                                            conn_vector.type,
                                            well.name(),
-                                           static_cast<int>(conn.global_index() + 1), {}, {}};
+                                           static_cast<long long>(conn.global_index() + 1), {}, {}};
                                });
             }
         }
@@ -334,7 +334,7 @@ namespace {
         auto makeVectors = [&](const Opm::Well& well) -> void
         {
             const auto& wname = well.name();
-            const auto  nSeg  = static_cast<int>(well.getSegments().size());
+            const auto  nSeg  = static_cast<long long>(well.getSegments().size());
 
             for (auto segID = 0*nSeg + 1; segID <= nSeg; ++segID) {
                 std::transform(vectors.begin(), vectors.end(),
@@ -362,7 +362,7 @@ namespace {
     }
 
     std::vector<Opm::EclIO::SummaryNode>
-    requiredAquiferVectors(const std::vector<int>& aquiferIDs)
+    requiredAquiferVectors(const std::vector<long long>& aquiferIDs)
     {
         auto entities = std::vector<Opm::EclIO::SummaryNode> {};
 
@@ -390,7 +390,7 @@ namespace {
     }
 
     std::vector<Opm::EclIO::SummaryNode>
-    requiredNumericAquiferVectors(const std::vector<int>& aquiferIDs)
+    requiredNumericAquiferVectors(const std::vector<long long>& aquiferIDs)
     {
         auto entities = std::vector<Opm::EclIO::SummaryNode> {};
 
@@ -554,9 +554,9 @@ struct fn_args
     const std::string group_name;
     const std::string keyword_name;
     double duration;
-    const int sim_step;
-    int  num;
-    const std::optional<std::variant<std::string, int>> extra_data;
+    const long long sim_step;
+    long long  num;
+    const std::optional<std::variant<std::string, long long>> extra_data;
     const Opm::SummaryState& st;
     const Opm::data::Wells& wells;
     const Opm::data::WellBlockAveragePressures& wbp;
@@ -668,14 +668,14 @@ double efac( const std::vector<std::pair<std::string,double>>& eff_factors, cons
 
 inline bool
 has_vfp_table(const Opm::ScheduleState&            sched_state,
-              int vfp_table_number)
+              long long vfp_table_number)
 {
     return sched_state.vfpprod.has(vfp_table_number);
 }
 
 inline Opm::VFPProdTable::ALQ_TYPE
 alq_type(const Opm::ScheduleState&            sched_state,
-         int vfp_table_number)
+         long long vfp_table_number)
 {
     return sched_state.vfpprod(vfp_table_number).getALQType();
 }
@@ -1777,7 +1777,7 @@ inline quantity preferred_phase_productivty_index(const fn_args& args)
 
     throw std::invalid_argument {
         fmt::format("Unsupported \"preferred\" phase: {}",
-                    static_cast<int>(args.schedule_wells.front()->getPreferredPhase()))
+                    static_cast<long long>(args.schedule_wells.front()->getPreferredPhase()))
     };
 }
 
@@ -1831,7 +1831,7 @@ inline quantity connection_productivity_index(const fn_args& args)
 
     throw std::invalid_argument {
         fmt::format("Unsupported \"preferred\" phase: {}",
-                    static_cast<int>(args.schedule_wells.front()->getPreferredPhase()))
+                    static_cast<long long>(args.schedule_wells.front()->getPreferredPhase()))
     };
 }
 
@@ -1849,7 +1849,7 @@ inline quantity group_control( const fn_args& args )
         g_name = "FIELD";
     }
 
-    int cntl_mode = 0;
+    long long cntl_mode = 0;
 
     // production control
     if (Producer) {
@@ -2991,7 +2991,7 @@ void sort_wells_by_insert_index(std::vector<const Opm::Well*>& wells)
 std::vector<const Opm::Well*>
 find_single_well(const Opm::Schedule& schedule,
                  const std::string&   well_name,
-                 const int            sim_step)
+                 const long long            sim_step)
 {
     auto single_well = std::vector<const Opm::Well*>{};
 
@@ -3005,7 +3005,7 @@ find_single_well(const Opm::Schedule& schedule,
 std::vector<const Opm::Well*>
 find_region_wells(const Opm::Schedule&           schedule,
                   const Opm::EclIO::SummaryNode& node,
-                  const int                      sim_step,
+                  const long long                      sim_step,
                   const Opm::out::RegionCache&   regionCache)
 {
     auto result = std::vector<const Opm::Well*>{};
@@ -3031,7 +3031,7 @@ find_region_wells(const Opm::Schedule&           schedule,
 std::vector<const Opm::Well*>
 find_group_wells(const Opm::Schedule& schedule,
                  const std::string&   group_name,
-                 const int            sim_step)
+                 const long long            sim_step)
 {
     auto groupwells = std::vector<const Opm::Well*>{};
 
@@ -3065,7 +3065,7 @@ find_group_wells(const Opm::Schedule& schedule,
 
 std::vector<const Opm::Well*>
 find_field_wells(const Opm::Schedule& schedule,
-                 const int            sim_step)
+                 const long long            sim_step)
 {
     auto fieldwells = std::vector<const Opm::Well*>{};
 
@@ -3086,7 +3086,7 @@ find_field_wells(const Opm::Schedule& schedule,
 inline std::vector<const Opm::Well*>
 find_wells(const Opm::Schedule&           schedule,
            const Opm::EclIO::SummaryNode& node,
-           const int                      sim_step,
+           const long long                      sim_step,
            const Opm::out::RegionCache&   regionCache)
 {
     switch (node.category) {
@@ -3114,7 +3114,7 @@ find_wells(const Opm::Schedule&           schedule,
 
     throw std::runtime_error {
         fmt::format("Unhandled summary node category \"{}\" in find_wells()",
-                    static_cast<int>(node.category))
+                    static_cast<long long>(node.category))
     };
 }
 
@@ -3153,7 +3153,7 @@ bool need_wells(const Opm::EclIO::SummaryNode& node)
 
     throw std::runtime_error {
         fmt::format("Unhandled summary node category \"{}\" in need_wells()",
-                    static_cast<int>(node.category))
+                    static_cast<long long>(node.category))
     };
 }
 
@@ -3216,14 +3216,14 @@ struct EfficiencyFactor
     void setFactors(const Opm::EclIO::SummaryNode&       node,
                     const Opm::Schedule&                 schedule,
                     const std::vector<const Opm::Well*>& schedule_wells,
-                    const int                            sim_step,
+                    const long long                            sim_step,
                     const Opm::data::Wells&              sim_res);
 };
 
 void EfficiencyFactor::setFactors(const Opm::EclIO::SummaryNode&       node,
                                   const Opm::Schedule&                 schedule,
                                   const std::vector<const Opm::Well*>& schedule_wells,
-                                  const int                            sim_step,
+                                  const long long                            sim_step,
                                   const Opm::data::Wells&              sim_res)
 {
     this->factors.clear();
@@ -3285,7 +3285,7 @@ namespace Evaluator {
         const std::map<std::string, double>& single;
         const Opm::Inplace inplace;
         const std::map<std::string, std::vector<double>>& region;
-        const std::map<std::pair<std::string, int>, double>& block;
+        const std::map<std::pair<std::string, long long>, double>& block;
         const Opm::data::Aquifers& aquifers;
         const std::unordered_map<std::string, Opm::data::InterRegFlowMap>& ireg;
     };
@@ -3310,7 +3310,7 @@ namespace Evaluator {
             , fcn_ (std::move(fcn))
         {
             if (this->use_number()) {
-                this->number_ = std::max(0, this->node_.number);
+                this->number_ = std::max(0LL, this->node_.number);
             }
         }
 
@@ -3322,7 +3322,7 @@ namespace Evaluator {
         {
             const auto wells = need_wells(this->node_)
                 ? find_wells(input.sched, this->node_,
-                             static_cast<int>(sim_step), input.reg)
+                             static_cast<long long>(sim_step), input.reg)
                 : std::vector<const Opm::Well*>{};
 
             EfficiencyFactor eFac{};
@@ -3330,7 +3330,7 @@ namespace Evaluator {
 
             const fn_args args {
                 wells, this->group_name(), this->node_.keyword,
-                stepSize, static_cast<int>(sim_step),
+                stepSize, static_cast<long long>(sim_step),
                 this->number_, this->node_.fip_region,
                 st,
                 simRes.wellSol, simRes.wbp, simRes.grpNwrkSol,
@@ -3349,7 +3349,7 @@ namespace Evaluator {
     private:
         Opm::EclIO::SummaryNode node_;
         ofun                    fcn_;
-        int                     number_{0};
+        long long                     number_{0};
 
         std::string group_name() const
         {
@@ -3543,8 +3543,8 @@ namespace Evaluator {
         Direction direction_{ Direction::Positive };
         bool useDirection_{ false };
         bool isCumulative_{ false };
-        int r1_{ -1 };
-        int r2_{ -1 };
+        long long r1_{ -1 };
+        long long r2_{ -1 };
 
         void analyzeKeyword()
         {
@@ -4282,12 +4282,12 @@ public:
 
     void makeParameter(std::string keyword,
                        std::string name,
-                       const int   num,
+                       const long long   num,
                        std::string unit,
                        EvalPtr     evaluator)
     {
         this->smspec_.add(std::move(keyword), std::move(name),
-                          std::max (num, 0), std::move(unit));
+                          std::max (num, 0LL), std::move(unit));
 
         this->evaluators_.push_back(std::move(evaluator));
     }
@@ -4331,7 +4331,7 @@ public:
 
 private:
     Opm::UnitSystem::UnitType  utype_;
-    std::array<int,3>          cartDims_;
+    std::array<long long,3>          cartDims_;
     Spec::StartTime            start_;
     Spec::RestartSpecification restart_{};
 
@@ -4372,7 +4372,7 @@ SMSpecStreamDeferredCreation::uconv() const
 
     throw std::invalid_argument {
         "Unsupported Unit Convention (" +
-        std::to_string(static_cast<int>(this->utype_)) + ')'
+        std::to_string(static_cast<long long>(this->utype_)) + ')'
     };
 }
 
@@ -4443,7 +4443,7 @@ public:
     SummaryImplementation& operator=(const SummaryImplementation& rhs) = delete;
     SummaryImplementation& operator=(SummaryImplementation&& rhs) = default;
 
-    void eval(const int                              sim_step,
+    void eval(const long long                              sim_step,
               const double                           secs_elapsed,
               const data::Wells&                     well_solution,
               const data::WellBlockAveragePressures& wbp,
@@ -4457,14 +4457,14 @@ public:
               const InterRegFlowValues&              interreg_flows,
               SummaryState&                          st) const;
 
-    void internal_store(const SummaryState& st, const int report_step, bool isSubstep);
+    void internal_store(const SummaryState& st, const long long report_step, bool isSubstep);
     void write(const bool is_final_summary);
 
 private:
     struct MiniStep
     {
-        int id{0};
-        int seq{-1};
+        long long id{0};
+        long long seq{-1};
         bool isSubstep{false};
         std::vector<float> params{};
     };
@@ -4482,11 +4482,11 @@ private:
     Opm::EclIO::OutputStream::Formatted fmt_;
     Opm::EclIO::OutputStream::Unified   unif_;
 
-    mutable int miniStepID_{0};
+    mutable long long miniStepID_{0};
     mutable double prevEvalTime_{std::numeric_limits<double>::lowest()};
 
-    int prevCreate_{-1};
-    int prevReportStepID_{-1};
+    long long prevCreate_{-1};
+    long long prevReportStepID_{-1};
     std::vector<MiniStep>::size_type numUnwritten_{0};
 
     SummaryOutputParameters                  outputParameters_{};
@@ -4516,13 +4516,13 @@ private:
                       Evaluator::Factory& evaluatorFactory,
                       SummaryConfig&      summary_config);
 
-    MiniStep& getNextMiniStep(const int report_step, bool isSubstep);
+    MiniStep& getNextMiniStep(const long long report_step, bool isSubstep);
     const MiniStep& lastUnwritten() const;
 
     void write(const MiniStep& ms);
 
     void createSMSpecIfNecessary();
-    void createSmryStreamIfNecessary(const int report_step);
+    void createSmryStreamIfNecessary(const long long report_step);
 };
 
 Opm::out::Summary::SummaryImplementation::
@@ -4578,7 +4578,7 @@ SummaryImplementation(SummaryConfig&      sumcfg,
 }
 
 void Opm::out::Summary::SummaryImplementation::
-internal_store(const SummaryState& st, const int report_step, bool isSubstep)
+internal_store(const SummaryState& st, const long long report_step, bool isSubstep)
 {
     auto& ms = this->getNextMiniStep(report_step, isSubstep);
 
@@ -4596,7 +4596,7 @@ internal_store(const SummaryState& st, const int report_step, bool isSubstep)
 
 void
 Opm::out::Summary::SummaryImplementation::
-eval(const int                              sim_step,
+eval(const long long                              sim_step,
      const double                           secs_elapsed,
      const data::Wells&                     well_solution,
      const data::WellBlockAveragePressures& wbp,
@@ -4684,11 +4684,11 @@ void Opm::out::Summary::SummaryImplementation::write(const MiniStep& ms)
     if (this->prevReportStepID_ < ms.seq) {
         // XXX: Should probably write SEQHDR = 0 here since
         ///     we do not know the actual encoding needed.
-        this->stream_->write("SEQHDR", std::vector<int>{ ms.seq });
+        this->stream_->write("SEQHDR", std::vector<long long>{ ms.seq });
         this->prevReportStepID_ = ms.seq;
     }
 
-    this->stream_->write("MINISTEP", std::vector<int>{ ms.id });
+    this->stream_->write("MINISTEP", std::vector<long long>{ ms.id });
     this->stream_->write("PARAMS"  , ms.params);
 }
 
@@ -4996,7 +4996,7 @@ configureRequiredRestartParameters(const SummaryConfig& sumcfg,
 }
 
 Opm::out::Summary::SummaryImplementation::MiniStep&
-Opm::out::Summary::SummaryImplementation::getNextMiniStep(const int report_step, bool isSubstep)
+Opm::out::Summary::SummaryImplementation::getNextMiniStep(const long long report_step, bool isSubstep)
 {
     if (this->numUnwritten_ == this->unwritten_.size()) {
         this->unwritten_.emplace_back();
@@ -5041,7 +5041,7 @@ void Opm::out::Summary::SummaryImplementation::createSMSpecIfNecessary()
 
 void
 Opm::out::Summary::SummaryImplementation::
-createSmryStreamIfNecessary(const int report_step)
+createSmryStreamIfNecessary(const long long report_step)
 {
     // Create stream if unset or if non-unified (separate) and new step.
 
@@ -5072,7 +5072,7 @@ Summary::Summary(SummaryConfig&       sumcfg,
 {}
 
 void Summary::eval(SummaryState&                          st,
-                   const int                              report_step,
+                   const long long                              report_step,
                    const double                           secs_elapsed,
                    const data::Wells&                     well_solution,
                    const data::WellBlockAveragePressures& wbp,
@@ -5094,7 +5094,7 @@ void Summary::eval(SummaryState&                          st,
     // Sim_step is the timestep which has been effective in the simulator,
     // and as such is the value necessary to use when looking up active
     // wells, groups, connections &c in the Schedule object.
-    const auto sim_step = std::max(0, report_step - 1);
+    const auto sim_step = std::max(0LL, report_step - 1);
 
     auto process_values = single_values;
 
@@ -5106,7 +5106,7 @@ void Summary::eval(SummaryState&                          st,
                        aquifer_values, interreg_flows, st);
 }
 
-void Summary::add_timestep(const SummaryState& st, const int report_step, bool isSubstep)
+void Summary::add_timestep(const SummaryState& st, const long long report_step, bool isSubstep)
 {
     this->pImpl_->internal_store(st, report_step, isSubstep);
 }

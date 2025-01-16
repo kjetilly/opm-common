@@ -24,13 +24,13 @@
 
 namespace Opm
 {
-ActiveGridCells::ActiveGridCells(std::array<int, 3> xyz,
-                                 const int* globalCell, std::size_t nc)
+ActiveGridCells::ActiveGridCells(std::array<long long, 3> xyz,
+                                 const long long* globalCell, std::size_t nc)
     : ActiveGridCells(xyz[0], xyz[1], xyz[2], globalCell, nc)
 {}
 
 ActiveGridCells::ActiveGridCells(std::size_t nx, std::size_t ny, std::size_t nz,
-                                 const int* globalCell, std::size_t nc)
+                                 const long long* globalCell, std::size_t nc)
     : GridDims(nx, ny, nz), localCell_(nx*ny*nz, -1)
 {
     for (auto cell = globalCell, cellEnd = globalCell + nc; cell != cellEnd; ++cell)
@@ -49,22 +49,22 @@ bool ActiveGridCells::cellActive(std::size_t cartesianIndex) const
     return localCell_[cartesianIndex]>=0;
 }
 
-int ActiveGridCells::localCell(std::size_t cartesianIndex) const
+long long ActiveGridCells::localCell(std::size_t cartesianIndex) const
 {
     return localCell_[cartesianIndex];
 }
 
-int ActiveGridCells::localCell(std::size_t i, std::size_t j, std::size_t k) const
+long long ActiveGridCells::localCell(std::size_t i, std::size_t j, std::size_t k) const
 {
     return localCell(this->getGlobalIndex(i,j,k));
 }
 
-std::vector<int> ActiveGridCells::actNum() const
+std::vector<long long> ActiveGridCells::actNum() const
 {
-    std::vector<int> actnum;
+    std::vector<long long> actnum;
     actnum.reserve(localCell_.size());
     std::transform(localCell_.begin(), localCell_.end(),
-                   std::back_inserter(actnum), [](int i){ return i>=0;});
+                   std::back_inserter(actnum), [](long long i){ return i>=0;});
     return actnum;
 }
 }

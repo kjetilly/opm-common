@@ -28,7 +28,7 @@ namespace Opm {
 
     class MsfnTable : public SimpleTable {
     public:
-        MsfnTable( const DeckItem& item, const int tableID );
+        MsfnTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getGasPhaseFractionColumn() const;
         const TableColumn& getGasSolventRelpermMultiplierColumn() const;

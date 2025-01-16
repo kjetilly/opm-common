@@ -42,13 +42,13 @@ namespace Opm {
 namespace Compsegs {
 
 struct Record {
-    int m_i;
-    int m_j;
-    int m_k;
+    long long m_i;
+    long long m_j;
+    long long m_k;
     // the branch number on the main stem is always 1.
     // lateral branches should be numbered bigger than 1.
     // a suboridnate branch must have a higher branch number than parent branch.
-    int m_branch_number;
+    long long m_branch_number;
     double m_distance_start;
     double m_distance_end;
     Connection::Direction m_dir;
@@ -56,19 +56,19 @@ struct Record {
     double center_depth;
     // we do not handle thermal length for the moment
     // double m_thermal_length;
-    int segment_number;
+    long long segment_number;
     std::size_t m_seqIndex;
 
-    Record(int i_in, int j_in, int k_in, int branch_number_in, double distance_start_in, double distance_end_in,
-           Connection::Direction dir_in, double center_depth_in, int segment_number_in, std::size_t seqIndex_in);
+    Record(long long i_in, long long j_in, long long k_in, long long branch_number_in, double distance_start_in, double distance_end_in,
+           Connection::Direction dir_in, double center_depth_in, long long segment_number_in, std::size_t seqIndex_in);
 
     void calculateCenterDepthWithSegments(const WellSegments& segment_set);
 
 
 };
 
-    Record::Record(int i_in, int j_in, int k_in, int branch_number_in, double distance_start_in, double distance_end_in,
-                       Connection::Direction dir_in, double center_depth_in, int segment_number_in, size_t seqIndex_in)
+    Record::Record(long long i_in, long long j_in, long long k_in, long long branch_number_in, double distance_start_in, double distance_end_in,
+                       Connection::Direction dir_in, double center_depth_in, long long segment_number_in, size_t seqIndex_in)
     : m_i(i_in),
       m_j(j_in),
       m_k(k_in),
@@ -100,14 +100,14 @@ struct Record {
         // for other cases, interpolation between two segments is needed.
         // looking for the other segment needed for interpolation
         // by default, it uses the outlet segment to do the interpolation
-        int interpolation_segment_number = segment.outletSegment();
+        long long interpolation_segment_number = segment.outletSegment();
 
         const double center_distance = (m_distance_start + m_distance_end) / 2.0;
         // if the perforation is further than the segment and the segment has inlet segments in the same branch
         // we use the inlet segment to do the interpolation
         if (center_distance > segment_distance) {
-            for (const int inlet : segment.inletSegments()) {
-                const int inlet_index = segment_set.segmentNumberToIndex(inlet);
+            for (const long long inlet : segment.inletSegments()) {
+                const long long inlet_index = segment_set.segmentNumberToIndex(inlet);
                 if (segment_set[inlet_index].branchNumber() == m_branch_number) {
                     interpolation_segment_number = inlet;
                     break;
@@ -149,9 +149,9 @@ namespace {
             if (compseg.segment_number == 0) {
 
                 const double center_distance = (compseg.m_distance_start + compseg.m_distance_end) / 2.0;
-                const int branch_number = compseg.m_branch_number;
+                const long long branch_number = compseg.m_branch_number;
 
-                int segment_number = 0;
+                long long segment_number = 0;
                 double min_distance_difference = 1.e100; // begin with a big value
                 for (std::size_t i_segment = 0; i_segment < segment_set.size(); ++i_segment) {
                     const Segment& current_segment = segment_set[i_segment];
@@ -199,10 +199,10 @@ namespace {
         for (size_t recordIndex = 1; recordIndex < compsegsKeyword.size(); ++recordIndex) {
             const auto& record = compsegsKeyword.getRecord(recordIndex);
             // following the coordinate rule for connections
-            const int I = record.getItem<ParserKeywords::COMPSEGS::I>().get< int >(0) - 1;
-            const int J = record.getItem<ParserKeywords::COMPSEGS::J>().get< int >(0) - 1;
-            const int K = record.getItem<ParserKeywords::COMPSEGS::K>().get< int >(0) - 1;
-            const int branch = record.getItem<ParserKeywords::COMPSEGS::BRANCH>().get< int >(0);
+            const long long I = record.getItem<ParserKeywords::COMPSEGS::I>().get< long long >(0) - 1;
+            const long long J = record.getItem<ParserKeywords::COMPSEGS::J>().get< long long >(0) - 1;
+            const long long K = record.getItem<ParserKeywords::COMPSEGS::K>().get< long long >(0) - 1;
+            const long long branch = record.getItem<ParserKeywords::COMPSEGS::BRANCH>().get< long long >(0);
 
             const std::string& well_name = compsegsKeyword.getRecord(0).getItem("WELL").getTrimmedString(0);
 
@@ -276,9 +276,9 @@ namespace {
                 parseContext.handleError(ParseContext::SCHEDULE_COMPSEGS_NOT_SUPPORTED, msg_fmt, location, errors);
             }
 
-            int segment_number;
+            long long segment_number;
             if (record.getItem<ParserKeywords::COMPSEGS::SEGMENT_NUMBER>().hasValue(0)) {
-                segment_number = record.getItem<ParserKeywords::COMPSEGS::SEGMENT_NUMBER>().get< int >(0);
+                segment_number = record.getItem<ParserKeywords::COMPSEGS::SEGMENT_NUMBER>().get< long long >(0);
             } else {
                 segment_number = 0;
                 // will decide the segment number based on the distance in a process later.
@@ -322,9 +322,9 @@ namespace {
             WellConnections new_connection_set = input_connections;
 
             for (const auto& compseg : compsegs_vector) {
-                const int i = compseg.m_i;
-                const int j = compseg.m_j;
-                const int k = compseg.m_k;
+                const long long i = compseg.m_i;
+                const long long j = compseg.m_j;
+                const long long k = compseg.m_k;
                 if (grid.get_cell(i, j, k).is_active()) {
                     // Negative values to indicate cell depths should be used
                     double cdepth = compseg.center_depth >= 0. ? compseg.center_depth : grid.get_cell(i, j, k).depth;
@@ -354,7 +354,7 @@ namespace {
 
 namespace {
     // Duplicated from Well.cpp
-    Connection::Order order_from_int(int int_value) {
+    Connection::Order order_from_int(long long int_value) {
         switch(int_value) {
         case 0:
             return Connection::Order::TRACK;
@@ -368,7 +368,7 @@ namespace {
     }
 
 
-    WellSegments::CompPressureDrop pressure_drop_from_int(int ecl_id) {
+    WellSegments::CompPressureDrop pressure_drop_from_int(long long ecl_id) {
         using PLM = RestartIO::Helpers::VectorItems::IWell::Value::PLossMod;
         switch (ecl_id) {
         case PLM::HFA:
@@ -387,10 +387,10 @@ namespace {
     std::pair<WellConnections, WellSegments>
     rstUpdate(const RestartIO::RstWell& rst_well,
               std::vector<Connection> rst_connections,
-              const std::unordered_map<int, Segment>& rst_segments)
+              const std::unordered_map<long long, Segment>& rst_segments)
     {
         for (auto& connection : rst_connections) {
-            int segment_id = connection.segment();
+            long long segment_id = connection.segment();
             if (segment_id > 0) {
                 const auto& segment = rst_segments.at(segment_id);
                 connection.updateSegmentRST(segment.segmentNumber(),

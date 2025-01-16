@@ -73,7 +73,7 @@ public:
     /// be controlled by the function parameters.
     static void setupSimpleDefaultLogging(const bool use_prefix = true,
                                           const bool use_color_coding = true,
-                                          const int message_limit = 10);
+                                          const long long message_limit = 10);
 
     template <class BackendType>
     static std::shared_ptr<BackendType> getBackend(const std::string& name) {

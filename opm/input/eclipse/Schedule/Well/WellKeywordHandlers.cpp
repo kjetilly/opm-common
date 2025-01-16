@@ -103,7 +103,7 @@ void handleWCONHIST(HandlerContext& handlerContext)
             auto properties = std::make_shared<Well::WellProductionProperties>(well2.getProductionProperties());
             bool update_well = false;
 
-            auto table_nr = record.getItem("VFP_TABLE").get< int >(0);
+            auto table_nr = record.getItem("VFP_TABLE").get< long long >(0);
             if (record.getItem("VFP_TABLE").defaultApplied(0)) { // Default 1* use the privious set vfp table
                 table_nr = properties->VFPTableNumber;
             }
@@ -205,7 +205,7 @@ void handleWCONINJE(HandlerContext& handlerContext)
                                                  default_bhp_limit);
             }
 
-            auto table_nr = record.getItem("VFP_TABLE").get< int >(0);
+            auto table_nr = record.getItem("VFP_TABLE").get< long long >(0);
 
             if (table_nr != 0) {
                 const auto& vfpinj = handlerContext.state().vfpinj;
@@ -281,7 +281,7 @@ void handleWCONINJH(HandlerContext& handlerContext)
                                                                   6891.2);
             }
 
-            auto table_nr = record.getItem("VFP_TABLE").get< int >(0);
+            auto table_nr = record.getItem("VFP_TABLE").get< long long >(0);
             if (record.getItem("VFP_TABLE").defaultApplied(0)) { // Default 1* use the privious set vfp table
                 table_nr = injection->VFPTableNumber;
             }
@@ -352,7 +352,7 @@ void handleWCONPROD(HandlerContext& handlerContext)
                 properties->addProductionControl(Well::ProducerCMode::GRUP);
             }
 
-            auto table_nr = record.getItem("VFP_TABLE").get< int >(0);
+            auto table_nr = record.getItem("VFP_TABLE").get< long long >(0);
             if (table_nr != 0) {
                 const auto& vfpprod = handlerContext.state().vfpprod;
                 if (vfpprod.has(table_nr)) {
@@ -520,7 +520,7 @@ void handleWELSPECS(HandlerContext& handlerContext)
 
     auto fieldWells = std::vector<std::string>{};
     for (const auto& record : handlerContext.keyword) {
-        if (const auto fip_region_number = record.getItem<Kw::FIP_REGION>().get<int>(0);
+        if (const auto fip_region_number = record.getItem<Kw::FIP_REGION>().get<long long>(0);
             fip_region_number != Kw::FIP_REGION::defaultValue)
         {
             const auto& location = handlerContext.keyword.location();
@@ -878,7 +878,7 @@ void handleWTEST(HandlerContext& handlerContext)
 
         const double test_interval = record.getItem("INTERVAL").getSIDouble(0);
         const std::string& reasons = record.getItem("REASON").get<std::string>(0);
-        const int num_test = record.getItem("TEST_NUM").get<int>(0);
+        const long long num_test = record.getItem("TEST_NUM").get<long long>(0);
         const double startup_time = record.getItem("START_TIME").getSIDouble(0);
 
         for (const auto& well_name : well_names) {

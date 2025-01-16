@@ -63,9 +63,9 @@ namespace {
     {
     public:
         using Connections = std::vector<Opm::Aquancon::AquancCell>;
-        using AllConnections = std::unordered_map<int, Connections>;
+        using AllConnections = std::unordered_map<long long, Connections>;
 
-        void addConnection(const int                   aquiferID,
+        void addConnection(const long long                   aquiferID,
                            const std::size_t           cartesianCell,
                            const double                influxCoefficient,
                            const double                effectiveFaceArea,
@@ -485,7 +485,7 @@ END
     {
         auto grid = Opm::EclipseGrid { 20, 5, 10, 5.0, 4.0, 0.2 };
 
-        auto actnum = std::vector<int>(grid.getCartesianSize(), 1);
+        auto actnum = std::vector<long long>(grid.getCartesianSize(), 1);
 
         actnum[grid.getGlobalIndex( 1, 1, 1)] = 0;
         actnum[grid.getGlobalIndex( 2, 1, 1)] = 0;
@@ -707,7 +707,7 @@ AQUANCON
             const auto numCells = aquNum.numCells();
 
             auto& aquifer = aquiferValues[aquiferID];
-            aquifer.aquiferID = static_cast<int>(aquiferID);
+            aquifer.aquiferID = static_cast<long long>(aquiferID);
 
             auto* aquNumData = aquifer.typeData.create<Opm::data::AquiferType::Numerical>();
             aquNumData->initPressure.reserve(numCells);
@@ -803,7 +803,7 @@ BOOST_AUTO_TEST_CASE(Static_Information_Analytic_Aquifers)
 
     // ICAQ:1
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             20,  5,  7, 993,   1,   0, 0,
             // Connection 1
@@ -839,7 +839,7 @@ BOOST_AUTO_TEST_CASE(Static_Information_Analytic_Aquifers)
 
     // ICAQ:2
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             20,  1,  7, 955,   4,   0, 0,
             // Connection 1 (nonexistent)
@@ -875,7 +875,7 @@ BOOST_AUTO_TEST_CASE(Static_Information_Analytic_Aquifers)
 
     // ICAQ:3
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             1, 5,  7, 47, 4, 0, 0,
             // Connection 1
@@ -911,7 +911,7 @@ BOOST_AUTO_TEST_CASE(Static_Information_Analytic_Aquifers)
 
     // ICAQ:4
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             20,  1,  5, 953,   6,   0, 0,
             // Connection 1 (nonexistent)
@@ -947,7 +947,7 @@ BOOST_AUTO_TEST_CASE(Static_Information_Analytic_Aquifers)
 
     // ICAQ:5
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             11, 5, 5, 543, 2, 0, 0,
             // Connection 1 (nonexistent)
@@ -983,7 +983,7 @@ BOOST_AUTO_TEST_CASE(Static_Information_Analytic_Aquifers)
 
     // ICAQ:6
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             20,  4,  6, 982,   2,   0, 0,
             // Connection 1 (nonexistent)
@@ -1034,7 +1034,7 @@ BOOST_AUTO_TEST_CASE(Dynamic_Information_Analytic_Aquifers)
 
     // IAAQ
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Aquifer 1
             3, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
             // Aquifer 2
@@ -1150,7 +1150,7 @@ BOOST_AUTO_TEST_CASE(Dynamic_Information_Numeric_Aquifers)
 
     // IAQN
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             1,  1, 1, 1,  1, 1, 0, 0, 0, 0, //  0.. 9 (record 0)
             1,  2, 1, 1,  1, 3, 0, 0, 0, 0, // 10..19 (record 1)
             1,  3, 1, 1,  2, 1, 0, 0, 0, 0, // 20..29 (record 2)
@@ -1203,7 +1203,7 @@ BOOST_AUTO_TEST_CASE(Constant_Flux_Aquifer_SCHEDULE)
 
     // ICAQ:1
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             20,  5,  7, 993,   1,   0, 0,
             // Connection 1
@@ -1239,7 +1239,7 @@ BOOST_AUTO_TEST_CASE(Constant_Flux_Aquifer_SCHEDULE)
 
     // ICAQ:2
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             20,  1,  7, 955,   4,   0, 0,
             // Connection 1 (nonexistent)
@@ -1275,7 +1275,7 @@ BOOST_AUTO_TEST_CASE(Constant_Flux_Aquifer_SCHEDULE)
 
     // ICAQ:3
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             1, 5,  7, 47, 4, 0, 0,
             // Connection 1
@@ -1311,7 +1311,7 @@ BOOST_AUTO_TEST_CASE(Constant_Flux_Aquifer_SCHEDULE)
 
     // ICAQ:4
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             20,  1,  5, 953,   6,   0, 0,
             // Connection 1 (nonexistent)
@@ -1347,7 +1347,7 @@ BOOST_AUTO_TEST_CASE(Constant_Flux_Aquifer_SCHEDULE)
 
     // ICAQ:5
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             11, 5, 5, 543, 2, 0, 0,
             // Connection 1 (nonexistent)
@@ -1383,7 +1383,7 @@ BOOST_AUTO_TEST_CASE(Constant_Flux_Aquifer_SCHEDULE)
 
     // ICAQ:6
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Connection 0
             20,  4,  6, 982,   2,   0, 0,
             // Connection 1 (nonexistent)
@@ -1419,7 +1419,7 @@ BOOST_AUTO_TEST_CASE(Constant_Flux_Aquifer_SCHEDULE)
 
     // IAAQ
     {
-        const auto expect = std::vector<int> {
+        const auto expect = std::vector<long long> {
             // Aquifer 1 (nonexistent)
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             // Aquifer 2 (nonexistent)

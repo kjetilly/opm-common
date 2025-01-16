@@ -45,8 +45,8 @@ namespace BinaryCoeff {
 template<class Scalar, class H2O, class CO2, bool verbose = true>
 class Brine_CO2 {
     typedef ::Opm::IdealGas<Scalar> IdealGas;
-    static const int liquidPhaseIdx = 0; // index of the liquid phase
-    static const int gasPhaseIdx = 1; // index of the gas phase
+    static const long long liquidPhaseIdx = 0; // index of the liquid phase
+    static const long long gasPhaseIdx = 1; // index of the gas phase
 
 public:
     /*!
@@ -102,10 +102,10 @@ public:
                                        const Evaluation& temperature,
                                        const Evaluation& pg,
                                        const Evaluation& salinity,
-                                       const int knownPhaseIdx,
+                                       const long long knownPhaseIdx,
                                        Evaluation& xlCO2,
                                        Evaluation& ygH2O,
-                                       const int& activityModel,
+                                       const long long& activityModel,
                                        bool extrapolate = false)
     {
         OPM_TIMEFUNCTION_LOCAL();
@@ -557,7 +557,7 @@ private:
                                                                      const Evaluation& temperature, 
                                                                      const Evaluation& pg,
                                                                      const Evaluation& m_NaCl,
-                                                                     const int& activityModel,
+                                                                     const long long& activityModel,
                                                                      bool extrapolate = false)
     {
         OPM_TIMEFUNCTION_LOCAL();
@@ -572,7 +572,7 @@ private:
         }
         
         // Options
-        int max_iter = 100;
+        long long max_iter = 100;
         Scalar tol = 1e-8;
         bool highTemp = true;
         if (activityModel == 1) {
@@ -581,7 +581,7 @@ private:
         const bool iterate = true;
 
         // Fixed-point loop x_i+1 = F(x_i)
-        for (int i = 0; i < max_iter; ++i) {
+        for (long long i = 0; i < max_iter; ++i) {
             // Calculate activity coefficient for Rumpf et al (1994) model
             if (m_NaCl > 0.0 && activityModel == 1) {
                 gammaNaCl = activityCoefficientSalt_(temperature, pg, m_NaCl, xCO2, activityModel);
@@ -616,7 +616,7 @@ private:
                                                                 const Evaluation& temperature, 
                                                                 const Evaluation& pg,
                                                                 const Evaluation& m_NaCl,
-                                                                const int& activityModel,
+                                                                const long long& activityModel,
                                                                 bool extrapolate = false)
     {
         // Calculate activity coefficient for salt
@@ -797,7 +797,7 @@ private:
                                                const Evaluation& pg, 
                                                const Evaluation& m_NaCl,
                                                const Evaluation& xCO2,
-                                               const int& activityModel)
+                                               const long long& activityModel)
     {
         OPM_TIMEFUNCTION_LOCAL();   
 	    // Lambda and xi parameter for either Rumpf et al (1994) (activityModel = 1) or Duan-Sun as modified by Spycher

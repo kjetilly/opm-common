@@ -25,7 +25,7 @@
 namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems {
 
     namespace TabDims {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             // Number of elements in 'TAB' array
             TabSize           = 0,
 

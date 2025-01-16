@@ -47,7 +47,7 @@ FoamData::FoamData(const DeckRecord& FOAMFSC_record, const DeckRecord& FOAMROCK_
     , rock_density_(FOAMROCK_record.getItem(1).getSIDouble(0))
 {
     // Check validity of adsorption index and set allow_desorption_ member.
-    const int ads_ind = FOAMROCK_record.getItem(0).get<int>(0);
+    const long long ads_ind = FOAMROCK_record.getItem(0).get<long long>(0);
     if (ads_ind < 1 || ads_ind > 2) {
         throw std::runtime_error("Illegal adsorption index in FOAMROCK, must be 1 or 2.");
     }
@@ -62,7 +62,7 @@ FoamData::FoamData(const DeckRecord& FOAMROCK_record)
     , rock_density_(FOAMROCK_record.getItem(1).getSIDouble(0))
 {
     // Check validity of adsorption index and set allow_desorption_ member.
-    const int ads_ind = FOAMROCK_record.getItem(0).get<int>(0);
+    const long long ads_ind = FOAMROCK_record.getItem(0).get<long long>(0);
     if (ads_ind < 1 || ads_ind > 2) {
         throw std::runtime_error("Illegal adsorption index in FOAMROCK, must be 1 or 2.");
     }
@@ -151,8 +151,8 @@ FoamConfig::FoamConfig(const Deck& deck)
         if (kw_foamfsc.size() != kw_foamrock.size()) {
             throw std::runtime_error("FOAMFSC and FOAMROCK keywords have different number of records.");
         }
-        const int num_records = kw_foamfsc.size();
-        for (int record_index = 0; record_index < num_records; ++record_index) {
+        const long long num_records = kw_foamfsc.size();
+        for (long long record_index = 0; record_index < num_records; ++record_index) {
             this->data_.emplace_back(kw_foamfsc.getRecord(record_index), kw_foamrock.getRecord(record_index));
         }
     } else if (deck.hasKeyword<ParserKeywords::FOAMROCK>()) {

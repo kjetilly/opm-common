@@ -48,7 +48,7 @@
 
 namespace {
 
-[[maybe_unused]] std::string as_string(int value) {
+[[maybe_unused]] std::string as_string(long long value) {
     return std::to_string(value);
 }
 
@@ -349,8 +349,8 @@ namespace Opm {
         double max_next_tstep(const bool enableTUNING = false) const;
 
         void init_nupcol(Nupcol nupcol);
-        void update_nupcol(int nupcol);
-        int nupcol() const;
+        void update_nupcol(long long nupcol);
+        long long nupcol() const;
 
         void update_oilvap(OilVaporizationProperties oilvap);
         const OilVaporizationProperties& oilvap() const;
@@ -498,12 +498,12 @@ namespace Opm {
                 static_assert(always_false2::value, "Template type <K,T> not supported in get_map()");
         }
 
-        map_member<int, VFPProdTable> vfpprod;
-        map_member<int, VFPInjTable> vfpinj;
+        map_member<long long, VFPProdTable> vfpprod;
+        map_member<long long, VFPInjTable> vfpinj;
         map_member<std::string, Group> groups;
         map_member<std::string, Well> wells;
         // constant flux aquifers
-        std::unordered_map<int, SingleAquiferFlux> aqufluxs;
+        std::unordered_map<long long, SingleAquiferFlux> aqufluxs;
         BCProp bcprop;
         std::unordered_map<std::string, double> target_wellpi;
         std::optional<NextStep> next_tstep;

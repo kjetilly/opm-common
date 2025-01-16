@@ -68,15 +68,15 @@ private:
     std::vector<std::string>
     candidateWells(const std::vector<std::string>& allWells) const;
 
-    std::vector<int>
+    std::vector<long long>
     matchingSegments(const std::string&        well,
-                     const std::optional<int>& segmentNumber) const;
+                     const std::optional<long long>& segmentNumber) const;
 
-    std::vector<int>
+    std::vector<long long>
     matchingSegments(const std::string& well,
-                     const int          segmentNumber) const;
+                     const long long          segmentNumber) const;
 
-    std::vector<int> matchingSegments(const std::string& well) const;
+    std::vector<long long> matchingSegments(const std::string& well) const;
 };
 
 template <class AddWellSegments>
@@ -138,20 +138,20 @@ candidateWells(const std::vector<std::string>& allWells) const
     return candidates;
 }
 
-std::vector<int>
+std::vector<long long>
 Opm::SegmentMatcher::Impl::
 matchingSegments(const std::string&        well,
-                 const std::optional<int>& segmentNumber) const
+                 const std::optional<long long>& segmentNumber) const
 {
     return segmentNumber.has_value()
         ? this->matchingSegments(well, *segmentNumber)
         : this->matchingSegments(well);
 }
 
-std::vector<int>
+std::vector<long long>
 Opm::SegmentMatcher::Impl::
 matchingSegments(const std::string& wellname,
-                 const int          segmentNumber) const
+                 const long long          segmentNumber) const
 {
     const auto& well = this->mswInputData_.get().wells(wellname);
     assert (well.isMultiSegment());
@@ -167,11 +167,11 @@ matchingSegments(const std::string& wellname,
     return { segmentNumber };
 }
 
-std::vector<int>
+std::vector<long long>
 Opm::SegmentMatcher::Impl::matchingSegments(const std::string& wellname) const
 {
     // No specific segment number => All segments match.
-    auto segments = std::vector<int>{};
+    auto segments = std::vector<long long>{};
 
     const auto& well = this->mswInputData_.get().wells(wellname);
     assert (well.isMultiSegment());
@@ -216,7 +216,7 @@ namespace {
 } // Anonymous namespace
 
 Opm::SegmentMatcher::SetDescriptor&
-Opm::SegmentMatcher::SetDescriptor::segmentNumber(const int segNum)
+Opm::SegmentMatcher::SetDescriptor::segmentNumber(const long long segNum)
 {
     if (segNum <= 0) {
         // No specific segment number
@@ -286,7 +286,7 @@ Opm::SegmentSet::wells() const
     auto wellset = std::vector<std::string_view>{};
     wellset.reserve(this->wells_.size());
 
-    auto ix = std::vector<std::vector<int>::size_type>::size_type{0};
+    auto ix = std::vector<std::vector<long long>::size_type>::size_type{0};
     for (const auto& well : this->wells_) {
         if (this->segmentStart_[ix] != this->segmentStart_[ix + 1]) {
             wellset.emplace_back(well);
@@ -356,7 +356,7 @@ void Opm::SegmentSet::establishNameLookupIndex()
 }
 
 void Opm::SegmentSet::addWellSegments(const std::string&      well,
-                                      const std::vector<int>& segments)
+                                      const std::vector<long long>& segments)
 {
     assert (! segments.empty());
 
@@ -393,7 +393,7 @@ Opm::SegmentMatcher::findSegments(const SetDescriptor& segments) const
     auto segSet = this->pImpl_->
         findSegments(segments,
                      [](const std::string&      well,
-                        const std::vector<int>& well_segments,
+                        const std::vector<long long>& well_segments,
                         SegmentSet&             seg_set)
                      {
                          seg_set.addWellSegments(well, well_segments);

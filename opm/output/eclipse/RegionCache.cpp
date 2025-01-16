@@ -53,7 +53,7 @@ void Opm::out::RegionCache::buildCache(const std::set<std::string>& fip_regions,
         return;
     }
 
-    auto regions = std::vector<std::reference_wrapper<const std::vector<int>>>{};
+    auto regions = std::vector<std::reference_wrapper<const std::vector<long long>>>{};
     std::transform(fip_regions.begin(), fip_regions.end(),
                    std::back_inserter(regions),
                    [&fp](const auto& fipReg)
@@ -95,7 +95,7 @@ void Opm::out::RegionCache::buildCache(const std::set<std::string>& fip_regions,
 
 const std::vector<std::pair<std::string, std::size_t>>&
 Opm::out::RegionCache::connections(const std::string& region_name,
-                                   const int          region_id) const
+                                   const long long          region_id) const
 {
     const auto key = std::make_pair(region_name, region_id);
     auto iter = this->connection_map.find(key);
@@ -107,7 +107,7 @@ Opm::out::RegionCache::connections(const std::string& region_name,
 
 std::vector<std::string>
 Opm::out::RegionCache::wells(const std::string& region_name,
-                             const int          region_id) const
+                             const long long          region_id) const
 {
     const auto key = std::make_pair(region_name, region_id);
     auto iter = this->well_map.find(key);

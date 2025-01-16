@@ -166,8 +166,8 @@ namespace Opm { namespace satfunc {
                              const Phases& phases,
                              const RawTableEndPoints& ep,
                              const std::vector<double>& cell_depth,
-                             const std::vector<int>& num,
-                             const std::vector<int>& endnum);
+                             const std::vector<long long>& num,
+                             const std::vector<long long>& endnum);
 
 }} // namespace Opm::satfunc
 

@@ -108,7 +108,7 @@ namespace Opm {
         } else
             this->dropInjectionControl(InjectorCMode::RESV);
 
-        this->VFPTableNumber = record.getItem("VFP_TABLE").get< int >(0);
+        this->VFPTableNumber = record.getItem("VFP_TABLE").get< long long >(0);
 
         if (!record.getItem("THP").defaultApplied(0)) {
             this->THPTarget = record.getItem("THP").get<UDAValue>(0);
@@ -187,7 +187,7 @@ namespace Opm {
         else if (cmode == WELTARGCMode::THP)
             this->THPTarget.update_value( new_arg );
         else if (cmode == WELTARGCMode::VFP)
-            this->VFPTableNumber = static_cast<int>(new_arg.get<double>());
+            this->VFPTableNumber = static_cast<long long>(new_arg.get<double>());
         else if (cmode == WELTARGCMode::RESV)
             this->reservoirInjectionRate.update_value( new_arg );
         else if (cmode != WELTARGCMode::GUID)
@@ -197,7 +197,7 @@ namespace Opm {
 
     void
     Well::WellInjectionProperties::handleWCONINJH(const DeckRecord& record,
-                                                  const int vfp_table_nr,
+                                                  const long long vfp_table_nr,
                                                   const double bhp_def,
                                                   const bool is_producer,
                                                   const std::string& well_name,
@@ -349,7 +349,7 @@ namespace Opm {
     }
 
     bool Well::WellInjectionProperties::updateUDQActive(const UDQConfig& udq_config, UDQActive& active) const {
-        int update_count = 0;
+        long long update_count = 0;
 
         update_count += active.update(udq_config, this->surfaceInjectionRate, this->name, UDAControl::WCONINJE_RATE);
         update_count += active.update(udq_config, this->reservoirInjectionRate, this->name, UDAControl::WCONINJE_RESV);

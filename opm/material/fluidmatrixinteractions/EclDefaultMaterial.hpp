@@ -90,10 +90,10 @@ public:
     using Params = ParamsT;
     using Scalar = typename Traits::Scalar;
 
-    static constexpr int numPhases = 3;
-    static constexpr int waterPhaseIdx = Traits::wettingPhaseIdx;
-    static constexpr int oilPhaseIdx = Traits::nonWettingPhaseIdx;
-    static constexpr int gasPhaseIdx = Traits::gasPhaseIdx;
+    static constexpr long long numPhases = 3;
+    static constexpr long long waterPhaseIdx = Traits::wettingPhaseIdx;
+    static constexpr long long oilPhaseIdx = Traits::nonWettingPhaseIdx;
+    static constexpr long long gasPhaseIdx = Traits::gasPhaseIdx;
 
     //! Specify whether this material law implements the two-phase
     //! convenience API
@@ -472,7 +472,7 @@ public:
     }
 
     template <class FluidState>
-    static Scalar clampSaturation(const FluidState& fluidState, const int phaseIndex)
+    static Scalar clampSaturation(const FluidState& fluidState, const long long phaseIndex)
     {
         OPM_TIMEFUNCTION_LOCAL();
         const auto sat = scalarValue(fluidState.saturation(phaseIndex));

@@ -70,7 +70,7 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numPhases
-    static const int numPhases = 1;
+    static const long long numPhases = 1;
 
     //! \copydoc BaseFluidSystem::phaseName
     static std::string_view phaseName([[maybe_unused]] unsigned phaseIdx)
@@ -120,7 +120,7 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numComponents
-    static const int numComponents = 1;
+    static const long long numComponents = 1;
 
     //! \copydoc BaseFluidSystem::componentName
     static std::string_view componentName([[maybe_unused]] unsigned compIdx)

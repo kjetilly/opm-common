@@ -51,7 +51,7 @@ namespace Opm { namespace EclIO {
     operator<<(std::ostream& os, const EclFile::EclEntry& e)
     {
         os << "{ " << std::get<0>(e)
-           << ", " << static_cast<int>(std::get<1>(e))
+           << ", " << static_cast<long long>(std::get<1>(e))
            << ", " << std::get<2>(e)
            << " }";
 
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
             rset, fmt
         };
 
-        init.write("I", std::vector<int>   {1, 7, 2, 9});
+        init.write("I", std::vector<long long>   {1, 7, 2, 9});
         init.write("L", std::vector<bool>  {true, false, false, true});
         init.write("S", std::vector<float> {3.1f, 4.1f, 59.265f});
         init.write("D", std::vector<double>{2.71, 8.21});
@@ -204,8 +204,8 @@ BOOST_AUTO_TEST_CASE(Unformatted)
         init.loadData();
 
         {
-            const auto& I = init.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = init.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -247,7 +247,7 @@ BOOST_AUTO_TEST_CASE(Unformatted)
             rset, fmt
         };
 
-        init.write("I2", std::vector<int>   {1, 2, 3, 4, 5, 6});
+        init.write("I2", std::vector<long long>   {1, 2, 3, 4, 5, 6});
         init.write("L2", std::vector<bool>  {false, false, true, true});
         init.write("S2", std::vector<float> {-1.0f, 2.0f, -3.0e-4f});
         init.write("D2", std::vector<double>{2.71, 8.21, 18.28459});
@@ -286,8 +286,8 @@ BOOST_AUTO_TEST_CASE(Unformatted)
         init.loadData();
 
         {
-            const auto& I = init.get<int>("I2");
-            const auto  expect_I = std::vector<int>{ 1, 2, 3, 4, 5, 6 };
+            const auto& I = init.get<long long>("I2");
+            const auto  expect_I = std::vector<long long>{ 1, 2, 3, 4, 5, 6 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -334,7 +334,7 @@ BOOST_AUTO_TEST_CASE(Formatted)
             rset, fmt
         };
 
-        init.write("I", std::vector<int>   {1, 7, 2, 9});
+        init.write("I", std::vector<long long>   {1, 7, 2, 9});
         init.write("L", std::vector<bool>  {true, false, false, true});
         init.write("S", std::vector<float> {3.1f, 4.1f, 59.265f});
         init.write("D", std::vector<double>{2.71, 8.21});
@@ -368,8 +368,8 @@ BOOST_AUTO_TEST_CASE(Formatted)
         init.loadData();
 
         {
-            const auto& I = init.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = init.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -412,7 +412,7 @@ BOOST_AUTO_TEST_CASE(Formatted)
             rset, fmt
         };
 
-        init.write("I2", std::vector<int>   {1, 2, 3, 4, 5, 6});
+        init.write("I2", std::vector<long long>   {1, 2, 3, 4, 5, 6});
         init.write("L2", std::vector<bool>  {false, false, true, true});
         init.write("S2", std::vector<float> {-1.0f, 2.0f, -3.0e-4f});
         init.write("D2", std::vector<double>{2.71, 8.21, 18.28459});
@@ -451,8 +451,8 @@ BOOST_AUTO_TEST_CASE(Formatted)
         init.loadData();
 
         {
-            const auto& I = init.get<int>("I2");
-            const auto  expect_I = std::vector<int>{ 1, 2, 3, 4, 5, 6 };
+            const auto& I = init.get<long long>("I2");
+            const auto  expect_I = std::vector<long long>{ 1, 2, 3, 4, 5, 6 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -507,7 +507,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {1, 7, 2, 9});
+        rst.write("I", std::vector<long long>        {1, 7, 2, 9});
         rst.write("L", std::vector<bool>       {true, false, false, true});
         rst.write("S", std::vector<float>      {3.1f, 4.1f, 59.265f});
         rst.write("D", std::vector<double>     {2.71, 8.21});
@@ -520,7 +520,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {35, 51, 13});
+        rst.write("I", std::vector<long long>        {35, 51, 13});
         rst.write("L", std::vector<bool>       {true, true, true, false});
         rst.write("S", std::vector<float>      {17.29e-02f, 1.4142f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180, 123.45e6});
@@ -538,7 +538,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
 
         {
             const auto seqnum        = rst.listOfReportStepNumbers();
-            const auto expect_seqnum = std::vector<int>{1, 13};
+            const auto expect_seqnum = std::vector<long long>{1, 13};
 
             BOOST_CHECK_EQUAL_COLLECTIONS(seqnum.begin(), seqnum.end(),
                                           expect_seqnum.begin(),
@@ -564,8 +564,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
         rst.loadReportStepNumber(13);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 13, 0);
-            const auto  expect_I = std::vector<int>{ 35, 51, 13};
+            const auto& I = rst.getRestartData<long long>("I", 13, 0);
+            const auto  expect_I = std::vector<long long>{ 35, 51, 13};
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -618,7 +618,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {1, 2, 3, 4});
+        rst.write("I", std::vector<long long>        {1, 2, 3, 4});
         rst.write("L", std::vector<bool>       {false, false, false, true});
         rst.write("S", std::vector<float>      {1.23e-04f, 1.234e5f, -5.4321e-9f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180});
@@ -637,7 +637,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
 
         {
             const auto seqnum        = rst.listOfReportStepNumbers();
-            const auto expect_seqnum = std::vector<int>{1, 5};
+            const auto expect_seqnum = std::vector<long long>{1, 5};
 
             BOOST_CHECK_EQUAL_COLLECTIONS(seqnum.begin(), seqnum.end(),
                                           expect_seqnum.begin(),
@@ -663,8 +663,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
         rst.loadReportStepNumber(5);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 5, 0);
-            const auto  expect_I = std::vector<int>{ 1, 2, 3, 4 };
+            const auto& I = rst.getRestartData<long long>("I", 5, 0);
+            const auto  expect_I = std::vector<long long>{ 1, 2, 3, 4 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -717,7 +717,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {35, 51, 13});
+        rst.write("I", std::vector<long long>        {35, 51, 13});
         rst.write("L", std::vector<bool>       {true, true, true, false});
         rst.write("S", std::vector<float>      {17.29e-02f, 1.4142f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180, 123.45e6});
@@ -736,7 +736,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
 
         {
             const auto seqnum        = rst.listOfReportStepNumbers();
-            const auto expect_seqnum = std::vector<int>{1, 5, 13};
+            const auto expect_seqnum = std::vector<long long>{1, 5, 13};
 
             BOOST_CHECK_EQUAL_COLLECTIONS(seqnum.begin(), seqnum.end(),
                                           expect_seqnum.begin(),
@@ -762,8 +762,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Unified)
         rst.loadReportStepNumber(13);
 
         {
-            const auto& I = rst.getRestartData<int>("I", 13, 0);
-            const auto  expect_I = std::vector<int>{ 35, 51, 13};
+            const auto& I = rst.getRestartData<long long>("I", 13, 0);
+            const auto  expect_I = std::vector<long long>{ 35, 51, 13};
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -823,7 +823,7 @@ BOOST_AUTO_TEST_CASE(Formatted_Separate)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {1, 7, 2, 9});
+        rst.write("I", std::vector<long long>        {1, 7, 2, 9});
         rst.write("L", std::vector<bool>       {true, false, false, true});
         rst.write("S", std::vector<float>      {3.1f, 4.1f, 59.265f});
         rst.write("D", std::vector<double>     {2.71, 8.21});
@@ -836,7 +836,7 @@ BOOST_AUTO_TEST_CASE(Formatted_Separate)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {35, 51, 13});
+        rst.write("I", std::vector<long long>        {35, 51, 13});
         rst.write("L", std::vector<bool>       {true, true, true, false});
         rst.write("S", std::vector<float>      {17.29e-02f, 1.4142f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180, 123.45e6});
@@ -870,8 +870,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Separate)
         rst.loadData();
 
         {
-            const auto& I = rst.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 35, 51, 13 };
+            const auto& I = rst.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 35, 51, 13 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -925,7 +925,7 @@ BOOST_AUTO_TEST_CASE(Formatted_Separate)
             rset, seqnum, fmt, unif
         };
 
-        rst.write("I", std::vector<int>        {1, 2, 3, 4});
+        rst.write("I", std::vector<long long>        {1, 2, 3, 4});
         rst.write("L", std::vector<bool>       {false, false, false, true});
         rst.write("S", std::vector<float>      {1.23e-04f, 1.234e5f, -5.4321e-9f});
         rst.write("D", std::vector<double>     {0.6931, 1.6180});
@@ -959,8 +959,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Separate)
         rst.loadData();
 
         {
-            const auto& I = rst.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 2, 3, 4 };
+            const auto& I = rst.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 2, 3, 4 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1038,8 +1038,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Separate)
         rst.loadData();
 
         {
-            const auto& I = rst.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 35, 51, 13 };
+            const auto& I = rst.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 35, 51, 13 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1106,7 +1106,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_New)
             rset, fmt, exist
         };
 
-        rft.write("I", std::vector<int>   {1, 7, 2, 9});
+        rft.write("I", std::vector<long long>   {1, 7, 2, 9});
         rft.write("S", std::vector<float> {3.1f, 4.1f, 59.265f});
         rft.write("Z", std::vector<Char8> {
             Char8{"  Hello "}, Char8{" World "}
@@ -1140,8 +1140,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_New)
         rft.loadData();
 
         {
-            const auto& I = rft.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = rft.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1172,7 +1172,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_New)
             rset, fmt, exist
         };
 
-        rft.write("I2", std::vector<int>   {11, 22, 33});
+        rft.write("I2", std::vector<long long>   {11, 22, 33});
         rft.write("S2", std::vector<float> {2.71f, 828.1f, 8.218f});
         rft.write("Z2", std::vector<Char8> {
             Char8{"Good B"}, Char8{" ye"}, Char8{ "W0rlD" },
@@ -1209,8 +1209,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_New)
         rft.loadData();
 
         {
-            const auto& I = rft.get<int>("I2");
-            const auto  expect_I = std::vector<int>{ 11, 22, 33 };
+            const auto& I = rft.get<long long>("I2");
+            const auto  expect_I = std::vector<long long>{ 11, 22, 33 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1250,7 +1250,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Existing)
             rset, fmt, exist
         };
 
-        rft.write("I", std::vector<int>   {1, 7, 2, 9});
+        rft.write("I", std::vector<long long>   {1, 7, 2, 9});
         rft.write("S", std::vector<float> {3.1f, 4.1f, 59.265f});
         rft.write("Z", std::vector<Char8> {
             Char8{"  Hello "}, Char8{" World "}
@@ -1285,8 +1285,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Existing)
         rft.loadData();
 
         {
-            const auto& I = rft.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = rft.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1317,7 +1317,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Existing)
             rset, fmt, exist
         };
 
-        rft.write("I2", std::vector<int>   {11, 22, 33});
+        rft.write("I2", std::vector<long long>   {11, 22, 33});
         rft.write("S2", std::vector<float> {2.71f, 828.1f, 8.218f});
         rft.write("Z2", std::vector<Char8> {
             Char8{"Good B"}, Char8{" ye"}, Char8{ "W0rlD" },
@@ -1358,8 +1358,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Existing)
         rft.loadData();
 
         {
-            const auto& I = rft.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = rft.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1384,8 +1384,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Existing)
                                           expect_Z.begin(), expect_Z.end());
         }
         {
-            const auto& I = rft.get<int>("I2");
-            const auto  expect_I = std::vector<int>{ 11, 22, 33 };
+            const auto& I = rft.get<long long>("I2");
+            const auto  expect_I = std::vector<long long>{ 11, 22, 33 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1425,7 +1425,7 @@ BOOST_AUTO_TEST_CASE(Formatted_New)
             rset, fmt, exist
         };
 
-        rft.write("I", std::vector<int>   {1, 7, 2, 9});
+        rft.write("I", std::vector<long long>   {1, 7, 2, 9});
         rft.write("S", std::vector<float> {3.1f, 4.1f, 59.265f});
         rft.write("Z", std::vector<Char8> {
             Char8{"  Hello "}, Char8{" World "}
@@ -1459,8 +1459,8 @@ BOOST_AUTO_TEST_CASE(Formatted_New)
         rft.loadData();
 
         {
-            const auto& I = rft.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = rft.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1491,7 +1491,7 @@ BOOST_AUTO_TEST_CASE(Formatted_New)
             rset, fmt, exist
         };
 
-        rft.write("I2", std::vector<int>   {11, 22, 33});
+        rft.write("I2", std::vector<long long>   {11, 22, 33});
         rft.write("S2", std::vector<float> {2.71f, 828.1f, 8.218f});
         rft.write("Z2", std::vector<Char8> {
             Char8{"Good B"}, Char8{" ye"}, Char8{ "W0rlD" },
@@ -1528,8 +1528,8 @@ BOOST_AUTO_TEST_CASE(Formatted_New)
         rft.loadData();
 
         {
-            const auto& I = rft.get<int>("I2");
-            const auto  expect_I = std::vector<int>{ 11, 22, 33 };
+            const auto& I = rft.get<long long>("I2");
+            const auto  expect_I = std::vector<long long>{ 11, 22, 33 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1569,7 +1569,7 @@ BOOST_AUTO_TEST_CASE(Formatted_Existing)
             rset, fmt, exist
         };
 
-        rft.write("I", std::vector<int>   {1, 7, 2, 9});
+        rft.write("I", std::vector<long long>   {1, 7, 2, 9});
         rft.write("S", std::vector<float> {3.1f, 4.1f, 59.265f});
         rft.write("Z", std::vector<Char8> {
             Char8{"  Hello "}, Char8{" World "}
@@ -1604,8 +1604,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Existing)
         rft.loadData();
 
         {
-            const auto& I = rft.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = rft.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1636,7 +1636,7 @@ BOOST_AUTO_TEST_CASE(Formatted_Existing)
             rset, fmt, exist
         };
 
-        rft.write("I2", std::vector<int>   {11, 22, 33});
+        rft.write("I2", std::vector<long long>   {11, 22, 33});
         rft.write("S2", std::vector<float> {2.71f, 828.1f, 8.218f});
         rft.write("Z2", std::vector<Char8> {
             Char8{"Good B"}, Char8{" ye"}, Char8{ "W0rlD" },
@@ -1677,8 +1677,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Existing)
         rft.loadData();
 
         {
-            const auto& I = rft.get<int>("I");
-            const auto  expect_I = std::vector<int>{ 1, 7, 2, 9 };
+            const auto& I = rft.get<long long>("I");
+            const auto  expect_I = std::vector<long long>{ 1, 7, 2, 9 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1703,8 +1703,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Existing)
                                           expect_Z.begin(), expect_Z.end());
         }
         {
-            const auto& I = rft.get<int>("I2");
-            const auto  expect_I = std::vector<int>{ 11, 22, 33 };
+            const auto& I = rft.get<long long>("I2");
+            const auto  expect_I = std::vector<long long>{ 11, 22, 33 };
             BOOST_CHECK_EQUAL_COLLECTIONS(I.begin(), I.end(),
                                           expect_I.begin(),
                                           expect_I.end());
@@ -1772,11 +1772,11 @@ namespace {
         return ":+:+:+:+";
     }
 
-    int noNum() { return 0; }
+    long long noNum() { return 0; }
 
     Opm::EclIO::OutputStream::SummarySpecification::StartTime
-    start(const int year, const int month, const int day,
-          const int hour, const int minute, const int second)
+    start(const long long year, const long long month, const long long day,
+          const long long hour, const long long minute, const long long second)
     {
         auto timepoint = std::tm {};
 
@@ -1830,7 +1830,7 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
 
     const auto rset = RSet("CASE");
     const auto fmt  = ::Opm::EclIO::OutputStream::Formatted{ false };
-    const auto cartDims = std::array<int,3>{ 46, 112, 22 }; // Norne dimensions
+    const auto cartDims = std::array<long long,3>{ 46, 112, 22 }; // Norne dimensions
 
     {
         using UConv = SMSpec::UnitConvention;
@@ -1884,16 +1884,16 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         smspec.loadData();
 
         {
-            const auto& Ih = smspec.get<int>("INTEHEAD");
-            const auto  expect = std::vector<int>{ 1, 100 };
+            const auto& Ih = smspec.get<long long>("INTEHEAD");
+            const auto  expect = std::vector<long long>{ 1, 100 };
             BOOST_CHECK_EQUAL_COLLECTIONS(Ih.begin(), Ih.end(),
                                           expect.begin(),
                                           expect.end());
         }
 
         {
-            const auto& D = smspec.get<int>("DIMENS");
-            const auto  expect = std::vector<int> {
+            const auto& D = smspec.get<long long>("DIMENS");
+            const auto  expect = std::vector<long long> {
                 4, 46, 112, 22, 0, -1
             };
 
@@ -1922,8 +1922,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         }
 
         {
-            const auto& N = smspec.get<int>("NUMS");
-            const auto  expect = std::vector<int> { 0, 0, 0, 523 };
+            const auto& N = smspec.get<long long>("NUMS");
+            const auto  expect = std::vector<long long> { 0, 0, 0, 523 };
 
             BOOST_CHECK_EQUAL_COLLECTIONS(N.begin(), N.end(),
                                           expect.begin(), expect.end());
@@ -1940,8 +1940,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         }
 
         {
-            const auto& S = smspec.get<int>("STARTDAT");
-            const auto  expect = std::vector<int> {
+            const auto& S = smspec.get<long long>("STARTDAT");
+            const auto  expect = std::vector<long long> {
                 1, 10, 2019, 12, 34,
                 56 * 1000 * 1000
             };
@@ -1990,16 +1990,16 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         smspec.loadData();
 
         {
-            const auto& Ih = smspec.get<int>("INTEHEAD");
-            const auto  expect = std::vector<int>{ 2, 100 };
+            const auto& Ih = smspec.get<long long>("INTEHEAD");
+            const auto  expect = std::vector<long long>{ 2, 100 };
             BOOST_CHECK_EQUAL_COLLECTIONS(Ih.begin(), Ih.end(),
                                           expect.begin(),
                                           expect.end());
         }
 
         {
-            const auto& D = smspec.get<int>("DIMENS");
-            const auto  expect = std::vector<int> {
+            const auto& D = smspec.get<long long>("DIMENS");
+            const auto  expect = std::vector<long long> {
                 4, 46, 112, 22, 0, -1
             };
 
@@ -2028,8 +2028,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         }
 
         {
-            const auto& N = smspec.get<int>("NUMS");
-            const auto  expect = std::vector<int> { 0, 0, 0, 523 };
+            const auto& N = smspec.get<long long>("NUMS");
+            const auto  expect = std::vector<long long> { 0, 0, 0, 523 };
 
             BOOST_CHECK_EQUAL_COLLECTIONS(N.begin(), N.end(),
                                           expect.begin(), expect.end());
@@ -2047,8 +2047,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         }
 
         {
-            const auto& S = smspec.get<int>("STARTDAT");
-            const auto  expect = std::vector<int> {
+            const auto& S = smspec.get<long long>("STARTDAT");
+            const auto  expect = std::vector<long long> {
                 1, 1, 1970, 0, 0, 0
             };
 
@@ -2096,16 +2096,16 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         smspec.loadData();
 
         {
-            const auto& Ih = smspec.get<int>("INTEHEAD");
-            const auto  expect = std::vector<int>{ 3, 100 };
+            const auto& Ih = smspec.get<long long>("INTEHEAD");
+            const auto  expect = std::vector<long long>{ 3, 100 };
             BOOST_CHECK_EQUAL_COLLECTIONS(Ih.begin(), Ih.end(),
                                           expect.begin(),
                                           expect.end());
         }
 
         {
-            const auto& D = smspec.get<int>("DIMENS");
-            const auto  expect = std::vector<int> {
+            const auto& D = smspec.get<long long>("DIMENS");
+            const auto  expect = std::vector<long long> {
                 4, 46, 112, 22, 0, -1
             };
 
@@ -2134,8 +2134,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         }
 
         {
-            const auto& N = smspec.get<int>("NUMS");
-            const auto  expect = std::vector<int> { 0, 0, 0, 523 };
+            const auto& N = smspec.get<long long>("NUMS");
+            const auto  expect = std::vector<long long> { 0, 0, 0, 523 };
 
             BOOST_CHECK_EQUAL_COLLECTIONS(N.begin(), N.end(),
                                           expect.begin(), expect.end());
@@ -2153,8 +2153,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         }
 
         {
-            const auto& S = smspec.get<int>("STARTDAT");
-            const auto  expect = std::vector<int> {
+            const auto& S = smspec.get<long long>("STARTDAT");
+            const auto  expect = std::vector<long long> {
                 24, 12, 2018, 17, 0, 0
             };
 
@@ -2202,16 +2202,16 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         smspec.loadData();
 
         {
-            const auto& Ih = smspec.get<int>("INTEHEAD");
-            const auto  expect = std::vector<int>{ 4, 100 };
+            const auto& Ih = smspec.get<long long>("INTEHEAD");
+            const auto  expect = std::vector<long long>{ 4, 100 };
             BOOST_CHECK_EQUAL_COLLECTIONS(Ih.begin(), Ih.end(),
                                           expect.begin(),
                                           expect.end());
         }
 
         {
-            const auto& D = smspec.get<int>("DIMENS");
-            const auto  expect = std::vector<int> {
+            const auto& D = smspec.get<long long>("DIMENS");
+            const auto  expect = std::vector<long long> {
                 4, 46, 112, 22, 0, -1
             };
 
@@ -2240,8 +2240,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         }
 
         {
-            const auto& N = smspec.get<int>("NUMS");
-            const auto  expect = std::vector<int> { 0, 0, 0, 523 };
+            const auto& N = smspec.get<long long>("NUMS");
+            const auto  expect = std::vector<long long> { 0, 0, 0, 523 };
 
             BOOST_CHECK_EQUAL_COLLECTIONS(N.begin(), N.end(),
                                           expect.begin(), expect.end());
@@ -2259,8 +2259,8 @@ BOOST_AUTO_TEST_CASE(Unformatted_Base)
         }
 
         {
-            const auto& S = smspec.get<int>("STARTDAT");
-            const auto  expect = std::vector<int> {
+            const auto& S = smspec.get<long long>("STARTDAT");
+            const auto  expect = std::vector<long long> {
                 1, 1, 1983, 1, 2, 3 * 1000 * 1000
             };
 
@@ -2276,7 +2276,7 @@ BOOST_AUTO_TEST_CASE(Formatted_Restarted)
 
     const auto rset = RSet("CASE");
     const auto fmt  = ::Opm::EclIO::OutputStream::Formatted{ true };
-    const auto cartDims = std::array<int,3>{ 46, 112, 22 }; // Norne dimensions
+    const auto cartDims = std::array<long long,3>{ 46, 112, 22 }; // Norne dimensions
 
     // === Restart root name too long =========================
     {
@@ -2344,8 +2344,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Restarted)
         smspec.loadData();
 
         {
-            const auto& Ih = smspec.get<int>("INTEHEAD");
-            const auto  expect = std::vector<int>{ 1, 100 };
+            const auto& Ih = smspec.get<long long>("INTEHEAD");
+            const auto  expect = std::vector<long long>{ 1, 100 };
             BOOST_CHECK_EQUAL_COLLECTIONS(Ih.begin(), Ih.end(),
                                           expect.begin(),
                                           expect.end());
@@ -2364,8 +2364,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Restarted)
         }
 
         {
-            const auto& D = smspec.get<int>("DIMENS");
-            const auto  expect = std::vector<int> {
+            const auto& D = smspec.get<long long>("DIMENS");
+            const auto  expect = std::vector<long long> {
                 4, 46, 112, 22, 0, 123
             };
 
@@ -2394,8 +2394,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Restarted)
         }
 
         {
-            const auto& N = smspec.get<int>("NUMS");
-            const auto  expect = std::vector<int> { 0, 0, 0, 523 };
+            const auto& N = smspec.get<long long>("NUMS");
+            const auto  expect = std::vector<long long> { 0, 0, 0, 523 };
 
             BOOST_CHECK_EQUAL_COLLECTIONS(N.begin(), N.end(),
                                           expect.begin(), expect.end());
@@ -2412,8 +2412,8 @@ BOOST_AUTO_TEST_CASE(Formatted_Restarted)
         }
 
         {
-            const auto& S = smspec.get<int>("STARTDAT");
-            const auto  expect = std::vector<int> {
+            const auto& S = smspec.get<long long>("STARTDAT");
+            const auto  expect = std::vector<long long> {
                 1, 10, 2019, 12, 34,
                 56 * 1000 * 1000
             };

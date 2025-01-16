@@ -48,7 +48,7 @@ namespace Opm{
         return result;
     }
 
-    int PolyInjTable::getTableNumber() const
+    long long PolyInjTable::getTableNumber() const
     {
         return m_table_number;
     }
@@ -93,7 +93,7 @@ namespace Opm{
 
         const DeckRecord& record0 = table.getRecord(0);
 
-        m_table_number = record0.getItem<PLYMWINJ::TABLE_NUMBER>().get< int >(0);
+        m_table_number = record0.getItem<PLYMWINJ::TABLE_NUMBER>().get< long long >(0);
         if (m_table_number <= 0) {
             const std::string msg = "PLYMWINJ table has non-positive table number " + std::to_string(m_table_number);
             throw std::invalid_argument(msg);
@@ -151,7 +151,7 @@ namespace Opm{
 
         const DeckRecord& record0 = table.getRecord(0);
 
-        m_table_number = record0.getItem<SKPRWAT::TABLE_NUMBER>().get< int >(0);
+        m_table_number = record0.getItem<SKPRWAT::TABLE_NUMBER>().get< long long >(0);
         if (m_table_number <= 0) {
             const std::string msg = "SKPRWAT table has non-positive table number " + std::to_string(m_table_number);
             throw std::invalid_argument(msg);
@@ -209,7 +209,7 @@ namespace Opm{
 
         const DeckRecord& record0 = table.getRecord(0);
 
-        m_table_number = record0.getItem<SKPRPOLY::TABLE_NUMBER>().get< int >(0);
+        m_table_number = record0.getItem<SKPRPOLY::TABLE_NUMBER>().get< long long >(0);
         if (m_table_number <= 0) {
             const std::string msg = "SKPRPOLY table has non-positive table number " + std::to_string(m_table_number);
             throw std::invalid_argument(msg);

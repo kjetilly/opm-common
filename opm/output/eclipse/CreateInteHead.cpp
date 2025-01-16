@@ -59,7 +59,7 @@
 namespace {
 
     using nph_enum = Opm::GuideRateModel::Target;
-    const std::map<nph_enum, int> nph_enumToECL = {
+    const std::map<nph_enum, long long> nph_enumToECL = {
         {nph_enum::NONE, 0},
         {nph_enum::OIL,  1},
         {nph_enum::GAS,  3},
@@ -69,7 +69,7 @@ namespace {
     };
 
     using prod_cmode = Opm::Well::ProducerCMode;
-    const std::map<prod_cmode, int> prod_cmodeToECL = {
+    const std::map<prod_cmode, long long> prod_cmodeToECL = {
         {prod_cmode::NONE,  0},
         {prod_cmode::ORAT,  1},
         {prod_cmode::WRAT,  2},
@@ -79,7 +79,7 @@ namespace {
         {prod_cmode::BHP,   7},
     };
 
-    int maxConnPerWell(const Opm::Schedule& sched,
+    long long maxConnPerWell(const Opm::Schedule& sched,
                        const std::size_t    report_step,
                        const std::size_t    lookup_step)
     {
@@ -91,13 +91,13 @@ namespace {
         for (const auto& well : sched.getWells(lookup_step)) {
             const auto ncw = well.getConnections().size();
 
-            ncwmax = std::max(ncwmax, static_cast<int>(ncw));
+            ncwmax = std::max(std::common_type<long long>::type(ncwmax), static_cast<long long>(ncw));
         }
 
         return ncwmax;
     }
 
-    int numGroupsInField(const Opm::Schedule& sched,
+    long long numGroupsInField(const Opm::Schedule& sched,
                          const std::size_t    lookup_step)
     {
         const auto ngmax = sched[lookup_step].groups.size();
@@ -112,11 +112,11 @@ namespace {
         return ngmax - 1;
     }
 
-    int GroupControl(const Opm::Schedule& sched,
+    long long GroupControl(const Opm::Schedule& sched,
                      const std::size_t    report_step,
                      const std::size_t    lookup_step)
     {
-        int gctrl = 0;
+        long long gctrl = 0;
         if (report_step == std::size_t{0}) {
             return gctrl;
         }
@@ -141,7 +141,7 @@ namespace {
         return gctrl;
     }
 
-    int noIuads(const Opm::Schedule& sched,
+    long long noIuads(const Opm::Schedule& sched,
                 const std::size_t    rptStep,
                 const std::size_t    simStep)
     {
@@ -149,11 +149,11 @@ namespace {
             return 0;
         }
 
-        return static_cast<int>
+        return static_cast<long long>
             (sched[simStep].udq_active().iuad().size());
     }
 
-    int noIuaps(const Opm::Schedule& sched,
+    long long noIuaps(const Opm::Schedule& sched,
                 const std::size_t    rptStep,
                 const std::size_t    simStep)
     {
@@ -165,7 +165,7 @@ namespace {
         const auto iuap = sched[simStep].udq_active().iuap();
 
         return std::accumulate(iuap.begin(), iuap.end(), 0,
-            [](const int n, const auto& rec)
+            [](const long long n, const auto& rec)
         {
             const auto kw = Opm::UDQ::keyword(rec.control);
 
@@ -176,11 +176,11 @@ namespace {
 
             // One IUAP entry for each "regular" UDA in WCON* or GCON*.  Two
             // IUAP entries for each field level UDA in GCON*.
-            return n + 1 + static_cast<int>(is_field_uda);
+            return n + 1 + static_cast<long long>(is_field_uda);
         });
     }
 
-    int numMultiSegWells(const ::Opm::Schedule& sched,
+    long long numMultiSegWells(const ::Opm::Schedule& sched,
                          const std::size_t      report_step,
                          const std::size_t      lookup_step)
     {
@@ -195,7 +195,7 @@ namespace {
         });
     }
 
-    int maxNumSegments(const ::Opm::Schedule& sched,
+    long long maxNumSegments(const ::Opm::Schedule& sched,
                        const std::size_t      report_step,
                        const std::size_t      lookup_step)
     {
@@ -204,14 +204,14 @@ namespace {
         const auto& wnames = sched.wellNames(lookup_step);
 
         return std::accumulate(std::begin(wnames), std::end(wnames), 0,
-            [&sched, lookup_step](const int m, const std::string& wname) -> int
+            [&sched, lookup_step](const long long m, const std::string& wname) -> long long
         {
             // maxSegmentID() returns 0 for standard (non-MS) wells.
             return std::max(m, sched.getWell(wname, lookup_step).maxSegmentID());
         });
     }
 
-    int maxNumLateralBranches(const ::Opm::Schedule& sched,
+    long long maxNumLateralBranches(const ::Opm::Schedule& sched,
                               const std::size_t      report_step,
                               const std::size_t      lookup_step)
     {
@@ -220,7 +220,7 @@ namespace {
         const auto& wnames = sched.wellNames(lookup_step);
 
         return std::accumulate(std::begin(wnames), std::end(wnames), 0,
-            [&sched, lookup_step](const int m, const std::string& wname) -> int
+            [&sched, lookup_step](const long long m, const std::string& wname) -> long long
         {
             // maxBranchID() returns 0 for standard (non-MS) wells.
             return std::max(m, sched.getWell(wname, lookup_step).maxBranchID());
@@ -228,8 +228,8 @@ namespace {
     }
 
     Opm::RestartIO::InteHEAD::WellTableDim
-    getWellTableDims(const int              nwgmax,
-                     const int              ngmax,
+    getWellTableDims(const long long              nwgmax,
+                     const long long              ngmax,
                      const ::Opm::Runspec&  rspec,
                      const ::Opm::Schedule& sched,
                      const std::size_t      report_step,
@@ -237,7 +237,7 @@ namespace {
     {
         const auto& wd = rspec.wellDimensions();
 
-        const auto numWells = static_cast<int>(sched.numWells(lookup_step));
+        const auto numWells = static_cast<long long>(sched.numWells(lookup_step));
 
         const auto maxPerf =
             std::max(wd.maxConnPerWell(),
@@ -262,10 +262,10 @@ namespace {
         };
     }
 
-    std::array<int, 4>
-    getNGRPZ(const int             grpsz,
-             const int             ngrp,
-             const int             num_water_tracer,
+    std::array<long long, 4>
+    getNGRPZ(const long long             grpsz,
+             const long long             ngrp,
+             const long long             num_water_tracer,
              const ::Opm::Runspec& rspec)
     {
         const auto& wd = rspec.wellDimensions();
@@ -273,10 +273,10 @@ namespace {
         const auto nwgmax = std::max(grpsz, wd.maxWellsPerGroup());
         const auto ngmax  = std::max(ngrp , wd.maxGroupsInField());
 
-        const int nigrpz = 97 + std::max(nwgmax, ngmax);
-        const int nsgrpz = 112;
-        const int nxgrpz = 180 + 4*num_water_tracer;
-        const int nzgrpz = 5;
+        const long long nigrpz = 97 + std::max(nwgmax, ngmax);
+        const long long nsgrpz = 112;
+        const long long nxgrpz = 180 + 4*num_water_tracer;
+        const long long nzgrpz = 5;
 
         return {{
             nigrpz,
@@ -351,16 +351,16 @@ namespace {
         const auto max_characters_per_line = rspec.actdims().max_characters();
         
         return {
-            static_cast<int>(no_act),
+            static_cast<long long>(no_act),
             max_lines_pr_action,
-            static_cast<int>(max_cond_per_action),
-            static_cast<int>(max_characters_per_line)
+            static_cast<long long>(max_cond_per_action),
+            static_cast<long long>(max_characters_per_line)
         };
     }
 
 
     Opm::RestartIO::InteHEAD::WellSegDims
-    getWellSegDims(const int              num_water_tracer,
+    getWellSegDims(const long long              num_water_tracer,
                    const ::Opm::Runspec&  rspec,
                    const ::Opm::Schedule& sched,
                    const std::size_t      report_step,
@@ -395,18 +395,18 @@ namespace {
         const auto nplmix = rdims.getNPLMIX();
 
         return {
-            static_cast<int>(ntfip),
-            static_cast<int>(nmfipr),
-            static_cast<int>(nrfreg),
-            static_cast<int>(ntfreg),
-            static_cast<int>(nplmix),
+            static_cast<long long>(ntfip),
+            static_cast<long long>(nmfipr),
+            static_cast<long long>(nrfreg),
+            static_cast<long long>(ntfreg),
+            static_cast<long long>(nplmix),
         };
     }
 
     Opm::RestartIO::InteHEAD::RockOpts
     getRockOpts(const ::Opm::RockConfig& rckCfg, const Opm::Regdims& reg_dims)
     {
-        int nttyp  = 1;   // Default value (PVTNUM)
+        long long nttyp  = 1;   // Default value (PVTNUM)
         if (rckCfg.rocknum_property() == "SATNUM") nttyp = 2;
         if (rckCfg.rocknum_property() == "ROCKNUM") nttyp = 4 + reg_dims.getNMFIPR();
 
@@ -420,7 +420,7 @@ namespace {
                                const std::size_t      report_step,
                                const std::size_t      lookup_step)
     {
-        int nom_phase = 0;
+        long long nom_phase = 0;
         if (report_step == std::size_t{0}) {
             return { nom_phase };
         }
@@ -444,11 +444,11 @@ namespace {
         return {nom_phase};
     }
 
-    int getWhistctlMode(const ::Opm::Schedule& sched,
+    long long getWhistctlMode(const ::Opm::Schedule& sched,
                         const std::size_t      report_step,
                         const std::size_t      lookup_step)
     {
-        int mode = 0;
+        long long mode = 0;
         if (report_step == std::size_t{0}) {
             return mode;
         }
@@ -462,7 +462,7 @@ namespace {
         return mode;
     }
 
-    int getLiftOptPar(const ::Opm::Schedule& sched,
+    long long getLiftOptPar(const ::Opm::Schedule& sched,
                       const std::size_t      report_step,
                       const std::size_t      lookup_step)
     {
@@ -498,18 +498,18 @@ namespace {
                   const std::size_t      lookup_step,
                   const ::Opm::Runspec& rspec)
     {
-        const int noactnod = sched[lookup_step].network().node_names().size();
-        const int noactbr  = sched[lookup_step].network().NoOfBranches();
-        const int nodmax = std::max(rspec.networkDimensions().maxNONodes(), sched[lookup_step].network().NoOfNodes());
-        const int nbrmax = std::max(rspec.networkDimensions().maxNoBranches(), sched[lookup_step].network().NoOfBranches());
+        const long long noactnod = sched[lookup_step].network().node_names().size();
+        const long long noactbr  = sched[lookup_step].network().NoOfBranches();
+        const long long nodmax = std::max(rspec.networkDimensions().maxNONodes(), sched[lookup_step].network().NoOfNodes());
+        const long long nbrmax = std::max(rspec.networkDimensions().maxNoBranches(), sched[lookup_step].network().NoOfBranches());
 
         //the following dimensions are fixed
-        const int nibran = 14;
-        const int nrbran = 11;
-        const int ninode = 10;
-        const int nrnode = 17;
-        const int nznode = 2;
-        const int ninobr = 2*nbrmax;
+        const long long nibran = 14;
+        const long long nrbran = 11;
+        const long long ninode = 10;
+        const long long nrnode = 17;
+        const long long nznode = 2;
+        const long long ninobr = 2*nbrmax;
 
         return {
             noactnod,
@@ -529,8 +529,8 @@ namespace {
     getNetworkBalanceParameters(const Opm::Schedule&   sched,
                   const std::size_t      report_step)
     {
-        int maxNoItNBC = 0;
-        int maxNoItTHP = 10;
+        long long maxNoItNBC = 0;
+        long long maxNoItTHP = 10;
         if (report_step > 0) {
             const auto& sched_state = sched[report_step];
             if (sched_state.network().active()) {
@@ -552,15 +552,15 @@ namespace {
 // Public Interface (createInteHead()) Below Separator
 // ---------------------------------------------------------------------
 
-std::vector<int>
+std::vector<long long>
 Opm::RestartIO::Helpers::
 createInteHead(const EclipseState& es,
                const EclipseGrid&  grid,
                const Schedule&     sched,
                const double        simTime,
-               const int           num_solver_steps,
-               const int           report_step,
-               const int           lookup_step)
+               const long long           num_solver_steps,
+               const long long           report_step,
+               const long long           lookup_step)
 {
     const auto nwgmax = (report_step == 0)
         ? 0 : maxGroupSize(sched, lookup_step);
@@ -574,11 +574,11 @@ createInteHead(const EclipseState& es,
     const auto& rdim  = tdim.getRegdims();
     const auto& rckcfg = es.getSimulationConfig().rock_config();
     auto num_water_tracer = es.runspec().tracers().water_tracers();
-    int nxwelz_tracer_shift = num_water_tracer*5 + 2 * (num_water_tracer > 0);
+    long long nxwelz_tracer_shift = num_water_tracer*5 + 2 * (num_water_tracer > 0);
 
     const auto ih = InteHEAD{}
         .dimensions         (grid.getNXYZ())
-        .numActive          (static_cast<int>(grid.getNumActive()))
+        .numActive          (static_cast<long long>(grid.getNumActive()))
         .unitConventions    (es.getDeckUnitSystem())
         .wellTableDimensions(getWellTableDims(nwgmax, ngmax, rspec, sched,
                                               report_step, lookup_step))

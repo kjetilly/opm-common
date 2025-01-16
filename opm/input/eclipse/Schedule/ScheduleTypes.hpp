@@ -37,7 +37,7 @@ InjectorType InjectorTypeFromString( const std::string& stringValue );
 
 class WellType {
 public:
-    WellType(int ecl_wtype, int welspecs_phase);
+    WellType(long long ecl_wtype, long long welspecs_phase);
     WellType(bool producer, Phase welspecs_phase);
     explicit WellType(Phase welspecs_phase);
     WellType() = default;
@@ -49,13 +49,13 @@ public:
     bool update(InjectorType injector_type);
     bool update(bool producer);
 
-    static bool oil_injector(int ecl_wtype);
-    static bool gas_injector(int ecl_wtype);
-    static bool water_injector(int ecl_wtype);
-    static bool producer(int ecl_wtype);
+    static bool oil_injector(long long ecl_wtype);
+    static bool gas_injector(long long ecl_wtype);
+    static bool water_injector(long long ecl_wtype);
+    static bool producer(long long ecl_wtype);
 
-    int   ecl_wtype() const;
-    int   ecl_phase() const;
+    long long   ecl_wtype() const;
+    long long   ecl_phase() const;
     Phase preferred_phase() const;
     InjectorType injector_type() const;
     Phase injection_phase() const;

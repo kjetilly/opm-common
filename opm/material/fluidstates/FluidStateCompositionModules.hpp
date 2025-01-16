@@ -52,8 +52,8 @@ class FluidStateExplicitCompositionModule
 public:
     FluidStateExplicitCompositionModule()
     {
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx)
-            for (int compIdx = 0; compIdx < numComponents; ++compIdx)
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx)
+            for (long long compIdx = 0; compIdx < numComponents; ++compIdx)
                 moleFraction_[phaseIdx][compIdx] = 0.0;
         // TODO: possilby we should begin with totalMoleFractions_ here
         // the current implementation assuming we have the moleFractions_ for each
@@ -262,7 +262,7 @@ class FluidStateImmiscibleCompositionModule
 
 public:
     enum { numComponents = FluidSystem::numComponents };
-    static_assert(static_cast<int>(numPhases) == static_cast<int>(numComponents),
+    static_assert(static_cast<long long>(numPhases) == static_cast<long long>(numComponents),
                   "The number of phases must be the same as the number of (pseudo-) components if you assume immiscibility");
 
     FluidStateImmiscibleCompositionModule() = default;

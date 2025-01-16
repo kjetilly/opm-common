@@ -41,10 +41,10 @@ namespace  Opm {
         explicit SingleAquiferFlux(const DeckRecord& record);
 
         // using id to create an inactive dummy aquifer
-        explicit SingleAquiferFlux(int id);
-        SingleAquiferFlux(int id, double flux, double sal, bool active_, double temp, double pres);
+        explicit SingleAquiferFlux(long long id);
+        SingleAquiferFlux(long long id, double flux, double sal, bool active_, double temp, double pres);
 
-        int id {0};
+        long long id {0};
         double flux {0.};
         double salt_concentration {0.};
         bool active {false};
@@ -70,7 +70,7 @@ namespace  Opm {
     class AquiferFlux
     {
     public:
-        using AquFluxs = std::unordered_map<int, SingleAquiferFlux>;
+        using AquFluxs = std::unordered_map<long long, SingleAquiferFlux>;
 
         AquiferFlux() = default;
         explicit AquiferFlux(const std::vector<const DeckKeyword*>& keywords);
@@ -78,9 +78,9 @@ namespace  Opm {
         // Primarily for unit testing purposes.
         explicit AquiferFlux(const std::vector<SingleAquiferFlux>& aquifers);
 
-        void appendAqufluxSchedule(const std::unordered_set<int>& ids);
+        void appendAqufluxSchedule(const std::unordered_set<long long>& ids);
 
-        bool hasAquifer(int id) const;
+        bool hasAquifer(long long id) const;
 
         bool operator==(const AquiferFlux& other) const;
 

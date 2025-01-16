@@ -37,7 +37,7 @@ namespace Opm {
     public:
 
         DeckItem() = default;
-        DeckItem( const std::string&, int);
+        DeckItem( const std::string&, long long);
         DeckItem( const std::string&, RawString);
         DeckItem( const std::string&, std::string);
         DeckItem( const std::string&, double) = delete;
@@ -81,16 +81,16 @@ namespace Opm {
 
 
         void push_back( UDAValue );
-        void push_back( int );
+        void push_back( long long );
         void push_back( double );
         void push_back( std::string );
         void push_back( RawString );
         void push_back( UDAValue, size_t );
-        void push_back( int, size_t );
+        void push_back( long long, size_t );
         void push_back( double, size_t );
         void push_back( std::string, size_t );
         void push_backDefault( UDAValue, std::size_t n = 1 );
-        void push_backDefault( int, std::size_t n = 1 );
+        void push_backDefault( long long, std::size_t n = 1 );
         void push_backDefault( double, std::size_t n = 1 );
         void push_backDefault( std::string, std::size_t n = 1 );
         void push_backDefault( RawString, std::size_t n = 1 );
@@ -127,7 +127,7 @@ namespace Opm {
 
         bool is_uda() { return  (type == get_type< UDAValue >()); };
         bool is_double() { return  type == get_type< double >(); };
-        bool is_int() { return  type == get_type< int >() ; };
+        bool is_int() { return  type == get_type< long long >() ; };
         bool is_string() { return  type == get_type< std::string >(); };
         bool is_raw_string() { return  type == get_type< RawString >(); };
 
@@ -152,7 +152,7 @@ namespace Opm {
         void reserve_additionalRawString(std::size_t);
     private:
         mutable std::vector< double > dval;
-        std::vector< int > ival;
+        std::vector< long long > ival;
         std::vector< std::string > sval;
         std::vector< RawString > rsval;
         std::vector< UDAValue > uval;

@@ -25,7 +25,7 @@
 namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems {
 
     namespace IWell {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             IHead    =  0, // I-location (one-based) of well head
             JHead    =  1, // J-location (one-based) of well head
             FirstK   =  2, // Layer ID (one-based) of top/first connection
@@ -156,7 +156,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
 
         namespace Value {
 
-            enum WellCtrlMode : int {
+            enum WellCtrlMode : long long {
                 WMCtlUnk = -10,  // Unknown well control mode (OPM only)
                 Group    = - 1,  // Well under group control
                 OilRate  =   1,  // Well controlled by oil rate
@@ -177,7 +177,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
                                  // combined rate target
             };
 
-            enum CompOrder : int {
+            enum CompOrder : long long {
                 Track = 0, // Connections ordered along
                            // well track (increasing MD)
 
@@ -190,14 +190,14 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
                            // COMPDAT keyword.
             };
 
-            enum Preferred_Phase : int {
+            enum Preferred_Phase : long long {
                 Oil    = 1,
                 Water  = 2,
                 Gas    = 3,
                 Liquid = 4,
             };
 
-            enum PLossMod : int {
+            enum PLossMod : long long {
                 HFA = 0, // Components of pressure loss in MSW model for well (WELSEGS item 6)
                          // Hydrostatic, Friction, Acceleration
 
@@ -206,14 +206,14 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
                 H__ = 2, // Hydrostatic
             };
 
-            /*enum MPMod : int {
+            /*enum MPMod : long long {
                 HO = 1, // Multiphase flow model for MSW well
                          // Homogeneous flow
 
                 DF = 2, // Drift flux model
             };*/
 
-            enum Status : int {
+            enum Status : long long {
                 Shut = -1000,
                 Stop = 0,
                 Open = 1,
@@ -221,12 +221,12 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
             };
 
             namespace WGrupCon {
-                enum Controllable : int {
+                enum Controllable : long long {
                     Yes = -1,
                     No = 0,
                 };
 
-                enum GRPhase : int {
+                enum GRPhase : long long {
                     Defaulted            = 0,
                     Oil                  = 1,
                     Water                = 2,
@@ -238,17 +238,17 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
             } // namespace WGrupCon
 
             namespace WVfpExp {
-                enum Lookup : int {
+                enum Lookup : long long {
                     Implicit = 0,
                     Explicit = 1,
                 };
 
-                enum class CloseStabilised : int {
+                enum class CloseStabilised : long long {
                     No  = 0,
                     Yes = 1,
                 };
 
-                enum class PreventTHP : int {
+                enum class PreventTHP : long long {
                     No   = 0,
                     Yes1 = 2,
                     Yes2 = 3,
@@ -256,7 +256,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
             } // namespace WVfpExp
 
             namespace EconLimit {
-                enum WOProcedure : int {
+                enum WOProcedure : long long {
                     None        = 0, // NONE
                     Con         = 1, // CON
                     ConAndBelow = 2, // +CON
@@ -264,12 +264,12 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
                     Plug        = 6, // PLUG
                 };
 
-                enum EndRun : int {
+                enum EndRun : long long {
                     No  = 0,    // Run continues if well shut/stopped
                     Yes = 1,    // Run terminates if well shut/stopped
                 };
 
-                enum Quantity : int {
+                enum Quantity : long long {
                     Rate      = 0, // Apply limits to actual flow rates ("RATE")
                     Potential = 1, // Apply limits to potential flow rates ("POTN")
                 };

@@ -214,7 +214,7 @@ namespace Opm {
             this->fipRegionStatistics_
                 .emplace(declaredMaxRegionID(this->runspec()),
                          this->fieldProps(),
-                         [](std::vector<int>&) { /* do nothing*/ });
+                         [](std::vector<long long>&) { /* do nothing*/ });
         }
     }
 
@@ -366,11 +366,11 @@ namespace Opm {
         this->field_props.prune_global_for_schedule_run();
     }
 
-    void EclipseState::reset_actnum(const std::vector<int>& new_actnum) {
+    void EclipseState::reset_actnum(const std::vector<long long>& new_actnum) {
         this->field_props.reset_actnum(new_actnum);
     }
 
-    void EclipseState::set_active_indices(const std::vector<int>& indices)
+    void EclipseState::set_active_indices(const std::vector<long long>& indices)
     {
         this->field_props.set_active_indices(indices);
     }
@@ -385,7 +385,7 @@ namespace Opm {
             this->aquifer_config.loadFromRestart(aquifers, this->m_tables);
     }
 
-    void EclipseState::appendAqufluxSchedule(const std::unordered_set<int>& ids) {
+    void EclipseState::appendAqufluxSchedule(const std::unordered_set<long long>& ids) {
         this->aquifer_config.appendAqufluxSchedule(ids);
     }
 

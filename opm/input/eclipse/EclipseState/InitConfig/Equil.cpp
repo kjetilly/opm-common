@@ -14,7 +14,7 @@ namespace Opm {
                              const double goc_depth      , const double goc_pc,
                              const bool   live_oil_init  ,
                              const bool   wet_gas_init   ,
-                             const int    target_accuracy,
+                             const long long    target_accuracy,
                              const bool   humid_gas_init )
         : datum_depth(datum_depth_arg)
         , datum_depth_ps(datum_depth_pc_arg)
@@ -35,10 +35,10 @@ namespace Opm {
         , water_oil_contact_capillary_pressure(record.getItem<ParserKeywords::EQUIL::PC_OWC>().getSIDouble(0))
         , gas_oil_contact_depth(record.getItem<ParserKeywords::EQUIL::GOC>().getSIDouble(0))
         , gas_oil_contact_capillary_pressure(record.getItem<ParserKeywords::EQUIL::PC_GOC>().getSIDouble(0))
-        , live_oil_init_proc(record.getItem<ParserKeywords::EQUIL::BLACK_OIL_INIT>().get<int>(0) <= 0)
-        , wet_gas_init_proc(record.getItem<ParserKeywords::EQUIL::BLACK_OIL_INIT_WG>().get<int>(0) <= 0)
-        , init_target_accuracy(record.getItem<ParserKeywords::EQUIL::OIP_INIT>().get<int>(0))
-        , humid_gas_init_proc(record.getItem<ParserKeywords::EQUIL::BLACK_OIL_INIT_HG>().get<int>(0) <= 0)
+        , live_oil_init_proc(record.getItem<ParserKeywords::EQUIL::BLACK_OIL_INIT>().get<long long>(0) <= 0)
+        , wet_gas_init_proc(record.getItem<ParserKeywords::EQUIL::BLACK_OIL_INIT_WG>().get<long long>(0) <= 0)
+        , init_target_accuracy(record.getItem<ParserKeywords::EQUIL::OIP_INIT>().get<long long>(0))
+        , humid_gas_init_proc(record.getItem<ParserKeywords::EQUIL::BLACK_OIL_INIT_HG>().get<long long>(0) <= 0)
     {}
 
     EquilRecord EquilRecord::serializationTestObject()
@@ -78,7 +78,7 @@ namespace Opm {
         return this->wet_gas_init_proc;
     }
 
-    int EquilRecord::initializationTargetAccuracy() const {
+    long long EquilRecord::initializationTargetAccuracy() const {
         return this->init_target_accuracy;
     }
 

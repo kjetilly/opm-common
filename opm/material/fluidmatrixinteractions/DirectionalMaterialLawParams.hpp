@@ -45,7 +45,7 @@ struct DirectionalMaterialLawParams {
         , materialLawParamsZ_(size)
     {}
 
-    vector_type& getArray(int index)
+    vector_type& getArray(long long index)
     {
         switch(index) {
             case 0:

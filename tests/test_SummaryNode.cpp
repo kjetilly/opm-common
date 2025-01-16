@@ -117,7 +117,7 @@ namespace {
 
         throw std::invalid_argument {
             "Unhandled Summary Parameter Category '"
-            + std::to_string(static_cast<int>(cat)) + '\''
+            + std::to_string(static_cast<long long>(cat)) + '\''
         };
     }
 

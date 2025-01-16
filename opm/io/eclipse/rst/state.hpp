@@ -80,33 +80,33 @@ struct RstState
     std::unordered_map<std::string, std::vector<std::string>> wlists;
 
 private:
-    void load_oil_vaporization(const std::vector<int>& intehead,
+    void load_oil_vaporization(const std::vector<long long>& intehead,
                                const std::vector<double>& doubhead);
 
-    void load_tuning(const std::vector<int>& intehead,
+    void load_tuning(const std::vector<long long>& intehead,
                      const std::vector<double>& doubhead);
 
     void add_groups(const std::vector<std::string>& zgrp,
-                    const std::vector<int>& igrp,
+                    const std::vector<long long>& igrp,
                     const std::vector<float>& sgrp,
                     const std::vector<double>& xgrp);
 
     void add_wells(const std::vector<std::string>& zwel,
-                   const std::vector<int>& iwel,
+                   const std::vector<long long>& iwel,
                    const std::vector<float>& swel,
                    const std::vector<double>& xwel,
-                   const std::vector<int>& icon,
+                   const std::vector<long long>& icon,
                    const std::vector<float>& scon,
                    const std::vector<double>& xcon);
 
     void add_msw(const std::vector<std::string>& zwel,
-                 const std::vector<int>& iwel,
+                 const std::vector<long long>& iwel,
                  const std::vector<float>& swel,
                  const std::vector<double>& xwel,
-                 const std::vector<int>& icon,
+                 const std::vector<long long>& icon,
                  const std::vector<float>& scon,
                  const std::vector<double>& xcon,
-                 const std::vector<int>& iseg,
+                 const std::vector<long long>& iseg,
                  const std::vector<double>& rseg);
 
     void add_udqs(std::shared_ptr<EclIO::RestartFileView> rstView);
@@ -115,15 +115,15 @@ private:
                      const Runspec& runspec,
                      std::time_t sim_time,
                      const std::vector<std::string>& zact,
-                     const std::vector<int>& iact,
+                     const std::vector<long long>& iact,
                      const std::vector<float>& sact,
                      const std::vector<std::string>& zacn,
-                     const std::vector<int>& iacn,
+                     const std::vector<long long>& iacn,
                      const std::vector<double>& sacn,
                      const std::vector<std::string>& zlact);
 
     void add_wlist(const std::vector<std::string>& zwls,
-                   const std::vector<int>& iwls);
+                   const std::vector<long long>& iwls);
 
 };
 

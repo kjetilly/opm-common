@@ -52,7 +52,7 @@ public:
                          bool useImbibition);
 #endif
 
-    int satRegion(const std::size_t active_index) const
+    long long satRegion(const std::size_t active_index) const
     {
         return (*this->satnum_)[active_index] - 1;
     }
@@ -163,7 +163,7 @@ public:
     }
 
 private:
-    const std::vector<int>* satnum_ { nullptr };
+    const std::vector<long long>* satnum_ { nullptr };
 
     const std::vector<double>* swl_ { nullptr };
     const std::vector<double>* sgl_ { nullptr };

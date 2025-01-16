@@ -69,8 +69,8 @@
 
 namespace {
     Opm::Box makeGlobalGridBox(const Opm::EclipseGrid* gridPtr,
-                               const std::vector<int>* actnum = nullptr,
-                               const std::unordered_map<int, int>* index = nullptr)
+                               const std::vector<long long>* actnum = nullptr,
+                               const std::unordered_map<long long, long long>* index = nullptr)
     {
         return Opm::Box {
             *gridPtr,
@@ -183,7 +183,7 @@ global_kw_info(const std::string& name, const bool allow_unsupported)
 }
 
 template <>
-keyword_info<int>
+keyword_info<long long>
 global_kw_info(const std::string& name, bool)
 {
     if (auto kwPos = GRID::int_keywords.find(name);
@@ -217,7 +217,7 @@ global_kw_info(const std::string& name, bool)
     }
 
     if (isFipxxx(name)) {
-        return keyword_info<int>{}.init(1);
+        return keyword_info<long long>{}.init(1);
     }
 
     throw std::out_of_range {
@@ -263,7 +263,7 @@ std::string default_region_keyword(const Deck& deck)
         const auto& record = gridOpts.getRecord(0);
         const auto& nrmult_item = record.getItem("NRMULT");
 
-        if (nrmult_item.get<int>(0) > 0) {
+        if (nrmult_item.get<long long>(0) > 0) {
             return "MULTNUM"; // GRIDOPTS and positive NRMULT
         }
     }
@@ -306,7 +306,7 @@ void verify_deck_data(const Fieldprops::keywords::keyword_info<T>& kw_info,
 
 void log_empty_region(const DeckKeyword& keyword,
                       const std::string& region_name,
-                      const int          region_id,
+                      const long long          region_id,
                       const std::string& array_name)
 {
     const auto message =
@@ -573,7 +573,7 @@ void apply(const Fieldprops::ScalarOperation   op,
     }
 
     throw std::invalid_argument {
-        fmt::format("'{}' is not a known operation.", static_cast<int>(op))
+        fmt::format("'{}' is not a known operation.", static_cast<long long>(op))
     };
 }
 
@@ -805,9 +805,9 @@ FieldProps::init_get(const std::string& keyword, const bool allow_unsupported)
 }
 
 template <>
-Fieldprops::FieldData<int>&
+Fieldprops::FieldData<long long>&
 FieldProps::init_get(const std::string&                             keyword,
-                     const Fieldprops::keywords::keyword_info<int>& kw_info,
+                     const Fieldprops::keywords::keyword_info<long long>& kw_info,
                      const bool)
 {
     auto iter = this->int_data.find(keyword);
@@ -821,17 +821,17 @@ FieldProps::init_get(const std::string&                             keyword,
 }
 
 template <>
-Fieldprops::FieldData<int>&
+Fieldprops::FieldData<long long>&
 FieldProps::init_get(const std::string& keyword, bool)
 {
     if (Fieldprops::keywords::isFipxxx(keyword)) {
-        auto kw_info = Fieldprops::keywords::keyword_info<int>{};
+        auto kw_info = Fieldprops::keywords::keyword_info<long long>{};
         kw_info.init(1);
 
         return this->init_get(this->canonical_fipreg_name(keyword), kw_info);
     }
 
-    return this->init_get(keyword, Fieldprops::keywords::global_kw_info<int>(keyword));
+    return this->init_get(keyword, Fieldprops::keywords::global_kw_info<long long>(keyword));
 }
 
 
@@ -893,8 +893,8 @@ FieldProps::FieldProps(const Deck& deck,
         const bool has_pvtnum = this->int_data.count("PVTNUM") != 0;
         const bool has_satnum = this->int_data.count("SATNUM") != 0;
 
-        std::vector<int>* pvtnum = has_pvtnum ? &(this->int_data["PVTNUM"].data) : nullptr;
-        std::vector<int>* satnum = has_satnum ? &(this->int_data["SATNUM"].data) : nullptr;
+        std::vector<long long>* pvtnum = has_pvtnum ? &(this->int_data["PVTNUM"].data) : nullptr;
+        std::vector<long long>* satnum = has_satnum ? &(this->int_data["SATNUM"].data) : nullptr;
         for (const auto& [globCell, regionID] : aqcell_tabnums) {
             const auto aix = grid.activeIndex(globCell);
             if (has_pvtnum) { (*pvtnum)[aix] = std::max(regionID[0], (*pvtnum)[aix]); }
@@ -947,7 +947,7 @@ void FieldProps::deleteMINPVV()
     double_data.erase("MINPVV");
 }
 
-void FieldProps::reset_actnum(const std::vector<int>& new_actnum)
+void FieldProps::reset_actnum(const std::vector<long long>& new_actnum)
 {
     if (this->global_size != new_actnum.size()) {
         throw std::logic_error {
@@ -1073,7 +1073,7 @@ bool FieldProps::supported<double>(const std::string& keyword)
 }
 
 template <>
-bool FieldProps::supported<int>(const std::string& keyword)
+bool FieldProps::supported<long long>(const std::string& keyword)
 {
     if (Fieldprops::keywords::REGIONS::int_keywords.count(keyword) != 0) {
         return true;
@@ -1091,11 +1091,11 @@ bool FieldProps::supported<int>(const std::string& keyword)
 }
 
 std::pair<std::vector<Box::cell_index>,bool>
-FieldProps::region_index(const std::string& region_name, const int region_value)
+FieldProps::region_index(const std::string& region_name, const long long region_value)
 {
     std::vector<Box::cell_index> index_list;
     bool all_active = true;
-    const auto& region = this->init_get<int>(region_name);
+    const auto& region = this->init_get<long long>(region_name);
     if (!region.valid()) {
         throw std::invalid_argument("Trying to work with invalid region: " + region_name);
     }
@@ -1132,7 +1132,7 @@ bool FieldProps::has<double>(const std::string& keyword_name) const
 }
 
 template <>
-bool FieldProps::has<int>(const std::string& keyword) const
+bool FieldProps::has<long long>(const std::string& keyword) const
 {
     const auto& kw = Fieldprops::keywords::isFipxxx(keyword)
         ? this->canonical_fipreg_name(keyword)
@@ -1229,7 +1229,7 @@ std::vector<std::string> FieldProps::keys<double>() const
 }
 
 template <>
-std::vector<std::string> FieldProps::keys<int>() const
+std::vector<std::string> FieldProps::keys<long long>() const
 {
     std::vector<std::string> klist;
 
@@ -1243,7 +1243,7 @@ std::vector<std::string> FieldProps::keys<int>() const
 }
 
 template <>
-void FieldProps::erase<int>(const std::string& keyword)
+void FieldProps::erase<long long>(const std::string& keyword)
 {
     this->int_data.erase(keyword);
 }
@@ -1255,12 +1255,12 @@ void FieldProps::erase<double>(const std::string& keyword)
 }
 
 template <>
-std::vector<int> FieldProps::extract<int>(const std::string& keyword)
+std::vector<long long> FieldProps::extract<long long>(const std::string& keyword)
 {
     auto field_iter = this->int_data.find(keyword);
 
     auto field = std::move(field_iter->second);
-    std::vector<int> data = std::move(field.data);
+    std::vector<long long> data = std::move(field.data);
 
     this->int_data.erase(field_iter);
 
@@ -1306,11 +1306,11 @@ double FieldProps::getSIValue(const ScalarOperation op,
         : this->getSIValue(keyword, raw_value);
 }
 
-void FieldProps::handle_int_keyword(const Fieldprops::keywords::keyword_info<int>& kw_info,
+void FieldProps::handle_int_keyword(const Fieldprops::keywords::keyword_info<long long>& kw_info,
                                     const DeckKeyword& keyword,
                                     const Box& box)
 {
-    auto& field_data = this->init_get<int>(keyword.name());
+    auto& field_data = this->init_get<long long>(keyword.name());
 
     const auto& deck_data = keyword.getIntData();
     const auto& deck_status = keyword.getValueStatus();
@@ -1463,7 +1463,7 @@ void FieldProps::handle_operateR(const DeckKeyword& keyword)
             };
         }
 
-        const int region_value = record.getItem("REGION_NUMBER").get<int>(0);
+        const long long region_value = record.getItem("REGION_NUMBER").get<long long>(0);
 
         auto& field_data = this->init_get<double>(target_kw);
 
@@ -1538,7 +1538,7 @@ void FieldProps::handle_region_operation(const DeckKeyword& keyword)
             };
         }
 
-        const int region_value = record.getItem("REGION_NUMBER").get<int>(0);
+        const long long region_value = record.getItem("REGION_NUMBER").get<long long>(0);
 
         if (FieldProps::supported<double>(target_kw)) {
             auto& field_data = this->init_get<double>(target_kw);
@@ -1579,7 +1579,7 @@ Note that this might cause problems for PINCH option 4 or 5 being ALL.)", target
             continue;
         }
 
-        if (FieldProps::supported<int>(target_kw)) {
+        if (FieldProps::supported<long long>(target_kw)) {
             continue;
         }
     }
@@ -1733,7 +1733,7 @@ void FieldProps::handle_operation(const Section      section,
             continue;
         }
 
-        if (FieldProps::supported<int>(target_kw)) {
+        if (FieldProps::supported<long long>(target_kw)) {
             if (mustExist && (this->int_data.find(target_kw) == this->int_data.end())) {
                 throw OpmInputError {
                     fmt::format("Target array {} must already "
@@ -1743,9 +1743,9 @@ void FieldProps::handle_operation(const Section      section,
                 };
             }
 
-            const auto scalar_value = static_cast<int>(record.getItem(1).get<double>(0));
+            const auto scalar_value = static_cast<long long>(record.getItem(1).get<double>(0));
 
-            auto& field_data = this->init_get<int>(target_kw);
+            auto& field_data = this->init_get<long long>(target_kw);
 
             apply(operation, keyword.location(), target_kw,
                   field_data.data,
@@ -1781,7 +1781,7 @@ void FieldProps::handle_COPY(const DeckKeyword& keyword,
 
         if (isRegionOperation) {
             using Kw = ParserKeywords::COPYREG;
-            const auto  regionId   = record.getItem<Kw::REGION_NUMBER>().get<int>(0);
+            const auto  regionId   = record.getItem<Kw::REGION_NUMBER>().get<long long>(0);
             const auto& regionName = this->region_name(record.getItem<Kw::REGION_NAME>());
 
             index_list = this->region_index(regionName, regionId).first;
@@ -1823,11 +1823,11 @@ void FieldProps::handle_COPY(const DeckKeyword& keyword,
             continue;
         }
 
-        if (FieldProps::supported<int>(src_kw)) {
-            const auto& src_data = this->try_get<int>(src_kw, TryGetFlags::MustExist);
+        if (FieldProps::supported<long long>(src_kw)) {
+            const auto& src_data = this->try_get<long long>(src_kw, TryGetFlags::MustExist);
             src_data.verify_status(keyword.location(), "Source array", "COPY");
 
-            auto& target_data = this->init_get<int>(target_kw);
+            auto& target_data = this->init_get<long long>(target_kw);
             target_data.checkInitialisedCopy(src_data.field_data(), index_list,
                                              srcDescr, target_kw,
                                              keyword.location());
@@ -1870,7 +1870,7 @@ void FieldProps::handle_keyword(const Section      section,
 void FieldProps::init_tempi(Fieldprops::FieldData<double>& tempi)
 {
     if (this->tables.hasTables("RTEMPVD")) {
-        const auto& eqlnum = this->get<int>("EQLNUM");
+        const auto& eqlnum = this->get<long long>("EQLNUM");
         const auto& rtempvd = this->tables.getRtempvdTables();
         std::vector< double > tempi_values( this->active_size, 0 );
 
@@ -1971,7 +1971,7 @@ FieldProps::canonical_fipreg_name(const std::string& fipreg) const
 //
 // Note that steps 2 and 3 generally forms an ACTNUM property which differs
 // from the ACTNUM property stored internally in the FieldProps instance.
-std::vector<int> FieldProps::actnum()
+std::vector<long long> FieldProps::actnum()
 {
     auto actnum = this->m_actnum;
 
@@ -1980,9 +1980,9 @@ std::vector<int> FieldProps::actnum()
         return actnum;
     }
 
-    const auto& deck_actnum = this->init_get<int>("ACTNUM");
+    const auto& deck_actnum = this->init_get<long long>("ACTNUM");
 
-    std::vector<int> global_map(this->active_size);
+    std::vector<long long> global_map(this->active_size);
     {
         std::size_t active_index = 0;
         for (std::size_t g = 0; g < this->global_size; g++) {
@@ -2005,7 +2005,7 @@ std::vector<int> FieldProps::actnum()
     return actnum;
 }
 
-const std::vector<int>& FieldProps::actnumRaw() const
+const std::vector<long long>& FieldProps::actnumRaw() const
 {
     return m_actnum;
 }
@@ -2016,7 +2016,7 @@ void FieldProps::processMULTREGP(const Deck& deck)
 
     for (const auto& keyword : deck[Kw::keywordName]) {
         for (const auto& record : keyword) {
-            const int region_value = record.getItem<Kw::REGION>().get<int>(0);
+            const long long region_value = record.getItem<Kw::REGION>().get<long long>(0);
             if (region_value <= 0) {
                 continue;
             }
@@ -2139,10 +2139,10 @@ void FieldProps::init_satfunc(const std::string& keyword,
         this->m_rtep = satfunc::getRawTableEndpoints(this->tables, this->m_phases,
                                                      this->m_satfuncctrl.minimumRelpermMobilityThreshold());
 
-    const auto& endnum = this->get<int>("ENDNUM");
+    const auto& endnum = this->get<long long>("ENDNUM");
     const auto& satreg = (keyword[0] == 'I')
-        ? this->get<int>("IMBNUM")
-        : this->get<int>("SATNUM");
+        ? this->get<long long>("IMBNUM")
+        : this->get<long long>("SATNUM");
 
     satfunc.default_update(satfunc::init(keyword, this->tables, this->m_phases, this->m_rtep.value(), this->cell_depth, satreg, endnum));
 }
@@ -2192,7 +2192,7 @@ void FieldProps::scanREGIONSSection(const REGIONSSection& regions_section)
         }
 
         if (Fieldprops::keywords::isFipxxx(name)) {
-            auto kw_info = Fieldprops::keywords::keyword_info<int>{};
+            auto kw_info = Fieldprops::keywords::keyword_info<long long>{};
             kw_info.init(1);
             this->handle_int_keyword(kw_info, keyword, box);
             continue;
@@ -2294,8 +2294,8 @@ void FieldProps::apply_numerical_aquifers(const NumericalAquifers& numerical_aqu
 {
     auto& porv_data = this->init_get<double>("PORV").data;
     auto& poro_data = this->init_get<double>("PORO").data;
-    auto& satnum_data = this->init_get<int>("SATNUM").data;
-    auto& pvtnum_data = this->init_get<int>("PVTNUM").data;
+    auto& satnum_data = this->init_get<long long>("SATNUM").data;
+    auto& pvtnum_data = this->init_get<long long>("PVTNUM").data;
 
     auto& permx_data = this->init_get<double>("PERMX").data;
     auto& permy_data = this->init_get<double>("PERMY").data;
@@ -2333,15 +2333,15 @@ std::vector<std::string> FieldProps::fip_regions() const
     return result;
 }
 
-void FieldProps::set_active_indices(const std::vector<int>& indices)
+void FieldProps::set_active_indices(const std::vector<long long>& indices)
 {
     m_active_index.clear();
     std::size_t idx = 0;
-    for (int index : indices) {
+    for (long long index : indices) {
         m_active_index.emplace(index, idx++);
     }
 }
 
-template std::vector<bool> FieldProps::defaulted<int>(const std::string& keyword);
+template std::vector<bool> FieldProps::defaulted<long long>(const std::string& keyword);
 template std::vector<bool> FieldProps::defaulted<double>(const std::string& keyword);
 }

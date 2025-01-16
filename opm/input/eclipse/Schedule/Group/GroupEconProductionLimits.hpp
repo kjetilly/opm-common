@@ -48,16 +48,16 @@ public:
     {
     public:
         GEconGroup() = default;
-        GEconGroup(const DeckRecord &record, const int report_step);
+        GEconGroup(const DeckRecord &record, const long long report_step);
         bool endRun() const;
         UDAValue minOilRate() const;
         UDAValue minGasRate() const;
         UDAValue maxWaterCut() const;
         UDAValue maxGasOilRatio() const;
         UDAValue maxWaterGasRatio() const;
-        int maxOpenWells() const;
+        long long maxOpenWells() const;
         bool operator==(const GEconGroup& other) const;
-        int reportStep() const;
+        long long reportStep() const;
         template<class Serializer>
         void serializeOp(Serializer& serializer)
         {
@@ -81,8 +81,8 @@ public:
         UDAValue m_max_water_gas_ratio{};
         EconWorkover m_workover{EconWorkover::NONE};
         bool m_end_run{false};
-        int m_max_open_wells{};
-        int m_report_step{};  // Used to get UDQ undefined value
+        long long m_max_open_wells{};
+        long long m_report_step{};  // Used to get UDQ undefined value
     };
 
     class GEconGroupProp
@@ -96,14 +96,14 @@ public:
                        const double max_water_gas_ratio,
                        EconWorkover workover,
                        bool end_run,
-                       int max_open_wells);
+                       long long max_open_wells);
         bool endRun() const;
         std::optional<double> minOilRate() const;
         std::optional<double> minGasRate() const;
         std::optional<double> maxWaterCut() const;
         std::optional<double> maxGasOilRatio() const;
         std::optional<double> maxWaterGasRatio() const;
-        int maxOpenWells() const;
+        long long maxOpenWells() const;
         EconWorkover workover() const;
 
     private:
@@ -114,13 +114,13 @@ public:
         std::optional<double> m_max_water_gas_ratio{};
         EconWorkover m_workover{EconWorkover::NONE};
         bool m_end_run{false};
-        int m_max_open_wells{};
+        long long m_max_open_wells{};
     };
 
     GroupEconProductionLimits() = default;
     //explicit GroupEconProductionLimits(const RestartIO::RstWell& rstWell);
 
-    void add_group(const int report_step, const std::string &group_name, const DeckRecord &record);
+    void add_group(const long long report_step, const std::string &group_name, const DeckRecord &record);
     static EconWorkover econWorkoverFromString(const std::string& string_value);
     const GEconGroup& get_group(const std::string& gname) const;
     GEconGroupProp get_group_prop(

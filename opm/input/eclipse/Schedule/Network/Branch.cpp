@@ -24,7 +24,7 @@ namespace Opm::Network {
 
 namespace {
 
-constexpr int invalid_vfp_table = 9999;
+constexpr long long invalid_vfp_table = 9999;
 
 }
 
@@ -36,7 +36,7 @@ Branch Branch::serializationTestObject()
 
 Branch::Branch(const std::string& downtree_node,
                const std::string& uptree_node,
-               int vfp_table, double alq)
+               long long vfp_table, double alq)
     : m_downtree_node(downtree_node)
     , m_uptree_node(uptree_node)
     , m_vfp_table(vfp_table)
@@ -47,7 +47,7 @@ Branch::Branch(const std::string& downtree_node,
 
 Branch::Branch(const std::string& downtree_node,
                const std::string& uptree_node,
-               int vfp_table, AlqEQ alq_eq)
+               long long vfp_table, AlqEQ alq_eq)
     : m_downtree_node(downtree_node)
     , m_uptree_node(uptree_node)
     , m_vfp_table(vfp_table)
@@ -99,7 +99,7 @@ Branch::AlqEQ Branch::AlqEqfromString(const std::string& input_string)
     throw std::invalid_argument("Invalid input for ALQ surface density eq: " + input_string);
 }
 
-std::optional<int> Branch::vfp_table() const
+std::optional<long long> Branch::vfp_table() const
 {
     if (this->m_vfp_table == invalid_vfp_table) {
         return {};

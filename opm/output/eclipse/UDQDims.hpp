@@ -46,7 +46,7 @@ public:
     /// \param[in] intehead Current report step's INTEHEAD array.  Queried
     /// for most dimension values.
     explicit UDQDims(const UDQConfig&        config,
-                     const std::vector<int>& intehead);
+                     const std::vector<long long>& intehead);
 
     /// Number of IUDQ elements per UDQ.
     static std::size_t entriesPerIUDQ() { return 3; }
@@ -103,7 +103,7 @@ public:
     /// Retained for backwards compatibility but will be removed in the
     /// future.
     [[deprecated("The data vector is not aware of categories other than field, group, or well.  Use named accessors instead.")]]
-    const std::vector<int>& data() const
+    const std::vector<long long>& data() const
     {
         if (! this->dimensionData_.has_value()) {
             this->collectDimensions();
@@ -118,10 +118,10 @@ private:
 
     /// Current report step's INTEHEAD array.  Backend for most size
     /// queries.
-    std::reference_wrapper<const std::vector<int>> intehead_;
+    std::reference_wrapper<const std::vector<long long>> intehead_;
 
     /// Backing storage for original linear sequence of selected array sizes.
-    mutable std::optional<std::vector<int>> dimensionData_;
+    mutable std::optional<std::vector<long long>> dimensionData_;
 
     /// Build original sequence of selected array sizes.
     void collectDimensions() const;
@@ -132,7 +132,7 @@ private:
     /// in VectorItems/intehead.hpp.
     ///
     /// \returns Corresponding INTEHEAD item.
-    std::size_t intehead(const std::vector<int>::size_type i) const;
+    std::size_t intehead(const std::vector<long long>::size_type i) const;
 };
 
 } // namespace Opm

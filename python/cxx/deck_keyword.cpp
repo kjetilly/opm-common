@@ -33,7 +33,7 @@ py::list item_to_pylist( const DeckItem& item )
     switch (item.getType())
     {
     case type_tag::integer:
-        return iterable_to_pylist( item.getData< int >() );
+        return iterable_to_pylist( item.getData< long long >() );
         break;
     case type_tag::fdouble:
         throw py::type_error("Double list access must be specified by either 'get_raw_data_list' or 'get_SI_data_list'.");
@@ -73,7 +73,7 @@ void push_string_as_deck_value(
 
     std::size_t star_pos = str.find('*');
     if (star_pos != std::string::npos) {
-        int multiplier = 1;
+        long long multiplier = 1;
 
         std::string mult_str = str.substr(0, star_pos);
 
@@ -106,7 +106,7 @@ void push_string_as_deck_value(
             }
         }
 
-        for (int i = 0; i < multiplier; i++)
+        for (long long i = 0; i < multiplier; i++)
             record.push_back( value );
 
     }
@@ -115,7 +115,7 @@ void push_string_as_deck_value(
 
 }
 
-py::array_t<int> get_int_array(const DeckKeyword& kw) {
+py::array_t<long long> get_int_array(const DeckKeyword& kw) {
     return convert::numpy_array( kw.getIntData() );
 }
 
@@ -172,16 +172,16 @@ void python::common::export_DeckKeyword(py::module& module) {
         .def(py::init<const ParserKeyword&>(), py::arg("parser_keyword"), DeckKeyword_init_parser_keyword_docstring)
         .def(py::init([](const ParserKeyword& parser_keyword, py::list record_list, UnitSystem& active_system, UnitSystem& default_system) {
             std::vector< std::vector<DeckValue> > value_record_list;
-            int i = 0;
+            long long i = 0;
             for (py::handle record_obj : record_list) {
                  py::list record = record_obj.cast<py::list>();
                  std::vector<DeckValue> value_record;
                  const ParserRecord& parser_record = parser_keyword.getRecord(i++);
-                 int j = 0;
+                 long long j = 0;
                  for (const py::handle& value_obj : record) {
                      const ParserItem& parser_item = parser_record.get(j++);
                      try {
-                         int val_int = value_obj.cast<int>();
+                         long long val_int = value_obj.cast<long long>();
                          if (parser_item.dataType() == type_tag::uda) {
                              auto dim = active_system.parse(parser_item.dimensions()[0]);
                              value_record.push_back( DeckValue(UDAValue(static_cast<double>(val_int), dim)));
@@ -229,7 +229,7 @@ void python::common::export_DeckKeyword(py::module& module) {
         .def("__len__", &DeckKeyword::size, DeckKeyword_len_docstring)
         .def_property_readonly("name", &DeckKeyword::name, DeckKeyword_name_docstring)
 
-        .def(py::init([](const ParserKeyword& parser_keyword, py::array_t<int> py_data) {
+        .def(py::init([](const ParserKeyword& parser_keyword, py::array_t<long long> py_data) {
             return DeckKeyword(parser_keyword, convert::vector(py_data));
         }), py::arg("parser_keyword"), py::arg("py_data"), DeckKeyword_init_parser_keyword_pydata_int_docstring)
 
@@ -257,7 +257,7 @@ void python::common::export_DeckKeyword(py::module& module) {
         .def("is_int", &DeckItem::is_int, DeckItem_is_int_docstring)
         .def("is_string", &DeckItem::is_string, DeckItem_is_string_docstring)
         .def("get_str", &get_string, py::arg("index"), DeckItem_get_str_docstring)
-        .def("get_int", &DeckItem::get<int>, py::arg("index"), DeckItem_get_int_docstring)
+        .def("get_int", &DeckItem::get<long long>, py::arg("index"), DeckItem_get_int_docstring)
         .def("get_raw", &DeckItem::get<double>, py::arg("index"), DeckItem_get_raw_docstring)
         .def("get_uda", &DeckItem::get<UDAValue>, py::arg("index"), DeckItem_get_uda_docstring)
         .def("get_SI", &DeckItem::getSIDouble, py::arg("index"), DeckItem_get_SI_docstring)

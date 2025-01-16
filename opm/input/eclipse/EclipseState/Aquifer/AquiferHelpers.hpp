@@ -28,8 +28,8 @@
 namespace Opm {
     class EclipseGrid;
     namespace AquiferHelpers {
-        bool neighborCellInsideReservoirAndActive(const EclipseGrid &grid, int i, int j, int k,
-                                                  FaceDir::DirEnum faceDir, const std::vector<int>& actnum,
+        bool neighborCellInsideReservoirAndActive(const EclipseGrid &grid, long long i, long long j, long long k,
+                                                  FaceDir::DirEnum faceDir, const std::vector<long long>& actnum,
                                                   const std::optional<const std::unordered_set<std::size_t>>& numerical_aquifer_cells = std::nullopt);
     }
 }

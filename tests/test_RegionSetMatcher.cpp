@@ -270,7 +270,7 @@ namespace {
         }.fieldProps();
 
         return Opm::FIPRegionStatistics {
-            declaredMaxRegID, fp, [](std::vector<int>&) {}
+            declaredMaxRegID, fp, [](std::vector<long long>&) {}
         };
     }
 } // Anonymous namespace

@@ -108,7 +108,7 @@ bool Quantity::date() const {
     return false;
 }
 
-int Quantity::int_type() const {
+long long Quantity::int_type() const {
     namespace QuantityType = Opm::RestartIO::Helpers::VectorItems::IACN::Value;
     const auto& first_char = this->quantity[0];
     if (first_char == 'W')
@@ -212,7 +212,7 @@ bool Condition::close_paren() const {
     return !this->left_paren && this->right_paren;
 }
 
-int Condition::paren_as_int() const {
+long long Condition::paren_as_int() const {
     namespace ParenType = Opm::RestartIO::Helpers::VectorItems::IACN::Value;
 
     if (this->open_paren())
@@ -224,7 +224,7 @@ int Condition::paren_as_int() const {
 }
 
 
-int Condition::logic_as_int() const {
+long long Condition::logic_as_int() const {
     switch (this->logic) {
     case Logical::END:
         return 0;
@@ -238,7 +238,7 @@ int Condition::logic_as_int() const {
 }
 
 
-int Condition::comparator_as_int() const {
+long long Condition::comparator_as_int() const {
     switch (this->cmp) {
     case Comparator::GREATER:
         return 1;
@@ -253,7 +253,7 @@ int Condition::comparator_as_int() const {
     case Comparator::NOT_EQUAL:
         return 6;
     default:
-        throw std::logic_error(fmt::format("Unhandeled value: {} in enum comparison", static_cast<int>(this->cmp)));
+        throw std::logic_error(fmt::format("Unhandeled value: {} in enum comparison", static_cast<long long>(this->cmp)));
     }
 }
 

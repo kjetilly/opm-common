@@ -64,7 +64,7 @@ class Solution : public std::map<std::string, data::CellData>
                                          TargetType );
 
         std::pair<iterator, bool> insert(std::string name,
-                                         std::vector<int>,
+                                         std::vector<long long>,
                                          TargetType );
 
         void convertToSI( const UnitSystem& );

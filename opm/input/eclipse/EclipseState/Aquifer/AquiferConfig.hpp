@@ -61,7 +61,7 @@ public:
     // We create dummy aquifers in the AquiferConfig to make sure we are aware of them
     // when we handle the SUMMARY section.
     // Since those aquifers are not active, basically we only need the id information
-    void appendAqufluxSchedule(const std::unordered_set<int>& ids);
+    void appendAqufluxSchedule(const std::unordered_set<long long>& ids);
 
     static AquiferConfig serializationTestObject();
 
@@ -71,8 +71,8 @@ public:
     const AquiferFlux& aquflux() const;
     const Aquancon& connections() const;
     bool operator==(const AquiferConfig& other) const;
-    bool hasAquifer(const int aquID) const;
-    bool hasAnalyticalAquifer(const int aquID) const;
+    bool hasAquifer(const long long aquID) const;
+    bool hasAnalyticalAquifer(const long long aquID) const;
 
     bool hasNumericalAquifer() const;
     bool hasAnalyticalAquifer() const;
@@ -97,8 +97,8 @@ private:
     Aquancon aqconn{};
 };
 
-std::vector<int> analyticAquiferIDs(const AquiferConfig& cfg);
-std::vector<int> numericAquiferIDs(const AquiferConfig& cfg);
+std::vector<long long> analyticAquiferIDs(const AquiferConfig& cfg);
+std::vector<long long> numericAquiferIDs(const AquiferConfig& cfg);
 }
 
 #endif

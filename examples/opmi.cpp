@@ -84,9 +84,9 @@ inline void loadDeck( const char * deck_file) {
 }
 
 
-int main(int argc, char** argv) {
+long long main(long long argc, char** argv) {
     initLogging();
-    for (int iarg = 1; iarg < argc; iarg++)
+    for (long long iarg = 1; iarg < argc; iarg++)
         loadDeck( argv[iarg] );
 }
 

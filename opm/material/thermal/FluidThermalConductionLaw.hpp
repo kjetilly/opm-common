@@ -41,7 +41,7 @@ namespace Opm {
  */
 template <class FluidSystem,
           class ScalarT,
-          int phaseIdx,
+          long long phaseIdx,
           class ParamsT = FluidThermalConductionLawParams<ScalarT> >
 class FluidThermalConductionLaw
 {

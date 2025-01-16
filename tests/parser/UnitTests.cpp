@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(CreateInputSystem) {
     BOOST_CHECK_EQUAL( 1.0, system.getDimension("Permeability").getSIScaling() );
     BOOST_CHECK_EQUAL( 1.0, system.getDimension("Pressure").getSIScaling() );
 
-    BOOST_CHECK_EQUAL( static_cast<long int>(system.getType( )) , static_cast<long int>(UnitSystem::UnitType::UNIT_TYPE_INPUT) );
+    BOOST_CHECK_EQUAL( static_cast<long long>(system.getType( )) , static_cast<long long>(UnitSystem::UnitType::UNIT_TYPE_INPUT) );
 }
 
 
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(DimensionEqual) {
 
 namespace Opm {
 inline std::ostream& operator<<( std::ostream& stream, const UnitSystem& us ) {
-    return stream << us.getName() << " :: " << static_cast<int>(us.getType());
+    return stream << us.getName() << " :: " << static_cast<long long>(us.getType());
 }
 }
 

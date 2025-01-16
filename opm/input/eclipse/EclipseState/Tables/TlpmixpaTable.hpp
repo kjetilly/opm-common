@@ -28,7 +28,7 @@ namespace Opm {
 
     class TlpmixpaTable : public SimpleTable {
     public:
-        TlpmixpaTable( const DeckItem& item, const int tableID );
+        TlpmixpaTable( const DeckItem& item, const long long tableID );
 
         const TableColumn& getOilPhasePressureColumn() const;
         const TableColumn& getMiscibilityColumn() const;

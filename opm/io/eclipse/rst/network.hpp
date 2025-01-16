@@ -42,13 +42,13 @@ namespace Opm { namespace RestartIO {
         struct Branch
         {
             /// Downtree node.  Index into 'nodes' array.
-            int down{-1};
+            long long down{-1};
 
             /// Uptree node.  Index into 'nodes' array.
-            int up{-1};
+            long long up{-1};
 
             /// One-based VFP table ID.
-            int vfp{-1};
+            long long vfp{-1};
         };
 
         /// Single node in extended network model.

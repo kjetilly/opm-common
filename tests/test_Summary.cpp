@@ -139,7 +139,7 @@ namespace {
 /* conversion factor for whenever 'day' is the unit of measure, whereas we
  * expect input in SI units (seconds)
  */
-static const int day = 24 * 60 * 60;
+static const long long day = 24 * 60 * 60;
 
 double liquid_PI_unit()
 {
@@ -501,7 +501,7 @@ bool ecl_sum_has_field_var( const EclIO::ESmry* smry,
 }
 
 double ecl_sum_get_field_var(const EclIO::ESmry* smry,
-                             const int           timeIdx,
+                             const long long           timeIdx,
                              const std::string&  var)
 {
     return smry->get(var)[timeIdx];
@@ -514,14 +514,14 @@ bool ecl_sum_has_general_var( const EclIO::ESmry* smry,
 }
 
 double ecl_sum_get_general_var(const EclIO::ESmry* smry,
-                               const int           timeIdx,
+                               const long long           timeIdx,
                                const std::string&  var)
 {
     return smry->get(var)[timeIdx];
 }
 
 double ecl_sum_get_well_var( const EclIO::ESmry* smry,
-                             const int           timeIdx,
+                             const long long           timeIdx,
                              const std::string&  wellname,
                              const std::string&  variable )
 {
@@ -529,7 +529,7 @@ double ecl_sum_get_well_var( const EclIO::ESmry* smry,
 }
 
 double ecl_sum_get_group_var( const EclIO::ESmry* smry,
-                              const int           timeIdx,
+                              const long long           timeIdx,
                               const std::string&  groupname,
                               const std::string&  variable )
 {
@@ -537,21 +537,21 @@ double ecl_sum_get_group_var( const EclIO::ESmry* smry,
 }
 
 double ecl_sum_get_well_completion_var( const EclIO::ESmry* smry,
-                                        const int           timeIdx,
+                                        const long long           timeIdx,
                                         const std::string&  wellname,
                                         const std::string&  variable,
-                                        const int           completion)
+                                        const long long           completion)
 {
     return smry->get(fmt::format("{}:{}:{}", variable, wellname, completion))[timeIdx];
 }
 
 double ecl_sum_get_well_connection_var( const EclIO::ESmry* smry,
-                                        const int           timeIdx,
+                                        const long long           timeIdx,
                                         const std::string&  wellname,
                                         const std::string&  variable,
-                                        const int           i,
-                                        const int           j,
-                                        const int           k)
+                                        const long long           i,
+                                        const long long           j,
+                                        const long long           k)
 {
     return smry->get(fmt::format("{}:{}:{},{},{}", variable, wellname, i, j, k))[timeIdx];
 }
@@ -559,9 +559,9 @@ double ecl_sum_get_well_connection_var( const EclIO::ESmry* smry,
 bool ecl_sum_has_well_connection_var( const EclIO::ESmry* smry,
                                       const std::string&  wellname,
                                       const std::string&  variable,
-                                      const int           i,
-                                      const int           j,
-                                      const int           k)
+                                      const long long           i,
+                                      const long long           j,
+                                      const long long           k)
 {
     const auto key = fmt::format("{}:{}:{},{},{}", variable, wellname, i, j, k);
     return ecl_sum_has_key(smry, key);
@@ -1407,7 +1407,7 @@ BOOST_AUTO_TEST_CASE(group_group) {
 
 
     // Production totals
-    for (int step = 1; step <= 2; step++) {
+    for (long long step = 1; step <= 2; step++) {
         BOOST_CHECK( ecl_sum_get_group_var( resp , step , "G_1" , "GWPT" ) == ecl_sum_get_well_var( resp , step , "W_1" , "WWPT"));
         BOOST_CHECK( ecl_sum_get_group_var( resp , step , "G_1" , "GOPT" ) == ecl_sum_get_well_var( resp , step , "W_1" , "WOPT"));
         BOOST_CHECK( ecl_sum_get_group_var( resp , step , "G_1" , "GGPT" ) == ecl_sum_get_well_var( resp , step , "W_1" , "WGPT"));
@@ -1421,7 +1421,7 @@ BOOST_AUTO_TEST_CASE(group_group) {
         BOOST_CHECK_CLOSE( ecl_sum_get_group_var( resp , 1 , "G" , gvar) ,
                            ecl_sum_get_group_var( resp , 1 , "G_1" , gvar) + ecl_sum_get_group_var( resp , 1 , "G_2" , gvar) , 1e-5);
 
-    for (int step = 1; step <= 2; step++) {
+    for (long long step = 1; step <= 2; step++) {
         for (const auto& gvar : {"GGPT", "GOPT", "GWPT"})
             BOOST_CHECK_CLOSE( ecl_sum_get_group_var( resp , step , "G" , gvar) ,
                                ecl_sum_get_group_var( resp , step , "G_1" , gvar) + ecl_sum_get_group_var( resp , step , "G_2" , gvar) , 1e-5);
@@ -2339,7 +2339,7 @@ BOOST_AUTO_TEST_CASE(BLOCK_VARIABLES)
 {
     setup cfg { "block_quantities" };
 
-    std::map<std::pair<std::string, int>, double> block_values;
+    std::map<std::pair<std::string, long long>, double> block_values;
     for (auto r = 1; r <= 10; ++r) {
         block_values[std::make_pair("BPR", (r - 1)*100 + 1)] = r*1.0*barsa();
     }
@@ -2563,19 +2563,19 @@ struct MessageBuffer
 
   void write( const std::string& str)
   {
-      int size = str.size();
+      long long size = str.size();
       write(size);
-      for (int k = 0; k < size; ++k) {
+      for (long long k = 0; k < size; ++k) {
           write(str[k]);
       }
   }
 
   void read( std::string& str)
   {
-      int size = 0;
+      long long size = 0;
       read(size);
       str.resize(size);
-      for (int k = 0; k < size; ++k) {
+      for (long long k = 0; k < size; ++k) {
           read(str[k]);
       }
   }
@@ -4003,7 +4003,7 @@ BOOST_AUTO_TEST_CASE(WaterRate_Correct)
 namespace {
     bool hasSegmentVariable_Prod01(const Opm::EclIO::ESmry* ecl_sum,
                                    const char*              vector,
-                                   const int                segID)
+                                   const long long                segID)
     {
         const auto lookup_kw = genKeyPROD01(vector, segID);
 
@@ -4011,9 +4011,9 @@ namespace {
     }
 
     double getSegmentVariable_Prod01(const Opm::EclIO::ESmry* ecl_sum,
-                                     const int                timeIdx,
+                                     const long long                timeIdx,
                                      const char*              vector,
-                                     const int                segID)
+                                     const long long                segID)
     {
         const auto lookup_kw = genKeyPROD01(vector, segID);
 
@@ -4041,7 +4041,7 @@ BOOST_AUTO_TEST_CASE(Write_Read)
     auto res = readsum("SOFR_TEST");
     const auto* resp = res.get();
 
-    const int timeIdx = 2;
+    const long long timeIdx = 2;
 
     // Rate Setup
     //

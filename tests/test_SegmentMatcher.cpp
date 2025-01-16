@@ -288,12 +288,12 @@ BOOST_AUTO_TEST_SUITE_END() // Set_Descriptor
 BOOST_AUTO_TEST_SUITE(Matcher)
 
 namespace {
-    Opm::Segment makeSegment(const int segmentNumber)
+    Opm::Segment makeSegment(const long long segmentNumber)
     {
         return { segmentNumber, 1, 1, 1.0, 0.0, 0.5, 0.01, 0.25, 1.23, true, 0.0, 0.0 };
     }
 
-    std::shared_ptr<Opm::WellSegments> makeSegments(const int numSegments)
+    std::shared_ptr<Opm::WellSegments> makeSegments(const long long numSegments)
     {
         auto segments = std::vector<Opm::Segment>{};
         segments.reserve(numSegments);
@@ -308,7 +308,7 @@ namespace {
 
     Opm::Well makeProducerWell(const std::string& wname,
                                const std::size_t  insert,
-                               const int          numSegments)
+                               const long long          numSegments)
     {
         auto w = Opm::Well {
             wname, "G", 0, insert, 1, 2, {},
@@ -330,7 +330,7 @@ namespace {
 
     Opm::Well makeInjectionWell(const std::string& wname,
                                 const std::size_t  insert,
-                                const int          numSegments)
+                                const long long          numSegments)
     {
         auto w = Opm::Well {
             wname, "G", 0, insert, 1, 2, {},
@@ -398,7 +398,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_Single_Segment)
         BOOST_CHECK_EQUAL(segSet.numWells(), std::size_t{1});
 
         const auto expectWells = std::vector<std::string> { "OP-01" };
-        const auto expectSeg = std::vector<int> { 17 };
+        const auto expectSeg = std::vector<long long> { 17 };
         const auto segments = segSet.segments(0);
 
         BOOST_CHECK_EQUAL(segments.well(), expectWells[0]);
@@ -417,7 +417,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_Single_Segment)
         BOOST_CHECK_EQUAL(segSet.numWells(), std::size_t{1});
 
         const auto expectWells = std::vector<std::string> { "OP-02" };
-        const auto expectSeg = std::vector<int> { 5 };
+        const auto expectSeg = std::vector<long long> { 5 };
         const auto segments = segSet.segments(0);
 
         BOOST_CHECK_EQUAL(segments.well(), expectWells[0]);
@@ -443,7 +443,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_All_Segments)
         BOOST_CHECK_EQUAL(segSet.numWells(), std::size_t{1});
 
         const auto expectWells = std::vector<std::string> { "OP-01" };
-        const auto expectSeg = std::vector<int> {
+        const auto expectSeg = std::vector<long long> {
              1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
             11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
         };
@@ -465,7 +465,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_All_Segments)
         BOOST_CHECK_EQUAL(segSet.numWells(), std::size_t{1});
 
         const auto expectWells = std::vector<std::string> { "OP-02" };
-        const auto expectSeg = std::vector<int> { 1, 2, 3, 4, 5, };
+        const auto expectSeg = std::vector<long long> { 1, 2, 3, 4, 5, };
         const auto segments = segSet.segments(0);
 
         BOOST_CHECK_EQUAL(segments.well(), expectWells[0]);
@@ -482,7 +482,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_All_Segments)
         BOOST_CHECK_MESSAGE(! segSet.isScalar(), "Resulting segment set must be scalar");
 
         const auto expectWells = std::vector<std::string> { "GI-01" };
-        const auto expectSeg = std::vector<int> {
+        const auto expectSeg = std::vector<long long> {
              1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
         };
         const auto segments = segSet.segments(0);
@@ -538,7 +538,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Single_Segment)
         BOOST_CHECK_EQUAL(segSet.numWells(), expectWells.size());
 
         for (auto well = 0*segSet.numWells(); well < segSet.numWells(); ++well) {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments(well);
 
             BOOST_CHECK_EQUAL(segments.well(), expectWells[well]);
@@ -564,7 +564,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Single_Segment)
         BOOST_CHECK_EQUAL(segSet.numWells(), expectWells.size());
 
         for (auto well = 0*segSet.numWells(); well < segSet.numWells(); ++well) {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments(well);
 
             BOOST_CHECK_EQUAL(segments.well(), expectWells[well]);
@@ -595,7 +595,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Single_Segment_Scalar)
     BOOST_CHECK_EQUAL(segSet.numWells(), expectWells.size());
 
     for (auto well = 0*segSet.numWells(); well < segSet.numWells(); ++well) {
-        const auto expectSeg = std::vector<int> { 14 };
+        const auto expectSeg = std::vector<long long> { 14 };
         const auto segments = segSet.segments(well);
 
         BOOST_CHECK_EQUAL(segments.well(), expectWells[well]);
@@ -628,7 +628,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Partially_Missing_Single_Segment)
         BOOST_CHECK_EQUAL(segSet.numWells(), expectWells.size());
 
         for (auto well = 0*segSet.numWells(); well < segSet.numWells(); ++well) {
-            const auto expectSeg = std::vector<int> { 2 };
+            const auto expectSeg = std::vector<long long> { 2 };
             const auto segments = segSet.segments(well);
 
             BOOST_CHECK_EQUAL(segments.well(), expectWells[well]);
@@ -655,7 +655,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Partially_Missing_Single_Segment)
         BOOST_CHECK_EQUAL(segSet.numWells(), expectWells.size());
 
         for (auto well = 0*segSet.numWells(); well < segSet.numWells(); ++well) {
-            const auto expectSeg = std::vector<int> { 7 };
+            const auto expectSeg = std::vector<long long> { 7 };
             const auto segments = segSet.segments(well);
 
             BOOST_CHECK_EQUAL(segments.well(), expectWells[well]);
@@ -689,7 +689,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OP-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                  1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
                 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
             };
@@ -701,7 +701,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OP-02
         {
-            const auto expectSeg = std::vector<int> { 1, 2, 3, 4, 5, };
+            const auto expectSeg = std::vector<long long> { 1, 2, 3, 4, 5, };
             const auto segments = segSet.segments(1);
             BOOST_CHECK_EQUAL(segments.well(), "OP-02");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -710,7 +710,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OPROD
         {
-            const auto expectSeg = std::vector<int> { 1, 2, };
+            const auto expectSeg = std::vector<long long> { 1, 2, };
             const auto segments = segSet.segments(2);
             BOOST_CHECK_EQUAL(segments.well(), "OPROD");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -719,7 +719,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // GI-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             };
             const auto segments = segSet.segments(3);
@@ -730,7 +730,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // I-45
         {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments(4);
             BOOST_CHECK_EQUAL(segments.well(), "I-45");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -756,7 +756,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OP-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                  1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
                 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
             };
@@ -768,7 +768,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OP-02
         {
-            const auto expectSeg = std::vector<int> { 1, 2, 3, 4, 5, };
+            const auto expectSeg = std::vector<long long> { 1, 2, 3, 4, 5, };
             const auto segments = segSet.segments(1);
             BOOST_CHECK_EQUAL(segments.well(), "OP-02");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -777,7 +777,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OPROD
         {
-            const auto expectSeg = std::vector<int> { 1, 2, };
+            const auto expectSeg = std::vector<long long> { 1, 2, };
             const auto segments = segSet.segments(2);
             BOOST_CHECK_EQUAL(segments.well(), "OPROD");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -786,7 +786,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // GI-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             };
             const auto segments = segSet.segments(3);
@@ -797,7 +797,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // I-45
         {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments(4);
             BOOST_CHECK_EQUAL(segments.well(), "I-45");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -829,7 +829,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_Single_Segment)
         BOOST_CHECK_EQUAL(segSet.numWells(), expectWells.size());
 
         for (auto well = 0*segSet.numWells(); well < segSet.numWells(); ++well) {
-            const auto expectSeg = std::vector<int> { 3 };
+            const auto expectSeg = std::vector<long long> { 3 };
             const auto segments = segSet.segments(well);
 
             BOOST_CHECK_EQUAL(segments.well(), expectWells[well]);
@@ -856,7 +856,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_Single_Segment)
         BOOST_CHECK_EQUAL(segSet.numWells(), expectWells.size());
 
         for (auto well = 0*segSet.numWells(); well < segSet.numWells(); ++well) {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments(well);
 
             BOOST_CHECK_EQUAL(segments.well(), expectWells[well]);
@@ -889,7 +889,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_Partially_Missing_Segment)
     BOOST_CHECK_EQUAL(segSet.numWells(), expectWells.size());
 
     for (auto well = 0*segSet.numWells(); well < segSet.numWells(); ++well) {
-        const auto expectSeg = std::vector<int> { 3 };
+        const auto expectSeg = std::vector<long long> { 3 };
         const auto segments = segSet.segments(well);
 
         BOOST_CHECK_EQUAL(segments.well(), expectWells[well]);
@@ -923,7 +923,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_All_Segments)
 
         // OP-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                  1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
                 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
             };
@@ -935,7 +935,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_All_Segments)
 
         // OP-02
         {
-            const auto expectSeg = std::vector<int> { 1, 2, 3, 4, 5, };
+            const auto expectSeg = std::vector<long long> { 1, 2, 3, 4, 5, };
             const auto segments = segSet.segments(1);
             BOOST_CHECK_EQUAL(segments.well(), "OP-02");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -944,7 +944,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_All_Segments)
 
         // OPROD
         {
-            const auto expectSeg = std::vector<int> { 1, 2, };
+            const auto expectSeg = std::vector<long long> { 1, 2, };
             const auto segments = segSet.segments(2);
             BOOST_CHECK_EQUAL(segments.well(), "OPROD");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -971,7 +971,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_All_Segments)
 
         // OPROD
         {
-            const auto expectSeg = std::vector<int> { 1, 2, };
+            const auto expectSeg = std::vector<long long> { 1, 2, };
             const auto segments = segSet.segments(0);
             BOOST_CHECK_EQUAL(segments.well(), "OPROD");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
@@ -1018,7 +1018,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_Single_Segment)
         BOOST_CHECK_EQUAL_COLLECTIONS(wells      .begin(), wells      .end(),
                                       expectWells.begin(), expectWells.end());
 
-        const auto expectSeg = std::vector<int> { 17 };
+        const auto expectSeg = std::vector<long long> { 17 };
         const auto segments = segSet.segments(wells[0]);
         BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                       expectSeg.begin(), expectSeg.end());
@@ -1037,7 +1037,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_Single_Segment)
         BOOST_CHECK_EQUAL_COLLECTIONS(wells      .begin(), wells      .end(),
                                       expectWells.begin(), expectWells.end());
 
-        const auto expectSeg = std::vector<int> { 5 };
+        const auto expectSeg = std::vector<long long> { 5 };
         const auto segments = segSet.segments(wells[0]);
         BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                       expectSeg.begin(), expectSeg.end());
@@ -1063,7 +1063,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_All_Segments)
         BOOST_CHECK_EQUAL_COLLECTIONS(wells      .begin(), wells      .end(),
                                       expectWells.begin(), expectWells.end());
 
-        const auto expectSeg = std::vector<int> {
+        const auto expectSeg = std::vector<long long> {
              1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
             11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
         };
@@ -1085,7 +1085,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_All_Segments)
         BOOST_CHECK_EQUAL_COLLECTIONS(wells      .begin(), wells      .end(),
                                       expectWells.begin(), expectWells.end());
 
-        const auto expectSeg = std::vector<int> { 1, 2, 3, 4, 5, };
+        const auto expectSeg = std::vector<long long> { 1, 2, 3, 4, 5, };
         const auto segments = segSet.segments(wells[0]);
         BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                       expectSeg.begin(), expectSeg.end());
@@ -1104,7 +1104,7 @@ BOOST_AUTO_TEST_CASE(Single_Well_All_Segments)
         BOOST_CHECK_EQUAL_COLLECTIONS(wells      .begin(), wells      .end(),
                                       expectWells.begin(), expectWells.end());
 
-        const auto expectSeg = std::vector<int> {
+        const auto expectSeg = std::vector<long long> {
              1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
         };
         const auto segments = segSet.segments(wells[0]);
@@ -1136,7 +1136,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Single_Segment)
                                       expectWells.begin(), expectWells.end());
 
         for (const auto& well : wells) {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments(well);
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1160,7 +1160,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Single_Segment)
                                       expectWells.begin(), expectWells.end());
 
         for (const auto& well : wells) {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments(well);
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1189,7 +1189,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Single_Segment_Scalar)
                                   expectWells.begin(), expectWells.end());
 
     for (const auto& well : wells) {
-        const auto expectSeg = std::vector<int> { 14 };
+        const auto expectSeg = std::vector<long long> { 14 };
         const auto segments = segSet.segments(well);
         BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                       expectSeg.begin(), expectSeg.end());
@@ -1220,7 +1220,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Partially_Missing_Single_Segment)
                                       expectWells.begin(), expectWells.end());
 
         for (const auto& well : wells) {
-            const auto expectSeg = std::vector<int> { 2 };
+            const auto expectSeg = std::vector<long long> { 2 };
             const auto segments = segSet.segments(well);
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1245,7 +1245,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_Partially_Missing_Single_Segment)
                                       expectWells.begin(), expectWells.end());
 
         for (const auto& well : wells) {
-            const auto expectSeg = std::vector<int> { 7 };
+            const auto expectSeg = std::vector<long long> { 7 };
             const auto segments = segSet.segments(well);
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1277,7 +1277,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OP-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                 1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
                 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
             };
@@ -1288,7 +1288,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OP-02
         {
-            const auto expectSeg = std::vector<int> { 1, 2, 3, 4, 5, };
+            const auto expectSeg = std::vector<long long> { 1, 2, 3, 4, 5, };
             const auto segments = segSet.segments("OP-02");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1296,7 +1296,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OPROD
         {
-            const auto expectSeg = std::vector<int> { 1, 2, };
+            const auto expectSeg = std::vector<long long> { 1, 2, };
             const auto segments = segSet.segments("OPROD");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1304,7 +1304,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // GI-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             };
             const auto segments = segSet.segments("GI-01");
@@ -1314,7 +1314,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // I-45
         {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments("I-45");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1340,7 +1340,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OP-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                  1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
                 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
             };
@@ -1351,7 +1351,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OP-02
         {
-            const auto expectSeg = std::vector<int> { 1, 2, 3, 4, 5, };
+            const auto expectSeg = std::vector<long long> { 1, 2, 3, 4, 5, };
             const auto segments = segSet.segments("OP-02");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1359,7 +1359,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // OPROD
         {
-            const auto expectSeg = std::vector<int> { 1, 2, };
+            const auto expectSeg = std::vector<long long> { 1, 2, };
             const auto segments = segSet.segments("OPROD");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1367,7 +1367,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // GI-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             };
             const auto segments = segSet.segments("GI-01");
@@ -1377,7 +1377,7 @@ BOOST_AUTO_TEST_CASE(All_Wells_All_Segments)
 
         // I-45
         {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments("I-45");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1422,7 +1422,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_Single_Segment)
                                       expectWells.begin(), expectWells.end());
 
         for (const auto& well : wells) {
-            const auto expectSeg = std::vector<int> { 3 };
+            const auto expectSeg = std::vector<long long> { 3 };
             const auto segments = segSet.segments(well);
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1447,7 +1447,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_Single_Segment)
                                       expectWells.begin(), expectWells.end());
 
         for (const auto& well : wells) {
-            const auto expectSeg = std::vector<int> { 1 };
+            const auto expectSeg = std::vector<long long> { 1 };
             const auto segments = segSet.segments(well);
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1478,7 +1478,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_Partially_Missing_Segment)
                                   expectWells.begin(), expectWells.end());
 
     for (const auto& well : wells) {
-        const auto expectSeg = std::vector<int> { 3 };
+        const auto expectSeg = std::vector<long long> { 3 };
         const auto segments = segSet.segments(well);
         BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                       expectSeg.begin(), expectSeg.end());
@@ -1510,7 +1510,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_All_Segments)
 
         // OP-01
         {
-            const auto expectSeg = std::vector<int> {
+            const auto expectSeg = std::vector<long long> {
                  1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
                 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
             };
@@ -1521,7 +1521,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_All_Segments)
 
         // OP-02
         {
-            const auto expectSeg = std::vector<int> { 1, 2, 3, 4, 5, };
+            const auto expectSeg = std::vector<long long> { 1, 2, 3, 4, 5, };
             const auto segments = segSet.segments("OP-02");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1529,7 +1529,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_All_Segments)
 
         // OPROD
         {
-            const auto expectSeg = std::vector<int> { 1, 2, };
+            const auto expectSeg = std::vector<long long> { 1, 2, };
             const auto segments = segSet.segments("OPROD");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());
@@ -1556,7 +1556,7 @@ BOOST_AUTO_TEST_CASE(Select_Wells_All_Segments)
 
         // OPROD
         {
-            const auto expectSeg = std::vector<int> { 1, 2, };
+            const auto expectSeg = std::vector<long long> { 1, 2, };
             const auto segments = segSet.segments("OPROD");
             BOOST_CHECK_EQUAL_COLLECTIONS(segments .begin(), segments .end(),
                                           expectSeg.begin(), expectSeg.end());

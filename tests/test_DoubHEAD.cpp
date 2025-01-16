@@ -50,7 +50,7 @@ namespace {
     }
 }
 
-//int main(int argc, char* argv[])
+//long long main(long long argc, char* argv[])
 struct SimulationCase
 {
     explicit SimulationCase(const Opm::Deck& deck)

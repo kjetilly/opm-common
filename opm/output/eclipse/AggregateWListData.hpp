@@ -39,16 +39,16 @@ namespace Opm { namespace RestartIO { namespace Helpers {
     class AggregateWListData
     {
     public:
-        explicit AggregateWListData(const std::vector<int>& inteHead);
+        explicit AggregateWListData(const std::vector<long long>& inteHead);
 
         void captureDeclaredWListData(const Schedule&   sched,
                                     const std::size_t sim_step,
-                                    const std::vector<int>& inteHead);
+                                    const std::vector<long long>& inteHead);
 
 
 
         /// Retrieve Integer WLIST Data Array.
-        const std::vector<int>& getIWls() const
+        const std::vector<long long>& getIWls() const
         {
             return this->iWls_.data();
         }
@@ -63,7 +63,7 @@ namespace Opm { namespace RestartIO { namespace Helpers {
 
     private:
         /// Aggregate 'IWLS' array (Integer) for all wells.
-        WindowedArray<int> iWls_;
+        WindowedArray<long long> iWls_;
 
         /// Aggregate 'ZWLS' array (Character) for all wells.
         WindowedArray<EclIO::PaddedOutputString<8>> zWls_;

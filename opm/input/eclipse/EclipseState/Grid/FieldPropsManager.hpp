@@ -50,10 +50,10 @@ public:
                       const std::size_t ncomps = 0); // TODO: removing the default value for ncomps
     virtual ~FieldPropsManager() = default;
 
-    virtual void reset_actnum(const std::vector<int>& actnum);
+    virtual void reset_actnum(const std::vector<long long>& actnum);
     void deleteMINPVV();
     const std::string& default_region() const;
-    virtual std::vector<int> actnum() const;
+    virtual std::vector<long long> actnum() const;
     virtual std::vector<double> porv(bool global = false) const;
 
 
@@ -93,9 +93,9 @@ public:
 
             FieldPropsManager fpm(deck, grid);
 
-            fpm.has<int>("SATNUM");                => false
-            auto satnum = fpm.get<int>("SATNUM");  => SATNUM is autocreated
-            fpm.has<int>("SATNUM");                => true
+            fpm.has<long long>("SATNUM");                => false
+            auto satnum = fpm.get<long long>("SATNUM");  => SATNUM is autocreated
+            fpm.has<long long>("SATNUM");                => true
 
       - When checking whether the container has the keyword you should rephrase
         the question slightly:
@@ -116,15 +116,15 @@ public:
       can be automatically instantiated we have the following behavior:
 
       get():
-          fp.has<int>("SATNUM") -> false
-          const std::vector<int>& satnum = fp.get<int>("SATNUM")
-          fp.has<int>("SATNUM") -> true;
+          fp.has<long long>("SATNUM") -> false
+          const std::vector<long long>& satnum = fp.get<long long>("SATNUM")
+          fp.has<long long>("SATNUM") -> true;
 
 
       get_copy():
-          fp.has<int>("SATNUM") -> false
-          const std::vector<int>& satnum = fp.get_copy<int>("SATNUM")
-          fp.has<int>("SATNUM") -> false
+          fp.has<long long>("SATNUM") -> false
+          const std::vector<long long>& satnum = fp.get_copy<long long>("SATNUM")
+          fp.has<long long>("SATNUM") -> false
     */
 
 
@@ -176,7 +176,7 @@ public:
 
     virtual std::vector<std::string> fip_regions() const;
 
-    const Fieldprops::FieldData<int>&
+    const Fieldprops::FieldData<long long>&
     get_int_field_data(const std::string& keyword) const;
 
     /// \brief Get double field data associated with a keyword
@@ -184,13 +184,13 @@ public:
     ///        keyword and thus allow getting FieldData used by the TranCalculator.
     const Fieldprops::FieldData<double>&
     get_double_field_data(const std::string& keyword, bool allow_unsupported=false) const;
-    virtual const std::vector<int>& get_int(const std::string& keyword) const { return this->get<int>(keyword); }
-    virtual std::vector<int> get_global_int(const std::string& keyword) const { return this->get_global<int>(keyword); }
+    virtual const std::vector<long long>& get_int(const std::string& keyword) const { return this->get<long long>(keyword); }
+    virtual std::vector<long long> get_global_int(const std::string& keyword) const { return this->get_global<long long>(keyword); }
 
     virtual const std::vector<double>& get_double(const std::string& keyword) const { return this->get<double>(keyword); }
     virtual std::vector<double> get_global_double(const std::string& keyword) const { return this->get_global<double>(keyword); }
 
-    virtual bool has_int(const std::string& keyword) const { return this->has<int>(keyword); }
+    virtual bool has_int(const std::string& keyword) const { return this->has<long long>(keyword); }
     virtual bool has_double(const std::string& keyword) const { return this->has<double>(keyword); }
 
     /*
@@ -251,7 +251,7 @@ public:
 
     void prune_global_for_schedule_run();
 
-    void set_active_indices(const std::vector<int>& indices);
+    void set_active_indices(const std::vector<long long>& indices);
 
 private:
     /*

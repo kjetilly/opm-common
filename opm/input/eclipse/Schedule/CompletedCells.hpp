@@ -45,8 +45,8 @@ public:
             double permy{};
             double permz{};
             double poro{};
-            int satnum{};
-            int pvtnum{};
+            long long satnum{};
+            long long pvtnum{};
             double ntg{};
 
             bool operator==(const Props& other) const;

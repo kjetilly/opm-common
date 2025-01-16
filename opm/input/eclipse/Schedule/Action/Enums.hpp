@@ -42,9 +42,9 @@ enum class Comparator {
 };
 
 
-Comparator  comparator_from_int(int cmp_int);
+Comparator  comparator_from_int(long long cmp_int);
 std::string comparator_as_string(Comparator cmp);
-Logical     logic_from_int(int int_logic);
+Logical     logic_from_int(long long int_logic);
 
 }
 }

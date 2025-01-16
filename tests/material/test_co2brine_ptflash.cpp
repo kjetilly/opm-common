@@ -122,14 +122,14 @@ for (const auto& sample : test_methods) {
         // p And z is the primary variables
         Evaluation z_last = 1.;
         for (unsigned compIdx = 0; compIdx < numComponents - 1; ++compIdx) {
-            z[compIdx] = Evaluation::createVariable(Opm::getValue(z[compIdx]), int(compIdx) + 1);
+            z[compIdx] = Evaluation::createVariable(Opm::getValue(z[compIdx]), (long long)(compIdx) + 1);
             z_last -= z[compIdx];
         }
         z[numComponents - 1] = z_last;
     }
 
     const double flash_tolerance = 1.e-12; // just to test the setup in co2-compositional
-    const int flash_verbosity = 0;
+    const long long flash_verbosity = 0;
 
     // TODO: should we set these?
     // Set initial K and L
@@ -245,14 +245,14 @@ for (const auto& sample : test_methods) {
         // p And z is the primary variables
         Evaluation z_last = 1.;
         for (unsigned compIdx = 0; compIdx < numComponents - 1; ++compIdx) {
-            z[compIdx] = Evaluation::createVariable(Opm::getValue(z[compIdx]), int(compIdx) + 1);
+            z[compIdx] = Evaluation::createVariable(Opm::getValue(z[compIdx]), (long long)(compIdx) + 1);
             z_last -= z[compIdx];
         }
         z[numComponents - 1] = z_last;
     }
 
     const double flash_tolerance = 1.e-12;
-    const int flash_verbosity = 0;
+    const long long flash_verbosity = 0;
 
     // TODO: should we set these?
     // Set initial K and L
@@ -388,7 +388,7 @@ BOOST_AUTO_TEST_CASE(RachfordRice) {
     z_values.push_back({0.2, 0.5, 0.3});
     vapor_reference.push_back(0.6062547183490403);
 
-    for(unsigned int i = 0; i < K_values.size(); i++){
+    for(size_t i = 0; i < K_values.size(); i++){
         auto z_i = z_values[i];
         auto K_i = K_values[i];
         std::cout << "Perform RR test " << i << " of " << K_values.size() << std::endl
@@ -416,7 +416,7 @@ BOOST_AUTO_TEST_CASE(RachfordRice) {
     using Flash = Opm::PTFlash<double, FluidSystem>;
     auto V_ref = 0.5269214180997791;
 
-   for(unsigned int i = 0; i < K_values.size(); i++){
+   for(size_t i = 0; i < K_values.size(); i++){
         auto L = Flash::solveRachfordRice_g_(K, z, 1);
         auto V = 1.0 - L;
         BOOST_CHECK_MESSAGE(Opm::MathToolbox<Evaluation>::isSame(V, V_ref, 2e-3),

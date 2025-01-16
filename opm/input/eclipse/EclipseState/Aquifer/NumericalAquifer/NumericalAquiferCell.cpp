@@ -31,10 +31,10 @@ namespace Opm {
                                                const DeckRecord& record,
                                                const EclipseGrid& grid,
                                                const FieldPropsManager& field_props)
-        : aquifer_id( record.getItem<AQUNUM::AQUIFER_ID>().get<int>(0) )
-        , I ( record.getItem<AQUNUM::I>().get<int>(0) - 1 )
-        , J ( record.getItem<AQUNUM::J>().get<int>(0) - 1 )
-        , K ( record.getItem<AQUNUM::K>().get<int>(0) - 1 )
+        : aquifer_id( record.getItem<AQUNUM::AQUIFER_ID>().get<long long>(0) )
+        , I ( record.getItem<AQUNUM::I>().get<long long>(0) - 1 )
+        , J ( record.getItem<AQUNUM::J>().get<long long>(0) - 1 )
+        , K ( record.getItem<AQUNUM::K>().get<long long>(0) - 1 )
         , area (record.getItem<AQUNUM::CROSS_SECTION>().getSIDouble(0) )
         , length ( record.getItem<AQUNUM::LENGTH>().getSIDouble(0) )
         , permeability( record.getItem<AQUNUM::PERM>().getSIDouble(0) )
@@ -63,13 +63,13 @@ namespace Opm {
         }
 
         if ( !record.getItem<AQUNUM::PVT_TABLE_NUM>().defaultApplied(0) ) {
-            this->pvttable = record.getItem<AQUNUM::PVT_TABLE_NUM>().get<int>(0);
+            this->pvttable = record.getItem<AQUNUM::PVT_TABLE_NUM>().get<long long>(0);
         } else {
             this->pvttable = pvtnum[active_index];
         }
 
         if ( !record.getItem<AQUNUM::SAT_TABLE_NUM>().defaultApplied(0) ) {
-            this->sattable = record.getItem<AQUNUM::SAT_TABLE_NUM>().get<int>(0);
+            this->sattable = record.getItem<AQUNUM::SAT_TABLE_NUM>().get<long long>(0);
         } else {
             this->sattable = satnum[active_index];
         }

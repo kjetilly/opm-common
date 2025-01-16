@@ -476,7 +476,7 @@ RWIP
         BOOST_CHECK_MESSAGE(kw[1].category() == SummaryConfigNode::Category::Region,
                             "ROFT must be a Region vector");
 
-        const auto expect_number = std::vector<int> {
+        const auto expect_number = std::vector<long long> {
             393'217, // 1 2
             458'755, // 3 4
         };
@@ -502,7 +502,7 @@ RWIP
         BOOST_CHECK_MESSAGE(kw[1].category() == SummaryConfigNode::Category::Region,
                             "RGFR- must be a Region vector");
 
-        const auto expect_number = std::vector<int> {
+        const auto expect_number = std::vector<long long> {
             524'293, // 5 6
             589'831, // 7 8
         };
@@ -528,13 +528,13 @@ RWIP
         BOOST_CHECK_MESSAGE(kw[1].category() == SummaryConfigNode::Category::Region,
                             "ROFTG must be a Region vector");
 
-        const auto expect_number = std::vector<int> {
+        const auto expect_number = std::vector<long long> {
             393'217, // 1 2
             458'755, // 3 4
             425'985, // 1 3
         };
 
-        const auto actual = std::vector<int> {
+        const auto actual = std::vector<long long> {
             kw[0].number(),
             kw[1].number(),
             kw[2].number(),

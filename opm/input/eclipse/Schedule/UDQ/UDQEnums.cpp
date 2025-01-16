@@ -389,7 +389,7 @@ UDQUpdate updateType(const std::string& update_string)
     throw std::invalid_argument("Invalid status update string " + update_string);
 }
 
-UDQUpdate updateType(const int int_value)
+UDQUpdate updateType(const long long int_value)
 {
     switch (int_value) {
     case 0: return UDQUpdate::OFF;
@@ -481,8 +481,8 @@ UDQVarType coerce(const UDQVarType t1, const UDQVarType t2)
         // Note: Can't use typeName() here since that would throw another
         // exception.
         throw std::logic_error {
-            "Cannot coerce between " + std::to_string(static_cast<int>(t1))
-            + " and " + std::to_string(static_cast<int>(t2))
+            "Cannot coerce between " + std::to_string(static_cast<long long>(t1))
+            + " and " + std::to_string(static_cast<long long>(t2))
         };
     }
 
@@ -553,7 +553,7 @@ std::string typeName(const UDQVarType var_type)
         return "BLOCK_VAR";
 
     default:
-        throw std::runtime_error("Should not be here: " + std::to_string(static_cast<int>(var_type)));
+        throw std::runtime_error("Should not be here: " + std::to_string(static_cast<long long>(var_type)));
     }
 }
 
@@ -578,7 +578,7 @@ namespace {
         if (pos == map.end()) {
             throw std::logic_error {
                 "Unrecognized enum type (" +
-                std::to_string(static_cast<int>(control)) +
+                std::to_string(static_cast<long long>(control)) +
                 ") - internal error"
             };
         }
@@ -631,9 +631,9 @@ UDAKeyword keyword(const UDAControl control)
     return lookup_control_map_value(c2k, control);
 }
 
-int udaCode(const UDAControl control)
+long long udaCode(const UDAControl control)
 {
-    static const auto c2uda = std::map<UDAControl, int> {
+    static const auto c2uda = std::map<UDAControl, long long> {
         {UDAControl::WCONPROD_ORAT,  300'004},
         {UDAControl::WCONPROD_WRAT,  400'004},
         {UDAControl::WCONPROD_GRAT,  500'004},
@@ -746,7 +746,7 @@ bool is_group_production_control(const UDAControl control)
     }
 }
 
-UDAControl udaControl(const int uda_code)
+UDAControl udaControl(const long long uda_code)
 {
     switch (uda_code) {
     case   300'004: return UDAControl::WCONPROD_ORAT;
@@ -863,7 +863,7 @@ std::string controlName(const UDAControl control)
 
     throw std::logic_error {
         "Unknown UDA control keyword '" +
-        std::to_string(static_cast<int>(control)) + '\''
+        std::to_string(static_cast<long long>(control)) + '\''
     };
 }
 

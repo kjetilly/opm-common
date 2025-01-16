@@ -32,7 +32,7 @@ namespace Opm
 //! \brief Returns an index in an ordered table such that x is between
 //!        table[j] and table[j+1].
 //! \details If x is out of bounds, it returns a clamped index
-inline int tableIndex(const std::vector<double>& table, double x)
+inline long long tableIndex(const std::vector<double>& table, double x)
 {
     if (table.size() < 2)
         return 0;
@@ -47,7 +47,7 @@ inline int tableIndex(const std::vector<double>& table, double x)
       return std::distance(table.begin(), lower)-1;
 }
 
-inline std::pair<double, int>
+inline std::pair<double, long long>
 linearInterpolationSlope(const std::vector<double>& xv,
                          const std::vector<double>& yv,
                          const double x)
@@ -88,7 +88,7 @@ inline double linearInterpolationNoExtrapolation(const std::vector<double>& xv,
 
 inline double linearInterpolation(const std::vector<double>& xv,
                                   const std::vector<double>& yv,
-                                  double x, int& ix1)
+                                  double x, long long& ix1)
 {
     // Extrapolates if x is outside xv
     double t;

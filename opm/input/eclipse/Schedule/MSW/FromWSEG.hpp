@@ -30,15 +30,15 @@
 namespace Opm {
 
 template<class ICD>
-std::map<std::string, std::vector<std::pair<int, ICD> > >
+std::map<std::string, std::vector<std::pair<long long, ICD> > >
 fromWSEG(const DeckKeyword& wseg) {
-         std::map<std::string, std::vector<std::pair<int, ICD> > > res;
+         std::map<std::string, std::vector<std::pair<long long, ICD> > > res;
 
     for (const DeckRecord &record : wseg) {
         const std::string well_name = record.getItem("WELL").getTrimmedString(0);
 
-        const int start_segment = record.getItem("SEGMENT1").get<int>(0);
-        const int end_segment = record.getItem("SEGMENT2").get<int>(0);
+        const long long start_segment = record.getItem("SEGMENT1").get<long long>(0);
+        const long long end_segment = record.getItem("SEGMENT2").get<long long>(0);
 
         if (start_segment < 2 || end_segment < 2 || end_segment < start_segment) {
             const std::string message = "Segment numbers " + std::to_string(start_segment) + " and "
@@ -49,7 +49,7 @@ fromWSEG(const DeckKeyword& wseg) {
         }
 
         const ICD spiral_icd(record);
-        for (int seg = start_segment; seg <= end_segment; seg++) {
+        for (long long seg = start_segment; seg <= end_segment; seg++) {
             res[well_name].push_back(std::make_pair(seg, spiral_icd));
         }
     }

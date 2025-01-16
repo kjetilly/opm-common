@@ -141,11 +141,11 @@ void getRefSmryVect(std::vector <float> &time_ref, std::vector <float> &wgpr_pro
 
 }
 
-std::vector<float> getFrom(const std::vector<float> &ref_vect,int from){
+std::vector<float> getFrom(const std::vector<float> &ref_vect,long long from){
 
     std::vector<float> vect;
 
-    for (unsigned int i=from; i<ref_vect.size();i++){
+    for (size_t i=from; i<ref_vect.size();i++){
        vect.push_back(ref_vect[i]);
     }
 
@@ -183,32 +183,32 @@ BOOST_AUTO_TEST_CASE(TestExtESmry_1) {
 
     smryVect = esmry1.get("WGPR:PROD");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], wgpr_prod_ref[i], 0.01);
 
     smryVect = esmry1.get("WBHP:PROD");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], wbhp_prod_ref[i], 0.01);
 
     smryVect = esmry1.get("WBHP:INJ");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], wbhp_inj_ref[i], 0.01);
 
     smryVect = esmry1.get("FGOR");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], fgor_ref[i], 0.01);
 
     smryVect = esmry1.get("BPR:1,1,1");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], bpr_111_ref[i], 0.01);
 
     smryVect = esmry1.get("BPR:10,10,3");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], bpr_10103_ref[i], 0.01);
 
     ExtESmry esmry2("SPE1CASE1.ESMRY");
@@ -287,38 +287,38 @@ BOOST_AUTO_TEST_CASE(TestExtESmry_2) {
     smryVect = esmry1.get("WGPR:PROD");
     std::vector<float> ref_rst60 = getFrom(wgpr_prod_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
 
     smryVect = esmry1.get("WBHP:PROD");
     ref_rst60 = getFrom(wbhp_prod_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
 
 
     smryVect = esmry1.get("WBHP:INJ");
     ref_rst60 = getFrom(wbhp_inj_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
 
     smryVect = esmry1.get("FGOR");
     ref_rst60 = getFrom(fgor_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
 
     smryVect = esmry1.get("BPR:1,1,1");
     ref_rst60 = getFrom(bpr_111_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
 
     smryVect = esmry1.get("BPR:10,10,3");
     ref_rst60 = getFrom(bpr_10103_ref,63);
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], ref_rst60[i], 0.01);
 }
 
@@ -364,32 +364,32 @@ BOOST_AUTO_TEST_CASE(TestESmry_3) {
     BOOST_CHECK_EQUAL(smryVect==time_ref, true);
 
     smryVect = esmry1.get("WGPR:PROD");
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], wgpr_prod_ref[i], 0.01);
 
 
     smryVect = esmry1.get("WBHP:PROD");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], wbhp_prod_ref[i], 0.01);
 
     smryVect = esmry1.get("WBHP:INJ");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], wbhp_inj_ref[i], 0.01);
 
     smryVect = esmry1.get("FGOR");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], fgor_ref[i], 0.01);
 
     smryVect = esmry1.get("BPR:1,1,1");
 
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], bpr_111_ref[i], 0.01);
 
     smryVect = esmry1.get("BPR:10,10,3");
-    for (unsigned int i=0;i< smryVect.size();i++)
+    for (size_t i=0;i< smryVect.size();i++)
         BOOST_REQUIRE_CLOSE (smryVect[i], bpr_10103_ref[i], 0.01);
 
     auto fopt = esmry1.get("FOPT");

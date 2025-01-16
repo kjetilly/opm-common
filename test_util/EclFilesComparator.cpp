@@ -53,10 +53,10 @@ printValuesForCell(const std::string& keyword,
                    const T& value2) const
 {
     if (grid) {
-        int nActive = grid->activeCells();
-        int nTot = grid->totalNumberOfCells();
+        long long nActive = grid->activeCells();
+        long long nTot = grid->totalNumberOfCells();
 
-        if (static_cast<int>(kw_size) == nActive) {
+        if (static_cast<long long>(kw_size) == nActive) {
             auto ijk = grid->ijk_from_active_index(cell);
 
             ijk[0]++, ijk[1]++, ijk[2]++;
@@ -69,7 +69,7 @@ printValuesForCell(const std::string& keyword,
             return;
         }
 
-        if (static_cast<int>(kw_size) == nTot) {
+        if (static_cast<long long>(kw_size) == nTot) {
 
             auto ijk = grid->ijk_from_global_index(cell);
 
@@ -104,7 +104,7 @@ using boolTypeHelper = typename std::remove_const<typename std::remove_reference
 using boolType = typename std::conditional<std::is_same<boolTypeHelper, bool>::value, char, boolTypeHelper>::type;
 
 INSTANTIATE_PRINTCELL(bool)
-INSTANTIATE_PRINTCELL(int)
+INSTANTIATE_PRINTCELL(long long)
 INSTANTIATE_PRINTCELL(double)
 INSTANTIATE_PRINTCELL(std::string)
 INSTANTIATE_PRINTCELL(boolType)

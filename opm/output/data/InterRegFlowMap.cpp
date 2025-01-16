@@ -41,8 +41,8 @@
 
 void
 Opm::data::InterRegFlowMap::
-addConnection(const int        r1,
-              const int        r2,
+addConnection(const long long        r1,
+              const long long        r2,
               const FlowRates& rates)
 {
     if ((r1 < 0) || (r2 < 0)) {
@@ -119,7 +119,7 @@ std::optional<std::pair<
     Opm::data::InterRegFlowMap::ReadOnlyWindow,
     Opm::data::InterRegFlowMap::ReadOnlyWindow::ElmT
 >>
-Opm::data::InterRegFlowMap::getInterRegFlows(const int r1, const int r2) const
+Opm::data::InterRegFlowMap::getInterRegFlows(const long long r1, const long long r2) const
 {
     if ((r1 < 0) || (r2 < 0)) {
         throw std::invalid_argument {

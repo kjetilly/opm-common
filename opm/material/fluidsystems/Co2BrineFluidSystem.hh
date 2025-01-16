@@ -49,15 +49,15 @@ namespace Opm {
             : public Opm::BaseFluidSystem<Scalar, Co2BrineFluidSystem<Scalar> > {
     public:
         // TODO: I do not think these should be constant in fluidsystem, will try to make it non-constant later
-        static constexpr int numPhases=2;
-        static constexpr int numComponents = 2;
-        static constexpr int numMisciblePhases=2;
-        static constexpr int numMiscibleComponents = 2;
-        static constexpr int oilPhaseIdx = 0;
-        static constexpr int gasPhaseIdx = 1;
+        static constexpr long long numPhases=2;
+        static constexpr long long numComponents = 2;
+        static constexpr long long numMisciblePhases=2;
+        static constexpr long long numMiscibleComponents = 2;
+        static constexpr long long oilPhaseIdx = 0;
+        static constexpr long long gasPhaseIdx = 1;
 
-        static constexpr int Comp0Idx = 0;
-        static constexpr int Comp1Idx = 1;
+        static constexpr long long Comp0Idx = 0;
+        static constexpr long long Comp1Idx = 1;
 
         using Comp0 = Opm::SimpleCO2<Scalar>;
         using Comp1 = Opm::Brine<Scalar, Opm::H2O<Scalar>>;

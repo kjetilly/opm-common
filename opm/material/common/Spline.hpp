@@ -533,7 +533,7 @@ public:
         else if (splineType == Monotonic)
             this->makeMonotonicSpline_(slopeVec_);
         else
-            throw std::runtime_error("Spline type "+std::to_string(int(splineType))+" not supported at this place");
+            throw std::runtime_error("Spline type "+std::to_string((long long)(splineType))+" not supported at this place");
     }
 
     /*!
@@ -572,7 +572,7 @@ public:
         else if (splineType == Monotonic)
             this->makeMonotonicSpline_(slopeVec_);
         else
-            throw std::runtime_error("Spline type "+std::to_string(int(splineType))+" not supported at this place");
+            throw std::runtime_error("Spline type "+std::to_string((long long)(splineType))+" not supported at this place");
     }
 
     /*!
@@ -615,7 +615,7 @@ public:
         else if (splineType == Monotonic)
             this->makeMonotonicSpline_(slopeVec_);
         else
-            throw std::runtime_error("Spline type "+std::to_string(int(splineType))+" not supported at this place");
+            throw std::runtime_error("Spline type "+std::to_string((long long)(splineType))+" not supported at this place");
     }
 
     /*!
@@ -658,7 +658,7 @@ public:
         else if (splineType == Monotonic)
             this->makeMonotonicSpline_(slopeVec_);
         else
-            throw std::runtime_error("Spline type "+std::to_string(int(splineType))+" not supported at this place");
+            throw std::runtime_error("Spline type "+std::to_string((long long)(splineType))+" not supported at this place");
     }
 
     /*!
@@ -701,7 +701,7 @@ public:
         else if (splineType == Monotonic)
             this->makeMonotonicSpline_(slopeVec_);
         else
-            throw std::runtime_error("Spline type "+std::to_string(int(splineType))+" not supported at this place");
+            throw std::runtime_error("Spline type "+std::to_string((long long)(splineType))+" not supported at this place");
     }
 
     /*!
@@ -772,7 +772,7 @@ public:
                 Scalar y0 = y_(0);
                 return y0 + m*(x - xAt(0));
             }
-            else if (x > xAt(static_cast<size_t>(static_cast<long int>(numSamples()) - 1))) {
+            else if (x > xAt(static_cast<size_t>(static_cast<long long>(numSamples()) - 1))) {
                 Scalar m = evalDerivative_(xAt(static_cast<size_t>(numSamples() - 1)),
                                            /*segmentIdx=*/static_cast<size_t>(numSamples()-2));
                 Scalar y0 = y_(static_cast<size_t>(numSamples() - 1));
@@ -918,7 +918,7 @@ public:
      * In the corner case that the spline is constant within the given
      * interval, this method returns 3.
      */
-    int monotonic(Scalar x0, Scalar x1,
+    long long monotonic(Scalar x0, Scalar x1,
                   [[maybe_unused]] bool extrapolate = false) const
     {
         assert(std::abs(x0 - x1) > 1e-30);
@@ -929,7 +929,7 @@ public:
 
         assert(x0 < x1);
 
-        int r = 3;
+        long long r = 3;
         if (x0 < xAt(0)) {
             assert(extrapolate);
             Scalar m = evalDerivative_(xAt(0), /*segmentIdx=*/0);
@@ -985,7 +985,7 @@ public:
      * \brief Same as monotonic(x0, x1), but with the entire range of the
      *        spline as interval.
      */
-    int monotonic() const
+    long long monotonic() const
     { return monotonic(xAt(0), xAt(numSamples() - 1)); }
 
 protected:
@@ -1118,7 +1118,7 @@ protected:
         M.solve(moments, d);
 
         moments.resize(numSamples());
-        for (int i = static_cast<int>(numSamples()) - 2; i >= 0; --i) {
+        for (long long i = static_cast<long long>(numSamples()) - 2; i >= 0; --i) {
             unsigned ui = static_cast<unsigned>(i);
             moments[ui+1] = moments[ui];
         }
@@ -1602,7 +1602,7 @@ protected:
     // 1: spline is monotonously increasing in the specified interval
     // 0: spline is not monotonic (or constant) in the specified interval
     // -1: spline is monotonously decreasing in the specified interval
-    int monotonic_(size_t i, Scalar x0, Scalar x1, int& r) const
+    long long monotonic_(size_t i, Scalar x0, Scalar x1, long long& r) const
     {
         // coefficients of derivative in monomial basis
         Scalar a = 3*a_(i);

@@ -167,7 +167,7 @@ namespace cvf {
         size_t treeSize(const AABBTreeNode* pNode) const;
         size_t treeHeight(const AABBTreeNode* pNode, size_t iLevel, size_t* piMin, size_t* piMax) const;
         cvf::BoundingBox leafBoundingBox(size_t iStartIdx, size_t iEndIdx) const;
-        bool buildTree(AABBTreeNodeInternal* pNode, size_t iFromIdx, size_t iToIdx, int currentLevel, int maxLevel = -1);
+        bool buildTree(AABBTreeNodeInternal* pNode, size_t iFromIdx, size_t iToIdx, long long currentLevel, long long maxLevel = -1);
 
         // Queries
         bool intersect(const AABBTreeNode* pA, const AABBTreeNode* pB) const;
@@ -230,10 +230,10 @@ using cvf::ref;
 
 
 
-int largestComponent(const cvf::Vec3d v)
+long long largestComponent(const cvf::Vec3d v)
 {
     double maxLength = v.x();
-    int idx = 0;
+    long long idx = 0;
 
     if (v.y() > maxLength)
     {
@@ -478,7 +478,7 @@ bool AABBTree::buildTree()
     {
         bool bThreadRes = bRes;
 #pragma omp for
-        for (int i = 0; i < static_cast<int>(m_previousLevelNodes.size()); ++i)
+        for (long long i = 0; i < static_cast<long long>(m_previousLevelNodes.size()); ++i)
         {
             bThreadRes = bThreadRes && buildTree(m_previousLevelNodes[i].node, m_previousLevelNodes[i].fromIdx, m_previousLevelNodes[i].toIdx, 4);
         }
@@ -495,7 +495,7 @@ bool AABBTree::buildTree()
 //--------------------------------------------------------------------------------------------------
 /// 
 //--------------------------------------------------------------------------------------------------
-bool AABBTree::buildTree(AABBTreeNodeInternal* pNode, size_t iFromIdx, size_t iToIdx, int currentLevel, int maxLevel)
+bool AABBTree::buildTree(AABBTreeNodeInternal* pNode, size_t iFromIdx, size_t iToIdx, long long currentLevel, long long maxLevel)
 {
     if (currentLevel == maxLevel)
     {
@@ -503,7 +503,7 @@ bool AABBTree::buildTree(AABBTreeNodeInternal* pNode, size_t iFromIdx, size_t iT
         return true;
     }
 
-    int iLongestAxis = largestComponent(pNode->boundingBox().extent());
+    long long iLongestAxis = largestComponent(pNode->boundingBox().extent());
 
     double splitValue = pNode->boundingBoxCenter()[iLongestAxis];
     size_t i = iFromIdx;
@@ -703,8 +703,8 @@ cvf::String AABBTree::treeInfo() const
     cvf::String sInfo;
 
     /*
-    sInfo =  cvf::String("Tree size: %1 \n").arg(static_cast<int>(treeSize()));
-    sInfo += cvf::String("Num leaves: %1 \n").arg(static_cast<int>(leavesCount()));
+    sInfo =  cvf::String("Tree size: %1 \n").arg(static_cast<long long>(treeSize()));
+    sInfo += cvf::String("Num leaves: %1 \n").arg(static_cast<long long>(leavesCount()));
 
     size_t iMin = cvf::UNDEFINED_UINT;
     size_t iMax = 0;
@@ -809,7 +809,7 @@ cvf::BoundingBox BoundingBoxTreeImpl::createLeaves()
     {
         cvf::BoundingBox threadBox;
 #pragma omp for
-        for (int i = 0; i < (int)m_validBoundingBoxes.size(); i++)
+        for (long long i = 0; i < (long long)m_validBoundingBoxes.size(); i++)
         {
             size_t bbId = i;
             if (!m_validOptionalBoundingBoxIds.empty()) bbId = m_validOptionalBoundingBoxIds[i];
@@ -901,7 +901,7 @@ void BoundingBoxTree::buildTreeFromBoundingBoxes(const std::vector<cvf::Bounding
     if (optionalBoundingBoxIds)
         m_implTree->m_validOptionalBoundingBoxIds.reserve(optionalBoundingBoxIds->size());
 
-    for (int i = 0; i < (int)boundingBoxes.size(); ++i)
+    for (long long i = 0; i < (long long)boundingBoxes.size(); ++i)
     {
         if (boundingBoxes[i].isValid())
         {

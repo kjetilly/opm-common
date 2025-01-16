@@ -44,7 +44,7 @@
 #include <stdexcept>
 #include <tuple>
 
-template <class Eval, int numVars, int staticSize, class Scalar, class Implementation>
+template <class Eval, long long numVars, long long staticSize, class Scalar, class Implementation>
 struct TestEnvBase
 {
     const Implementation& asImp_() const
@@ -69,7 +69,7 @@ struct TestEnvBase
         xyEval.copyDerivatives(yxEval);
         yxEval.clearDerivatives();
 
-        for (int i = 0; i < xyEval.size(); ++i) {
+        for (long long i = 0; i < xyEval.size(); ++i) {
             if (i == 0 && xEval.derivative(i) != 1.0)
                 throw std::logic_error("oops: createVariable");
             else if (i == 1 && yEval.derivative(i) != 1.0)
@@ -256,8 +256,8 @@ struct TestEnvBase
     template <class AdFn, class ClassicFn>
     void test1DFunction(AdFn* adFn, ClassicFn* classicFn, Scalar xMin = 1e-6, Scalar xMax = 1000)
     {
-        int n = 100*1000;
-        for (int i = 0; i < n; ++ i) {
+        long long n = 100*1000;
+        for (long long i = 0; i < n; ++ i) {
             Scalar x = Scalar(i)/(n - 1)*(xMax - xMin) + xMin;
 
             const auto& xEval = asImp_().createVariable(x, 0);
@@ -288,8 +288,8 @@ struct TestEnvBase
               class ClassicFn>
     void test2DFunction1(AdFn* adFn, ClassicFn* classicFn, Scalar xMin, Scalar xMax, Scalar y)
     {
-        int n = 100*1000;
-        for (int i = 0; i < n; ++ i) {
+        long long n = 100*1000;
+        for (long long i = 0; i < n; ++ i) {
             Scalar x = Scalar(i)/(n - 1)*(xMax - xMin) + xMin;
 
             const auto& xEval = asImp_().createVariable(x, 0);
@@ -322,8 +322,8 @@ struct TestEnvBase
               class ClassicFn>
     void test2DFunction2(AdFn* adFn, ClassicFn* classicFn, Scalar x, Scalar yMin, Scalar yMax)
     {
-        int n = 100*1000;
-        for (int i = 0; i < n; ++ i) {
+        long long n = 100*1000;
+        for (long long i = 0; i < n; ++ i) {
             Scalar y = Scalar(i)/(n - 1)*(yMax - yMin) + yMin;
 
             const auto& xEval = asImp_().createConstant(x);
@@ -359,8 +359,8 @@ struct TestEnvBase
         Scalar exp = 1.234;
         const auto& expEval = asImp_().createConstant(exp);
 
-        int n = 100*1000;
-        for (int i = 0; i < n; ++ i) {
+        long long n = 100*1000;
+        for (long long i = 0; i < n; ++ i) {
             Scalar base = Scalar(i)/(n - 1)*(baseMax - baseMin) + baseMin;
 
             const auto& baseEval = asImp_().createVariable(base, 0);
@@ -399,8 +399,8 @@ struct TestEnvBase
         Scalar base = 1.234;
         const auto& baseEval = asImp_().createConstant(base);
 
-        int n = 100*1000;
-        for (int i = 0; i < n; ++ i) {
+        long long n = 100*1000;
+        for (long long i = 0; i < n; ++ i) {
             Scalar exp = Scalar(i)/(n - 1)*(expMax - expMin) + expMin;
             const auto& expEval = asImp_().createVariable(exp, 1);
 
@@ -434,9 +434,9 @@ struct TestEnvBase
 
     void testAtan2()
     {
-        int n = 1000;
+        long long n = 1000;
         Scalar maxVal = 10.0;
-        for (int i = 1; i < n; ++ i) {
+        for (long long i = 1; i < n; ++ i) {
             Scalar x = 2*maxVal*Scalar(i)/n - maxVal;
             if (- 0.05 < x && x < 0.05)
                 // avoid numerical problems
@@ -444,7 +444,7 @@ struct TestEnvBase
 
             const Eval& xEval = asImp_().createVariable(x, 0);
 
-            for (int j = 1; j < n; ++ j) {
+            for (long long j = 1; j < n; ++ j) {
                 Scalar y = 2*maxVal*Scalar(j)/n - maxVal;
 
                 if (- 0.05 < y && y < 0.05)
@@ -627,7 +627,7 @@ struct TestEnvBase
 
 };//StaticTestEnv
 
-template <class Scalar, int staticSize>
+template <class Scalar, long long staticSize>
 struct DynamicTestEnv : public TestEnvBase<Opm::DenseAd::DynamicEvaluation<Scalar, staticSize>,
                                            -1,
                                            staticSize,
@@ -635,7 +635,7 @@ struct DynamicTestEnv : public TestEnvBase<Opm::DenseAd::DynamicEvaluation<Scala
                                            DynamicTestEnv<Scalar, staticSize> >
 {
     typedef Opm::DenseAd::DynamicEvaluation<Scalar, staticSize> Eval;
-    explicit DynamicTestEnv(int numDerivs)
+    explicit DynamicTestEnv(long long numDerivs)
         : numDerivs_(numDerivs)
     {}
 
@@ -645,14 +645,14 @@ struct DynamicTestEnv : public TestEnvBase<Opm::DenseAd::DynamicEvaluation<Scala
     Eval createConstant(Scalar c) const
     { return Opm::constant<Scalar, staticSize>(numDerivs_, c); }
 
-    Eval createVariable(Scalar v, int varIdx) const
+    Eval createVariable(Scalar v, long long varIdx) const
     { return Opm::variable<Scalar, staticSize>(numDerivs_, v, varIdx); }
 
 private:
-    int numDerivs_;
+    long long numDerivs_;
 };
 
-template <class Scalar, int numDerivs, int staticSize = 0>
+template <class Scalar, long long numDerivs, long long staticSize = 0>
 struct StaticTestEnv : public TestEnvBase<Opm::DenseAd::Evaluation<Scalar, numDerivs>,
                                           numDerivs,
                                           staticSize,
@@ -670,11 +670,11 @@ struct StaticTestEnv : public TestEnvBase<Opm::DenseAd::Evaluation<Scalar, numDe
     Eval createConstant(Scalar c) const
     { return Opm::constant<Eval, Scalar>(c); }
 
-    Eval createVariable(Scalar v, int varIdx) const
+    Eval createVariable(Scalar v, long long varIdx) const
     { return Opm::variable<Eval, Scalar>(v, varIdx); }
 };
 
-int main()
+long long main()
 {
     std::cout << "Testing statically sized evaluations\n";
     std::cout << " -> Scalar == double, n = 15\n";

@@ -34,7 +34,7 @@ namespace Opm { namespace RestartIO {
     class RstNetbalan
     {
     public:
-        explicit RstNetbalan(const std::vector<int>&    intehead,
+        explicit RstNetbalan(const std::vector<long long>&    intehead,
                              const std::vector<double>& doubhead,
                              const UnitSystem&          usys);
 

@@ -33,12 +33,12 @@ void UniformXTabulated2DFunction<Scalar>::print(std::ostream& os) const
 {
     Scalar x0 = xMin();
     Scalar x1 = xMax();
-    int m = numX();
+    long long m = numX();
 
     Scalar y0 = 1e30;
     Scalar y1 = -1e30;
     size_t n = 0;
-    for (int i = 0; i < m; ++ i) {
+    for (long long i = 0; i < m; ++ i) {
         y0 = std::min(y0, yMin(i));
         y1 = std::max(y1, yMax(i));
         n = std::max(n, numY(i));
@@ -46,7 +46,7 @@ void UniformXTabulated2DFunction<Scalar>::print(std::ostream& os) const
 
     m *= 3;
     n *= 3;
-    for (int i = 0; i <= m; ++i) {
+    for (long long i = 0; i <= m; ++i) {
         Scalar x = x0 + (x1 - x0)*i/m;
         for (size_t j = 0; j <= n; ++j) {
             Scalar y = y0 + (y1 - y0)*j/n;

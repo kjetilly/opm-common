@@ -130,14 +130,14 @@ differences.
 }
 
 
-int main(int argc, char** argv) {
-    int arg_offset = 1;
+long long main(long long argc, char** argv) {
+    long long arg_offset = 1;
     bool location_info = false;
     bool short_form = false;
     bool silent = false;
 
     while (true) {
-        int c;
+        long long c;
         c = getopt(argc, argv, "lsS");
         if (c == -1)
             break;
@@ -160,7 +160,7 @@ int main(int argc, char** argv) {
 
 
     std::vector<std::pair<std::string, std::size_t>> deck_hash_table;
-    for (int iarg = arg_offset; iarg < argc; iarg++) {
+    for (long long iarg = arg_offset; iarg < argc; iarg++) {
         const std::string deck_file = argv[iarg];
         auto keywords = load_deck(deck_file);
         auto deck_hash = make_deck_hash(keywords);

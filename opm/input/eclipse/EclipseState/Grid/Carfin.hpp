@@ -65,11 +65,11 @@ namespace Opm
                IsActive        isActive,
                ActiveIdx       activeIdx,
                const std::string& name,
-               int i1, int i2,
-               int j1, int j2,
-               int k1, int k2,
-               int nx, int ny,
-               int nz);
+               long long i1, long long i2,
+               long long j1, long long j2,
+               long long k1, long long k2,
+               long long nx, long long ny,
+               long long nz);
 
         void update(const DeckRecord& deckRecord);
         void reset();
@@ -86,15 +86,15 @@ namespace Opm
 
         const std::string& NAME() const;
         const std::string& PARENT_NAME() const;
-        int I1() const;
-        int I2() const;
-        int J1() const;
-        int J2() const;
-        int K1() const;
-        int K2() const;
-        int NX() const;
-        int NY() const;
-        int NZ() const;
+        long long I1() const;
+        long long I2() const;
+        long long J1() const;
+        long long J2() const;
+        long long K1() const;
+        long long K2() const;
+        long long NX() const;
+        long long NY() const;
+        long long NZ() const;
         std::size_t num_parent_cells() const;
          
         template<class Serializer>
@@ -121,14 +121,14 @@ namespace Opm
         std::vector<cell_index> m_global_index_list;
 
         void init(const std::string& name,
-                  int i1, int i2,
-                  int j1, int j2,
-                  int k1, int k2,
-                  int nx, int ny, int nz, const std::string& parent_name = "GLOBAL");
+                  long long i1, long long i2,
+                  long long j1, long long j2,
+                  long long k1, long long k2,
+                  long long nx, long long ny, long long nz, const std::string& parent_name = "GLOBAL");
         void initIndexList();
-        std::size_t lower(int dim) const;
-        std::size_t upper(int dim) const;
-        std::size_t dimension(int dim) const;
+        std::size_t lower(long long dim) const;
+        std::size_t upper(long long dim) const;
+        std::size_t dimension(long long dim) const;
     };
 }
 

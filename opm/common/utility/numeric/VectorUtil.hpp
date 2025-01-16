@@ -48,7 +48,7 @@ appendNode(const std::array<double,3>&, const std::array<double,3>&,
            const std::array<double,3>&, const double&, const double&, 
            const double&);
 template <typename T>
-std::vector<T> filterArray(const std::vector<std::size_t>& X, const std::vector<int>& ind){
+std::vector<T> filterArray(const std::vector<std::size_t>& X, const std::vector<long long>& ind){
     std::vector<T> filtered_vectorX(ind.size(),0);
     for (std::size_t index = 0; index < ind.size(); index++) {
         filtered_vectorX[index] = X[ind[index]];

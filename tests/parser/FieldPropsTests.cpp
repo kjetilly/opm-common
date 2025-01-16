@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(CreateFieldProps) {
     BOOST_CHECK(!fpm.try_get<double>("PORO"));
     BOOST_CHECK(!fpm.try_get<double>("PORO"));
     BOOST_CHECK(!fpm.try_get<double>("NO_SUCH_KEYWOWRD"));
-    BOOST_CHECK(!fpm.try_get<int>("NO_SUCH_KEYWOWRD"));
+    BOOST_CHECK(!fpm.try_get<long long>("NO_SUCH_KEYWOWRD"));
 
     BOOST_CHECK_THROW(fpm.get_double("PORO"), std::out_of_range);
     BOOST_CHECK_THROW(fpm.get_global_double("PERMX"), std::out_of_range);
@@ -106,7 +106,7 @@ PERMX
 
 
 )";
-    std::vector<int> actnum(1000, 1);
+    std::vector<long long> actnum(1000, 1);
     for (std::size_t i=0; i< 1000; i += 2)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(10,10,10), actnum);
@@ -138,7 +138,7 @@ PERMX
         BOOST_CHECK(std::find(keys.begin(), keys.end(), "PORV") == keys.end());
     }
     {
-        const auto& keys = fpm.keys<int>();
+        const auto& keys = fpm.keys<long long>();
         BOOST_CHECK_EQUAL(keys.size(), decltype(keys.size()){0});
 
         BOOST_CHECK(std::find(keys.begin(), keys.end(), "ACTNUM") == keys.end());
@@ -174,7 +174,7 @@ EQUALS
     Deck deck = Parser{}.parseString(deck_string);
     EclipseGrid grid{GridDims{3, 3, 1}};
     FieldProps fp(deck, grid);
-    std::vector<int> expected_actnum = { 1, 1, 1,
+    std::vector<long long> expected_actnum = { 1, 1, 1,
                                          1, 1, 1,
                                          0, 0, 1  };
     auto actnum = fp.actnumRaw();
@@ -190,7 +190,7 @@ GRID
     Deck deck = Parser{}.parseString(deck_string);
     EclipseGrid grid{GridDims{3, 3, 1}};
     FieldProps fp(deck, grid);
-    std::vector<int> expected_actnum = { 1, 1, 1,
+    std::vector<long long> expected_actnum = { 1, 1, 1,
                                          1, 1, 1,
                                          1, 1, 1  };
     auto actnum = fp.actnumRaw();
@@ -380,7 +380,7 @@ SATNUM
 0 1 2 3 4 5 6 7 8
 /
 )";
-    std::vector<int> actnum1 = {1,1,1,0,0,0,1,1,1};
+    std::vector<long long> actnum1 = {1,1,1,0,0,0,1,1,1};
     EclipseGrid grid(3,1,3); grid.resetACTNUM(actnum1);
     Deck deck = Parser{}.parseString(deck_string);
     FieldPropsManager fpm(deck, Phases{true, true, true}, grid, TableManager());
@@ -394,7 +394,7 @@ SATNUM
     BOOST_CHECK_EQUAL(s1[5], 8);
     BOOST_CHECK_EQUAL(fpm.active_size(), decltype(fpm.active_size()){6});
 
-    std::vector<int> actnum2 = {1,0,1,0,0,0,1,0,1};
+    std::vector<long long> actnum2 = {1,0,1,0,0,0,1,0,1};
     fpm.reset_actnum(actnum2);
 
     BOOST_CHECK_EQUAL(s1.size(), decltype(s1.size()){4});
@@ -422,7 +422,7 @@ ADDREG
 /
 
 )";
-    std::vector<int> actnum1 = {1,1,0,0,1,1};
+    std::vector<long long> actnum1 = {1,1,0,0,1,1};
     EclipseGrid grid(3,2,1); grid.resetACTNUM(actnum1);
     Deck deck = Parser{}.parseString(deck_string);
     FieldPropsManager fpm(deck, Phases{true, true, true}, grid, TableManager());
@@ -435,12 +435,12 @@ ADDREG
 
 
 BOOST_AUTO_TEST_CASE(ASSIGN) {
-    Fieldprops::FieldData<int> data({}, 100, 0);
-    std::vector<int> wrong_size(50);
+    Fieldprops::FieldData<long long> data({}, 100, 0);
+    std::vector<long long> wrong_size(50);
 
     BOOST_CHECK_THROW( data.default_assign( wrong_size ), std::invalid_argument );
 
-    std::vector<int> ext_data(100);
+    std::vector<long long> ext_data(100);
     std::iota(ext_data.begin(), ext_data.end(), 0);
     data.default_assign( ext_data );
 
@@ -487,7 +487,7 @@ NTG
 
 )";
 
-    std::vector<int> actnum(150, 1);
+    std::vector<long long> actnum(150, 1);
     {
         for (std::size_t i = 0; i < 50; i++)
             actnum.push_back(0);
@@ -615,7 +615,7 @@ ENDBOX
         BOOST_CHECK_EQUAL(poro[g], 0.10);
     }
 
-    std::vector<int> actnum(500, 1);
+    std::vector<long long> actnum(500, 1);
     actnum[0] = 0;
     grid.resetACTNUM(actnum);
 
@@ -764,7 +764,7 @@ PORO
 
     EclipseGrid grid(10,10, 2);
     Deck deck = Parser{}.parseString(deck_string);
-    std::vector<int> actnum(200, 1); actnum[0] = 0;
+    std::vector<long long> actnum(200, 1); actnum[0] = 0;
     grid.resetACTNUM(actnum);
     FieldPropsManager fpm(deck, Phases{true, true, true}, grid, TableManager());
 
@@ -784,7 +784,7 @@ PORO
     BOOST_CHECK( poro1.size() == grid.getNumActive());
 
     BOOST_CHECK(!fpm.has_int("SATNUM"));
-    const auto& satnum = fpm.get_copy<int>("SATNUM", true);
+    const auto& satnum = fpm.get_copy<long long>("SATNUM", true);
     BOOST_CHECK(!fpm.has_int("SATNUM"));
     BOOST_CHECK(satnum.size() == grid.getCartesianSize());
 
@@ -2134,9 +2134,9 @@ FIPUNIX
     };
 
     const auto& fipuni = fpm.get_int("FIPUNI");
-    auto expect = std::vector<int>(100, 3);
+    auto expect = std::vector<long long>(100, 3);
     {
-        const auto l2 = std::vector<int>(100, 4);
+        const auto l2 = std::vector<long long>(100, 4);
         expect.insert(expect.end(), l2.begin(), l2.end());
     };
 
@@ -2184,7 +2184,7 @@ MULTZ
   0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 /
 
 )";
-    std::vector<int> actnum(27, 1);
+    std::vector<long long> actnum(27, 1);
     for (std::size_t i=9; i< 18; i++)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(3,3,3), actnum);
@@ -2216,7 +2216,7 @@ MULTZ
   0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 /
 
 )";
-    std::vector<int> actnum(27, 1);
+    std::vector<long long> actnum(27, 1);
     for (std::size_t i=9; i< 18; i++)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(3,3,3), actnum);
@@ -2250,7 +2250,7 @@ EQUALS
 
 
 )";
-    std::vector<int> actnum(27, 1);
+    std::vector<long long> actnum(27, 1);
     for (std::size_t i=9; i< 18; i++)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(3,3,3), actnum);
@@ -2268,7 +2268,7 @@ EQUALS
 
 namespace {
 FieldPropsManager make_fp(const std::string& deck_string) {
-    std::vector<int> actnum(27, 1);
+    std::vector<long long> actnum(27, 1);
     for (std::size_t i=9; i< 18; i++)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(3,3,3), actnum);
@@ -2501,7 +2501,7 @@ MINVALUE
 )";
     UnitSystem unit_system(UnitSystem::UnitType::UNIT_TYPE_METRIC);
     auto to_si = [&unit_system](double raw_value) { return unit_system.to_si(UnitSystem::measure::transmissibility, raw_value); };
-    std::vector<int> actnum(300, 1);
+    std::vector<long long> actnum(300, 1);
     for (std::size_t i=0; i< 300; i += 2)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(10,10,3), actnum);
@@ -2668,7 +2668,7 @@ MULTIPLY
 )";
     UnitSystem unit_system(UnitSystem::UnitType::UNIT_TYPE_METRIC);
     auto to_si = [&unit_system](double raw_value) { return unit_system.to_si(UnitSystem::measure::transmissibility, raw_value); };
-    std::vector<int> actnum(1000, 1);
+    std::vector<long long> actnum(1000, 1);
     for (std::size_t i=0; i< 1000; i += 2)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(10,10,10), actnum);
@@ -2711,7 +2711,7 @@ OPERATE
 /
 )";
     UnitSystem unit_system(UnitSystem::UnitType::UNIT_TYPE_METRIC);
-    std::vector<int> actnum(1000, 1);
+    std::vector<long long> actnum(1000, 1);
     for (std::size_t i=0; i< 1000; i += 2)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(10,10,10), actnum);
@@ -2748,7 +2748,7 @@ ADDREG
 )";
 
     UnitSystem unit_system(UnitSystem::UnitType::UNIT_TYPE_METRIC);
-    std::vector<int> actnum(1000, 1);
+    std::vector<long long> actnum(1000, 1);
     for (std::size_t i=0; i< 1000; i += 2)
         actnum[i] = 0;
     EclipseGrid grid(EclipseGrid(10,10,10), actnum);

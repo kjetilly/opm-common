@@ -80,12 +80,12 @@ namespace Opm {
         double TRWGHT;
 
         // Record 3
-        int NEWTMX;
-        int NEWTMN;
-        int LITMAX;
-        int LITMIN;
-        int MXWSIT;
-        int MXWPIT;
+        long long NEWTMX;
+        long long NEWTMN;
+        long long LITMAX;
+        long long LITMIN;
+        long long MXWSIT;
+        long long MXWPIT;
         double DDPLIM;
         double DDSLIM;
         double TRGDPR;
@@ -100,7 +100,7 @@ namespace Opm {
           is specified by both the TUNING keyword and the WSEGITER keyword, but
           with different defaults.
         */
-        int WSEG_MAX_RESTART;
+        long long WSEG_MAX_RESTART;
         double WSEG_REDUCTION_FACTOR;
         double WSEG_INCREASE_FACTOR;
 

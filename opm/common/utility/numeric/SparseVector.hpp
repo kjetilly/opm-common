@@ -62,7 +62,7 @@ namespace Opm
 
 	/// Constructs a SparseVector with a given size, but no nonzero
 	/// elements.
-	explicit SparseVector(int sz)
+	explicit SparseVector(long long sz)
 	    : size_(sz), default_elem_()
 	{
 	}
@@ -73,7 +73,7 @@ namespace Opm
 	/// \param rowsize_beg The start of the index data.
 	/// \param rowsize_end One beyond the end of the index data.
 	template <typename DataIter, typename IntegerIter>
-	SparseVector(int sz,
+	SparseVector(long long sz,
 		     DataIter data_beg, DataIter data_end,
 		     IntegerIter index_beg, IntegerIter index_end)
 	    : size_(sz), data_(data_beg, data_end), indices_(index_beg, index_end),
@@ -82,10 +82,10 @@ namespace Opm
 #ifndef NDEBUG
 	    OPM_ERROR_IF(sz < 0, "The size of a SparseVector must be non-negative");
 	    OPM_ERROR_IF(indices_.size() != data_.size(), "The number of indices of a SparseVector must equal to the number of entries");
-	    int last_index = -1;
-	    int num_ind = indices_.size();
-	    for (int i = 0; i < num_ind; ++i) {
-		int index = indices_[i];
+	    long long last_index = -1;
+	    long long num_ind = indices_.size();
+	    for (long long i = 0; i < num_ind; ++i) {
+		long long index = indices_[i];
 		if (index <= last_index || index >= sz) {
 		    OPM_THROW(std::logic_error, "Error in SparseVector construction, index is nonincreasing or out of range.");
 		}
@@ -98,7 +98,7 @@ namespace Opm
 	/// Appends an element to the vector. Note that this function does not
 	/// increase the size() of the vector, it just adds another nonzero element.
 	/// Elements must be added in index order.
-	void addElement(const T& elem, int index)
+	void addElement(const T& elem, long long index)
 	{
 	    assert(indices_.empty() || index > indices_.back());
 	    assert(index < size_);
@@ -114,13 +114,13 @@ namespace Opm
 
 	/// Returns the size of the vector.
 	/// Recall that most or all of the vector may be default/zero.
-	int size() const
+	long long size() const
 	{
 	    return size_;
 	}
 
 	/// Returns the number of nonzero data elements.
-	int nonzeroSize() const
+	long long nonzeroSize() const
 	{
 	    return data_.size();
 	}
@@ -143,7 +143,7 @@ namespace Opm
 	/// \param index the proper vector index
 	/// \return the element with the given index, or the default element if no element in
 	/// the vector has the given index.
-	const T& element(int index) const
+	const T& element(long long index) const
 	{
 #ifndef NDEBUG
             OPM_ERROR_IF(index < 0,
@@ -155,7 +155,7 @@ namespace Opm
                          "(is " + std::to_string(index) +
                          ", max value: " + std::to_string(size_) + ")");
 #endif
-	    std::vector<int>::const_iterator lb = std::lower_bound(indices_.begin(), indices_.end(), index);
+	    std::vector<long long>::const_iterator lb = std::lower_bound(indices_.begin(), indices_.end(), index);
 	    if (lb != indices_.end() && *lb == index) {
 		return data_[lb - indices_.begin()];
 	    } else {
@@ -166,7 +166,7 @@ namespace Opm
 	/// O(1) element access.
 	/// \param nzindex an index counting only nonzero elements.
 	/// \return the nzindex'th nonzero element.
-	const T& nonzeroElement(int nzindex) const
+	const T& nonzeroElement(long long nzindex) const
 	{
 #ifndef NDEBUG
             OPM_ERROR_IF(nzindex < 0,
@@ -184,7 +184,7 @@ namespace Opm
 	/// O(1) index access.
 	/// \param nzindex an index counting only nonzero elements.
 	/// \return the index of the nzindex'th nonzero element.
-	int nonzeroIndex(int nzindex) const
+	long long nonzeroIndex(long long nzindex) const
 	{
 	    assert(nzindex >= 0);
 	    assert(nzindex < nonzeroSize());
@@ -196,9 +196,9 @@ namespace Opm
 	// The indices are supposed to be stored in increasing order,
 	// to be unique, and to be in [0, size_ - 1].
 	// default_elem_ is returned when a default element is requested.
-	int size_;
+	long long size_;
 	std::vector<T> data_;
-	std::vector<int> indices_;
+	std::vector<long long> indices_;
 	T default_elem_;
     };
 

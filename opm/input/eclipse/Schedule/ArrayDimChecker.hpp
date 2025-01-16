@@ -30,7 +30,7 @@ namespace Opm {
 } // Opm
 
 namespace Opm {
-    int maxGroupSize(const Schedule&   sched,
+    long long maxGroupSize(const Schedule&   sched,
                      const std::size_t step);
 
     void checkConsistentArrayDimensions(const EclipseState& es,

@@ -196,7 +196,7 @@ namespace {
         Metric::Time / Metric::GasSurfaceVolume,
     };
 
-    static constexpr const char* metric_names[static_cast<int>(UnitSystem::measure::_count)] = {
+    static constexpr const char* metric_names[static_cast<long long>(UnitSystem::measure::_count)] = {
         "",
         "M",
         "DAYS",
@@ -258,7 +258,7 @@ namespace {
                   "metric_names[] size does not match expected-did you add/remove items in ::measure?");
 
     static_assert(
-        metric_names[static_cast<int>(UnitSystem::measure::_count) - 1] != nullptr,
+        metric_names[static_cast<long long>(UnitSystem::measure::_count) - 1] != nullptr,
         "Name missing from ::metric_names[]"
     );
 
@@ -412,7 +412,7 @@ namespace {
          Field::Time / Field::GasSurfaceVolume,
     };
 
-    static constexpr const char* field_names[static_cast<int>(UnitSystem::measure::_count)] = {
+    static constexpr const char* field_names[static_cast<long long>(UnitSystem::measure::_count)] = {
         "",
         "FT",
         "DAYS",
@@ -474,7 +474,7 @@ namespace {
                   "field_names[] size does not match expected-did you add/remove items in ::measure?");
 
     static_assert(
-        field_names[static_cast<int>(UnitSystem::measure::_count) - 1] != nullptr,
+        field_names[static_cast<long long>(UnitSystem::measure::_count) - 1] != nullptr,
         "Name missing from ::field_names[]"
     );
 
@@ -628,7 +628,7 @@ namespace {
         Lab::Time / Lab::GasSurfaceVolume
     };
 
-    static constexpr const char* lab_names[static_cast<int>(UnitSystem::measure::_count)] = {
+    static constexpr const char* lab_names[static_cast<long long>(UnitSystem::measure::_count)] = {
         "",
         "CM",
         "HOURS",
@@ -690,7 +690,7 @@ namespace {
                   "lab_names[] size does not match expected-did you add/remove items in ::measure?");
 
     static_assert(
-        lab_names[static_cast<int>(UnitSystem::measure::_count) - 1] != nullptr,
+        lab_names[static_cast<long long>(UnitSystem::measure::_count) - 1] != nullptr,
         "Name missing from ::lab_names[]"
     );
 
@@ -844,7 +844,7 @@ namespace {
         PVT_M::Time / PVT_M::GasSurfaceVolume,
     };
 
-    static constexpr const char* pvt_m_names[static_cast<int>(UnitSystem::measure::_count)] = {
+    static constexpr const char* pvt_m_names[static_cast<long long>(UnitSystem::measure::_count)] = {
         "",
         "M",
         "DAYS",
@@ -906,7 +906,7 @@ namespace {
                   "pvt_m_names[] size does not match expected-did you add/remove items in ::measure?");
 
     static_assert(
-        pvt_m_names[static_cast<int>(UnitSystem::measure::_count) - 1] != nullptr,
+        pvt_m_names[static_cast<long long>(UnitSystem::measure::_count) - 1] != nullptr,
         "Name missing from ::pvt_m_names[]"
     );
 
@@ -1060,7 +1060,7 @@ namespace {
         1,
     };
 
-    static constexpr const char* input_names[static_cast<int>(UnitSystem::measure::_count)] = {
+    static constexpr const char* input_names[static_cast<long long>(UnitSystem::measure::_count)] = {
         "",
         "M",
         "DAY",
@@ -1122,7 +1122,7 @@ namespace {
                   "input_names[] size does not match expected-did you add/remove items in ::measure?");
 
     static_assert(
-        input_names[static_cast<int>(UnitSystem::measure::_count) - 1] != nullptr,
+        input_names[static_cast<long long>(UnitSystem::measure::_count) - 1] != nullptr,
         "Name missing from ::input_names[]"
     );
 
@@ -1345,7 +1345,7 @@ namespace {
 
     namespace {
 
-    int to_ecl_id(UnitSystem::UnitType unit_type) {
+    long long to_ecl_id(UnitSystem::UnitType unit_type) {
         if (unit_type == UnitSystem::UnitType::UNIT_TYPE_METRIC)
             return 1;
 
@@ -1361,7 +1361,7 @@ namespace {
         throw std::invalid_argument("The nonstandard unit system does not have a corresponding ecl id");
     }
 
-    UnitSystem::UnitType from_ecl_id(int ecl_id) {
+    UnitSystem::UnitType from_ecl_id(long long ecl_id) {
         if (ecl_id == 1)
             return UnitSystem::UnitType::UNIT_TYPE_METRIC;
 
@@ -1429,12 +1429,12 @@ namespace {
     }
 
 
-    UnitSystem::UnitSystem(int ecl_id) :
+    UnitSystem::UnitSystem(long long ecl_id) :
         UnitSystem(from_ecl_id(ecl_id))
     {}
 
 
-    int UnitSystem::ecl_id() const {
+    long long UnitSystem::ecl_id() const {
         return to_ecl_id( this->m_unittype );
     }
 
@@ -1461,8 +1461,8 @@ namespace {
     }
 
     Dimension UnitSystem::getDimension(measure m) const {
-        double si_factor = this->measure_table_to_si[ static_cast< int >( m ) ];
-        double si_offset = this->measure_table_to_si_offset[ static_cast<int>( m ) ];
+        double si_factor = this->measure_table_to_si[ static_cast< long long >( m ) ];
+        double si_offset = this->measure_table_to_si_offset[ static_cast<long long>( m ) ];
         return Dimension(si_factor, si_offset);
     }
 
@@ -1599,14 +1599,14 @@ namespace {
 
     double UnitSystem::from_si( measure m, double val ) const {
         return
-            this->measure_table_from_si[ static_cast< int >( m ) ]
-            * (val - this->measure_table_to_si_offset[ static_cast< int >( m ) ]);
+            this->measure_table_from_si[ static_cast< long long >( m ) ]
+            * (val - this->measure_table_to_si_offset[ static_cast< long long >( m ) ]);
     }
 
     double UnitSystem::to_si( measure m, double val ) const {
         return
-            this->measure_table_to_si[ static_cast< int >( m ) ]*val
-            + this->measure_table_to_si_offset[ static_cast< int >( m ) ];
+            this->measure_table_to_si[ static_cast< long long >( m ) ]*val
+            + this->measure_table_to_si_offset[ static_cast< long long >( m ) ];
     }
 
     double UnitSystem::from_si( const std::string& dimension, double value) const
@@ -1622,22 +1622,22 @@ namespace {
     }
 
     void UnitSystem::from_si( measure m, std::vector<double>& data ) const {
-        double factor = this->measure_table_from_si[ static_cast< int >( m ) ];
-        double offset = this->measure_table_to_si_offset[ static_cast< int >( m ) ];
+        double factor = this->measure_table_from_si[ static_cast< long long >( m ) ];
+        double offset = this->measure_table_to_si_offset[ static_cast< long long >( m ) ];
         auto scale = [=](double x) { return (x - offset) * factor; };
         std::transform( data.begin() , data.end() , data.begin() , scale);
     }
 
 
     void UnitSystem::to_si( measure m, std::vector<double>& data) const {
-        double factor = this->measure_table_to_si[ static_cast< int >( m ) ];
-        double offset = this->measure_table_to_si_offset[ static_cast< int >( m ) ];
+        double factor = this->measure_table_to_si[ static_cast< long long >( m ) ];
+        double offset = this->measure_table_to_si_offset[ static_cast< long long >( m ) ];
         auto scale = [=](double x) { return x * factor + offset; };
         std::transform( data.begin() , data.end() , data.begin() , scale);
     }
 
     const char* UnitSystem::name( measure m ) const {
-        return this->unit_name_table[ static_cast< int >( m ) ];
+        return this->unit_name_table[ static_cast< long long >( m ) ];
     }
 
 

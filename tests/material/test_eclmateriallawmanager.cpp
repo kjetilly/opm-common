@@ -621,12 +621,12 @@ class FieldPropsManager;
 // To support Local Grid Refinement for CpGrid, additional arguments have been added
 // in some EclMaterialLawManager(InitParams) member functions. Therefore, we define
 // some lambda expressions that does not affect this test file.
-std::function<std::vector<int>(const Opm::FieldPropsManager&, const std::string&, bool)> doOldLookup =
+std::function<std::vector<long long>(const Opm::FieldPropsManager&, const std::string&, bool)> doOldLookup =
     [](const Opm::FieldPropsManager& fieldPropManager, const std::string& propString, bool needsTranslation)
     {
-        std::vector<int> dest;
+        std::vector<long long> dest;
         const auto& intRawData = fieldPropManager.get_int(propString);
-        unsigned int numElems =  intRawData.size();
+        size_t numElems =  intRawData.size();
         dest.resize(numElems);
         for (unsigned elemIdx = 0; elemIdx < numElems; ++elemIdx) {
             dest[elemIdx] = intRawData[elemIdx] - needsTranslation;
@@ -641,7 +641,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Fam1Fam2Hysteresis, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -681,9 +681,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Fam1Fam2Hysteresis, Scalar, Types)
     // make sure that the saturation functions for both keyword families are
     // identical, and that setting and getting the hysteresis parameters works
     for (unsigned elemIdx = 0; elemIdx < n; ++elemIdx) {
-        for (int i = -10; i < 120; ++i) {
+        for (long long i = -10; i < 120; ++i) {
             Scalar Sw = Scalar(i) / 100;
-            for (int j = i; j < 120; ++j) {
+            for (long long j = i; j < 120; ++j) {
                 Scalar So = Scalar(j) / 100;
                 Scalar Sg = 1 - Sw - So;
                 typename Fixture<Scalar>::FluidState fs;
@@ -753,7 +753,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GasOil, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
     const auto fam1Deck = parser.parseString(fam1DeckStringGasOil);
@@ -774,7 +774,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GasOil, Scalar, Types)
     fam2MaterialLawManager.initParamsForElements(fam2EclState, n, doOldLookup, doNothing);
 
     for (unsigned elemIdx = 0; elemIdx < n; ++elemIdx) {
-        for (int i = 0; i < 100; ++ i) {
+        for (long long i = 0; i < 100; ++ i) {
             Scalar Sw = 0;
             Scalar So = Scalar(i) / 100;
             Scalar Sg = 1 - Sw - So;
@@ -815,7 +815,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GasWater, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
     const auto fam2Deck = parser.parseString(fam2DeckStringGasWater);
@@ -836,7 +836,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GasWater, Scalar, Types)
     fam3materialLawManager.initParamsForElements(fam3EclState, n, doOldLookup, doNothing);
 
     for (unsigned elemIdx = 0; elemIdx < n; ++elemIdx) {
-        for (int i = 0; i < 100; ++ i) {
+        for (long long i = 0; i < 100; ++ i) {
             Scalar Sw = 0;
             Scalar So = Scalar(i) / 100;
             Scalar Sg = 1 - Sw - So;
@@ -877,10 +877,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Let, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
-    constexpr int gasPhaseIdx = Fixture<Scalar>::gasPhaseIdx;
-    constexpr int oilPhaseIdx = Fixture<Scalar>::oilPhaseIdx;
-    constexpr int waterPhaseIdx = Fixture<Scalar>::waterPhaseIdx;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long gasPhaseIdx = Fixture<Scalar>::gasPhaseIdx;
+    constexpr long long oilPhaseIdx = Fixture<Scalar>::oilPhaseIdx;
+    constexpr long long waterPhaseIdx = Fixture<Scalar>::waterPhaseIdx;
 
     Opm::Parser parser;
     const auto letDeck = parser.parseString(letDeckString);
@@ -898,7 +898,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Let, Scalar, Types)
 
     for (unsigned elemIdx = 0; elemIdx < 1; ++elemIdx) {
 
-        for (int i = -10; i < 120; ++i) {
+        for (long long i = -10; i < 120; ++i) {
             Scalar So = Scalar(i) / 100;
 
             // Oil in gas and conate water

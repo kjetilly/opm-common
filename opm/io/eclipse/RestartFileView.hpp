@@ -35,7 +35,7 @@ class RestartFileView
 {
 public:
     explicit RestartFileView(std::shared_ptr<ERst> restart_file,
-                             const int             report_step);
+                             const long long             report_step);
 
     ~RestartFileView();
 
@@ -46,18 +46,18 @@ public:
     RestartFileView& operator=(RestartFileView&& rhs);
 
     std::size_t simStep() const;
-    int reportStep() const;
+    long long reportStep() const;
 
-    int occurrenceCount(const std::string& vector) const;
+    long long occurrenceCount(const std::string& vector) const;
 
     template <typename ElmType>
     bool hasKeyword(const std::string& vector) const;
 
     template <typename ElmType>
     const std::vector<ElmType>&
-    getKeyword(const std::string& vector, const int occurrence = 0) const;
+    getKeyword(const std::string& vector, const long long occurrence = 0) const;
 
-    const std::vector<int>& intehead() const;
+    const std::vector<long long>& intehead() const;
     const std::vector<bool>& logihead() const;
     const std::vector<double>& doubhead() const;
 

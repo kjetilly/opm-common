@@ -108,7 +108,7 @@ class MonotCubicInterpolator {
        Accepts a filename as input, and parses the chosen columns in
        that file.
    */
-   MonotCubicInterpolator(const char* datafilename, int xColumn, int fColumn)
+   MonotCubicInterpolator(const char* datafilename, long long xColumn, long long fColumn)
   {
     if (!read(std::string(datafilename),xColumn,fColumn)) {
       throw("Unable to constuct MonotCubicInterpolator from file.") ;
@@ -123,7 +123,7 @@ class MonotCubicInterpolator {
        Accepts a filename as input, and parses the chosen columns in
        that file.
    */
-   MonotCubicInterpolator(const std::string & datafilename, int xColumn, int fColumn)
+   MonotCubicInterpolator(const std::string & datafilename, long long xColumn, long long fColumn)
   {
     if (!read(datafilename,xColumn,fColumn)) {
       throw("Unable to constuct MonotCubicInterpolator from file.") ;
@@ -176,7 +176,7 @@ class MonotCubicInterpolator {
        Accepts a filename as input, and parses the chosen columns in
        that file.
    */
-  bool read(const std::string &  datafilename, int xColumn, int fColumn) ;
+  bool read(const std::string &  datafilename, long long xColumn, long long fColumn) ;
 
 
 
@@ -433,7 +433,7 @@ class MonotCubicInterpolator {
    /**
      @return Number of datapoint pairs in this object
    */
-   int getSize() const {
+   long long getSize() const {
        return data.size();
    }
 

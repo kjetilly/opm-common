@@ -62,8 +62,8 @@ class HairSplittingFluidState
     : protected BaseFluidState
 {
 public:
-    static constexpr int numPhases = FluidSystem::numPhases;
-    static constexpr int numComponents = FluidSystem::numComponents;
+    static constexpr long long numPhases = FluidSystem::numPhases;
+    static constexpr long long numComponents = FluidSystem::numComponents;
 
     typedef ScalarT Scalar;
 
@@ -91,7 +91,7 @@ public:
     void allowDensity(bool yesno)
     { allowDensity_ = yesno; }
 
-    void restrictToPhase(int phaseIdx)
+    void restrictToPhase(long long phaseIdx)
     { restrictPhaseIdx_ = phaseIdx; }
 
     BaseFluidState& base()
@@ -104,7 +104,7 @@ public:
         -> decltype(this->base().temperature(phaseIdx))
     {
         assert(allowTemperature_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().temperature(phaseIdx);
     }
 
@@ -112,7 +112,7 @@ public:
         -> decltype(this->base().pressure(phaseIdx))
     {
         assert(allowPressure_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().pressure(phaseIdx);
     }
 
@@ -120,7 +120,7 @@ public:
         -> decltype(this->base().moleFraction(phaseIdx, compIdx))
     {
         assert(allowComposition_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().moleFraction(phaseIdx, compIdx);
     }
 
@@ -128,7 +128,7 @@ public:
         -> decltype(this->base().massFraction(phaseIdx, compIdx))
     {
         assert(allowComposition_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().massFraction(phaseIdx, compIdx);
     }
 
@@ -136,7 +136,7 @@ public:
         -> decltype(this->base().averageMolarMass(phaseIdx))
     {
         assert(allowComposition_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().averageMolarMass(phaseIdx);
     }
 
@@ -144,7 +144,7 @@ public:
         -> decltype(this->base().molarity(phaseIdx, compIdx))
     {
         assert(allowDensity_ && allowComposition_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().molarity(phaseIdx, compIdx);
     }
 
@@ -152,7 +152,7 @@ public:
         -> decltype(this->base().molarDensity(phaseIdx))
     {
         assert(allowDensity_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().molarDensity(phaseIdx);
     }
 
@@ -160,7 +160,7 @@ public:
         -> decltype(this->base().molarVolume(phaseIdx))
     {
         assert(allowDensity_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().molarVolume(phaseIdx);
     }
 
@@ -168,7 +168,7 @@ public:
         -> decltype(this->base().density(phaseIdx))
     {
         assert(allowDensity_);
-        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<int>(phaseIdx));
+        assert(restrictPhaseIdx_ < 0 || restrictPhaseIdx_ == static_cast<long long>(phaseIdx));
         return this->base().density(phaseIdx);
     }
 
@@ -226,7 +226,7 @@ private:
     bool allowPressure_{false};
     bool allowComposition_{false};
     bool allowDensity_{false};
-    int restrictPhaseIdx_{};
+    long long restrictPhaseIdx_{};
 };
 
 template <class Scalar, class BaseFluidState>
@@ -277,8 +277,8 @@ void checkFluidSystem()
 
     // make sure the fluid system provides the number of phases and
     // the number of components
-    static constexpr int numPhases = FluidSystem::numPhases;
-    static constexpr int numComponents = FluidSystem::numComponents;
+    static constexpr long long numPhases = FluidSystem::numPhases;
+    static constexpr long long numComponents = FluidSystem::numComponents;
 
     typedef HairSplittingFluidState<RhsEval, FluidSystem> FluidState;
     FluidState fs;
@@ -289,10 +289,10 @@ void checkFluidSystem()
 
     // initialize memory the fluid state
     fs.base().setTemperature(273.15 + 20.0);
-    for (int phaseIdx = 0; phaseIdx < numPhases; ++ phaseIdx) {
+    for (long long phaseIdx = 0; phaseIdx < numPhases; ++ phaseIdx) {
         fs.base().setPressure(phaseIdx, 1e5);
         fs.base().setSaturation(phaseIdx, 1.0/numPhases);
-        for (int compIdx = 0; compIdx < numComponents; ++ compIdx) {
+        for (long long compIdx = 0; compIdx < numComponents; ++ compIdx) {
             fs.base().setMoleFraction(phaseIdx, compIdx, 1.0/numComponents);
         }
     }
@@ -311,7 +311,7 @@ void checkFluidSystem()
     try { paramCache.updateAllPressures(fs); } catch (...) {};
 
     for (unsigned phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
-        fs.restrictToPhase(static_cast<int>(phaseIdx));
+        fs.restrictToPhase(static_cast<long long>(phaseIdx));
         try { paramCache.updatePhase(fs, phaseIdx); } catch (...) {};
         try { paramCache.updatePhase(fs, phaseIdx, /*except=*/ParameterCache::None); } catch (...) {};
         try { paramCache.updatePhase(fs, phaseIdx, /*except=*/ParameterCache::Temperature | ParameterCache::Pressure | ParameterCache::Composition); } catch (...) {};
@@ -332,7 +332,7 @@ void checkFluidSystem()
     // actually check the fluid system API
     try { FluidSystem::init(); } catch (...) {};
     for (unsigned phaseIdx = 0; phaseIdx < numPhases; ++ phaseIdx) {
-        fs.restrictToPhase(static_cast<int>(phaseIdx));
+        fs.restrictToPhase(static_cast<long long>(phaseIdx));
         fs.allowPressure(FluidSystem::isCompressible(phaseIdx));
         fs.allowComposition(true);
         fs.allowDensity(false);

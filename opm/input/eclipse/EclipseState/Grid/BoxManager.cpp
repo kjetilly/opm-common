@@ -43,9 +43,9 @@ namespace Opm {
         return *m_globalBox;
     }
 
-    void BoxManager::setInputBox(const int i1, const int i2,
-                                 const int j1, const int j2,
-                                 const int k1, const int k2)
+    void BoxManager::setInputBox(const long long i1, const long long i2,
+                                 const long long j1, const long long j2,
+                                 const long long k1, const long long k2)
     {
         this->m_inputBox = this->makeBox(i1, i2, j1, j2, k1, k2);
     }
@@ -67,9 +67,9 @@ namespace Opm {
         this->endInputBox();
     }
 
-    void BoxManager::setKeywordBox(const int i1, const int i2,
-                                   const int j1, const int j2,
-                                   const int k1, const int k2)
+    void BoxManager::setKeywordBox(const long long i1, const long long i2,
+                                   const long long j1, const long long j2,
+                                   const long long k1, const long long k2)
     {
         this->m_keywordBox = this->makeBox(i1, i2, j1, j2, k1, k2);
     }
@@ -85,9 +85,9 @@ namespace Opm {
     }
 
     std::unique_ptr<Box>
-    BoxManager::makeBox(const int i1, const int i2,
-                        const int j1, const int j2,
-                        const int k1, const int k2) const
+    BoxManager::makeBox(const long long i1, const long long i2,
+                        const long long j1, const long long j2,
+                        const long long k1, const long long k2) const
     {
         return std::make_unique<Box>(this->gridDims_,
                                      this->isActive_,

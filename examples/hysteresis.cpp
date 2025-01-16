@@ -76,12 +76,12 @@ class FieldPropsManager;
 // To support Local Grid Refinement for CpGrid, additional arguments have been added
 // in some EclMaterialLawManager(InitParams) member functions. Therefore, we define
 // some lambda expressions that does not affect this test file.
-std::function<std::vector<int>(const Opm::FieldPropsManager&, const std::string&, bool)> doOldLookup =
+std::function<std::vector<long long>(const Opm::FieldPropsManager&, const std::string&, bool)> doOldLookup =
     [](const Opm::FieldPropsManager& fieldPropManager, const std::string& propString, bool needsTranslation)
     {
-        std::vector<int> dest;
+        std::vector<long long> dest;
         const auto& intRawData = fieldPropManager.get_int(propString);
-        unsigned int numElems =  intRawData.size();
+        size_t numElems =  intRawData.size();
         dest.resize(numElems);
         for (unsigned elemIdx = 0; elemIdx < numElems; ++elemIdx) {
             dest[elemIdx] = intRawData[elemIdx] - needsTranslation;
@@ -94,7 +94,7 @@ std::function<unsigned(unsigned)> doNothing = [](unsigned elemIdx){ return elemI
 template<class Scalar, class MaterialLawParam, class FluidState>
 std::array<Scalar,Fixture<Scalar>::numPhases>  capillaryPressure(const MaterialLawParam& param, const FluidState& fs) {
     using MaterialLaw = typename Fixture<double>::MaterialLaw;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
     std::array<Scalar,numPhases> pc;
     MaterialLaw::capillaryPressures(pc,
                                     param,
@@ -106,7 +106,7 @@ std::array<Scalar,Fixture<Scalar>::numPhases>  capillaryPressure(const MaterialL
 template<class Scalar, class MaterialLawParam, class FluidState>
 std::array<Scalar,Fixture<Scalar>::numPhases> relativePermeabilities(const MaterialLawParam& param, const FluidState& fs) {
     using MaterialLaw = typename Fixture<double>::MaterialLaw;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
     std::array<Scalar,numPhases> kr;
     MaterialLaw::relativePermeabilities(kr,
                                         param,
@@ -127,11 +127,11 @@ std::vector<double> readCSVToVector(const std::string& fname)
     return vector;
 }
 
-int main(int argc, char **argv)
+long long main(long long argc, char **argv)
 {
 
     bool help = false;
-    for (int i = 1; i < argc; ++i) {
+    for (long long i = 1; i < argc; ++i) {
         std::string tmp = argv[i];
         help = help || (tmp  == "--h") || (tmp  == "--help");
     } 
@@ -174,9 +174,9 @@ int main(int argc, char **argv)
     bool hasOil = ph.active(Opm::Phase::OIL);
     bool hasWater = ph.active(Opm::Phase::WATER);
 
-    int phaseIdx1 = -1; // saturations
-    int phaseIdx2 = -1; // 1 - saturations
-    int phaseIdx3 = -1; // 0
+    long long phaseIdx1 = -1; // saturations
+    long long phaseIdx2 = -1; // 1 - saturations
+    long long phaseIdx3 = -1; // 0
 
     if (two_phase_system == "WO" && hasWater && hasOil) {
         phaseIdx1 = Fixture<double>::waterPhaseIdx;

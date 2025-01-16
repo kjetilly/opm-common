@@ -47,7 +47,7 @@
 namespace Opm {
 	/// ParameterGroup is a class that is used to provide run-time parameters.
 	/// The standard use of the class is to call create it with the
-	/// (int argc, char** argv) constructor (where the arguments are those
+	/// (long long argc, char** argv) constructor (where the arguments are those
 	/// given by main). This parses the command line, where each token
 	/// either
 	/// A) specifies a parameter (by a "param=value" token).
@@ -112,7 +112,7 @@ namespace Opm {
 	    ///        and can be retrieved later with unhandledArguments().
             /// \param enable_output Whether to enable output or not.
             template <typename StringArray>
-	    ParameterGroup(int argc, StringArray argv, const bool verify_syntax = true,
+	    ParameterGroup(long long argc, StringArray argv, const bool verify_syntax = true,
                            const bool enabled_output=true);
 
 	    /// \brief This method checks if there is something with name
@@ -256,7 +256,7 @@ namespace Opm {
 	    template<typename T, class Requirement>
 	    T translate(const pair_type& data, const Requirement& chk) const;
             template <typename StringArray>
-	    void parseCommandLineArguments(int argc, StringArray argv, bool verify_syntax);
+	    void parseCommandLineArguments(long long argc, StringArray argv, bool verify_syntax);
 	    void recursiveSetIsOutputEnabled(bool output_is_enabled);
 
 	    // helper routines to do textual I/O

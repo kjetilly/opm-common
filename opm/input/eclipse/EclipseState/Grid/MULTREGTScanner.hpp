@@ -56,10 +56,10 @@ namespace Opm {
 
     struct MULTREGTRecord
     {
-        int src_value;
-        int target_value;
+        long long src_value;
+        long long target_value;
         double trans_mult;
-        int directions;
+        long long directions;
         MULTREGT::NNCBehaviourEnum nnc_behaviour;
         std::string region_name;
 
@@ -126,7 +126,7 @@ namespace Opm {
 
         // For any key k in the map k.first <= k.second holds.
         using MULTREGTSearchMap = std::map<
-            std::pair<int, int>,
+            std::pair<long long, long long>,
             std::vector<MULTREGTRecord>::size_type
         >;
 
@@ -167,7 +167,7 @@ namespace Opm {
                                          std::size_t regionId2,
                                          const ApplyDecision& applyMultiplier,
                                          const RegPairFound& regPairFound) const;
-        template<int index>
+        template<long long index>
         void fillSearchMap(const std::vector<MULTREGTRecord>& records);
 
         GridDims gridDims{};
@@ -184,7 +184,7 @@ namespace Opm {
         /// applied cumulatively.
         std::vector<MULTREGTRecord> m_records_same{};
         std::map<std::string, std::array<MULTREGTSearchMap,2>> m_searchMap{};
-        std::map<std::string, std::vector<int>> regions{};
+        std::map<std::string, std::vector<long long>> regions{};
         std::vector<std::size_t> aquifer_cells{};
 
         void addKeyword(const DeckKeyword& deckKeyword);

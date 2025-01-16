@@ -51,7 +51,7 @@ void handleBRANPROP(HandlerContext& handlerContext)
     for (const auto& record : handlerContext.keyword) {
         const auto& downtree_node = record.getItem<ParserKeywords::BRANPROP::DOWNTREE_NODE>().get<std::string>(0);
         const auto& uptree_node = record.getItem<ParserKeywords::BRANPROP::UPTREE_NODE>().get<std::string>(0);
-        const int vfp_table = record.getItem<ParserKeywords::BRANPROP::VFP_TABLE>().get<int>(0);
+        const long long vfp_table = record.getItem<ParserKeywords::BRANPROP::VFP_TABLE>().get<long long>(0);
 
         if (vfp_table == 0) {
             ext_network.drop_branch(uptree_node, downtree_node);
@@ -95,7 +95,7 @@ void handleGRUPNET(HandlerContext& handlerContext)
              handlerContext.invalidNamePattern(groupNamePattern);
          }
          const auto& pressure_item = record.getItem<ParserKeywords::GRUPNET::TERMINAL_PRESSURE>();
-         const int vfp_table = record.getItem<ParserKeywords::GRUPNET::VFP_TABLE>().get<int>(0);
+         const long long vfp_table = record.getItem<ParserKeywords::GRUPNET::VFP_TABLE>().get<long long>(0);
          // It is assumed here that item 6 (ADD_GAS_LIFT_GAS) has the two options NO and FLO. THe option ALQ is not supported.
          // For standard networks the summation of ALQ values are weighted with efficiency factors.
          // Note that, currently, extended networks uses always efficiency factors (this is the default set by WEFAC item 3 (YES), the value NO is not supported.)

@@ -29,7 +29,7 @@
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 
-template<class ValueT, int numDerivs, unsigned staticSize>
+template<class ValueT, long long numDerivs, unsigned staticSize>
 struct fmt::formatter<Opm::DenseAd::Evaluation<ValueT,numDerivs,staticSize>>
 {
     std::string spec;
@@ -48,7 +48,7 @@ struct fmt::formatter<Opm::DenseAd::Evaluation<ValueT,numDerivs,staticSize>>
                 FormatContext& ctx) const
     {
         std::vector<ValueT> tmp(e.size());
-        for (int i = 0; i < e.size(); ++i)
+        for (long long i = 0; i < e.size(); ++i)
             tmp[i] = e.derivative(i);
         return fmt::format_to(ctx.out(), fmt::runtime("v: "+ spec +" / d: [" + spec +"]"),
                               e.value(), fmt::join(tmp, ", "));

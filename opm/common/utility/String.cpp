@@ -77,7 +77,7 @@ std::string format_double(double d)
     const double decimal_part = std::modf(d, &integral_part);
 
     if (decimal_part == 0)
-        return std::to_string(static_cast<int>(d));
+        return std::to_string(static_cast<long long>(d));
     else
         return std::to_string(d);
 }

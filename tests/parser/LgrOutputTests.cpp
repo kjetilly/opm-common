@@ -112,7 +112,7 @@ SCHEDULE
 
     Opm::UnitSystem units(1);
     std::vector<Opm::NNCdata> vecNNC;
-    std::array<int,3> global_grid_dim = {3,3,1};
+    std::array<long long,3> global_grid_dim = {3,3,1};
     std::vector<double> coord_g, zcorn_g, coord_l, zcorn_l, coord_g_opm, zcorn_g_opm, coord_l_opm, zcorn_l_opm;
     // Intialize LgrCollection from string.
     LgrCollection lgr_col = read_lgr(deck_string,global_grid_dim[0],global_grid_dim[1],global_grid_dim[2]);
@@ -213,7 +213,7 @@ SCHEDULE
 
     Opm::UnitSystem units(1);
     std::vector<Opm::NNCdata> vecNNC;
-    std::array<int,3> global_grid_dim = {3,3,1};
+    std::array<long long,3> global_grid_dim = {3,3,1};
     std::vector<double> coord_g, zcorn_g, coord_l, zcorn_l, coord_g_opm, zcorn_g_opm, coord_l_opm, zcorn_l_opm;
     // Intialize LgrCollection from string.
     LgrCollection lgr_col = read_lgr(deck_string,global_grid_dim[0],global_grid_dim[1],global_grid_dim[2]);
@@ -318,7 +318,7 @@ SCHEDULE
 )";
     Opm::UnitSystem units(1);
     std::vector<Opm::NNCdata> vecNNC;
-    std::array<int,3> global_grid_dim = {3,3,1};
+    std::array<long long,3> global_grid_dim = {3,3,1};
     std::vector<double> coord_g, zcorn_g, coord_l1, zcorn_l1, coord_l2, zcorn_l2,
                         coord_g_opm, zcorn_g_opm, coord_l1_opm, zcorn_l1_opm, coord_l2_opm, zcorn_l2_opm;
     // Intialize LgrCollection from string.
@@ -433,7 +433,7 @@ SCHEDULE
 )";
     Opm::UnitSystem units(1);
     std::vector<Opm::NNCdata> vecNNC;
-    std::array<int,3> global_grid_dim = {3,3,1};
+    std::array<long long,3> global_grid_dim = {3,3,1};
     std::vector<double> coord_g, zcorn_g, coord_l1, zcorn_l1, coord_l2, zcorn_l2;
     // Intialize LgrCollection from string.
     LgrCollection lgr_col = read_lgr(deck_string,global_grid_dim[0],global_grid_dim[1],global_grid_dim[2]);

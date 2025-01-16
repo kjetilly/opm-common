@@ -59,8 +59,8 @@ namespace Opm {
 using AQUFETP = ParserKeywords::AQUFETP;
 
 Aquifetp::AQUFETP_data::AQUFETP_data(const DeckRecord& record, const TableManager& tables)
-    : aquiferID        (record.getItem<AQUFETP::AQUIFER_ID>().get<int>(0))
-    , pvttableID       (record.getItem<AQUFETP::TABLE_NUM_WATER_PRESS>().get<int>(0))
+    : aquiferID        (record.getItem<AQUFETP::AQUIFER_ID>().get<long long>(0))
+    , pvttableID       (record.getItem<AQUFETP::TABLE_NUM_WATER_PRESS>().get<long long>(0))
     , prod_index       (record.getItem<AQUFETP::PI>().getSIDouble(0))
     , total_compr      (record.getItem<AQUFETP::C_T>().getSIDouble(0))
     , initial_watvolume(record.getItem<AQUFETP::V0>().getSIDouble(0))
@@ -91,8 +91,8 @@ bool Aquifetp::AQUFETP_data::operator==(const Aquifetp::AQUFETP_data& other) con
         ;
 }
 
-Aquifetp::AQUFETP_data::AQUFETP_data(const int aquiferID_,
-                                     const int pvttableID_,
+Aquifetp::AQUFETP_data::AQUFETP_data(const long long aquiferID_,
+                                     const long long pvttableID_,
                                      const double J_,
                                      const double C_t_,
                                      const double V0_,
@@ -216,7 +216,7 @@ std::vector<Aquifetp::AQUFETP_data>::const_iterator Aquifetp::end() const {
     return this->m_aqufetp.end();
 }
 
-bool Aquifetp::hasAquifer(const int aquID) const {
+bool Aquifetp::hasAquifer(const long long aquID) const {
     return std::any_of(this->m_aqufetp.begin(), this->m_aqufetp.end(),
                        [&aquID](const auto& aqu) { return aqu.aquiferID == aquID; });
 

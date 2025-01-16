@@ -280,8 +280,8 @@ GuideRateModel::Target GuideRateModel::TargetFromString(const std::string& s) {
     throw std::invalid_argument("Could not convert: " + s + " to a valid Target enum value");
 }
 
-GuideRateModel::Target GuideRateModel::TargetFromRestart(const int nominated_phase) {
-    static const auto int_to_target = std::unordered_map<int, Target> {
+GuideRateModel::Target GuideRateModel::TargetFromRestart(const long long nominated_phase) {
+    static const auto int_to_target = std::unordered_map<long long, Target> {
         {0, Target::NONE},
         {1, Target::OIL },
         {3, Target::GAS },

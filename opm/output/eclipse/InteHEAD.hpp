@@ -47,154 +47,154 @@ namespace Opm { namespace RestartIO {
     {
     public:
         struct WellTableDim {
-            int numWells{};
-            int maxPerf{};
-            int maxWellInGroup{};
-            int maxGroupInField{};
-            int maxWellsInField{};
-            int mxwlstprwel{};
-            int mxdynwlst{};
+            long long numWells{};
+            long long maxPerf{};
+            long long maxWellInGroup{};
+            long long maxGroupInField{};
+            long long maxWellsInField{};
+            long long mxwlstprwel{};
+            long long mxdynwlst{};
         };
 
         struct WellSegDims {
-            int nsegwl{};
-            int nswlmx{};
-            int nsegmx{};
-            int nlbrmx{};
-            int nisegz{};
-            int nrsegz{};
-            int nilbrz{};
+            long long nsegwl{};
+            long long nswlmx{};
+            long long nsegmx{};
+            long long nlbrmx{};
+            long long nisegz{};
+            long long nrsegz{};
+            long long nilbrz{};
         };
 
         struct RegDims {
-            int ntfip{};
-            int nmfipr{};
-            int nrfreg{};
-            int ntfreg{};
-            int nplmix{};
+            long long ntfip{};
+            long long nmfipr{};
+            long long nrfreg{};
+            long long ntfreg{};
+            long long nplmix{};
         };
 
         struct RockOpts {
-            int ttyp{};
+            long long ttyp{};
         };
 
         struct TimePoint {
-            int year{};
-            int month{};          // 1..12
-            int day{};            // 1..31
+            long long year{};
+            long long month{};          // 1..12
+            long long day{};            // 1..31
 
-            int hour{};           // 0..23
-            int minute{};         // 0..59
-            int second{};         // 0..59
+            long long hour{};           // 0..23
+            long long minute{};         // 0..59
+            long long second{};         // 0..59
 
-            int microseconds{};   // 0..999999
+            long long microseconds{};   // 0..999999
         };
 
         struct Phases {
-            int oil{};
-            int water{};
-            int gas{};
+            long long oil{};
+            long long water{};
+            long long gas{};
         };
 
         struct TuningPar {
-            int newtmx{};
-            int newtmn{};
-            int litmax{};
-            int litmin{};
-            int mxwsit{};
-            int mxwpit{};
-            int wseg_mx_rst{};
+            long long newtmx{};
+            long long newtmn{};
+            long long litmax{};
+            long long litmin{};
+            long long mxwsit{};
+            long long mxwpit{};
+            long long wseg_mx_rst{};
         };
 
         struct Group {
-            int ngroups{};
+            long long ngroups{};
         };
 
         struct UdqParam {
-            int udqParam_1{};
-            int num_iuads{};
-            int num_iuaps{};
+            long long udqParam_1{};
+            long long num_iuads{};
+            long long num_iuaps{};
 
-            std::array<int, static_cast<std::size_t>(UDQVarType::NumTypes)> numUDQs{};
+            std::array<long long, static_cast<std::size_t>(UDQVarType::NumTypes)> numUDQs{};
         };
 
         struct ActionParam {
-            int no_actions{};
-            int max_no_sched_lines_per_action{};
-            int max_no_conditions_per_action{};
-            int max_no_characters_per_line{};
+            long long no_actions{};
+            long long max_no_sched_lines_per_action{};
+            long long max_no_conditions_per_action{};
+            long long max_no_characters_per_line{};
         };
 
         struct GuideRateNominatedPhase {
-            int nominated_phase;
+            long long nominated_phase;
         };
 
         struct ActiveNetwork {
-            int actnetwrk;
+            long long actnetwrk;
         };
 
         struct NetworkDims {
-            int noactnod{};
-            int noactbr{};
-            int nodmax{};
-            int nbrmax{};
-            int nibran{};
-            int nrbran{};
-            int ninode{};
-            int nrnode{};
-            int nznode{};
-            int ninobr{};
+            long long noactnod{};
+            long long noactbr{};
+            long long nodmax{};
+            long long nbrmax{};
+            long long nibran{};
+            long long nrbran{};
+            long long ninode{};
+            long long nrnode{};
+            long long nznode{};
+            long long ninobr{};
         };
 
         struct NetBalanceDims {
-            int maxNoIterationsNBC{};
-            int maxNoIterationsTHP{};
+            long long maxNoIterationsNBC{};
+            long long maxNoIterationsTHP{};
         };
 
         struct AquiferDims {
             // Number of active analytic aquifers (# unique aquifer IDs)
-            int numAquifers {0};
+            long long numAquifers {0};
 
             // Declared maximum number of analytic aquifers in model
             // (AQUDIMS(5))
-            int maxNumAquifers {0};
+            long long maxNumAquifers {0};
 
             // Declared maximum number of connections in any analytic
             // aquifer (AQUDIMS(6))
-            int maxNumAquiferConn {0};
+            long long maxNumAquiferConn {0};
 
             // Maximum number of *active* connections in any analytic aquifer
-            int maxNumActiveAquiferConn {0};
+            long long maxNumActiveAquiferConn {0};
 
             // Maximum aquifer ID across all of the model's analytic aquifers.
-            int maxAquiferID {0};
+            long long maxAquiferID {0};
 
             // Number of numeric aquifer records (lines of AQUNUM data, AQUDIMS(1))
-            int numNumericAquiferRecords {0};
+            long long numNumericAquiferRecords {0};
 
             // Number of data elements per aquifer in IAAQ array.
-            int numIntAquiferElem {18};
+            long long numIntAquiferElem {18};
 
             // Number of data elements per aquifer in SAAQ array.
-            int numRealAquiferElem {24};
+            long long numRealAquiferElem {24};
 
             // Number of data elements per aquifer in XAAQ array.
-            int numDoubAquiferElem {10};
+            long long numDoubAquiferElem {10};
 
             // Number of data elements in IAQN array per numeric aquifer record.
-            int numNumericAquiferIntElem {10};
+            long long numNumericAquiferIntElem {10};
 
             // Number of data elements in RAQN array per numeric aquifer record.
-            int numNumericAquiferDoubleElem {13};
+            long long numNumericAquiferDoubleElem {13};
 
             // Number of data elements per coonnection in ICAQ array.
-            int numIntConnElem {7};
+            long long numIntConnElem {7};
 
             // Number of data elements per connecetion in SCAQ array.
-            int numRealConnElem {2};
+            long long numRealConnElem {2};
 
             // Number of data elements per connection in ACAQ array.
-            int numDoubConnElem {4};
+            long long numDoubConnElem {4};
         };
 
         InteHEAD();
@@ -206,9 +206,9 @@ namespace Opm { namespace RestartIO {
         InteHEAD& operator=(const InteHEAD& rhs) = default;
         InteHEAD& operator=(InteHEAD&& rhs) = default;
 
-        InteHEAD& dimensions(const int nx, const int ny, const int nz);
-        InteHEAD& dimensions(const std::array<int,3>& cartDims);
-        InteHEAD& numActive(const int nactive);
+        InteHEAD& dimensions(const long long nx, const long long ny, const long long nz);
+        InteHEAD& dimensions(const std::array<long long,3>& cartDims);
+        InteHEAD& numActive(const long long nactive);
 
         InteHEAD& unitConventions(const UnitSystem& usys);
         InteHEAD& wellTableDimensions(const WellTableDim& wtdim);
@@ -220,14 +220,14 @@ namespace Opm { namespace RestartIO {
         InteHEAD& drsdt(const Schedule&   sched,
                         const std::size_t lookup_step);
 
-        InteHEAD& params_NWELZ(const int niwelz, const int nswelz, const int nxwelz, const int nzwelz);
-        InteHEAD& params_NCON(const int niconz, const int nsconz, const int nxconz);
-        InteHEAD& params_GRPZ(const std::array<int, 4>& grpz);
-        InteHEAD& params_NGCTRL(const int gct);
+        InteHEAD& params_NWELZ(const long long niwelz, const long long nswelz, const long long nxwelz, const long long nzwelz);
+        InteHEAD& params_NCON(const long long niconz, const long long nsconz, const long long nxconz);
+        InteHEAD& params_GRPZ(const std::array<long long, 4>& grpz);
+        InteHEAD& params_NGCTRL(const long long gct);
 
-        InteHEAD& stepParam(const int tstep, const int report_step);
+        InteHEAD& stepParam(const long long tstep, const long long report_step);
         InteHEAD& tuningParam(const TuningPar& tunpar);
-        InteHEAD& variousParam(const int version, const int iprog);
+        InteHEAD& variousParam(const long long version, const long long iprog);
         InteHEAD& wellSegDimensions(const WellSegDims& wsdim);
         InteHEAD& activeNetwork(const ActiveNetwork& actntwrk);
         InteHEAD& networkDimensions(const NetworkDims& nwdim);
@@ -239,18 +239,18 @@ namespace Opm { namespace RestartIO {
         InteHEAD& actionParam(const ActionParam& act_par);
         InteHEAD& variousUDQ_ACTIONXParam();
         InteHEAD& nominatedPhaseGuideRate(GuideRateNominatedPhase nphase);
-        InteHEAD& whistControlMode(int mode);
-        InteHEAD& liftOptParam(int in_enc);
+        InteHEAD& whistControlMode(long long mode);
+        InteHEAD& liftOptParam(long long in_enc);
 
-        static int numRsegElem(const Opm::Phases& phase);
+        static long long numRsegElem(const Opm::Phases& phase);
 
-        const std::vector<int>& data() const
+        const std::vector<long long>& data() const
         {
             return this->data_;
         }
 
     private:
-        std::vector<int> data_;
+        std::vector<long long> data_;
     };
 
     InteHEAD::TimePoint

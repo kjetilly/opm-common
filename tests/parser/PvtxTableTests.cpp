@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE( PVTOSaturatedTable ) {
     BOOST_CHECK_EQUAL( saturatedTable.get(0 , 1) , 28.19 );
 
     {
-        int num = 0;
+        long long num = 0;
         UnitSystem units( UnitSystem::UnitType::UNIT_TYPE_METRIC );
         for (const auto& table :  pvtoTable) {
             if (num == 0) {

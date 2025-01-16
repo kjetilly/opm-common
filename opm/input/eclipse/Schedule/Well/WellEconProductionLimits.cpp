@@ -45,7 +45,7 @@ namespace {
         }
     }
 
-    Opm::WellEconProductionLimits::EconWorkover workover_procedure(const int procedure)
+    Opm::WellEconProductionLimits::EconWorkover workover_procedure(const long long procedure)
     {
         using Opm::RestartIO::Helpers::VectorItems::
             IWell::Value::EconLimit::WOProcedure;
@@ -71,7 +71,7 @@ namespace {
         }
     }
 
-    Opm::WellEconProductionLimits::QuantityLimit limiting_quantity(const int quantity)
+    Opm::WellEconProductionLimits::QuantityLimit limiting_quantity(const long long quantity)
     {
         using Opm::RestartIO::Helpers::VectorItems::
             IWell::Value::EconLimit::Quantity;
@@ -91,7 +91,7 @@ namespace {
         }
     }
 
-    constexpr bool limit_ends_run(const int econ_limit_end_run)
+    constexpr bool limit_ends_run(const long long econ_limit_end_run)
     {
         return econ_limit_end_run == Opm::RestartIO::Helpers::
             VectorItems::IWell::Value::EconLimit::EndRun::Yes;

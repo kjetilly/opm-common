@@ -27,7 +27,7 @@
 #include <iterator>
 #include <string>
 
-using EclEntry = std::tuple<std::string, Opm::EclIO::eclArrType, long int>;
+using EclEntry = std::tuple<std::string, Opm::EclIO::eclArrType, long long>;
 using ParamEntry = std::tuple<std::string, Opm::EclIO::eclArrType>;
 
 
@@ -50,13 +50,13 @@ EModel::EModel(const std::string& filename) :
         throw std::invalid_argument(msg);
     }
 
-    std::vector<int> inteh = initfile.get<int>("INTEHEAD");
+    std::vector<long long> inteh = initfile.get<long long>("INTEHEAD");
 
     nI = inteh[8];
     nJ = inteh[9];
     nK = inteh[10];
 
-    nActive = static_cast<unsigned int>(inteh[11]);
+    nActive = static_cast<size_t>(inteh[11]);
 
     if (!initfile.hasKey("PORV")) {
         auto msg = fmt::format("Parameter PORV not found in init file: {}.INIT", rootN);
@@ -73,11 +73,11 @@ EModel::EModel(const std::string& filename) :
 
     std::vector<float> porv_all = initfile.get<float>("PORV");
 
-    int n = 0;
+    long long n = 0;
 
-    for (int k = 0; k < nK; k++)
-        for (int j = 0; j < nJ; j++)
-            for (int i = 0; i < nI; i++) {
+    for (long long k = 0; k < nK; k++)
+        for (long long j = 0; j < nJ; j++)
+            for (long long i = 0; i < nI; i++) {
                 if (porv_all[n] > 0.0) {
                     PORV.push_back(porv_all[n]);
                     I.push_back(i+1);
@@ -87,7 +87,7 @@ EModel::EModel(const std::string& filename) :
                 n++;
             }
 
-    int index = 0;
+    long long index = 0;
 
     initParam["PORV"] = index;
     initParamName.push_back("PORV");
@@ -122,7 +122,7 @@ EModel::EModel(const std::string& filename) :
     if ( std::filesystem::exists( rootN + ".UNRST" ) )
     {
         rstfile = Opm::EclIO::ERst(rootN + ".UNRST");
-        std::vector<int> rstepList = rstfile->listOfReportStepNumbers();
+        std::vector<long long> rstepList = rstfile->listOfReportStepNumbers();
 
         if (rstepList.size() == 0)
             throw std::runtime_error("selected restart file have no report steps");
@@ -138,7 +138,7 @@ EModel::EModel(const std::string& filename) :
     activeFilter = false;
 }
 
-void EModel::setReportStep(int rstep)
+void EModel::setReportStep(long long rstep)
 {
     if (!rstfile.has_value())
         throw std::runtime_error("Not able to set report step since restart file not found");
@@ -146,7 +146,7 @@ void EModel::setReportStep(int rstep)
     initSolutionData(rstep);
 }
 
-void EModel::initSolutionData(int rstep){
+void EModel::initSolutionData(long long rstep){
 
     if (!hasReportStep(rstep))
         throw std::runtime_error("restart file not found");
@@ -162,7 +162,7 @@ void EModel::initSolutionData(int rstep){
 
     bool solparam = false;
 
-    int index = -1;
+    long long index = -1;
 
     for (size_t n = 0; n < rstArrList.size(); n++) {
         std::string name = std::get<0>(rstArrList[n]);
@@ -220,7 +220,7 @@ std::vector<ParamEntry> EModel::getListOfParameters() const
     return res;
 }
 
-int EModel::getNumberOfActiveCells()
+long long EModel::getNumberOfActiveCells()
 {
     return std::count(ActFilter.begin(), ActFilter.end(), true);
 }
@@ -243,7 +243,7 @@ bool EModel::hasParameter(const std::string &name) const
 }
 
 
-bool EModel::hasReportStep(int rstep)
+bool EModel::hasReportStep(long long rstep)
 {
     if (activeReportStep == -1)
         return false;
@@ -306,7 +306,7 @@ void EModel::updateActiveFilter(const std::vector<T>& paramVect, const std::stri
 template <typename T>
 const std::vector<T>& EModel::get_filter_param(const std::string& param)
 {
-    if constexpr (std::is_same<T, int>::value) {
+    if constexpr (std::is_same<T, long long>::value) {
         if ((param == "I") || (param == "ROW"))
             return  I;
         else if ((param == "J") || (param == "COLUMN"))
@@ -314,7 +314,7 @@ const std::vector<T>& EModel::get_filter_param(const std::string& param)
         else if ((param == "K") || (param == "LAYER"))
             return  K;
         else if (hasInitParameter(param))
-            return initfile.get<int>(param);
+            return initfile.get<long long>(param);
 
         const std::string message =
             fmt::format("parameter {}, used to set filter, could not be found",
@@ -345,16 +345,16 @@ const std::vector<T>& EModel::get_filter_param(const std::string& param)
 
 
 template <>
-void EModel::addFilter<int>(const std::string& param1, const std::string& opperator, int num)
+void EModel::addFilter<long long>(const std::string& param1, const std::string& opperator, long long num)
 {
-    std::vector<int> paramVect = get_filter_param<int>(param1);
+    std::vector<long long> paramVect = get_filter_param<long long>(param1);
     updateActiveFilter(paramVect, opperator, num);
 }
 
 template <>
-void EModel::addFilter<int>(const std::string& param1, const std::string& opperator, int num1, int num2)
+void EModel::addFilter<long long>(const std::string& param1, const std::string& opperator, long long num1, long long num2)
 {
-    std::vector<int> paramVect = get_filter_param<int>(param1);;
+    std::vector<long long> paramVect = get_filter_param<long long>(param1);;
     updateActiveFilter(paramVect, opperator, num1, num2);
 }
 
@@ -381,12 +381,12 @@ void EModel::addHCvolFilter()
                                  "function setDepthfwl before using "
                                  "filter HC filter");
 
-    auto eqlnum = initfile.get<int>("EQLNUM");
+    auto eqlnum = initfile.get<long long>("EQLNUM");
     auto depth = initfile.get<float>("DEPTH");
     activeFilter = true;
 
     for (size_t n = 0; n < eqlnum.size();n++){
-        int eql = eqlnum[n];
+        long long eql = eqlnum[n];
         float fwl = FreeWaterlevel[eql-1];
 
         if ((ActFilter[n]) && (depth[n] > fwl))
@@ -416,10 +416,10 @@ const std::vector<float>& EModel::getParam<float>(const std::string& name)
 
 
 template <>
-const std::vector<int>& EModel::getParam<int>(const std::string& name)
+const std::vector<long long>& EModel::getParam<long long>(const std::string& name)
 {
     if (activeFilter) {
-        std::vector<int> param = get_filter_param<int>(name);
+        std::vector<long long> param = get_filter_param<long long>(name);
         filteredIntVect.clear();
 
         for (size_t i = 0; i < param.size(); i++)
@@ -430,7 +430,7 @@ const std::vector<int>& EModel::getParam<int>(const std::string& name)
 
     } else {
 
-        return get_filter_param<int>(name);
+        return get_filter_param<long long>(name);
     }
 }
 
@@ -454,7 +454,7 @@ const std::vector<float>& EModel::getSolutionFloat(const std::string& name)
     }
 
     auto search = solutionParam.find(name);
-    int eclFileIndex = indInRstEclfile[search->second];
+    long long eclFileIndex = indInRstEclfile[search->second];
 
     return rstfile->getRestartData<float>(eclFileIndex, activeReportStep);
 }
@@ -465,9 +465,9 @@ void EModel::setDepthfwl(const std::vector<float>& fwl)
     nEqlnum = fwl.size();
     FreeWaterlevel = fwl;
 
-    std::vector<int> eqlnum = initfile.get<int>("EQLNUM");
-    std::vector<int>::const_iterator it = max_element(eqlnum.begin(), eqlnum.end());
-    int maxEqlnum = *it;
+    std::vector<long long> eqlnum = initfile.get<long long>("EQLNUM");
+    std::vector<long long>::const_iterator it = max_element(eqlnum.begin(), eqlnum.end());
+    long long maxEqlnum = *it;
 
     if (maxEqlnum > nEqlnum){
         const std::string message =

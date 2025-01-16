@@ -276,7 +276,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
 
         using GC = ParserKeywords::GCOMPIDX;
         if (deck.hasKeyword<GC>())
-            this->m_gas_comp_index = deck.get<GC>().back().getRecord(0).getItem<GC::GAS_COMPONENT_INDEX>().get<int>(0);
+            this->m_gas_comp_index = deck.get<GC>().back().getRecord(0).getItem<GC::GAS_COMPONENT_INDEX>().get<long long>(0);
     }
 
 
@@ -342,11 +342,11 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
         if (deck.hasKeyword<EQLDIMS>()) {
             const auto& keyword = deck.get<EQLDIMS>().back();
             const auto& record = keyword.getRecord(0);
-            int ntsequl   = record.getItem<EQLDIMS::NTEQUL>().get< int >(0);
-            int nodes_p   = record.getItem<EQLDIMS::DEPTH_NODES_P>().get< int >(0);
-            int nodes_tab = record.getItem<EQLDIMS::DEPTH_NODES_TAB>().get< int >(0);
-            int nttrvd    = record.getItem<EQLDIMS::NTTRVD>().get< int >(0);
-            int ntsrvd    = record.getItem<EQLDIMS::NSTRVD>().get< int >(0);
+            long long ntsequl   = record.getItem<EQLDIMS::NTEQUL>().get< long long >(0);
+            long long nodes_p   = record.getItem<EQLDIMS::DEPTH_NODES_P>().get< long long >(0);
+            long long nodes_tab = record.getItem<EQLDIMS::DEPTH_NODES_TAB>().get< long long >(0);
+            long long nttrvd    = record.getItem<EQLDIMS::NTTRVD>().get< long long >(0);
+            long long ntsrvd    = record.getItem<EQLDIMS::NSTRVD>().get< long long >(0);
 
             m_eqldims = Eqldims(ntsequl , nodes_p , nodes_tab , nttrvd , ntsrvd );
         }
@@ -354,11 +354,11 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
         if (deck.hasKeyword<REGDIMS>()) {
             const auto& keyword = deck.get<REGDIMS>().back();
             const auto& record = keyword.getRecord(0);
-            int ntfip  = record.getItem<REGDIMS::NTFIP>().get< int >(0);
-            int nmfipr = record.getItem<REGDIMS::NMFIPR>().get< int >(0);
-            int nrfreg = record.getItem<REGDIMS::NRFREG>().get< int >(0);
-            int ntfreg = record.getItem<REGDIMS::NTFREG>().get< int >(0);
-            int nplmix = record.getItem<REGDIMS::NPLMIX>().get< int >(0);
+            long long ntfip  = record.getItem<REGDIMS::NTFIP>().get< long long >(0);
+            long long nmfipr = record.getItem<REGDIMS::NMFIPR>().get< long long >(0);
+            long long nrfreg = record.getItem<REGDIMS::NRFREG>().get< long long >(0);
+            long long ntfreg = record.getItem<REGDIMS::NTFREG>().get< long long >(0);
+            long long nplmix = record.getItem<REGDIMS::NPLMIX>().get< long long >(0);
             m_regdims = Regdims( ntfip , nmfipr , nrfreg , ntfreg , nplmix );
         }
     }
@@ -482,7 +482,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             if (deck.hasKeyword<ParserKeywords::MISCIBLE>()) {
                 const auto& keyword = deck.get<ParserKeywords::MISCIBLE>().back();
                 const auto& record = keyword.getRecord(0);
-                numMiscibleTables =  static_cast<size_t>(record.getItem<ParserKeywords::MISCIBLE::NTMISC>().get< int >(0));
+                numMiscibleTables =  static_cast<size_t>(record.getItem<ParserKeywords::MISCIBLE::NTMISC>().get< long long >(0));
             }
             addTables( "SORWMIS", numMiscibleTables);
             addTables( "SGCWMIS", numMiscibleTables);
@@ -496,7 +496,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             if (deck.hasKeyword<ParserKeywords::ENDSCALE>()) {
                 const auto& keyword = deck.get<ParserKeywords::ENDSCALE>().back();
                 const auto& record = keyword.getRecord(0);
-                numEndScaleTables = static_cast<size_t>(record.getItem<ParserKeywords::ENDSCALE::NTENDP>().get< int >(0));
+                numEndScaleTables = static_cast<size_t>(record.getItem<ParserKeywords::ENDSCALE::NTENDP>().get< long long >(0));
             }
 
             addTables( "ENKRVD", numEndScaleTables);
@@ -510,7 +510,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             if (deck.hasKeyword<ParserKeywords::ROCKCOMP>()) {
                 const auto& keyword = deck.get<ParserKeywords::ROCKCOMP>().back();
                 const auto& record = keyword.getRecord(0);
-                numRocktabTables = static_cast<size_t>(record.getItem<ParserKeywords::ROCKCOMP::NTROCC>().get< int >(0));
+                numRocktabTables = static_cast<size_t>(record.getItem<ParserKeywords::ROCKCOMP::NTROCC>().get< long long >(0));
             }
             addTables( "ROCKTAB", numRocktabTables);
             addTables( "ROCKWNOD", numRocktabTables);
@@ -552,7 +552,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             if (deck.hasKeyword<ParserKeywords::ENDSCALE>()) {
                 const auto& keyword = deck.get<ParserKeywords::ENDSCALE>().back();
                 const auto& record = keyword.getRecord(0);
-                numEndScaleTables = static_cast<size_t>(record.getItem<ParserKeywords::ENDSCALE::NTENDP>().get< int >(0));
+                numEndScaleTables = static_cast<size_t>(record.getItem<ParserKeywords::ENDSCALE::NTENDP>().get< long long >(0));
             }
 
             initSimpleTableContainer<EnkrvdTable>( deck , "ENKRVD", numEndScaleTables);
@@ -565,7 +565,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             if (deck.hasKeyword<ParserKeywords::MISCIBLE>()) {
                 const auto& keyword = deck.get<ParserKeywords::MISCIBLE>().back();
                 const auto& record = keyword.getRecord(0);
-                numMiscibleTables =  static_cast<size_t>(record.getItem<ParserKeywords::MISCIBLE::NTMISC>().get< int >(0));
+                numMiscibleTables =  static_cast<size_t>(record.getItem<ParserKeywords::MISCIBLE::NTMISC>().get< long long >(0));
             }
             initSimpleTableContainer<SorwmisTable>(deck, "SORWMIS", numMiscibleTables);
             initSimpleTableContainer<SgcwmisTable>(deck, "SGCWMIS", numMiscibleTables);
@@ -580,7 +580,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             if (deck.hasKeyword<ParserKeywords::ROCKCOMP>()) {
                 const auto& keyword = deck.get<ParserKeywords::ROCKCOMP>().back();
                 const auto& record = keyword.getRecord(0);
-                numRocktabTables = static_cast<size_t>(record.getItem<ParserKeywords::ROCKCOMP::NTROCC>().get< int >(0));
+                numRocktabTables = static_cast<size_t>(record.getItem<ParserKeywords::ROCKCOMP::NTROCC>().get< long long >(0));
             }
             initSimpleTableContainer<RockwnodTable>(deck, "ROCKWNOD", numRocktabTables);
             initSimpleTableContainer<OverburdTable>(deck, "OVERBURD", numRocktabTables);
@@ -680,7 +680,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             PlymwinjTable table(keyword);
 
             // we need to check the value of the table_number against the allowed ones
-            const int table_number = table.getTableNumber();
+            const long long table_number = table.getTableNumber();
             // we should check if the table_number is valid
             if (m_plymwinjTables.find(table_number) == m_plymwinjTables.end()) {
                 m_plymwinjTables.insert(std::make_pair(table_number, std::move(table)));
@@ -710,7 +710,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             SkprwatTable table(keyword);
 
             // we need to check the value of the table_number against the allowed ones
-            const int table_number = table.getTableNumber();
+            const long long table_number = table.getTableNumber();
             // we should check if the table_number is valid
             if (m_skprwatTables.find(table_number) == m_skprwatTables.end()) {
                 m_skprwatTables.insert(std::make_pair(table_number, std::move(table)));
@@ -740,7 +740,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
             SkprpolyTable table(keyword);
 
             // we need to check the value of the table_number against the allowed ones
-            const int table_number = table.getTableNumber();
+            const long long table_number = table.getTableNumber();
             // we should check if the table_number is valid
             if (m_skprpolyTables.find(table_number) == m_skprpolyTables.end()) {
                 m_skprpolyTables.insert(std::make_pair(table_number, std::move(table)));
@@ -811,7 +811,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
         }
         const auto& rockcompKeyword = deck.get<ParserKeywords::ROCKCOMP>().back();
         const auto& record = rockcompKeyword.getRecord( 0 );
-        size_t numTables = record.getItem<ParserKeywords::ROCKCOMP::NTROCC>().get< int >(0);
+        size_t numTables = record.getItem<ParserKeywords::ROCKCOMP::NTROCC>().get< long long >(0);
         auto& container = forceGetTables("ROCKTAB" , numTables);
         const auto rocktabKeyword = deck["ROCKTAB"].back();
 
@@ -1203,15 +1203,15 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
         return m_plyvmhTable;
     }
 
-    const std::map<int, PlymwinjTable>& TableManager::getPlymwinjTables() const {
+    const std::map<long long, PlymwinjTable>& TableManager::getPlymwinjTables() const {
         return m_plymwinjTables;
     }
 
-    const std::map<int, SkprwatTable>& TableManager::getSkprwatTables() const {
+    const std::map<long long, SkprwatTable>& TableManager::getSkprwatTables() const {
         return m_skprwatTables;
     }
 
-    const std::map<int, SkprpolyTable>& TableManager::getSkprpolyTables() const {
+    const std::map<long long, SkprpolyTable>& TableManager::getSkprpolyTables() const {
         return m_skprpolyTables;
     }
 
@@ -1364,7 +1364,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
 
         const auto nDigit = [](const std::size_t n)
         {
-            return 1 + static_cast<int>(std::floor(std::log10(n)));
+            return 1 + static_cast<long long>(std::floor(std::log10(n)));
         };
 
         const auto formatHeader = [&pvtoLoc](const std::size_t pvtnum)
@@ -1489,7 +1489,7 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
 
         const auto& rockcompKeyword = deck["ROCKCOMP"].back();
         const auto& record = rockcompKeyword.getRecord( 0 );
-        size_t numTables = record.getItem("NTROCC").get< int >(0);
+        size_t numTables = record.getItem("NTROCC").get< long long >(0);
         rocktable.resize(numTables);
 
         const auto& keyword = deck[keywordName].back();
@@ -1686,8 +1686,8 @@ std::optional<JFunc> make_jfunc(const Deck& deck) {
 
         const auto& tableKeyword = deck[keywordName].back();
 
-        int numTables = TableType::numTables( tableKeyword );
-        for (int tableIdx = 0; tableIdx < numTables; ++tableIdx)
+        long long numTables = TableType::numTables( tableKeyword );
+        for (long long tableIdx = 0; tableIdx < numTables; ++tableIdx)
             tableVector.emplace_back( tableKeyword , tableIdx );
     }
 

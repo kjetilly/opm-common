@@ -59,7 +59,7 @@ public:
     typedef typename Traits::Scalar Scalar;
 
     //! The number of fluid phases to which this material law applies.
-    static const int numPhases = Traits::numPhases;
+    static const long long numPhases = Traits::numPhases;
     static_assert(numPhases == 2,
                   "The Brooks-Corey capillary pressure law only applies "
                   "to the case of two fluid phases");
@@ -281,7 +281,7 @@ public:
         // Newton-Raphson method
         Evaluation sw = 0.5;
         Scalar eps = 1e-10;
-        for (int i = 0; i < 20; ++i) {
+        for (long long i = 0; i < 20; ++i) {
             Evaluation f = krn - twoPhaseSatKrn(params, sw);
             Evaluation fStar = krn - twoPhaseSatKrn(params, sw + eps);
             Evaluation fPrime = (fStar - f) / eps;

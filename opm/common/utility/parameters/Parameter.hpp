@@ -86,8 +86,8 @@ namespace Opm {
 	/// @param
 	/// @return
 	template<>
-	struct ParameterMapItemTrait<int> {
-	    static int convert(const ParameterMapItem& item,
+	struct ParameterMapItemTrait<long long> {
+	    static long long convert(const ParameterMapItem& item,
                                std::string& conversion_error,
                                const bool);
 

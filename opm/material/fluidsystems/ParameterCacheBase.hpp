@@ -72,7 +72,7 @@ public:
      * \param exceptQuantities The quantities of the fluid state that have not changed since the last update.
      */
     template <class FluidState>
-    void updateAll(const FluidState& fluidState, int /*exceptQuantities*/ = None)
+    void updateAll(const FluidState& fluidState, long long /*exceptQuantities*/ = None)
     {
         for (unsigned phaseIdx = 0; phaseIdx < FluidState::numPhases; ++phaseIdx)
             asImp_().updatePhase(fluidState, phaseIdx);
@@ -116,7 +116,7 @@ public:
      * \param exceptQuantities The quantities of the fluid state that have not changed since the last update.
      */
     template <class FluidState>
-    void updatePhase(const FluidState& /*fluidState*/, unsigned /*phaseIdx*/, int /*exceptQuantities*/ = None)
+    void updatePhase(const FluidState& /*fluidState*/, unsigned /*phaseIdx*/, long long /*exceptQuantities*/ = None)
     {}
 
     /*!

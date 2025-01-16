@@ -33,10 +33,10 @@ struct co2TabulatedDensityTraits
 {
     using Scalar = double;
     static const char  *name;
-    static const int    numX = 200;
+    static const long long    numX = 200;
     static const Scalar xMin;
     static const Scalar xMax;
-    static const int    numY = 500;
+    static const long long    numY = 500;
     static const Scalar yMin;
     static const Scalar yMax;
     static const Scalar vals[200][500];
@@ -46,10 +46,10 @@ struct co2TabulatedEnthalpyTraits
 {
     using Scalar = double;
     static const char  *name;
-    static const int    numX = 200;
+    static const long long    numX = 200;
     static const Scalar xMin;
     static const Scalar xMax;
-    static const int    numY = 500;
+    static const long long    numY = 500;
     static const Scalar yMin;
     static const Scalar yMax;
     static const Scalar vals[200][500];

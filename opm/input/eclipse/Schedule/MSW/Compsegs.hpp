@@ -62,7 +62,7 @@ namespace Compsegs {
     std::pair<WellConnections, WellSegments>
     rstUpdate(const RestartIO::RstWell& rst_well,
               std::vector<Connection> input_connections,
-              const std::unordered_map<int, Segment>& input_segments);
+              const std::unordered_map<long long, Segment>& input_segments);
 }
 }
 

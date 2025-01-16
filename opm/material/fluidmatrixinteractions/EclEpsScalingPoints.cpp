@@ -193,7 +193,7 @@ calculateLeverettFactors(const EclipseState&         eclState,
     else {
         throw std::runtime_error {
             "Illegal direction indicator for the JFUNC "
-            "keyword (" + std::to_string(int(jfuncDir)) + ")"
+            "keyword (" + std::to_string((long long)(jfuncDir)) + ")"
         };
     }
 

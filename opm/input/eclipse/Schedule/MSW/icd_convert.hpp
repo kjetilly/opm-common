@@ -4,10 +4,10 @@
 namespace Opm {
 
 template<typename T>
-T from_int(int int_status);
+T from_int(long long int_status);
 
 template<typename T>
-int to_int(T status);
+long long to_int(T status);
 
 }
 

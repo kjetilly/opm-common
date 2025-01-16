@@ -42,13 +42,13 @@
 // ===========================================================================
 
 namespace {
-    std::size_t globIndex(const std::array<int,3>& ijk,
-                          const std::array<int,3>& dims)
+    std::size_t globIndex(const std::array<long long,3>& ijk,
+                          const std::array<long long,3>& dims)
     {
         return ijk[0] + dims[0]*(ijk[1] + static_cast<std::size_t>(dims[1])*ijk[2]);
     }
 
-    Opm::WellConnections qfsProducer(const std::array<int,3>& dims, const int top = 0)
+    Opm::WellConnections qfsProducer(const std::array<long long,3>& dims, const long long top = 0)
     {
         auto conns = std::vector<Opm::Connection>{};
 
@@ -56,7 +56,7 @@ namespace {
         const auto i = (dims[0] - 1) - 1;
         const auto j = (dims[1] - 1) - 1;
 
-        for (auto k = top; k < static_cast<int>(dims.size()); ++k) {
+        for (auto k = top; k < static_cast<long long>(dims.size()); ++k) {
             const auto depth = 2000 + (2*k + 1) / static_cast<double>(2);
 
             auto ctf_props = Opm::Connection::CTFProperties{};
@@ -78,9 +78,9 @@ namespace {
         return { Opm::Connection::Order::INPUT, i, j, conns };
     }
 
-    Opm::WellConnections centreProducer(const int numLayers = 10,
-                                        const int topConn   = 0,
-                                        const int numConns  = 4)
+    Opm::WellConnections centreProducer(const long long numLayers = 10,
+                                        const long long topConn   = 0,
+                                        const long long numConns  = 4)
     {
         auto conns = std::vector<Opm::Connection>{};
 
@@ -124,9 +124,9 @@ namespace {
         return { Opm::Connection::Order::INPUT, i, j, conns };
     }
 
-    Opm::WellConnections horizontalProducer_X(const std::array<int,3>& dims,
-                                              const int                left     = 0,
-                                              const int                numConns = 3)
+    Opm::WellConnections horizontalProducer_X(const std::array<long long,3>& dims,
+                                              const long long                left     = 0,
+                                              const long long                numConns = 3)
     {
         auto conns = std::vector<Opm::Connection>{};
 
@@ -156,7 +156,7 @@ namespace {
         return { Opm::Connection::Order::INPUT, left, j, conns };
     }
 
-    Opm::EclipseGrid shoeBox(const std::array<int,3>& dims)
+    Opm::EclipseGrid shoeBox(const std::array<long long,3>& dims)
     {
         return Opm::EclipseGrid(dims[0], dims[1], dims[2]);
     }
@@ -695,7 +695,7 @@ BOOST_AUTO_TEST_SUITE(Equal_Pore_Volumes)
 namespace {
     struct Setup : public CalculatorSetup
     {
-        Setup(const std::array<int,3>& dims, const int top = 2)
+        Setup(const std::array<long long,3>& dims, const long long top = 2)
             : CalculatorSetup { shoeBox(dims), qfsProducer(dims, top) }
         {}
     };

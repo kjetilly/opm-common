@@ -55,18 +55,18 @@ private:
     class RegIdxRange
     {
     public:
-        RegIdxRange(const int begin_arg, const int end_arg)
+        RegIdxRange(const long long begin_arg, const long long end_arg)
             : begin_{begin_arg}, end_{end_arg}
         {}
 
-        int begin() const { return this->begin_; }
-        int end()   const { return this->end_; }
+        long long begin() const { return this->begin_; }
+        long long end()   const { return this->end_; }
 
         bool empty() const { return this->end() <= this->begin(); }
 
     private:
-        int begin_{};
-        int end_{};
+        long long begin_{};
+        long long end_{};
     };
 
     std::reference_wrapper<const FIPRegionStatistics> fipRegStats_;
@@ -76,11 +76,11 @@ private:
 
     RegIdxRange
     matchingRegions(const std::string&        regSet,
-                    const std::optional<int>& regionID) const;
+                    const std::optional<long long>& regionID) const;
 
     RegIdxRange
     matchingRegions(const std::string& regSet,
-                    const int          regionID) const;
+                    const long long          regionID) const;
 
     RegIdxRange matchingRegions(const std::string& regSet) const;
 };
@@ -115,7 +115,7 @@ candidateRegionSets(const std::optional<std::string>& regionSet) const
 Opm::RegionSetMatcher::Impl::RegIdxRange
 Opm::RegionSetMatcher::Impl::
 matchingRegions(const std::string&        regSet,
-                const std::optional<int>& regionID) const
+                const std::optional<long long>& regionID) const
 {
     return regionID.has_value()
         ? this->matchingRegions(regSet, *regionID)
@@ -125,7 +125,7 @@ matchingRegions(const std::string&        regSet,
 Opm::RegionSetMatcher::Impl::RegIdxRange
 Opm::RegionSetMatcher::Impl::
 matchingRegions(const std::string& regSet,
-                const int          regionID) const
+                const long long          regionID) const
 {
     const auto maxRegID = this->fipRegStats_.get().maximumRegionID(regSet);
 
@@ -194,7 +194,7 @@ namespace {
 } // Anonymous namespace
 
 Opm::RegionSetMatcher::SetDescriptor&
-Opm::RegionSetMatcher::SetDescriptor::regionID(const int region)
+Opm::RegionSetMatcher::SetDescriptor::regionID(const long long region)
 {
     if (region <= 0) {
         // No specific region ID.
@@ -263,7 +263,7 @@ Opm::RegionSetMatchResult::regionSets() const
     auto regSetColl = std::vector<std::string_view>{};
     regSetColl.reserve(this->numRegionSets());
 
-    auto ix = std::vector<std::vector<int>::size_type>::size_type{0};
+    auto ix = std::vector<std::vector<long long>::size_type>::size_type{0};
     for (const auto& regSet : this->regionSets_) {
         const auto min = this->regionIDRange_[2*ix + 0];
         const auto max = this->regionIDRange_[2*ix + 1];
@@ -332,8 +332,8 @@ void Opm::RegionSetMatchResult::establishNameLookupIndex()
 }
 
 void Opm::RegionSetMatchResult::addRegionIndices(const std::string& regSet,
-                                                 const int          beginRegID,
-                                                 const int          endRegID)
+                                                 const long long          beginRegID,
+                                                 const long long          endRegID)
 {
     assert (endRegID > beginRegID);
 
@@ -369,8 +369,8 @@ Opm::RegionSetMatcher::findRegions(const SetDescriptor& selection) const
     auto regSetMatchResult = this->pImpl_->
         findRegions(selection,
                     [](const std::string&    regSet,
-                       const int             minRegionID,
-                       const int             maxRegionID,
+                       const long long             minRegionID,
+                       const long long             maxRegionID,
                        RegionSetMatchResult& matchResult)
                     {
                         matchResult.addRegionIndices(regSet, minRegionID, maxRegionID);

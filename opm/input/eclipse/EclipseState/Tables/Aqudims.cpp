@@ -43,14 +43,14 @@ Aqudims::Aqudims(const Deck& deck) :
 {
     if (deck.hasKeyword("AQUDIMS")) {
         const auto& record = deck[ "AQUDIMS" ][0].getRecord( 0 );
-        m_mxnaqn  = record.getItem("MXNAQN").get<int>(0);
-        m_mxnaqc  = record.getItem("MXNAQC").get<int>(0);
-        m_niftbl  = record.getItem("NIFTBL").get<int>(0);
-        m_nriftb  = record.getItem("NRIFTB").get<int>(0);
-        m_nanaqu  = record.getItem("NANAQU").get<int>(0);
-        m_ncamax  = record.getItem("NCAMAX").get<int>(0);
-        m_mxnali  = record.getItem("MXNALI").get<int>(0);
-        m_mxaaql  = record.getItem("MXAAQL").get<int>(0);
+        m_mxnaqn  = record.getItem("MXNAQN").get<long long>(0);
+        m_mxnaqc  = record.getItem("MXNAQC").get<long long>(0);
+        m_niftbl  = record.getItem("NIFTBL").get<long long>(0);
+        m_nriftb  = record.getItem("NRIFTB").get<long long>(0);
+        m_nanaqu  = record.getItem("NANAQU").get<long long>(0);
+        m_ncamax  = record.getItem("NCAMAX").get<long long>(0);
+        m_mxnali  = record.getItem("MXNALI").get<long long>(0);
+        m_mxaaql  = record.getItem("MXAAQL").get<long long>(0);
     }
 }
 

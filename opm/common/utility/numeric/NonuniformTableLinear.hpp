@@ -154,7 +154,7 @@ namespace Opm
         const double c = new_domain.first;
         const double d = new_domain.second;
         // x in [a, b] -> x in [c, d]
-        for (int i = 0; i < int(x_values_.size()); ++i) {
+        for (long long i = 0; i < (long long)(x_values_.size()); ++i) {
             x_values_[i] = (x_values_[i] - a)*(d - c)/(b - a) + c;
         }
     }

@@ -58,7 +58,7 @@ bool rptonly_summary_section(const Opm::SUMMARYSection& section) {
 }
 
 std::optional<Opm::OilVaporizationProperties>
-vappars_solution_section(const Opm::SOLUTIONSection& section, const int numpvt) {
+vappars_solution_section(const Opm::SOLUTIONSection& section, const long long numpvt) {
     if (section.hasKeyword("VAPPARS")) {
         const auto& record = section.getKeyword("VAPPARS").getRecord(0);
         Opm::OilVaporizationProperties ovp(numpvt);
@@ -77,7 +77,7 @@ ScheduleStatic::ScheduleStatic(std::shared_ptr<const Python> python_handle,
                                const ScheduleRestartInfo& restart_info,
                                const Deck& deck,
                                const Runspec& runspec,
-                               const std::optional<int>& output_interval_,
+                               const std::optional<long long>& output_interval_,
                                const ParseContext& parseContext,
                                ErrorGuard& errors,
                                bool slave_mode_) :

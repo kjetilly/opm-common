@@ -27,7 +27,7 @@
 
 namespace {
 
-    void assert_dims(const std::string& name, int l1 , int l2, int nlgr, int nglobal)
+    void assert_dims(const std::string& name, long long l1 , long long l2, long long nlgr, long long nglobal)
     {
         if ((l1 < 0) || (l2 < 0) || (l1 > l2))
             throw std::invalid_argument(name + ": Invalid index values for lgr");
@@ -40,24 +40,24 @@ namespace {
     }
 
     bool update_default_index(const Opm::DeckItem& item,
-                              int&                 value)
+                              long long&                 value)
     {
         if (item.defaultApplied(0)) {
             return true;
         }
 
-        value = item.get<int>(0) - 1;
+        value = item.get<long long>(0) - 1;
         return false;
     }
 
     bool update_default(const Opm::DeckItem& item,
-                        int&                 value)
+                        long long&                 value)
     {
         if (item.defaultApplied(0)) {
             return true;
         }
 
-        value = item.get<int>(0);
+        value = item.get<long long>(0);
         return false;
     }
 
@@ -90,11 +90,11 @@ namespace Opm
                    IsActive        isActive,
                    ActiveIdx       activeIdx,
                    const std::string& name,
-                   const int i1, const int i2,
-                   const int j1, const int j2,
-                   const int k1, const int k2,
-                   const int nx, const int ny,
-                   const int nz)
+                   const long long i1, const long long i2,
+                   const long long j1, const long long j2,
+                   const long long k1, const long long k2,
+                   const long long nx, const long long ny,
+                   const long long nz)
         : m_globalGridDims_ (gridDims)
         , m_globalIsActive_ (std::move(isActive))
         , m_globalActiveIdx_(std::move(activeIdx))
@@ -113,24 +113,24 @@ namespace Opm
         std::string parent_name = "GLOBAL";
         default_count += update_default_name(deckRecord.getItem<ParserKeywords::CARFIN::PARENT>(), parent_name);      
 
-        int i1 = 0;
-        int i2 = this->m_globalGridDims_.getNX() - 1;
+        long long i1 = 0;
+        long long i2 = this->m_globalGridDims_.getNX() - 1;
         default_count += update_default_index(deckRecord.getItem<ParserKeywords::CARFIN::I1>(), i1);
         default_count += update_default_index(deckRecord.getItem<ParserKeywords::CARFIN::I2>(), i2);
 
-        int j1 = 0;
-        int j2 = this->m_globalGridDims_.getNY() - 1;
+        long long j1 = 0;
+        long long j2 = this->m_globalGridDims_.getNY() - 1;
         default_count += update_default_index(deckRecord.getItem<ParserKeywords::CARFIN::J1>(), j1);
         default_count += update_default_index(deckRecord.getItem<ParserKeywords::CARFIN::J2>(), j2);
 
-        int k1 = 0;
-        int k2 = this->m_globalGridDims_.getNZ() - 1;
+        long long k1 = 0;
+        long long k2 = this->m_globalGridDims_.getNZ() - 1;
         default_count += update_default_index(deckRecord.getItem<ParserKeywords::CARFIN::K1>(), k1);
         default_count += update_default_index(deckRecord.getItem<ParserKeywords::CARFIN::K2>(), k2);
 
-        int nx = this->m_globalGridDims_.getNX();
-        int ny = this->m_globalGridDims_.getNY();
-        int nz = this->m_globalGridDims_.getNZ();
+        long long nx = this->m_globalGridDims_.getNX();
+        long long ny = this->m_globalGridDims_.getNY();
+        long long nz = this->m_globalGridDims_.getNZ();
         default_count += update_default(deckRecord.getItem<ParserKeywords::CARFIN::NX>(), nx);
         default_count += update_default(deckRecord.getItem<ParserKeywords::CARFIN::NY>(), ny);
         default_count += update_default(deckRecord.getItem<ParserKeywords::CARFIN::NZ>(), nz);
@@ -149,11 +149,11 @@ namespace Opm
     }
 
     void Carfin::init(const std::string& name,
-                      const int i1, const int i2,
-                      const int j1, const int j2,
-                      const int k1, const int k2,
-                      const int nx, const int ny,
-                      const int nz, const std::string& parent_name)
+                      const long long i1, const long long i2,
+                      const long long j1, const long long j2,
+                      const long long k1, const long long k2,
+                      const long long nx, const long long ny,
+                      const long long nz, const std::string& parent_name)
     {
         assert_dims(name, i1 , i2, nx, this->m_globalGridDims_.getNX());
         assert_dims(name, j1 , j2, ny, this->m_globalGridDims_.getNY());
@@ -253,15 +253,15 @@ namespace Opm
         return *this == other;
     }
 
-    std::size_t Carfin::lower(int dim) const {
+    std::size_t Carfin::lower(long long dim) const {
         return m_offset[dim];
     }
 
-    std::size_t Carfin::upper(int dim) const {
+    std::size_t Carfin::upper(long long dim) const {
         return m_end_offset[dim];
     }
 
-    std::size_t Carfin::dimension(int dim) const {
+    std::size_t Carfin::dimension(long long dim) const {
         return m_dims[dim];
     }
 
@@ -274,39 +274,39 @@ namespace Opm
         return parent_name_grid;
     }
 
-    int Carfin::I1() const {
+    long long Carfin::I1() const {
         return lower(0);
     }
 
-    int Carfin::I2() const {
+    long long Carfin::I2() const {
         return upper(0);
     }
 
-    int Carfin::J1() const {
+    long long Carfin::J1() const {
         return lower(1);
     }
 
-    int Carfin::J2() const {
+    long long Carfin::J2() const {
         return upper(1);
     }
 
-    int Carfin::K1() const {
+    long long Carfin::K1() const {
         return lower(2);
     }
 
-    int Carfin::K2() const {
+    long long Carfin::K2() const {
         return upper(2);
     }
 
-    int Carfin::NX() const {
+    long long Carfin::NX() const {
         return dimension(0);
     }
 
-    int Carfin::NY() const {
+    long long Carfin::NY() const {
         return dimension(1);
     }
 
-    int Carfin::NZ() const {
+    long long Carfin::NZ() const {
         return dimension(2);
     }
 

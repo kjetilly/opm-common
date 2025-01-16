@@ -136,12 +136,12 @@ BOOST_AUTO_TEST_CASE (Constructor)
     auto networkData = Opm::RestartIO::Helpers::AggregateNetworkData(ih);
     networkData.captureDeclaredNetworkData(es, sched, units, rptStep, st, ih);
 
-    BOOST_CHECK_EQUAL(static_cast<int>(networkData.getINode().size()), ih[VI::NINODE] * ih[VI::NODMAX]);
-    BOOST_CHECK_EQUAL(static_cast<int>(networkData.getIBran().size()), ih[VI::NIBRAN] * ih[VI::NBRMAX]);
-    BOOST_CHECK_EQUAL(static_cast<int>(networkData.getINobr().size()), ih[VI::NINOBR]);
-    BOOST_CHECK_EQUAL(static_cast<int>(networkData.getZNode().size()), ih[VI::NZNODE] * ih[VI::NODMAX]);
-    BOOST_CHECK_EQUAL(static_cast<int>(networkData.getRNode().size()), ih[VI::NRNODE] * ih[VI::NODMAX]);
-    BOOST_CHECK_EQUAL(static_cast<int>(networkData.getRBran().size()), ih[VI::NRBRAN] * ih[VI::NBRMAX]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(networkData.getINode().size()), ih[VI::NINODE] * ih[VI::NODMAX]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(networkData.getIBran().size()), ih[VI::NIBRAN] * ih[VI::NBRMAX]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(networkData.getINobr().size()), ih[VI::NINOBR]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(networkData.getZNode().size()), ih[VI::NZNODE] * ih[VI::NODMAX]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(networkData.getRNode().size()), ih[VI::NRNODE] * ih[VI::NODMAX]);
+    BOOST_CHECK_EQUAL(static_cast<long long>(networkData.getRBran().size()), ih[VI::NRBRAN] * ih[VI::NBRMAX]);
 
     //INode-parameters
     const auto& iNode = networkData.getINode();

@@ -39,19 +39,19 @@ public:
 
     void write(const std::string& str)
     {
-        const int size = str.size();
+        const long long size = str.size();
         this->write(size);
-        for (int k = 0; k < size; ++k) {
+        for (long long k = 0; k < size; ++k) {
             this->write(str[k]);
         }
     }
 
     void read(std::string& str)
     {
-        int size = 0;
+        long long size = 0;
         this->read(size);
         str.resize(size);
-        for (int k = 0; k < size; ++k) {
+        for (long long k = 0; k < size; ++k) {
             this->read(str[k]);
         }
     }

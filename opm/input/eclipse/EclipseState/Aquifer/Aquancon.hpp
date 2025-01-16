@@ -47,13 +47,13 @@ namespace Opm {
         public:
 
         struct AquancCell {
-            int aquiferID{};
+            long long aquiferID{};
             std::size_t global_index{};
             double influx_coeff{};
             double effective_facearea{}; // Needed for restart output only.
             FaceDir::DirEnum face_dir{FaceDir::Unknown};
 
-            AquancCell(const int aquiferID_arg,
+            AquancCell(const long long aquiferID_arg,
                        const std::size_t gi,
                        const double ic,
                        const double eff_faceArea,
@@ -88,19 +88,19 @@ namespace Opm {
 
             Aquancon() = default;
             Aquancon(const EclipseGrid& grid, const Deck& deck);
-            explicit Aquancon(const std::unordered_map<int, std::vector<Aquancon::AquancCell>>& data);
+            explicit Aquancon(const std::unordered_map<long long, std::vector<Aquancon::AquancCell>>& data);
 
             void pruneDeactivatedAquiferConnections(const std::vector<std::size_t>& deactivated_cells);
             void loadFromRestart(const RestartIO::RstAquifer& rst_aquifers);
 
             static Aquancon serializationTestObject();
 
-            const std::unordered_map<int, std::vector<Aquancon::AquancCell>>& data() const;
+            const std::unordered_map<long long, std::vector<Aquancon::AquancCell>>& data() const;
             bool operator==(const Aquancon& other) const;
             bool active() const;
 
-            bool hasAquiferConnections(int aquiferID) const;
-            const std::vector<Aquancon::AquancCell>& getConnections(int aquiferID) const;
+            bool hasAquiferConnections(long long aquiferID) const;
+            const std::vector<Aquancon::AquancCell>& getConnections(long long aquiferID) const;
 
             template<class Serializer>
             void serializeOp(Serializer& serializer)
@@ -109,7 +109,7 @@ namespace Opm {
             }
 
         private:
-            std::unordered_map<int, std::vector<Aquancon::AquancCell>> cells;
+            std::unordered_map<long long, std::vector<Aquancon::AquancCell>> cells;
     };
 }
 

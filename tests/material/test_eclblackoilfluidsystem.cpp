@@ -623,15 +623,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BlackOil, Evaluation, Types)
     using Scalar = typename Opm::MathToolbox<Evaluation>::Scalar;
     using FluidSystem = Opm::BlackOilFluidSystem<double>;
 
-    static constexpr int numPhases = FluidSystem::numPhases;
+    static constexpr long long numPhases = FluidSystem::numPhases;
 
-    static constexpr int gasPhaseIdx = FluidSystem::gasPhaseIdx;
-    static constexpr int oilPhaseIdx = FluidSystem::oilPhaseIdx;
-    static constexpr int waterPhaseIdx = FluidSystem::waterPhaseIdx;
+    static constexpr long long gasPhaseIdx = FluidSystem::gasPhaseIdx;
+    static constexpr long long oilPhaseIdx = FluidSystem::oilPhaseIdx;
+    static constexpr long long waterPhaseIdx = FluidSystem::waterPhaseIdx;
 
-    static constexpr int gasCompIdx = FluidSystem::gasCompIdx;
-    static constexpr int oilCompIdx = FluidSystem::oilCompIdx;
-    static constexpr int waterCompIdx = FluidSystem::waterCompIdx;
+    static constexpr long long gasCompIdx = FluidSystem::gasCompIdx;
+    static constexpr long long oilCompIdx = FluidSystem::oilCompIdx;
+    static constexpr long long waterCompIdx = FluidSystem::waterCompIdx;
 
     Opm::Parser parser;
 

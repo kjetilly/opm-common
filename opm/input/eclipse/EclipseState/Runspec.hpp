@@ -79,32 +79,32 @@ public:
 
     static Welldims serializationTestObject();
 
-    int maxConnPerWell() const
+    long long maxConnPerWell() const
     {
         return this->nCWMax;
     }
 
-    int maxWellsPerGroup() const
+    long long maxWellsPerGroup() const
     {
         return this->nWGMax;
     }
 
-    int maxGroupsInField() const
+    long long maxGroupsInField() const
     {
         return this->nGMax;
     }
 
-    int maxWellsInField() const
+    long long maxWellsInField() const
     {
         return this->nWMax;
     }
 
-    int maxWellListsPrWell() const
+    long long maxWellListsPrWell() const
     {
         return this->nWlistPrWellMax;
     }
 
-    int maxDynamicWellLists() const
+    long long maxDynamicWellLists() const
     {
         return this->nDynWlistMax;
     }
@@ -141,12 +141,12 @@ public:
     }
 
 private:
-    int nWMax  { 0 };
-    int nCWMax { 0 };
-    int nWGMax { 0 };
-    int nGMax  { 0 };
-    int nWlistPrWellMax  { 1 };
-    int nDynWlistMax  { 1 };
+    long long nWMax  { 0 };
+    long long nCWMax { 0 };
+    long long nWGMax { 0 };
+    long long nGMax  { 0 };
+    long long nWlistPrWellMax  { 1 };
+    long long nDynWlistMax  { 1 };
     std::optional<KeywordLocation> m_location;
 };
 
@@ -157,17 +157,17 @@ public:
 
     static WellSegmentDims serializationTestObject();
 
-    int maxSegmentedWells() const
+    long long maxSegmentedWells() const
     {
         return this->nSegWellMax;
     }
 
-    int maxSegmentsPerWell() const
+    long long maxSegmentsPerWell() const
     {
         return this->nSegmentMax;
     }
 
-    int maxLateralBranchesPerWell() const
+    long long maxLateralBranchesPerWell() const
     {
         return this->nLatBranchMax;
     }
@@ -189,9 +189,9 @@ public:
     }
 
 private:
-    int nSegWellMax;
-    int nSegmentMax;
-    int nLatBranchMax;
+    long long nSegWellMax;
+    long long nSegmentMax;
+    long long nLatBranchMax;
     std::optional<KeywordLocation> location_;
 };
 
@@ -202,17 +202,17 @@ public:
 
     static NetworkDims serializationTestObject();
 
-    int maxNONodes() const
+    long long maxNONodes() const
     {
         return this->nMaxNoNodes;
     }
 
-    int maxNoBranches() const
+    long long maxNoBranches() const
     {
         return this->nMaxNoBranches;
     }
 
-    int maxNoBranchesConToNode() const
+    long long maxNoBranchesConToNode() const
     {
         return this->nMaxNoBranchesConToNode;
     }
@@ -246,9 +246,9 @@ public:
 private:
     enum class Type { None, Extended, Standard, };
 
-    int nMaxNoNodes;
-    int nMaxNoBranches;
-    int nMaxNoBranchesConToNode;
+    long long nMaxNoNodes;
+    long long nMaxNoBranches;
+    long long nMaxNoBranchesConToNode;
     Type type_{ Type::None };
 };
 
@@ -259,12 +259,12 @@ public:
 
     static AquiferDimensions serializationTestObject();
 
-    int maxAnalyticAquifers() const
+    long long maxAnalyticAquifers() const
     {
         return this->maxNumAnalyticAquifers;
     }
 
-    int maxAnalyticAquiferConnections() const
+    long long maxAnalyticAquiferConnections() const
     {
         return this->maxNumAnalyticAquiferConn;
     }
@@ -277,8 +277,8 @@ public:
     }
 
 private:
-    int maxNumAnalyticAquifers;
-    int maxNumAnalyticAquiferConn;
+    long long maxNumAnalyticAquifers;
+    long long maxNumAnalyticAquiferConn;
 };
 
 bool operator==(const AquiferDimensions& lhs, const AquiferDimensions& rhs);
@@ -307,7 +307,7 @@ public:
      * -1: capillary pressure hysteresis is disabled
      * 0: use the Killough model for capillary pressure hysteresis
      */
-    int pcHysteresisModel() const;
+    long long pcHysteresisModel() const;
 
     /*!
      * \brief Return the type of the hysteresis model which is used for relative permeability.
@@ -315,7 +315,7 @@ public:
      * -1: relperm hysteresis is disabled
      * 0: use the Carlson model for relative permeability hysteresis
      */
-    int krHysteresisModel() const;
+    long long krHysteresisModel() const;
 
     /*!
      * \brief Regularisation parameter used for Killough model.
@@ -354,8 +354,8 @@ private:
     bool activeHyst  { false };
 
     // the capillary pressure and the relperm hysteresis models to be used
-    int pcHystMod { -1 };
-    int krHystMod { -1 };
+    long long pcHystMod { -1 };
+    long long krHystMod { -1 };
     // regularisation parameter used for Killough model
     double modParamTrappedValue { 0.1 };
     // curvature parameter for capillary pressure
@@ -424,9 +424,9 @@ private:
 class Nupcol {
 public:
     Nupcol();
-    explicit Nupcol(int min_value);
-    void update(int value);
-    int value() const;
+    explicit Nupcol(long long min_value);
+    void update(long long value);
+    long long value() const;
 
     static Nupcol serializationTestObject();
     bool operator==(const Nupcol& data) const;
@@ -438,8 +438,8 @@ public:
     }
 
 private:
-    int min_nupcol;
-    int nupcol_value;
+    long long min_nupcol;
+    long long nupcol_value;
 };
 
 
@@ -448,7 +448,7 @@ public:
     Tracers() = default;
 
     explicit Tracers(const Deck& );
-    int water_tracers() const;
+    long long water_tracers() const;
 
     template<class Serializer>
     void serializeOp(Serializer& serializer) {
@@ -465,13 +465,13 @@ public:
     bool operator==(const Tracers& data) const;
 
 private:
-    int m_oil_tracers{};
-    int m_water_tracers{};
-    int m_gas_tracers{};
-    int m_env_tracers{};
+    long long m_oil_tracers{};
+    long long m_water_tracers{};
+    long long m_gas_tracers{};
+    long long m_env_tracers{};
     bool diffusion_control{false};
-    int max_iter{};
-    int min_iter{};
+    long long max_iter{};
+    long long min_iter{};
     // The TRACERS keyword has some additional options which seem quite arcane,
     // for now not included here.
 };
@@ -494,7 +494,7 @@ public:
     const WellSegmentDims& wellSegmentDimensions() const noexcept;
     const NetworkDims& networkDimensions() const noexcept;
     const AquiferDimensions& aquiferDimensions() const noexcept;
-    int eclPhaseMask( ) const noexcept;
+    long long eclPhaseMask( ) const noexcept;
     const EclHysterConfig& hysterPar() const noexcept;
     const Actdims& actdims() const noexcept;
     const SatFuncControls& saturationFunctionControls() const noexcept;

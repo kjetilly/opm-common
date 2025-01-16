@@ -35,7 +35,7 @@ namespace {
     void initEzrokhiTable(const Opm::Deck& deck,
                           const std::string& keyword_name,
                           const std::size_t num_eos_res,
-                          const std::map<std::string, int>& cnames,
+                          const std::map<std::string, long long>& cnames,
                           EzrokhiTable& ezrokhitable)
     {
         if (!deck.hasKeyword(keyword_name))
@@ -139,7 +139,7 @@ namespace Opm {
 
         // ACTCO2S
         if (props_section.hasKeyword<ParserKeywords::ACTCO2S>()) {
-            activityModel = deck["ACTCO2S"].back().getRecord(0).getItem("ACTIVITY_MODEL").get<int>(0);
+            activityModel = deck["ACTCO2S"].back().getRecord(0).getItem("ACTIVITY_MODEL").get<long long>(0);
         }
         else {
             activityModel = ParserKeywords::ACTCO2S::ACTIVITY_MODEL::defaultValue;
@@ -158,7 +158,7 @@ namespace Opm {
         return salt;
     }
 
-    int Co2StoreConfig::actco2s() const {
+    long long Co2StoreConfig::actco2s() const {
         return activityModel;
     }
 

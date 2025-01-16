@@ -31,7 +31,7 @@ namespace Opm {
         RocktabTable(const DeckItem& item,
                      bool isDirectional,
                      bool hasStressOption,
-                     const int tableID);
+                     const long long tableID);
 
         static RocktabTable serializationTestObject();
 

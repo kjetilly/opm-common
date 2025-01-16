@@ -34,21 +34,21 @@ struct RstGroup {
     RstGroup(const UnitSystem& unit_system,
              const RstHeader& header,
              const std::string* zwel,
-             const int * igrp,
+             const long long * igrp,
              const float * sgrp,
              const double * xgrp);
 
     std::string name;
 
-    int parent_group;
-    int prod_cmode;
-    int winj_cmode;
-    int ginj_cmode;
-    int prod_guide_rate_def;
-    int exceed_action;
-    int inj_water_guide_rate_def;
-    int inj_gas_guide_rate_def;
-    int voidage_group_index;
+    long long parent_group;
+    long long prod_cmode;
+    long long winj_cmode;
+    long long ginj_cmode;
+    long long prod_guide_rate_def;
+    long long exceed_action;
+    long long inj_water_guide_rate_def;
+    long long inj_gas_guide_rate_def;
+    long long voidage_group_index;
 
     float oil_rate_limit;
     float water_rate_limit;

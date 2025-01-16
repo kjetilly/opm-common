@@ -73,7 +73,7 @@
 
 namespace std { // hack...
     // For printing ERft::RftDate objects.  Needed by EQUAL_COLLECTIONS.
-    static ostream& operator<<(ostream& os, const tuple<int,int,int>& d)
+    static ostream& operator<<(ostream& os, const tuple<long long,long long,long long>& d)
     {
         os <<        setw(4)                 << get<0>(d)
            << "-" << setw(2) << setfill('0') << get<1>(d)
@@ -137,7 +137,7 @@ namespace {
                                 const std::string&                 well,
                                 const ::Opm::EclIO::ERft::RftDate& date);
 
-        std::size_t operator()(const int i, const int j, const int k) const
+        std::size_t operator()(const long long i, const long long j, const long long k) const
         {
             auto conIx = this->xConIx_.find(std::make_tuple(i, j, k));
             if (conIx == this->xConIx_.end()) {
@@ -149,7 +149,7 @@ namespace {
         }
 
     private:
-        std::map<std::tuple<int, int, int>, std::size_t> xConIx_;
+        std::map<std::tuple<long long, long long, long long>, std::size_t> xConIx_;
     };
 
     RFTResultIndex::RFTResultIndex(const ::Opm::EclIO::ERft&          rft,
@@ -162,9 +162,9 @@ namespace {
         BOOST_REQUIRE(rft.hasArray("CONJPOS", well, date));
         BOOST_REQUIRE(rft.hasArray("CONKPOS", well, date));
 
-        const auto& I = rft.getRft<int>("CONIPOS", well, date);
-        const auto& J = rft.getRft<int>("CONJPOS", well, date);
-        const auto& K = rft.getRft<int>("CONKPOS", well, date);
+        const auto& I = rft.getRft<long long>("CONIPOS", well, date);
+        const auto& J = rft.getRft<long long>("CONJPOS", well, date);
+        const auto& K = rft.getRft<long long>("CONKPOS", well, date);
 
         for (auto ncon = I.size(), con = 0*ncon; con < ncon; ++con) {
             this->xConIx_.emplace(std::piecewise_construct,
@@ -180,22 +180,22 @@ namespace {
                              const std::string&                 well,
                              const ::Opm::EclIO::ERft::RftDate& date);
 
-        float depth(const int i, const int j, const int k) const
+        float depth(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->depth_);
         }
 
-        float pressure(const int i, const int j, const int k) const
+        float pressure(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->press_);
         }
 
-        float sgas(const int i, const int j, const int k) const
+        float sgas(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->sgas_);
         }
 
-        float swat(const int i, const int j, const int k) const
+        float swat(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->swat_);
         }
@@ -209,7 +209,7 @@ namespace {
         std::vector<float> swat_{};
 
         template <typename T, class A>
-        T value(const int i, const int j, const int k,
+        T value(const long long i, const long long j, const long long k,
                 const std::vector<T, A>& vector) const
         {
             return vector[ this->resIx_(i, j, k) ];
@@ -239,49 +239,49 @@ namespace {
                             const std::string&                 well,
                             const ::Opm::EclIO::ERft::RftDate& date);
 
-        int next(const int i, const int j, const int k) const
+        long long next(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->neighbour_id_);
         }
 
-        float depth(const int i, const int j, const int k) const
+        float depth(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->depth_);
         }
 
-        float pressure(const int i, const int j, const int k) const
+        float pressure(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->press_);
         }
 
-        float conntrans(const int i, const int j, const int k) const
+        float conntrans(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->trans_);
         }
 
-        float kh(const int i, const int j, const int k) const
+        float kh(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->kh_);
         }
 
-        float orat(const int i, const int j, const int k) const
+        float orat(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->orat_);
         }
 
-        float wrat(const int i, const int j, const int k) const
+        float wrat(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->wrat_);
         }
 
-        float grat(const int i, const int j, const int k) const
+        float grat(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->grat_);
         }
 
     protected:
         template <typename T, class A>
-        T value(const int i, const int j, const int k,
+        T value(const long long i, const long long j, const long long k,
                 const std::vector<T, A>& vector) const
         {
             return vector[ this->resIx_(i, j, k) ];
@@ -290,7 +290,7 @@ namespace {
     private:
         RFTResultIndex resIx_;
 
-        std::vector<int> neighbour_id_{};
+        std::vector<long long> neighbour_id_{};
 
         std::vector<float> depth_{};
         std::vector<float> press_{};
@@ -318,7 +318,7 @@ namespace {
         BOOST_REQUIRE(rft.hasArray("CONWRAT" , well, date));
         BOOST_REQUIRE(rft.hasArray("CONGRAT" , well, date));
 
-        this->neighbour_id_ = rft.getRft<int>("CONNXT", well, date);
+        this->neighbour_id_ = rft.getRft<long long>("CONNXT", well, date);
 
         this->depth_ = rft.getRft<float>("CONDEPTH", well, date);
         this->press_ = rft.getRft<float>("CONPRES" , well, date);
@@ -337,29 +337,29 @@ namespace {
                                const std::string&                 well,
                                const ::Opm::EclIO::ERft::RftDate& date);
 
-        int segment(const int i, const int j, const int k) const
+        long long segment(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->segment_id_);
         }
 
-        int branch(const int i, const int j, const int k) const
+        long long branch(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->branch_id_);
         }
 
-        float start(const int i, const int j, const int k) const
+        float start(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->start_length_);
         }
 
-        float end(const int i, const int j, const int k) const
+        float end(const long long i, const long long j, const long long k) const
         {
             return this->value(i, j, k, this->end_length_);
         }
 
     private:
-        std::vector<int> segment_id_{};
-        std::vector<int> branch_id_{};
+        std::vector<long long> segment_id_{};
+        std::vector<long long> branch_id_{};
 
         std::vector<float> start_length_{};
         std::vector<float> end_length_{};
@@ -375,8 +375,8 @@ namespace {
         BOOST_REQUIRE(rft.hasArray("CONSEGNO", well, date));
         BOOST_REQUIRE(rft.hasArray("CONBRNO" , well, date));
 
-        this->segment_id_ = rft.getRft<int>("CONSEGNO", well, date);
-        this->branch_id_  = rft.getRft<int>("CONBRNO" , well, date);
+        this->segment_id_ = rft.getRft<long long>("CONSEGNO", well, date);
+        this->branch_id_  = rft.getRft<long long>("CONBRNO" , well, date);
 
         this->start_length_ = rft.getRft<float>("CONLENST", well, date);
         this->end_length_   = rft.getRft<float>("CONLENEN", well, date);
@@ -399,127 +399,127 @@ namespace {
             return this->branch_start_segment_.size();
         }
 
-        float diameter(const int segNum) const
+        float diameter(const long long segNum) const
         {
             return this->value(segNum, this->diameter_);
         }
 
-        float depth(const int segNum) const
+        float depth(const long long segNum) const
         {
             return this->value(segNum, this->depth_);
         }
 
-        float start(const int segNum) const
+        float start(const long long segNum) const
         {
             return this->value(segNum, this->start_length_);
         }
 
-        float end(const int segNum) const
+        float end(const long long segNum) const
         {
             return this->value(segNum, this->end_length_);
         }
 
-        float node_X(const int segNum) const
+        float node_X(const long long segNum) const
         {
             return this->value(segNum, this->node_X_);
         }
 
-        float node_Y(const int segNum) const
+        float node_Y(const long long segNum) const
         {
             return this->value(segNum, this->node_Y_);
         }
 
-        float pressure(const int segNum) const
+        float pressure(const long long segNum) const
         {
             return this->value(segNum, this->pressure_);
         }
 
-        float orat(const int segNum) const
+        float orat(const long long segNum) const
         {
             return this->value(segNum, this->orat_);
         }
 
-        float wrat(const int segNum) const
+        float wrat(const long long segNum) const
         {
             return this->value(segNum, this->wrat_);
         }
 
-        float grat(const int segNum) const
+        float grat(const long long segNum) const
         {
             return this->value(segNum, this->grat_);
         }
 
-        float ovel(const int segNum) const
+        float ovel(const long long segNum) const
         {
             return this->value(segNum, this->ovel_);
         }
 
-        float wvel(const int segNum) const
+        float wvel(const long long segNum) const
         {
             return this->value(segNum, this->wvel_);
         }
 
-        float gvel(const int segNum) const
+        float gvel(const long long segNum) const
         {
             return this->value(segNum, this->gvel_);
         }
 
-        float hf_o(const int segNum) const
+        float hf_o(const long long segNum) const
         {
             return this->value(segNum, this->hf_o_);
         }
 
-        float hf_w(const int segNum) const
+        float hf_w(const long long segNum) const
         {
             return this->value(segNum, this->hf_w_);
         }
 
-        float hf_g(const int segNum) const
+        float hf_g(const long long segNum) const
         {
             return this->value(segNum, this->hf_g_);
         }
 
-        float ovis(const int segNum) const
+        float ovis(const long long segNum) const
         {
             return this->value(segNum, this->ovis_);
         }
 
-        float wvis(const int segNum) const
+        float wvis(const long long segNum) const
         {
             return this->value(segNum, this->wvis_);
         }
 
-        float gvis(const int segNum) const
+        float gvis(const long long segNum) const
         {
             return this->value(segNum, this->gvis_);
         }
 
-        float icd_strength(const int segNum) const
+        float icd_strength(const long long segNum) const
         {
             return this->value(segNum, this->icd_strength_);
         }
 
-        float icd_setting(const int segNum) const
+        float icd_setting(const long long segNum) const
         {
             return this->value(segNum, this->icd_setting_);
         }
 
-        int branch(const int segNum) const
+        long long branch(const long long segNum) const
         {
             return this->value(segNum, this->branch_id_);
         }
 
-        int neighbour(const int segNum) const
+        long long neighbour(const long long segNum) const
         {
             return this->value(segNum, this->neighbour_id_);
         }
 
-        int branchStartSegment(const int branchNum) const
+        long long branchStartSegment(const long long branchNum) const
         {
             return this->value(branchNum, this->branch_start_segment_);
         }
 
-        int branchEndSegment(const int branchNum) const
+        long long branchEndSegment(const long long branchNum) const
         {
             return this->value(branchNum, this->branch_end_segment_);
         }
@@ -547,13 +547,13 @@ namespace {
         std::vector<float> icd_strength_{};
         std::vector<float> icd_setting_{};
 
-        std::vector<int> branch_id_{};
-        std::vector<int> neighbour_id_{};
-        std::vector<int> branch_start_segment_{};
-        std::vector<int> branch_end_segment_{};
+        std::vector<long long> branch_id_{};
+        std::vector<long long> neighbour_id_{};
+        std::vector<long long> branch_start_segment_{};
+        std::vector<long long> branch_end_segment_{};
 
         template <typename T, class A>
-        T value(const int segNum, const std::vector<T, A>& vector) const
+        T value(const long long segNum, const std::vector<T, A>& vector) const
         {
             return vector[ static_cast<std::size_t>(segNum - 1) ];
         }
@@ -618,10 +618,10 @@ namespace {
         this->icd_strength_ = rft.getRft<float>("SEGSSTR", well, date);
         this->icd_setting_ = rft.getRft<float>("SEGSFOPN", well, date);
 
-        this->branch_id_ = rft.getRft<int>("SEGBRNO", well, date);
-        this->neighbour_id_ = rft.getRft<int>("SEGNXT", well, date);
-        this->branch_start_segment_ = rft.getRft<int>("BRNST", well, date);
-        this->branch_end_segment_ = rft.getRft<int>("BRNEN", well, date);
+        this->branch_id_ = rft.getRft<long long>("SEGBRNO", well, date);
+        this->neighbour_id_ = rft.getRft<long long>("SEGNXT", well, date);
+        this->branch_start_segment_ = rft.getRft<long long>("BRNST", well, date);
+        this->branch_end_segment_ = rft.getRft<long long>("BRNEN", well, date);
     }
 
     void verifyRFTFile(const std::string& rft_filename)
@@ -653,13 +653,13 @@ namespace {
         BOOST_CHECK_CLOSE(xRFT.depth(9, 9, 3), 3*0.250 + 0.250/2, tol);
     }
 
-    Opm::data::Solution createBlackoilState(int timeStepIdx, int numCells)
+    Opm::data::Solution createBlackoilState(long long timeStepIdx, long long numCells)
     {
         std::vector< double > pressure( numCells );
         std::vector< double > swat( numCells, 0 );
         std::vector< double > sgas( numCells, 0 );
 
-        for (int i = 0; i < numCells; ++i) {
+        for (long long i = 0; i < numCells; ++i) {
             pressure[i] = timeStepIdx*1e5 + 1e4 + i;
         }
 
@@ -854,7 +854,7 @@ BOOST_AUTO_TEST_CASE(test_RFT2)
         Opm::WellTestState wtest_state;
 
         const auto  start_time = schedule.posixStartTime();
-        for (int counter = 0; counter < 2; counter++) {
+        for (long long counter = 0; counter < 2; counter++) {
             Opm::EclipseIO eclipseWriter( eclipseState, grid, schedule, summary_config );
             for (size_t step = 0; step < schedule.size(); step++) {
                 const auto step_time = schedule.simTime(step);
@@ -3218,10 +3218,10 @@ END
 )");
     }
 
-    std::vector<int> cellIndex(const ::Opm::EclipseGrid&             grid,
-                               const std::vector<std::array<int,3>>& ijk)
+    std::vector<long long> cellIndex(const ::Opm::EclipseGrid&             grid,
+                               const std::vector<std::array<long long,3>>& ijk)
     {
-        auto cellIx = std::vector<int>{};
+        auto cellIx = std::vector<long long>{};
         cellIx.reserve(ijk.size());
 
         std::transform(ijk.begin(), ijk.end(), std::back_inserter(cellIx),
@@ -3235,7 +3235,7 @@ END
         return cellIx;
     }
 
-    std::vector<int> cellIndex_P1(const ::Opm::EclipseGrid& grid)
+    std::vector<long long> cellIndex_P1(const ::Opm::EclipseGrid& grid)
     {
         return cellIndex(grid, {
                 {2, 3, 2},
@@ -3247,7 +3247,7 @@ END
             });
     }
 
-    std::vector<int> cellIndex_I1(const ::Opm::EclipseGrid& grid)
+    std::vector<long long> cellIndex_I1(const ::Opm::EclipseGrid& grid)
     {
         return cellIndex(grid, {
                 {6, 8, 5},
@@ -3263,7 +3263,7 @@ END
 
         const auto cellIx = cellIndex_P1(grid);
 
-        const auto ncon = static_cast<int>(cellIx.size());
+        const auto ncon = static_cast<long long>(cellIx.size());
 
         auto xcon = std::vector<Opm::data::Connection>{};
         xcon.reserve(ncon);
@@ -3310,7 +3310,7 @@ END
 
         const auto cellIx = cellIndex_I1(grid);
 
-        const auto ncon = static_cast<int>(cellIx.size());
+        const auto ncon = static_cast<long long>(cellIx.size());
 
         auto xcon = std::vector<Opm::data::Connection>{};
         xcon.reserve(ncon);
@@ -4204,10 +4204,10 @@ END
 )");
     }
 
-    std::vector<int> cellIndex(const ::Opm::EclipseGrid&             grid,
-                               const std::vector<std::array<int,3>>& ijk)
+    std::vector<long long> cellIndex(const ::Opm::EclipseGrid&             grid,
+                               const std::vector<std::array<long long,3>>& ijk)
     {
-        auto cellIx = std::vector<int>{};
+        auto cellIx = std::vector<long long>{};
         cellIx.reserve(ijk.size());
 
         std::transform(ijk.begin(), ijk.end(), std::back_inserter(cellIx),
@@ -4221,7 +4221,7 @@ END
         return cellIx;
     }
 
-    std::vector<int> cellIndex_P1(const ::Opm::EclipseGrid& grid)
+    std::vector<long long> cellIndex_P1(const ::Opm::EclipseGrid& grid)
     {
         return cellIndex(grid, {
                 {2, 3, 2},
@@ -4240,7 +4240,7 @@ END
 
         const auto cellIx = cellIndex_P1(grid);
 
-        const auto ncon = static_cast<int>(cellIx.size());
+        const auto ncon = static_cast<long long>(cellIx.size());
 
         auto xcon = std::vector<Opm::data::Connection>{};
         xcon.reserve(ncon);

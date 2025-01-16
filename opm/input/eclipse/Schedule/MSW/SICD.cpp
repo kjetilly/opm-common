@@ -50,7 +50,7 @@ namespace Opm {
         , m_critical_value         (record.getItem<ParserKeywords::WSEGSICD::CRITICAL_VALUE>().getSIDouble(0))
         , m_width_transition_region(record.getItem<ParserKeywords::WSEGSICD::WIDTH_TRANS>().get<double>(0))
         , m_max_viscosity_ratio    (record.getItem<ParserKeywords::WSEGSICD::MAX_VISC_RATIO>().get<double>(0))
-        , m_method_flow_scaling    (record.getItem<ParserKeywords::WSEGSICD::METHOD_SCALING_FACTOR>().get<int>(0))
+        , m_method_flow_scaling    (record.getItem<ParserKeywords::WSEGSICD::METHOD_SCALING_FACTOR>().get<long long>(0))
     {
         if (const auto& maxAbsRate = record.getItem<ParserKeywords::WSEGSICD::MAX_ABS_RATE>();
             maxAbsRate.hasValue(0))
@@ -84,7 +84,7 @@ namespace Opm {
                const double                 criticalValue,
                const double                 widthTransitionRegion,
                const double                 maxViscosityRatio,
-               const int                    flowScaling,
+               const long long                    flowScaling,
                const std::optional<double>& maxAbsoluteRate,
                const ICDStatus              status,
                const double                 scalingFactor)
@@ -119,7 +119,7 @@ namespace Opm {
         return result;
     }
 
-    std::map<std::string, std::vector<std::pair<int, SICD>>>
+    std::map<std::string, std::vector<std::pair<long long, SICD>>>
     SICD::fromWSEGSICD(const DeckKeyword& wsegsicd)
     {
         return fromWSEG<SICD>(wsegsicd);
@@ -170,7 +170,7 @@ namespace Opm {
         return m_max_viscosity_ratio;
     }
 
-    int SICD::methodFlowScaling() const
+    long long SICD::methodFlowScaling() const
     {
         return m_method_flow_scaling;
     }
@@ -247,7 +247,7 @@ namespace Opm {
             ;
     }
 
-    int SICD::ecl_status() const
+    long long SICD::ecl_status() const
     {
         return to_int(this->m_status);
     }

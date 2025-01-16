@@ -36,8 +36,8 @@ namespace Opm {
 template<class Scalar, class Params, class ContainerT>
 Co2GasPvt<Scalar, Params, ContainerT>::
 Co2GasPvt(const ContainerT& salinity,
-          int activityModel,
-          int thermalMixingModel,
+          long long activityModel,
+          long long thermalMixingModel,
           Scalar T_ref,
           Scalar P_ref)
         : salinity_(salinity)
@@ -55,9 +55,9 @@ Co2GasPvt(const ContainerT& salinity,
     setActivityModelSalt(activityModel);
     setThermalMixingModel(thermalMixingModel);
 
-    int num_regions = salinity_.size();
+    long long num_regions = salinity_.size();
     setNumRegions(num_regions);
-    for (int i = 0; i < num_regions; ++i) {
+    for (long long i = 0; i < num_regions; ++i) {
         gasReferenceDensity_[i] = CO2::gasDensity(co2Tables, T_ref, P_ref, extrapolate);
         brineReferenceDensity_[i] = Brine::liquidDensity(T_ref, P_ref, salinity_[i], extrapolate);
     }
@@ -132,7 +132,7 @@ setReferenceDensities(unsigned regionIdx,
 
 template<class Scalar, class Params, class ContainerT>
 OPM_HOST_DEVICE void Co2GasPvt<Scalar, Params, ContainerT>::
-setActivityModelSalt(int activityModel)
+setActivityModelSalt(long long activityModel)
 {
     switch (activityModel) {
     case 1:
@@ -149,7 +149,7 @@ setActivityModelSalt(int activityModel)
 
 template<class Scalar, class Params, class ContainerT>
 OPM_HOST_DEVICE void Co2GasPvt<Scalar, Params, ContainerT>::
-setThermalMixingModel(int thermalMixingModel)
+setThermalMixingModel(long long thermalMixingModel)
 {
     switch (thermalMixingModel) {
     // 0 = Use pure CO2 entalpy

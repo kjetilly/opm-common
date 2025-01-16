@@ -41,7 +41,7 @@ template <class ScalarT>
 class NullThermalConductionLaw
 {
 public:
-    using Params = int;
+    using Params = long long;
     using Scalar = ScalarT;
 
     /*!

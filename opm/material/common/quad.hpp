@@ -59,22 +59,22 @@ public:
     { return FLT128_MAX; }
 
     // number of bits in mantissa
-    static constexpr int digits = FLT128_MANT_DIG;
+    static constexpr long long digits = FLT128_MANT_DIG;
     // number of decimal digits
-    static constexpr int digits10 = FLT128_DIG;
+    static constexpr long long digits10 = FLT128_DIG;
     static constexpr bool is_signed = true;
     static constexpr bool is_integer = false;
     static constexpr bool is_exact = false;
-    static constexpr int radix = 0;
+    static constexpr long long radix = 0;
     static constexpr quad epsilon() throw()
     { return FLT128_EPSILON; }
     static constexpr quad round_error() throw()
     { return 0.5; }
 
-    static constexpr int min_exponent = FLT128_MIN_EXP;
-    static constexpr int min_exponent10 = FLT128_MIN_10_EXP;
-    static constexpr int max_exponent = FLT128_MAX_EXP;
-    static constexpr int max_exponent10 = FLT128_MAX_10_EXP;
+    static constexpr long long min_exponent = FLT128_MIN_EXP;
+    static constexpr long long min_exponent10 = FLT128_MIN_10_EXP;
+    static constexpr long long max_exponent = FLT128_MAX_EXP;
+    static constexpr long long max_exponent10 = FLT128_MAX_10_EXP;
 
     static constexpr bool has_infinity = true;
     static constexpr bool has_quiet_NaN = true;

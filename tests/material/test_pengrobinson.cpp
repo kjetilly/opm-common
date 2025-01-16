@@ -39,7 +39,7 @@
 template <class FluidSystem, class FluidState>
 void createSurfaceGasFluidSystem(FluidState& gasFluidState)
 {
-    static const int gasPhaseIdx = FluidSystem::gasPhaseIdx;
+    static const long long gasPhaseIdx = FluidSystem::gasPhaseIdx;
 
     // temperature
     gasFluidState.setTemperature(273.15 + 20);
@@ -72,9 +72,9 @@ Scalar computeSumxg(FluidState& resultFluidState,
                     const FluidState& gasFluidState,
                     Scalar additionalGas)
 {
-    static const int oilPhaseIdx = FluidSystem::oilPhaseIdx;
-    static const int gasPhaseIdx = FluidSystem::gasPhaseIdx;
-    static const int numComponents = FluidSystem::numComponents;
+    static const long long oilPhaseIdx = FluidSystem::oilPhaseIdx;
+    static const long long gasPhaseIdx = FluidSystem::gasPhaseIdx;
+    static const long long numComponents = FluidSystem::numComponents;
 
     typedef Dune::FieldVector<Scalar, numComponents> ComponentVector;
     typedef Opm::NcpFlash<Scalar, FluidSystem> Flash;
@@ -102,7 +102,7 @@ Scalar computeSumxg(FluidState& resultFluidState,
 template <class Scalar, class FluidSystem, class FluidState>
 void makeOilSaturated(FluidState& fluidState, const FluidState& gasFluidState)
 {
-    static const int gasPhaseIdx = FluidSystem::gasPhaseIdx;
+    static const long long gasPhaseIdx = FluidSystem::gasPhaseIdx;
 
     FluidState prestineFluidState;
     prestineFluidState.assign(fluidState);
@@ -114,7 +114,7 @@ void makeOilSaturated(FluidState& fluidState, const FluidState& gasFluidState)
     // Newton method
     Scalar tol = 1e-8;
     Scalar additionalGas = 0; // [mol]
-    for (int i = 0; std::abs(sumxg - 1) > tol; ++i) {
+    for (long long i = 0; std::abs(sumxg - 1) > tol; ++i) {
         if (i > 50)
             throw std::runtime_error("Newton method did not converge after 50 iterations");
 
@@ -217,7 +217,7 @@ Scalar bringOilToSurface(FluidState& surfaceFluidState, Scalar alpha, const Flui
     // increase volume until we are at surface pressure. use the
     // newton method for this
     ComponentVector tmpMolarities;
-    for (int i = 0;; ++i) {
+    for (long long i = 0;; ++i) {
         if (i >= 20)
             throw Opm::NumericalProblem("Newton method did not converge after 20 iterations");
 
@@ -414,8 +414,8 @@ inline void testAll()
     Scalar maxAlpha = surfaceAlpha;
 
     std::cout << "alpha[-] p[Pa] S_g[-] rho_o[kg/m^3] rho_g[kg/m^3] <M_o>[kg/mol] <M_g>[kg/mol] R_s[m^3/m^3] B_g[-] B_o[-]\n";
-    int n = 300;
-    for (int i = 0; i < n; ++i) {
+    long long n = 300;
+    for (long long i = 0; i < n; ++i) {
         // ratio between the original and the current volume
         Scalar alpha = minAlpha + (maxAlpha - minAlpha)*i/(n - 1);
 
@@ -475,7 +475,7 @@ inline void testAll()
                 /*hiresThreshold=*/hiresThresholdPressure);
 }
 
-int main()
+long long main()
 {
     testAll<double>();
 

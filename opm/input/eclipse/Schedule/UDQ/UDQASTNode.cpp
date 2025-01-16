@@ -200,7 +200,7 @@ UDQASTNode::eval(const UDQVarType  target_type,
     }
 
     throw std::invalid_argument {
-        "Should not be here ... this->type: " + std::to_string(static_cast<int>(this->type))
+        "Should not be here ... this->type: " + std::to_string(static_cast<long long>(this->type))
     };
 }
 
@@ -557,7 +557,7 @@ UDQASTNode::eval_number(const UDQVarType  target_type,
 
     default:
         throw std::invalid_argument {
-            "Unsupported target_type: " + std::to_string(static_cast<int>(target_type))
+            "Unsupported target_type: " + std::to_string(static_cast<long long>(target_type))
         };
     }
 }
@@ -578,7 +578,7 @@ UDQASTNode::eval_table_lookup(const UDQVarType target_type,
         return eval_table_lookup_well(string_value, context);
     default:
         throw std::invalid_argument {
-            "Unsupported target_type: " + std::to_string(static_cast<int>(target_type))
+            "Unsupported target_type: " + std::to_string(static_cast<long long>(target_type))
         };
     }
 }

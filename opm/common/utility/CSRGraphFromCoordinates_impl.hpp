@@ -368,7 +368,7 @@ CSR::condenseDuplicates()
 template <typename VertexID, bool TrackCompressedIdx, bool PermitSelfConnections>
 void
 Opm::utility::CSRGraphFromCoordinates<VertexID, TrackCompressedIdx, PermitSelfConnections>::
-CSR::preparePushbackRowGrouping(const int         numRows,
+CSR::preparePushbackRowGrouping(const long long         numRows,
                                 const Neighbours& rowIdx)
 {
     assert (numRows >= 0);

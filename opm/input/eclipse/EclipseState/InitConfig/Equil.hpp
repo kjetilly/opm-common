@@ -16,7 +16,7 @@ namespace Opm {
                         double goc_depth, double goc_pc,
                         bool live_oil_init,
                         bool wet_gas_init,
-                        int target_accuracy,
+                        long long target_accuracy,
                         bool humid_gas_init);
             explicit EquilRecord(const DeckRecord& record);
 
@@ -30,7 +30,7 @@ namespace Opm {
 
             bool liveOilInitConstantRs() const;
             bool wetGasInitConstantRv() const;
-            int initializationTargetAccuracy() const;
+            long long initializationTargetAccuracy() const;
             bool humidGasInitConstantRvw() const;
 
             bool operator==(const EquilRecord& data) const;
@@ -60,7 +60,7 @@ namespace Opm {
 
             bool live_oil_init_proc = false;
             bool wet_gas_init_proc = false;
-            int init_target_accuracy = 0;
+            long long init_target_accuracy = 0;
             bool humid_gas_init_proc = false;
     };
 

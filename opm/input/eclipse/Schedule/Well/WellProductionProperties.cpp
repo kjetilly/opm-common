@@ -94,7 +94,7 @@ namespace Opm {
     }
 
 
-    void Well::WellProductionProperties::init_vfp(const std::optional<VFPProdTable::ALQ_TYPE>& alq_type, const int vfp_table_nr, const UnitSystem& unit_system_arg, const DeckRecord& record) {
+    void Well::WellProductionProperties::init_vfp(const std::optional<VFPProdTable::ALQ_TYPE>& alq_type, const long long vfp_table_nr, const UnitSystem& unit_system_arg, const DeckRecord& record) {
         this->VFPTableNumber = vfp_table_nr;
         // May have ALQ values used in UDQ calculations event without any table - use identity dimension in this case
         if (alq_type || vfp_table_nr==0) {
@@ -166,7 +166,7 @@ namespace Opm {
 
 
     void Well::WellProductionProperties::handleWCONPROD(const std::optional<VFPProdTable::ALQ_TYPE>& alq_type,
-                                                        const int vfp_table_nr,
+                                                        const long long vfp_table_nr,
                                                         const double bhp_def,
                                                         const UnitSystem& unit_system_arg,
                                                         const std::string& well_name,
@@ -203,7 +203,7 @@ namespace Opm {
                         continue;
                     } else if (this->VFPTableNumber == 0) {
                         // make sure we specify a VFP table for it
-                        // const int vfp_table = record.getItem("VFP_TABLE").get<int>(0);
+                        // const long long vfp_table = record.getItem("VFP_TABLE").get<long long>(0);
                             const auto msg = fmt::format("Well {} must have a VFP table to handle"
                                                          " non-zero THP constraint", well_name);
                             throw OpmInputError(msg, location);
@@ -235,7 +235,7 @@ namespace Opm {
       default constructor and the handleWCONPROD() method.
     */
 void Well::WellProductionProperties::handleWCONHIST(const std::optional<VFPProdTable::ALQ_TYPE>& alq_type,
-                                                    const int vfp_table_nr,
+                                                    const long long vfp_table_nr,
                                                     const double bhp_def,
                                                     const UnitSystem& unit_system_arg,
                                                     const DeckRecord& record)
@@ -295,7 +295,7 @@ void Well::WellProductionProperties::handleWCONHIST(const std::optional<VFPProdT
             this->ALQValue.update_value( new_arg );
         else if (cmode == WELTARGCMode::VFP) {
             OpmLog::warning("When using WELTARG to change VFP table it is assumed that ALQ type is the same for the new and old table");
-            this->VFPTableNumber = static_cast<int>( new_arg.get<double>() );
+            this->VFPTableNumber = static_cast<long long>( new_arg.get<double>() );
         } else if (cmode != WELTARGCMode::GUID)
             throw std::invalid_argument("Invalid keyword (MODE) supplied");
     }
@@ -434,7 +434,7 @@ void Well::WellProductionProperties::handleWCONHIST(const std::optional<VFPProdT
     }
 
     bool Well::WellProductionProperties::updateUDQActive(const UDQConfig& udq_config, UDQActive& active) const {
-        int update_count = 0;
+        long long update_count = 0;
 
         update_count += active.update(udq_config, this->OilRate, this->name, UDAControl::WCONPROD_ORAT);
         update_count += active.update(udq_config, this->WaterRate, this->name, UDAControl::WCONPROD_WRAT);

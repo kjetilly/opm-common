@@ -28,7 +28,7 @@ DeckValue::DeckValue():
     value_enum(type_tag::unknown)
 {}
 
-DeckValue::DeckValue(int value):
+DeckValue::DeckValue(long long value):
     default_value(false),
     value_enum(type_tag::integer),
     int_value(value)
@@ -57,7 +57,7 @@ bool DeckValue::is_default() const {
 }
 
 template<>
-int DeckValue::get() const {
+long long DeckValue::get() const {
     if (value_enum == type_tag::integer)
         return this->int_value;
 
@@ -92,7 +92,7 @@ UDAValue DeckValue::get() const {
 }
 
 template<>
-bool DeckValue::is_compatible<int>() const {
+bool DeckValue::is_compatible<long long>() const {
     return (value_enum == type_tag::integer);
 }
 

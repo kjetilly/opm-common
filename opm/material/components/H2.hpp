@@ -50,10 +50,10 @@ struct H2Tables {
 struct H2TabulatedDensityTraits {
     typedef double Scalar;
     static const char  *name;
-    static const int    numX = 200;
+    static const long long    numX = 200;
     static const Scalar xMin;
     static const Scalar xMax;
-    static const int    numY = 500;
+    static const long long    numY = 500;
     static const Scalar yMin;
     static const Scalar yMax;
 
@@ -63,10 +63,10 @@ struct H2TabulatedDensityTraits {
 struct H2TabulatedEnthalpyTraits {
     typedef double Scalar;
     static const char  *name;
-    static const int    numX = 200;
+    static const long long    numX = 200;
     static const Scalar xMin;
     static const Scalar xMax;
-    static const int    numY = 500;
+    static const long long    numY = 500;
     static const Scalar yMin;
     static const Scalar yMax;
     static const Scalar vals[200][500];
@@ -181,7 +181,7 @@ public:
 
         // Eq. (33)
         Evaluation s = 0.0;  // sum calculation
-        for (int i = 0; i < 4; ++i) {
+        for (long long i = 0; i < 4; ++i) {
             s += N[i] * pow(sigma, k[i]);
         }
         Evaluation lnPsigmaPc = T_recp * s;
@@ -303,7 +303,7 @@ public:
 
         // Eq. (4)
         Evaluation ln_S_star = 0.0;
-        for (int i = 0; i < 5; ++i) {
+        for (long long i = 0; i < 5; ++i) {
             ln_S_star += a[i] * pow(ln_T_star, i);
         }
 
@@ -320,7 +320,7 @@ public:
         
         // Eq. (7) with corrections
         Evaluation B_star = 0.0;
-        for (int i = 0; i < 7; ++i) {
+        for (long long i = 0; i < 7; ++i) {
             B_star += b[i] * pow(T_star, -i);
         }
 
@@ -431,7 +431,7 @@ public:
 
         // Sum term
         Evaluation s2 = 0.0;
-        for (int i = 2; i < 7; ++i) {
+        for (long long i = 2; i < 7; ++i) {
             s1 += a_[i] * log(1 - exp(b_[i-2] * T_red));
         }
 
@@ -455,7 +455,7 @@ public:
 
         // Sum term
         Evaluation s2 = 0.0;
-        for (int i = 2; i < 7; ++i) {
+        for (long long i = 2; i < 7; ++i) {
             s2 += (-a_[i] * b_[i-2] * exp(b_[i-2] * T_red)) / (1 - exp(b_[i-2] * T_red));
         }
 
@@ -477,7 +477,7 @@ public:
         // Span et al. (2000)
         // Sum term
         Evaluation s1 = 0.0;
-        for (int i = 2; i < 7; ++i) {
+        for (long long i = 2; i < 7; ++i) {
             s1 += (-a_[i] * pow(b_[i-2], 2) * exp(b_[i-2] * T_red)) / pow(1 - exp(b_[i-2] * T_red), 2);
         }
 
@@ -498,19 +498,19 @@ public:
         // Eq. (32), which can be compared with Eq. (55) in Span et al. (2000)
         // First sum term
         Evaluation s1 = 0.0;
-        for (int i = 0; i < 7; ++i) {
+        for (long long i = 0; i < 7; ++i) {
             s1 += N_[i] * pow(rho_red, d_[i]) * pow(T_red, t_[i]);
         }
 
         // Second sum term
         Evaluation s2 = 0.0;
-        for (int i = 7; i < 9; ++i) {
+        for (long long i = 7; i < 9; ++i) {
             s2 += N_[i] * pow(T_red, t_[i]) * pow(rho_red, d_[i]) * exp(-pow(rho_red, p_[i-7]));
         }
 
         // Third, and last, sum term
         Evaluation s3 = 0.0;
-        for (int i = 9; i < 14; ++i) {
+        for (long long i = 9; i < 14; ++i) {
             s3 += N_[i] * pow(T_red, t_[i]) * pow(rho_red, d_[i]) * 
                 exp(phi_[i-9] * pow(rho_red - D_[i-9], 2) + beta_[i-9] * pow(T_red - gamma_[i-9], 2));
         }
@@ -532,20 +532,20 @@ public:
         // Derivative of Eq. (32) wrt to reduced density, which can be compared with Eq. (81) in Span et al. (2000)
         // First sum term 
         Evaluation s1 = 0.0;
-        for (int i = 0; i < 7; ++i) {
+        for (long long i = 0; i < 7; ++i) {
             s1 += d_[i] * N_[i] * pow(rho_red, d_[i]-1) * pow(T_red, t_[i]);
         }
 
         // Second sum term
         Evaluation s2 = 0.0;
-        for (int i = 7; i < 9; ++i) {
+        for (long long i = 7; i < 9; ++i) {
             s2 += N_[i] * pow(T_red, t_[i]) * pow(rho_red, d_[i]-1) * exp(-pow(rho_red, p_[i-7])) *
                 (d_[i] - p_[i-7]*pow(rho_red, p_[i-7]));
         }
 
         // Third, and last, sum term
         Evaluation s3 = 0.0;
-        for (int i = 9; i < 14; ++i) {
+        for (long long i = 9; i < 14; ++i) {
             s3 += N_[i] * pow(T_red, t_[i]) * pow(rho_red, d_[i]-1) * 
                 exp(phi_[i-9] * pow(rho_red - D_[i-9], 2) + beta_[i-9] * pow(T_red - gamma_[i-9], 2)) *
                     (d_[i] + 2 * phi_[i-9] * rho_red * (rho_red - D_[i-9]));
@@ -569,13 +569,13 @@ public:
         // (2000)
         // First sum term 
         Evaluation s1 = 0.0;
-        for (int i = 0; i < 7; ++i) {
+        for (long long i = 0; i < 7; ++i) {
             s1 += d_[i] * (d_[i] - 1) * N_[i] * pow(rho_red, d_[i]-2) * pow(T_red, t_[i]);
         }
 
         // Second sum term
         Evaluation s2 = 0.0;
-        for (int i = 7; i < 9; ++i) {
+        for (long long i = 7; i < 9; ++i) {
             s2 += N_[i] * pow(T_red, t_[i]) * pow(rho_red, d_[i]-2) * exp(-pow(rho_red, p_[i-7])) *
                 ((d_[i] - p_[i-7] * pow(rho_red, p_[i-7])) * (d_[i] - p_[i-7] * pow(rho_red, p_[i-7]) - 1.0) 
                     - pow(p_[i-7], 2) * pow(rho_red, p_[i-7]));
@@ -583,7 +583,7 @@ public:
 
         // Third, and last, sum term
         Evaluation s3 = 0.0;
-        for (int i = 9; i < 14; ++i) {
+        for (long long i = 9; i < 14; ++i) {
             s3 += N_[i] * pow(T_red, t_[i]) * pow(rho_red, d_[i]-2) * 
                 exp(phi_[i-9] * pow(rho_red - D_[i-9], 2) + beta_[i-9] * pow(T_red - gamma_[i-9], 2)) *
                     (pow(d_[i] + 2 * phi_[i-9] * rho_red * (rho_red - D_[i-9]), 2) 
@@ -608,19 +608,19 @@ public:
         // al. (2000).
         // First sum term 
         Evaluation s1 = 0.0;
-        for (int i = 0; i < 7; ++i) {
+        for (long long i = 0; i < 7; ++i) {
             s1 += t_[i] * N_[i] * pow(rho_red, d_[i]) * pow(T_red, t_[i]-1);
         }
         
         // Second sum term
         Evaluation s2 = 0.0;
-        for (int i = 7; i < 9; ++i) {
+        for (long long i = 7; i < 9; ++i) {
             s2 += t_[i] * N_[i] * pow(T_red, t_[i]-1) * pow(rho_red, d_[i]) * exp(-pow(rho_red, p_[i-7]));
         }
 
         // Third, and last, sum term
         Evaluation s3 = 0.0;
-        for (int i = 9; i < 14; ++i) {
+        for (long long i = 9; i < 14; ++i) {
             s3 += N_[i] * pow(T_red, t_[i]-1) * pow(rho_red, d_[i]) * 
                 exp(phi_[i-9] * pow(rho_red - D_[i-9], 2) + beta_[i-9] * pow(T_red - gamma_[i-9], 2)) *
                     (t_[i] + 2 * beta_[i-9] * T_red * (T_red - gamma_[i-9]));
@@ -644,19 +644,19 @@ public:
         // Span et al. (2000).
         // First sum term 
         Evaluation s1 = 0.0;
-        for (int i = 0; i < 7; ++i) {
+        for (long long i = 0; i < 7; ++i) {
             s1 += t_[i] * (t_[i] - 1) * N_[i] * pow(rho_red, d_[i]) * pow(T_red, t_[i]-2);
         }
         
         // Second sum term
         Evaluation s2 = 0.0;
-        for (int i = 7; i < 9; ++i) {
+        for (long long i = 7; i < 9; ++i) {
             s2 += t_[i] * (t_[i] - 1) * N_[i] * pow(T_red, t_[i]-2) * pow(rho_red, d_[i]) * exp(-pow(rho_red, p_[i-7]));
         }
 
         // Third, and last, sum term
         Evaluation s3 = 0.0;
-        for (int i = 9; i < 14; ++i) {
+        for (long long i = 9; i < 14; ++i) {
             s3 += N_[i] * pow(T_red, t_[i]-2) * pow(rho_red, d_[i]) * 
                 exp(phi_[i-9] * pow(rho_red - D_[i-9], 2) + beta_[i-9] * pow(T_red - gamma_[i-9], 2)) *
                     (pow(t_[i] + 2 * beta_[i-9] * T_red * (T_red - gamma_[i-9]), 2) 
@@ -682,20 +682,20 @@ public:
         // compared with Eq. (86) in Span et al. (2000).
         // First sum term 
         Evaluation s1 = 0.0;
-        for (int i = 0; i < 7; ++i) {
+        for (long long i = 0; i < 7; ++i) {
             s1 += t_[i] * d_[i] * N_[i] * pow(rho_red, d_[i]-1) * pow(T_red, t_[i]-1);
         }
 
         // Second sum term
         Evaluation s2 = 0.0;
-        for (int i = 7; i < 9; ++i) {
+        for (long long i = 7; i < 9; ++i) {
             s2 += t_[i] * N_[i] * pow(T_red, t_[i]-1) * pow(rho_red, d_[i]-1) * exp(-pow(rho_red, p_[i-7]))
                 * (d_[i] - p_[i-7] * pow(rho_red, p_[i-7]));
         }
 
         // Third, and last, sum term
         Evaluation s3 = 0.0;
-        for (int i = 9; i < 14; ++i) {
+        for (long long i = 9; i < 14; ++i) {
             s3 += N_[i] * pow(T_red, t_[i]-1) * pow(rho_red, d_[i]-1) * 
                 exp(phi_[i-9] * pow(rho_red - D_[i-9], 2) + beta_[i-9] * pow(T_red - gamma_[i-9], 2)) *
                     (t_[i] + 2 * beta_[i-9] * T_red * (T_red - gamma_[i-9])) 

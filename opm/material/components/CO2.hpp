@@ -144,7 +144,7 @@ public:
         // this is on page 1524 of the reference
         Evaluation exponent = 0;
         Evaluation Tred = T/criticalTemperature();
-        for (int i = 0; i < 4; ++i)
+        for (long long i = 0; i < 4; ++i)
             exponent += a[i]*pow(1 - Tred, t[i]);
         exponent *= 1.0/Tred;
 

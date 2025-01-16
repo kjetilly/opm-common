@@ -184,7 +184,7 @@ namespace Opm {
         return this->connections_;
     }
 
-    void SingleNumericalAquifer::postProcessConnections(const EclipseGrid& grid, const std::vector<int>& actnum) {
+    void SingleNumericalAquifer::postProcessConnections(const EclipseGrid& grid, const std::vector<long long>& actnum) {
         std::unordered_set<size_t> cell_global_indices;
         for (const auto& cell : this->cells_) {
             cell_global_indices.insert(cell.global_index);

@@ -57,7 +57,7 @@ public:
         this->onlyLastSequence = onlyLastSequenceArg;
     }
 
-    int countDev() { return  deviations.size(); }
+    long long countDev() { return  deviations.size(); }
 
 
     void setReportStepOnly(bool reportStepOnlyArg) {
@@ -87,7 +87,7 @@ public:
     void compareSpecificKeyword(std::string keyword) {
         this->specificKeyword = std::move(keyword);
     }
-    void compareSpesificRstReportStepNumber(int seqn) {
+    void compareSpesificRstReportStepNumber(long long seqn) {
         this->specificSequence = seqn;
     }
 
@@ -187,7 +187,7 @@ private:
     std::string specificKeyword;
 
     // specific restart sequence to be compared
-    int specificSequence = -1;
+    long long specificSequence = -1;
 
     // Accept extra keywords in the restart file of the 'new' simulation.
     bool acceptExtraKeywords = false;

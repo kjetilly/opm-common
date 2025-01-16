@@ -40,7 +40,7 @@ GPMaint::GPMaint(std::size_t report_step, const DeckRecord& record)
 {
     using GP = ParserKeywords::GPMAINT;
     this->m_flow_target = FlowTargetFromString( record.getItem<GP::FLOW_TARGET>().get<std::string>(0) );
-    this->m_region_number = record.getItem<GP::REGION>().get<int>(0);
+    this->m_region_number = record.getItem<GP::REGION>().get<long long>(0);
     this->m_region_name = record.getItem<GP::FIP_FAMILY>().get<std::string>(0);
     this->m_pressure_target = record.getItem<GP::PRESSURE_TARGET>().getSIDouble(0);
     this->m_prop_constant = record.getItem<GP::PROP_CONSTANT>().getSIDouble(0);
@@ -78,7 +78,7 @@ GPMaint GPMaint::serializationTestObject() {
     return gpm;
 }
 
-std::optional<std::pair<std::string, int>> GPMaint::region() const {
+std::optional<std::pair<std::string, long long>> GPMaint::region() const {
     if (this->m_region_number == 0)
         return {};
 

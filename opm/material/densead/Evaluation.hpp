@@ -48,41 +48,41 @@ namespace DenseAd {
 
 //! Indicates that the number of derivatives considered by an Evaluation object
 //! is run-time determined
-static constexpr int DynamicSize = -1;
+static constexpr long long DynamicSize = -1;
 
 /*!
  * \brief Represents a function evaluation and its derivatives w.r.t. a fixed set of
  *        variables.
  */
-template <class ValueT, int numDerivs, unsigned staticSize = 0>
+template <class ValueT, long long numDerivs, unsigned staticSize = 0>
 class Evaluation
 {
 public:
     //! the template argument which specifies the number of
     //! derivatives (-1 == "DynamicSize" means runtime determined)
-    static const int numVars = numDerivs;
+    static const long long numVars = numDerivs;
 
     //! field type
     typedef ValueT ValueType;
 
     //! number of derivatives
-    OPM_HOST_DEVICE constexpr int size() const
+    OPM_HOST_DEVICE constexpr long long size() const
     { return numDerivs; }
 
 protected:
     //! length of internal data vector
-    OPM_HOST_DEVICE constexpr int length_() const
+    OPM_HOST_DEVICE constexpr long long length_() const
     { return size() + 1; }
 
 
     //! position index for value
-    OPM_HOST_DEVICE constexpr int valuepos_() const
+    OPM_HOST_DEVICE constexpr long long valuepos_() const
     { return 0; }
     //! start index for derivatives
-    OPM_HOST_DEVICE constexpr int dstart_() const
+    OPM_HOST_DEVICE constexpr long long dstart_() const
     { return 1; }
     //! end+1 index for derivatives
-    OPM_HOST_DEVICE constexpr int dend_() const
+    OPM_HOST_DEVICE constexpr long long dend_() const
     { return length_(); }
 
     //! instruct valgrind to check that the value and all derivatives of the
@@ -122,7 +122,7 @@ public:
     // i.e., f(x) = c. this implies an evaluation with the given value and all
     // derivatives being zero.
     template <class RhsValueType>
-    OPM_HOST_DEVICE Evaluation(const RhsValueType& c, int varPos)
+    OPM_HOST_DEVICE Evaluation(const RhsValueType& c, long long varPos)
     {
         // The variable position must be in represented by the given variable descriptor
         assert(0 <= varPos && varPos < size());
@@ -138,7 +138,7 @@ public:
     // set all derivatives to zero
     OPM_HOST_DEVICE constexpr void clearDerivatives()
     {
-        for (int i = dstart_(); i < dend_(); ++i)
+        for (long long i = dstart_(); i < dend_(); ++i)
             data_[i] = 0.0;
     }
 
@@ -163,7 +163,7 @@ public:
 
     // create a function evaluation for a "naked" depending variable (i.e., f(x) = x)
     template <class RhsValueType>
-    OPM_HOST_DEVICE static Evaluation createVariable(const RhsValueType& value, int varPos)
+    OPM_HOST_DEVICE static Evaluation createVariable(const RhsValueType& value, long long varPos)
     {
         // copy function value and set all derivatives to 0, except for the variable
         // which is represented by the value (which is set to 1.0)
@@ -171,7 +171,7 @@ public:
     }
 
     template <class RhsValueType>
-    OPM_HOST_DEVICE static Evaluation createVariable(int nVars, const RhsValueType& value, int varPos)
+    OPM_HOST_DEVICE static Evaluation createVariable(long long nVars, const RhsValueType& value, long long varPos)
     {
         if (nVars != 0)
             throw std::logic_error("This statically-sized evaluation can only represent objects"
@@ -183,7 +183,7 @@ public:
     }
 
     template <class RhsValueType>
-    OPM_HOST_DEVICE static Evaluation createVariable(const Evaluation&, const RhsValueType& value, int varPos)
+    OPM_HOST_DEVICE static Evaluation createVariable(const Evaluation&, const RhsValueType& value, long long varPos)
     {
         // copy function value and set all derivatives to 0, except for the variable
         // which is represented by the value (which is set to 1.0)
@@ -194,7 +194,7 @@ public:
     // "evaluate" a constant function (i.e. a function that does not depend on the set of
     // relevant variables, f(x) = c).
     template <class RhsValueType>
-    OPM_HOST_DEVICE static Evaluation createConstant(int nVars, const RhsValueType& value)
+    OPM_HOST_DEVICE static Evaluation createConstant(long long nVars, const RhsValueType& value)
     {
         if (nVars != 0)
             throw std::logic_error("This statically-sized evaluation can only represent objects"
@@ -223,7 +223,7 @@ public:
     {
         assert(size() == other.size());
 
-        for (int i = dstart_(); i < dend_(); ++i)
+        for (long long i = dstart_(); i < dend_(); ++i)
             data_[i] = other.data_[i];
     }
 
@@ -233,7 +233,7 @@ public:
     {
         assert(size() == other.size());
 
-        for (int i = 0; i < length_(); ++i)
+        for (long long i = 0; i < length_(); ++i)
             data_[i] += other.data_[i];
 
         return *this;
@@ -254,7 +254,7 @@ public:
     {
         assert(size() == other.size());
 
-        for (int i = 0; i < length_(); ++i)
+        for (long long i = 0; i < length_(); ++i)
             data_[i] -= other.data_[i];
 
         return *this;
@@ -284,7 +284,7 @@ public:
         data_[valuepos_()] *= v ;
 
         //  derivatives
-        for (int i = dstart_(); i < dend_(); ++i)
+        for (long long i = dstart_(); i < dend_(); ++i)
             data_[i] = data_[i] * v + other.data_[i] * u;
 
         return *this;
@@ -294,7 +294,7 @@ public:
     template <class RhsValueType>
     OPM_HOST_DEVICE Evaluation& operator*=(const RhsValueType& other)
     {
-        for (int i = 0; i < length_(); ++i)
+        for (long long i = 0; i < length_(); ++i)
             data_[i] *= other;
 
         return *this;
@@ -309,7 +309,7 @@ public:
         // u'v)/v^2.
         ValueType& u = data_[valuepos_()];
         const ValueType& v = other.value();
-        for (int idx = dstart_(); idx < dend_(); ++idx) {
+        for (long long idx = dstart_(); idx < dend_(); ++idx) {
             const ValueType& uPrime = data_[idx];
             const ValueType& vPrime = other.data_[idx];
 
@@ -326,7 +326,7 @@ public:
     {
         const ValueType tmp = 1.0/other;
 
-        for (int i = 0; i < length_(); ++i)
+        for (long long i = 0; i < length_(); ++i)
             data_[i] *= tmp;
 
         return *this;
@@ -384,7 +384,7 @@ public:
         Evaluation result;
 
         // set value and derivatives to negative
-        for (int i = 0; i < length_(); ++i)
+        for (long long i = 0; i < length_(); ++i)
             result.data_[i] = - data_[i];
 
         return result;
@@ -452,7 +452,7 @@ public:
     {
         assert(size() == other.size());
 
-        for (int idx = 0; idx < length_(); ++idx) {
+        for (long long idx = 0; idx < length_(); ++idx) {
             if (data_[idx] != other.data_[idx]) {
                 return false;
             }
@@ -521,7 +521,7 @@ public:
     { data_[valuepos_()] = val; }
 
     // return varIdx'th derivative
-    OPM_HOST_DEVICE const ValueType& derivative(int varIdx) const
+    OPM_HOST_DEVICE const ValueType& derivative(long long varIdx) const
     {
         assert(0 <= varIdx && varIdx < size());
 
@@ -529,7 +529,7 @@ public:
     }
 
     // set derivative at position varIdx
-    OPM_HOST_DEVICE void setDerivative(int varIdx, const ValueType& derVal)
+    OPM_HOST_DEVICE void setDerivative(long long varIdx, const ValueType& derVal)
     {
         assert(0 <= varIdx && varIdx < size());
 
@@ -547,27 +547,27 @@ private:
 };
 
 // the generic operators are only required for the unspecialized case
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE bool operator<(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 { return b > a; }
 
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE bool operator>(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 { return b < a; }
 
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE bool operator<=(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 { return b >= a; }
 
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE bool operator>=(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 { return b <= a; }
 
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE bool operator!=(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 { return a != b.value(); }
 
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE Evaluation<ValueType, numVars, staticSize> operator+(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 {
     Evaluation<ValueType, numVars, staticSize> result(b);
@@ -575,13 +575,13 @@ OPM_HOST_DEVICE Evaluation<ValueType, numVars, staticSize> operator+(const RhsVa
     return result;
 }
 
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE Evaluation<ValueType, numVars, staticSize> operator-(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 {
     return -(b - a);
 }
 
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE Evaluation<ValueType, numVars, staticSize> operator/(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 {
     Evaluation<ValueType, numVars, staticSize> tmp(a);
@@ -589,7 +589,7 @@ OPM_HOST_DEVICE Evaluation<ValueType, numVars, staticSize> operator/(const RhsVa
     return tmp;
 }
 
-template <class RhsValueType, class ValueType, int numVars, unsigned staticSize>
+template <class RhsValueType, class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE Evaluation<ValueType, numVars, staticSize> operator*(const RhsValueType& a, const Evaluation<ValueType, numVars, staticSize>& b)
 {
     Evaluation<ValueType, numVars, staticSize> result(b);
@@ -603,18 +603,18 @@ struct is_evaluation
     static constexpr bool value = false;
 };
 
-template <class ValueType, int numVars, unsigned staticSize>
+template <class ValueType, long long numVars, unsigned staticSize>
 struct is_evaluation<Evaluation<ValueType,numVars,staticSize>>
 {
     static constexpr bool value = true;
 };
 
-template <class ValueType, int numVars, unsigned staticSize>
+template <class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE void printEvaluation(std::ostream& os,
                      const Evaluation<ValueType, numVars, staticSize>& eval,
                      bool withDer = false);
 
-template <class ValueType, int numVars, unsigned staticSize>
+template <class ValueType, long long numVars, unsigned staticSize>
 OPM_HOST_DEVICE std::ostream& operator<<(std::ostream& os, const Evaluation<ValueType, numVars, staticSize>& eval)
 {
     if constexpr (is_evaluation<ValueType>::value)

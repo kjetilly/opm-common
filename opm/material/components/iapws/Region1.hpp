@@ -139,7 +139,7 @@ public:
         const Evaluation pi_ = pi(pressure);    /* reduced pressure */
 
         Evaluation result = 0;
-        for (int i = 0; i < 34; ++i) {
+        for (long long i = 0; i < 34; ++i) {
             result += n(i)*pow(7.1 - pi_, I(i))*pow(tau_ - 1.222, J(i));
         }
 
@@ -165,7 +165,7 @@ public:
         const Evaluation pi_ = pi(pressure);    /* reduced pressure */
 
         Evaluation result = 0.0;
-        for (int i = 0; i < 34; i++) {
+        for (long long i = 0; i < 34; i++) {
             result +=
                 n(i) *
                 pow(7.1 - pi_, static_cast<Scalar>(I(i))) *
@@ -194,7 +194,7 @@ public:
         const Evaluation pi_ = pi(pressure);    /* reduced pressure */
 
         Evaluation result = 0.0;
-        for (int i = 0; i < 34; i++) {
+        for (long long i = 0; i < 34; i++) {
             result +=
                 -n(i) *
                 I(i) *
@@ -224,7 +224,7 @@ public:
         const Evaluation pi_ = pi(pressure);    /* reduced pressure */
 
         Evaluation result = 0.0;
-        for (int i = 0; i < 34; i++) {
+        for (long long i = 0; i < 34; i++) {
             result +=
                 -n(i) *
                 I(i) *
@@ -255,7 +255,7 @@ public:
         const Evaluation pi_ = pi(pressure);    /* reduced pressure */
 
         Evaluation result = 0.0;
-        for (int i = 0; i < 34; i++) {
+        for (long long i = 0; i < 34; i++) {
             result +=
                 n(i) *
                 I(i) *
@@ -285,7 +285,7 @@ public:
         const Evaluation pi_ = pi(pressure);    /* reduced pressure */
 
         Evaluation result = 0.0;
-        for (int i = 0; i < 34; i++) {
+        for (long long i = 0; i < 34; i++) {
             result +=
                 n(i) *
                 pow(7.1 - pi_, I(i)) *
@@ -298,7 +298,7 @@ public:
     }
 
 private:
-    static Scalar n(int i)
+    static Scalar n(long long i)
     {
         static const Scalar n[34] = {
             0.14632971213167, -0.84548187169114, -0.37563603672040e1,
@@ -317,9 +317,9 @@ private:
         return n[i];
     }
 
-    static Scalar I(int i)
+    static Scalar I(long long i)
     {
-        static const short int I[34] = {
+        static const short  I[34] = {
             0, 0, 0,
             0, 0, 0,
             0, 0, 1,
@@ -336,9 +336,9 @@ private:
         return I[i];
     }
 
-    static Scalar J(int i)
+    static Scalar J(long long i)
     {
-        static const short int J[34] = {
+        static const short  J[34] = {
              -2, -1, 0,
               1, 2, 3,
               4, 5, -9,

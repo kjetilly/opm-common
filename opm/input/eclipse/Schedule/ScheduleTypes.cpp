@@ -24,19 +24,19 @@ namespace Opm {
 
 namespace ecl {
 
-static constexpr int producer       = 1;
-static constexpr int oil_injector   = 2;
-static constexpr int water_injector = 3;
-static constexpr int gas_injector   = 4;
+static constexpr long long producer       = 1;
+static constexpr long long oil_injector   = 2;
+static constexpr long long water_injector = 3;
+static constexpr long long gas_injector   = 4;
 
 
-static constexpr int oil_phase      = 1;
-static constexpr int water_phase    = 2;
-static constexpr int gas_phase      = 3;
-static constexpr int liquid_phase   = 4;
+static constexpr long long oil_phase      = 1;
+static constexpr long long water_phase    = 2;
+static constexpr long long gas_phase      = 3;
+static constexpr long long liquid_phase   = 4;
 
 
-Phase from_ecl_phase(int ecl_phase) {
+Phase from_ecl_phase(long long ecl_phase) {
     switch(ecl_phase) {
     case ecl::oil_phase:
         return Phase::OIL;
@@ -71,19 +71,19 @@ Phase from_injector_type(InjectorType injector_type) {
 }
 
 
-bool WellType::producer(int ecl_wtype) {
+bool WellType::producer(long long ecl_wtype) {
     return ecl_wtype == ecl::producer;
 }
 
-bool WellType::oil_injector(int ecl_wtype) {
+bool WellType::oil_injector(long long ecl_wtype) {
     return ecl_wtype == ecl::oil_injector;
 }
 
-bool WellType::water_injector(int ecl_wtype) {
+bool WellType::water_injector(long long ecl_wtype) {
     return ecl_wtype == ecl::water_injector;
 }
 
-bool WellType::gas_injector(int ecl_wtype) {
+bool WellType::gas_injector(long long ecl_wtype) {
     return ecl_wtype == ecl::gas_injector;
 }
 
@@ -96,7 +96,7 @@ Phase WellType::injection_phase() const {
 
 
 
-WellType::WellType(int ecl_wtype, int ecl_phase) :
+WellType::WellType(long long ecl_wtype, long long ecl_phase) :
     m_injection_phase(ecl::from_ecl_phase(ecl_phase)),
     m_welspecs_phase(ecl::from_ecl_phase(ecl_phase))
 {
@@ -172,7 +172,7 @@ bool WellType::injector() const {
     return !this->m_producer;
 }
 
-int WellType::ecl_wtype() const {
+long long WellType::ecl_wtype() const {
     if (this->m_producer)
         return ecl::producer;
 
@@ -194,7 +194,7 @@ int WellType::ecl_wtype() const {
   LIQUID which should map to ecl value 4.
 */
 
-int WellType::ecl_phase() const {
+long long WellType::ecl_phase() const {
     switch (this->m_welspecs_phase) {
     case Phase::OIL:
         return ecl::oil_phase;

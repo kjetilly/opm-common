@@ -36,10 +36,10 @@ class BCConfig
 public:
     struct BCRegion
     {
-        int index{};
-        int i1{}, i2{};
-        int j1{}, j2{};
-        int k1 {}, k2{};
+        long long index{};
+        long long i1{}, i2{};
+        long long j1{}, j2{};
+        long long k1 {}, k2{};
         FaceDir::DirEnum dir{FaceDir::Unknown};
 
         BCRegion() = default;

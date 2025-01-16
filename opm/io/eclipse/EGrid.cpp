@@ -35,7 +35,7 @@
 
 namespace Opm { namespace EclIO {
 
-using NNCentry = std::tuple<int, int, int, int, int, int, float>;
+using NNCentry = std::tuple<long long, long long, long long, long long, long long, long long, float>;
 
 EGrid::EGrid(const std::string& filename, const std::string& grid_name)
     : EclFile(filename), inputFileName { filename }, m_grid_name {grid_name}
@@ -58,7 +58,7 @@ EGrid::EGrid(const std::string& filename, const std::string& grid_name)
     m_mapaxes_loaded = false;
     double length_factor = 1.0;
 
-    int hostnum_index = -1;
+    long long hostnum_index = -1;
 
     for (size_t n = 0; n < array_name.size(); n++) {
 
@@ -72,7 +72,7 @@ EGrid::EGrid(const std::string& filename, const std::string& grid_name)
         }
 
         if (array_name[n] == "NNCHEAD"){
-            auto nnchead = this->get<int>(n);
+            auto nnchead = this->get<long long>(n);
 
             if (nnchead[1] == 0)
                lgrname = "global";
@@ -105,7 +105,7 @@ EGrid::EGrid(const std::string& filename, const std::string& grid_name)
 
         if (lgrname == grid_name) {
             if (array_name[n] == "GRIDHEAD") {
-                auto gridhead = get<int>(n);
+                auto gridhead = get<long long>(n);
                 nijk[0] = gridhead[1];
                 nijk[1] = gridhead[2];
                 nijk[2] = gridhead[3];
@@ -134,7 +134,7 @@ EGrid::EGrid(const std::string& filename, const std::string& grid_name)
         }
 
         if ((lgrname == "global") && (array_name[n] == "GRIDHEAD")) {
-            auto gridhead = get<int>(n);
+            auto gridhead = get<long long>(n);
             host_nijk[0] = gridhead[1];
             host_nijk[1] = gridhead[2];
             host_nijk[2] = gridhead[3];
@@ -143,22 +143,22 @@ EGrid::EGrid(const std::string& filename, const std::string& grid_name)
     }
 
     if (coordsys_array_index == -1){
-        for (int l = 0; l < nijk[2]; l ++)
+        for (long long l = 0; l < nijk[2]; l ++)
             res[l] = 0;
     } else {
-        auto coordsys = get<int>(coordsys_array_index);
+        auto coordsys = get<long long>(coordsys_array_index);
 
-        for (int r = 0; r < numres; r++){
-            int l1 = coordsys[r*6 + 0];
-            int l2 = coordsys[r*6 + 1];
+        for (long long r = 0; r < numres; r++){
+            long long l1 = coordsys[r*6 + 0];
+            long long l2 = coordsys[r*6 + 1];
 
-            for (int l = l1 -1; l < l2; l++)
+            for (long long l = l1 -1; l < l2; l++)
                 res[l] = r;
         }
     }
 
     if (actnum_array_index != -1) {
-        auto actnum = this->get<int>(actnum_array_index);
+        auto actnum = this->get<long long>(actnum_array_index);
         nactive = 0;
         for (size_t i = 0; i < actnum.size(); i++) {
             if (actnum[i] > 0) {
@@ -170,7 +170,7 @@ EGrid::EGrid(const std::string& filename, const std::string& grid_name)
             }
         }
     } else {
-        int nCells = nijk[0] * nijk[1] * nijk[2];
+        long long nCells = nijk[0] * nijk[1] * nijk[2];
         act_index.resize(nCells);
         glob_index.resize(nCells);
         std::iota(act_index.begin(), act_index.end(), 0);
@@ -190,15 +190,15 @@ EGrid::EGrid(const std::string& filename, const std::string& grid_name)
     }
 }
 
-std::vector<std::array<int, 3>> EGrid::hostCellsIJK()
+std::vector<std::array<long long, 3>> EGrid::hostCellsIJK()
 {
-    std::vector<std::array<int, 3>> res_vect;
+    std::vector<std::array<long long, 3>> res_vect;
     res_vect.reserve(host_cells.size());
 
     for (auto val : host_cells){
-        std::array<int, 3> tmp;
+        std::array<long long, 3> tmp;
         tmp[2] = val / (host_nijk[0] * host_nijk[1]);
-        int rest = val % (host_nijk[0] * host_nijk[1]);
+        long long rest = val % (host_nijk[0] * host_nijk[1]);
 
         tmp[1] = rest / host_nijk[0];
         tmp[0] = rest % host_nijk[0];
@@ -248,7 +248,7 @@ void EGrid::load_nnc_data()
             Opm::EclIO::EInit init(initFileName.generic_string());
 
             auto init_dims = init.grid_dimension(m_grid_name);
-            int init_nactive = init.activeCells(m_grid_name);
+            long long init_nactive = init.activeCells(m_grid_name);
 
             if (init_dims != nijk){
                 std::string message = "Dimensions of Egrid differ from dimensions found in init file. ";
@@ -280,7 +280,7 @@ void EGrid::load_nnc_data()
     }
 }
 
-int EGrid::global_index(int i, int j, int k) const
+long long EGrid::global_index(long long i, long long j, long long k) const
 {
     if (i < 0 || i >= nijk[0] || j < 0 || j >= nijk[1] || k < 0 || k >= nijk[2]) {
         OPM_THROW(std::invalid_argument, "i, j or/and k out of range");
@@ -290,9 +290,9 @@ int EGrid::global_index(int i, int j, int k) const
 }
 
 
-int EGrid::active_index(int i, int j, int k) const
+long long EGrid::active_index(long long i, long long j, long long k) const
 {
-    int n = i + j * nijk[0] + k * nijk[0] * nijk[1];
+    long long n = i + j * nijk[0] + k * nijk[0] * nijk[1];
 
     if (i < 0 || i >= nijk[0] || j < 0 || j >= nijk[1] || k < 0 || k >= nijk[2]) {
         OPM_THROW(std::invalid_argument, "i, j or/and k out of range");
@@ -302,18 +302,18 @@ int EGrid::active_index(int i, int j, int k) const
 }
 
 
-std::array<int, 3> EGrid::ijk_from_active_index(int actInd) const
+std::array<long long, 3> EGrid::ijk_from_active_index(long long actInd) const
 {
     if (actInd < 0 || actInd >= nactive) {
         OPM_THROW(std::invalid_argument, "active index out of range");
     }
 
-    int _glob = glob_index[actInd];
+    long long _glob = glob_index[actInd];
 
-    std::array<int, 3> result;
+    std::array<long long, 3> result;
     result[2] = _glob / (nijk[0] * nijk[1]);
 
-    int rest = _glob % (nijk[0] * nijk[1]);
+    long long rest = _glob % (nijk[0] * nijk[1]);
 
     result[1] = rest / nijk[0];
     result[0] = rest % nijk[0];
@@ -322,16 +322,16 @@ std::array<int, 3> EGrid::ijk_from_active_index(int actInd) const
 }
 
 
-std::array<int, 3> EGrid::ijk_from_global_index(int globInd) const
+std::array<long long, 3> EGrid::ijk_from_global_index(long long globInd) const
 {
     if (globInd < 0 || globInd >= nijk[0] * nijk[1] * nijk[2]) {
         OPM_THROW(std::invalid_argument, "global index out of range");
     }
 
-    std::array<int, 3> result;
+    std::array<long long, 3> result;
     result[2] = globInd / (nijk[0] * nijk[1]);
 
-    int rest = globInd % (nijk[0] * nijk[1]);
+    long long rest = globInd % (nijk[0] * nijk[1]);
 
     result[1] = rest / nijk[0];
     result[0] = rest % nijk[0];
@@ -360,7 +360,7 @@ void EGrid::mapaxes_init()
     unit_y[1] *= norm_y;
 }
 
-void EGrid::getCellCorners(const std::array<int, 3>& ijk,
+void EGrid::getCellCorners(const std::array<long long, 3>& ijk,
                            std::array<double, 8>& X,
                            std::array<double, 8>& Y,
                            std::array<double, 8>& Z)
@@ -368,10 +368,10 @@ void EGrid::getCellCorners(const std::array<int, 3>& ijk,
     if (coord_array.empty())
         load_grid_data();
 
-    std::vector<int> zind;
-    std::vector<int> pind;
+    std::vector<long long> zind;
+    std::vector<long long> pind;
 
-    int res_shift = res.at(ijk[2])*(nijk[0]+1)*(nijk[1]+1)*6;
+    long long res_shift = res.at(ijk[2])*(nijk[0]+1)*(nijk[1]+1)*6;
     
    // calculate indices for grid pillars in COORD arrray
     pind.push_back(res_shift + ijk[1]*(nijk[0]+1)*6 + ijk[0]*6);
@@ -385,13 +385,13 @@ void EGrid::getCellCorners(const std::array<int, 3>& ijk,
     zind.push_back(zind[0] + nijk[0]*2);
     zind.push_back(zind[2] + 1);
 
-    for (int n = 0; n < 4; n++)
+    for (long long n = 0; n < 4; n++)
         zind.push_back(zind[n] + nijk[0]*nijk[1]*4);
 
-    for (int n = 0; n < 8; n++)
+    for (long long n = 0; n < 8; n++)
         Z[n] = zcorn_array[zind[n]];
 
-    for (int  n = 0; n < 4; n++) {
+    for (long long  n = 0; n < 4; n++) {
         double xt;
         double yt;
         double xb;
@@ -427,14 +427,14 @@ void EGrid::getCellCorners(const std::array<int, 3>& ijk,
 }
 
 
-void EGrid::getCellCorners(int globindex, std::array<double, 8>& X,
+void EGrid::getCellCorners(long long globindex, std::array<double, 8>& X,
                            std::array<double, 8>& Y, std::array<double, 8>& Z)
 {
     return getCellCorners(ijk_from_global_index(globindex), X, Y, Z);
 }
 
 
-std::vector<std::array<float, 3>> EGrid::getXYZ_layer(int layer, const std::array<int, 4>& box, bool bottom)
+std::vector<std::array<float, 3>> EGrid::getXYZ_layer(long long layer, const std::array<long long, 4>& box, bool bottom)
 {
    // layer is layer index, zero based. The box array is i and j range (i1,i2,j1,j2), also zero based
 
@@ -451,8 +451,8 @@ std::vector<std::array<float, 3>> EGrid::getXYZ_layer(int layer, const std::arra
         throw std::invalid_argument("invalid box input, i1,i2,j1 or j2 out of valid range ");
     }
 
-    int nodes_pr_surf = nijk[0]*nijk[1]*4;
-    int zcorn_offset = nodes_pr_surf * layer * 2;
+    long long nodes_pr_surf = nijk[0]*nijk[1]*4;
+    long long zcorn_offset = nodes_pr_surf * layer * 2;
 
     if (bottom)
         zcorn_offset += nodes_pr_surf;
@@ -477,11 +477,11 @@ std::vector<std::array<float, 3>> EGrid::getXYZ_layer(int layer, const std::arra
     std::array<double,4> Y;
     std::array<double,4> Z;
 
-    std::array<int,3> ijk;
+    std::array<long long,3> ijk;
     ijk[2]=0;
 
-    for (int j = box[2]; j < (box[3] + 1); j++) {
-        for (int i = box[0]; i < (box[1] + 1); i++) {
+    for (long long j = box[2]; j < (box[3] + 1); j++) {
+        for (long long i = box[0]; i < (box[1] + 1); i++) {
 
             ijk[0]=i;
             ijk[1]=j;
@@ -503,14 +503,14 @@ std::vector<std::array<float, 3>> EGrid::getXYZ_layer(int layer, const std::arra
 }
 
 
-std::vector<std::array<float, 3>> EGrid::getXYZ_layer(int layer, bool bottom)
+std::vector<std::array<float, 3>> EGrid::getXYZ_layer(long long layer, bool bottom)
 {
-    std::array<int, 4> box = {0, nijk[0] -1 , 0, nijk[1] -1 };
+    std::array<long long, 4> box = {0, nijk[0] -1 , 0, nijk[1] -1 };
     return this->getXYZ_layer(layer, box, bottom);
 }
 
 
-std::vector<float> EGrid::  get_zcorn_from_disk(int layer, bool bottom)
+std::vector<float> EGrid::  get_zcorn_from_disk(long long layer, bool bottom)
 {
     if (formatted)
         throw std::invalid_argument("partial loading of zcorn arrays not possible when using formatted input");
@@ -518,8 +518,8 @@ std::vector<float> EGrid::  get_zcorn_from_disk(int layer, bool bottom)
     std::vector<float> zcorn_layer;
     std::fstream fileH;
 
-    int nodes_pr_surf = nijk[0]*nijk[1]*4;
-    int zcorn_offset = nodes_pr_surf * layer * 2;
+    long long nodes_pr_surf = nijk[0]*nijk[1]*4;
+    long long zcorn_offset = nodes_pr_surf * layer * 2;
 
     if (bottom)
         zcorn_offset+=nodes_pr_surf;
@@ -532,7 +532,7 @@ std::vector<float> EGrid::  get_zcorn_from_disk(int layer, bool bottom)
     std::string arrName(8,' ');
     eclArrType arrType;
     int64_t num;
-    int sizeOfElement;
+    long long sizeOfElement;
 
     uint64_t zcorn_pos = 0;
 
@@ -549,8 +549,8 @@ std::vector<float> EGrid::  get_zcorn_from_disk(int layer, bool bottom)
         fileH.seekg(static_cast<std::streamoff>(sizeOfNextArray), std::ios_base::cur);
     }
 
-    int elements_pr_block = Opm::EclIO::MaxBlockSizeReal / Opm::EclIO::sizeOfReal;
-    int num_blocks_start = zcorn_offset / elements_pr_block;
+    long long elements_pr_block = Opm::EclIO::MaxBlockSizeReal / Opm::EclIO::sizeOfReal;
+    long long num_blocks_start = zcorn_offset / elements_pr_block;
 
     // adding size of zcorn real data before to ignored
     uint64_t start_pos = zcorn_pos + Opm::EclIO::sizeOfReal * zcorn_offset;
@@ -562,7 +562,7 @@ std::vector<float> EGrid::  get_zcorn_from_disk(int layer, bool bottom)
 
     uint64_t zcorn_to = zcorn_offset + nodes_pr_surf;
 
-    int i1 = zcorn_offset / 1000 + 1;
+    long long i1 = zcorn_offset / 1000 + 1;
     uint64_t elemets = static_cast<uint64_t>(i1 * elements_pr_block - zcorn_offset);
 
     uint64_t next_block = elemets < zcorn_to ? elemets : zcorn_to - zcorn_offset + 1 ;
@@ -580,7 +580,7 @@ std::vector<float> EGrid::  get_zcorn_from_disk(int layer, bool bottom)
         p1 = p1 + next_block;
 
         if (p1 < zcorn_to) {
-            int dtail;
+            long long dtail;
             fileH.read(reinterpret_cast<char*>(&dtail), sizeof(dtail));
             fileH.read(reinterpret_cast<char*>(&dtail), sizeof(dtail));
             dtail = Opm::EclIO::flipEndianInt(dtail);
@@ -598,11 +598,11 @@ std::vector<float> EGrid::  get_zcorn_from_disk(int layer, bool bottom)
 }
 
 
-void EGrid::getCellCorners(const std::array<int, 3>& ijk, const std::vector<float>& zcorn_layer,
+void EGrid::getCellCorners(const std::array<long long, 3>& ijk, const std::vector<float>& zcorn_layer,
                            std::array<double,4>& X, std::array<double,4>& Y, std::array<double,4>& Z)
 {
-    std::vector<int> zind;
-    std::vector<int> pind;
+    std::vector<long long> zind;
+    std::vector<long long> pind;
 
    // calculate indices for grid pillars in COORD arrray
     pind.push_back(ijk[1]*(nijk[0]+1)*6 + ijk[0]*6);
@@ -616,10 +616,10 @@ void EGrid::getCellCorners(const std::array<int, 3>& ijk, const std::vector<floa
     zind.push_back(zind[0] + nijk[0]*2);
     zind.push_back(zind[2] + 1);
 
-    for (int n = 0; n< 4; n++)
+    for (long long n = 0; n< 4; n++)
         Z[n] = zcorn_layer[zind[n]];
 
-    for (int  n = 0; n < 4; n++) {
+    for (long long  n = 0; n < 4; n++) {
         double xt;
         double yt;
         double xb;

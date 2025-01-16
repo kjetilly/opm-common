@@ -71,12 +71,12 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numPhases
-    static const int numPhases = 2;
+    static const long long numPhases = 2;
 
     //! Index of the liquid phase
-    static const int liquidPhaseIdx = 0;
+    static const long long liquidPhaseIdx = 0;
     //! Index of the gas phase
-    static const int gasPhaseIdx = 1;
+    static const long long gasPhaseIdx = 1;
 
     //! \copydoc BaseFluidSystem::phaseName
     static std::string_view phaseName(unsigned phaseIdx)
@@ -134,12 +134,12 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numComponents
-    static const int numComponents = 2;
+    static const long long numComponents = 2;
 
     //! The component index of water
-    static const int H2OIdx = 0;
+    static const long long H2OIdx = 0;
     //! The component index of molecular nitrogen
-    static const int N2Idx = 1;
+    static const long long N2Idx = 1;
 
     //! The component for pure water
     typedef TabulatedH2O H2O;

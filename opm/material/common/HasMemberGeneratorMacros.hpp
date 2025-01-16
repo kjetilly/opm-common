@@ -42,8 +42,8 @@ struct AlwaysVoid
  * \brief This macro generates a class HasMember_${MEMBER_NAME} which can be used for
  *        template specialization.
  *
- * e.g. if OPM_GENERATE_HAS_MEMBER(foo, int(), int(), int()) has been used,
- * HasMember_foo<T>::value is true (if and only if) t.foo(int(), int(), int()) is a valid
+ * e.g. if OPM_GENERATE_HAS_MEMBER(foo, (long long)(), (long long)(), (long long)()) has been used,
+ * HasMember_foo<T>::value is true (if and only if) t.foo((long long)(), (long long)(), (long long)()) is a valid
  * expression for an object t of the class T.
  */
 #define OPM_GENERATE_HAS_MEMBER(MEMBER_NAME, ...)                       \

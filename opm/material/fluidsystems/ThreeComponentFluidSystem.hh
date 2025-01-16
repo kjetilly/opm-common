@@ -52,17 +52,17 @@ namespace Opm {
             : public Opm::BaseFluidSystem<Scalar, ThreeComponentFluidSystem<Scalar> > {
     public:
         // TODO: I do not think these should be constant in fluidsystem, will try to make it non-constant later
-        static constexpr int numPhases=2;
-        static constexpr int numComponents = 3;
-        static constexpr int numMisciblePhases=2;
-        static constexpr int numMiscibleComponents = 3;
+        static constexpr long long numPhases=2;
+        static constexpr long long numComponents = 3;
+        static constexpr long long numMisciblePhases=2;
+        static constexpr long long numMiscibleComponents = 3;
         // TODO: phase location should be more general
-        static constexpr int oilPhaseIdx = 0;
-        static constexpr int gasPhaseIdx = 1;
+        static constexpr long long oilPhaseIdx = 0;
+        static constexpr long long gasPhaseIdx = 1;
 
-        static constexpr int Comp0Idx = 0;
-        static constexpr int Comp1Idx = 1;
-        static constexpr int Comp2Idx = 2;
+        static constexpr long long Comp0Idx = 0;
+        static constexpr long long Comp1Idx = 1;
+        static constexpr long long Comp2Idx = 2;
 
         // TODO: needs to be more general
         using Comp0 = SimpleCO2<Scalar>;

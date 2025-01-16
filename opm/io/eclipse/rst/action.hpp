@@ -45,8 +45,8 @@ struct RstAction {
 
 
     struct Condition {
-        static bool valid(const std::string * zacn, const int * iacn);
-        Condition(const std::string * zacn, const int * iacn, const double * sacn);
+        static bool valid(const std::string * zacn, const long long * iacn);
+        Condition(const std::string * zacn, const long long * iacn, const double * sacn);
         Action::Logical logic;
         Action::Comparator cmp_op;
         Quantity lhs;
@@ -58,13 +58,13 @@ struct RstAction {
     };
 
 
-    RstAction(const std::string& name_arg, int max_run_arg, int run_count_arg,
+    RstAction(const std::string& name_arg, long long max_run_arg, long long run_count_arg,
               double min_wait_arg, std::time_t start_time, std::time_t last_run,
               const std::vector<Condition>& conditions_arg);
 
     std::string name;
-    int max_run;
-    int run_count;
+    long long max_run;
+    long long run_count;
     double min_wait;
     std::time_t start_time;
     std::optional<std::time_t> last_run;

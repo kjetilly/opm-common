@@ -299,7 +299,7 @@ namespace Opm {
         }
         else {
             throw std::runtime_error {
-                "Unknown UDQ Operation " + std::to_string(static_cast<int>(action))
+                "Unknown UDQ Operation " + std::to_string(static_cast<long long>(action))
             };
         }
     }
@@ -508,7 +508,7 @@ namespace Opm {
         return res;
     }
 
-    void UDQConfig::exportTypeCount(std::array<int, static_cast<std::size_t>(UDQVarType::NumTypes)>& count) const
+    void UDQConfig::exportTypeCount(std::array<long long, static_cast<std::size_t>(UDQVarType::NumTypes)>& count) const
     {
         count.fill(0);
 

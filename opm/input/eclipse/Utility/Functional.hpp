@@ -65,7 +65,7 @@ namespace fun {
      *
      * --
      *
-     * int plus1( int x ) { return x + 1; }
+     * long long plus1( long long x ) { return x + 1; }
      * base_vec = { 0, 1, 2, 3, 4 };
      * vec = fun::map( &plus1, base_vec );
      *
@@ -73,7 +73,7 @@ namespace fun {
      *
      * --
      *
-     * int mul2 = []( int x ) { return x * 2; };
+     * long long mul2 = []( long long x ) { return x * 2; };
      * base_vec = { 0, 1, 2, 3, 4 };
      * vec = fun::map( mul2, base_vec );
      *
@@ -121,8 +121,8 @@ namespace fun {
 
 
     /*
-     * iota :: int -> [int]
-     * iota :: (int,int) -> [int]
+     * iota :: long long -> [long long]
+     * iota :: (long long,long long) -> [long long]
      *
      * iota (ι) is borrowed from the APL programming language. This particular
      * implementation behaves as a generator-like constant-space consecutive
@@ -156,7 +156,7 @@ namespace fun {
      *
      * --
      *
-     * std::vector< int > vec ( 5, 0 );
+     * std::vector< long long > vec ( 5, 0 );
      * std::iota( vec.begin(), vec.end(), 0 );
      * vec => [ 0, 1, 2, 3, 4 ]
      *
@@ -166,15 +166,15 @@ namespace fun {
      *
      * --
      *
-     * int plus( int x ) { return x + 1; }
+     * long long plus( long long x ) { return x + 1; }
      * auto vec = fun::map( &plus, fun::iota( 5 ) );
      * vec => [ 1, 2, 3, 4, 5 ]
      *
      * is equivalent to
      *
-     * int plus( int x ) { return x + 1; }
-     * std::vector< int > vec;
-     * for( int i = 0; i < 5; ++i )
+     * long long plus( long long x ) { return x + 1; }
+     * std::vector< long long > vec;
+     * for( long long i = 0; i < 5; ++i )
      *     vec.push_back( plus( i ) );
      * vec => [ 1, 2, 3, 4, 5 ]
      *
@@ -196,20 +196,20 @@ namespace fun {
      */
     class iota {
         public:
-            explicit iota( int end );
-            iota( int begin, int end );
+            explicit iota( long long end );
+            iota( long long begin, long long end );
 
             class const_iterator {
                 public:
-                    using difference_type = int;
-                    using value_type = int;
-                    using pointer = int*;
-                    using reference = int&;
+                    using difference_type = long long;
+                    using value_type = long long;
+                    using pointer = long long*;
+                    using reference = long long&;
                     using iterator_category = std::forward_iterator_tag;
 
                     const_iterator() = default;
 
-                    int operator*() const;
+                    long long operator*() const;
 
                     const_iterator& operator++();
                     const_iterator operator++( int );
@@ -218,8 +218,8 @@ namespace fun {
                     bool operator!=( const const_iterator& rhs ) const;
 
                 private:
-                    explicit const_iterator( int );
-                    int value{};
+                    explicit const_iterator( long long );
+                    long long value{};
 
                     friend class iota;
             };
@@ -230,8 +230,8 @@ namespace fun {
             const_iterator end() const;
 
         private:
-            int first;
-            int last;
+            long long first;
+            long long last;
     };
 
 }

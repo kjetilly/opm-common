@@ -72,7 +72,7 @@ namespace Opm {
 namespace {
 
 struct SummaryConfigContext {
-    std::unordered_map<std::string, std::set<int>> regions;
+    std::unordered_map<std::string, std::set<long long>> regions;
 };
 
 
@@ -496,7 +496,7 @@ void handleMissingNode( const ParseContext& parseContext, ErrorGuard& errors, co
 void handleMissingAquifer( const ParseContext& parseContext,
                            ErrorGuard& errors,
                            const KeywordLocation& location,
-                           const int id,
+                           const long long id,
                            const bool is_numeric)
 {
     std::string msg_fmt = fmt::format("Request for missing {} aquifer {} in {{keyword}}\n"
@@ -518,7 +518,7 @@ inline void keywordW( SummaryConfig::keyword_list& list,
 }
 
 inline void keywordAquifer( SummaryConfig::keyword_list& list,
-                            const std::vector<int>& aquiferIDs,
+                            const std::vector<long long>& aquiferIDs,
                             SummaryConfigNode baseAquiferParam)
 {
     std::transform(aquiferIDs.begin(), aquiferIDs.end(),
@@ -532,8 +532,8 @@ inline void keywordAquifer( SummaryConfig::keyword_list& list,
 // later check whether parseContext and errors are required
 // maybe loc will be needed
 void keywordAquifer( SummaryConfig::keyword_list& list,
-                     const std::vector<int>& analyticAquiferIDs,
-                     const std::vector<int>& numericAquiferIDs,
+                     const std::vector<long long>& analyticAquiferIDs,
+                     const std::vector<long long>& numericAquiferIDs,
                      const ParseContext& parseContext,
                      ErrorGuard& errors,
                      const DeckKeyword& keyword)
@@ -564,10 +564,10 @@ void keywordAquifer( SummaryConfig::keyword_list& list,
         keywordAquifer(list, pertinentIDs, param);
     }
     else {
-        auto ids = std::vector<int>{};
+        auto ids = std::vector<long long>{};
         auto end = pertinentIDs.end();
 
-        for (const int id : keyword.getIntData()) {
+        for (const long long id : keyword.getIntData()) {
             // Note: std::find() could be std::lower_bound() here, but we
             // typically expect the number of pertinent aquifer IDs to be
             // small (< 10) so there's no big gain from a log(N) algorithm
@@ -585,11 +585,11 @@ void keywordAquifer( SummaryConfig::keyword_list& list,
 }
 
 
-inline std::array< int, 3 > getijk( const DeckRecord& record ) {
+inline std::array< long long, 3 > getijk( const DeckRecord& record ) {
     return {{
-        record.getItem( "I" ).get< int >( 0 ) - 1,
-        record.getItem( "J" ).get< int >( 0 ) - 1,
-        record.getItem( "K" ).get< int >( 0 ) - 1
+        record.getItem( "I" ).get< long long >( 0 ) - 1,
+        record.getItem( "J" ).get< long long >( 0 ) - 1,
+        record.getItem( "K" ).get< long long >( 0 ) - 1
     }};
 }
 
@@ -662,7 +662,7 @@ inline void keywordWL(SummaryConfig::keyword_list& list,
             continue;
         }
 
-        const auto completion = record.getItem(1).get<int>(0);
+        const auto completion = record.getItem(1).get<long long>(0);
 
         // Use an amended KEYWORDS entry incorporating the completion ID,
         // e.g. "WOPRL_12", for the W*L summary vectors.  This is special
@@ -852,8 +852,8 @@ inline void keywordF( SummaryConfig::keyword_list& list,
 
 inline void keywordAquifer( SummaryConfig::keyword_list& list,
                             const std::string& keyword,
-                            const std::vector<int>& analyticAquiferIDs,
-                            const std::vector<int>& numericAquiferIDs,
+                            const std::vector<long long>& analyticAquiferIDs,
+                            const std::vector<long long>& numericAquiferIDs,
                             KeywordLocation loc)
 {
     auto param = SummaryConfigNode {
@@ -876,7 +876,7 @@ inline void keywordF( SummaryConfig::keyword_list& list,
 }
 
 
-inline std::array< int, 3 > getijk( const Connection& completion ) {
+inline std::array< long long, 3 > getijk( const Connection& completion ) {
     return { { completion.getI(), completion.getJ(), completion.getK() }};
 }
 
@@ -890,7 +890,7 @@ inline void keywordB( SummaryConfig::keyword_list& list,
     .parameterType( parseKeywordType(keyword.name()) )
     .isUserDefined( is_udq(keyword.name()) );
 
-    auto isValid = [&dims](const std::array<int,3>& ijk)
+    auto isValid = [&dims](const std::array<long long,3>& ijk)
     {
         return (static_cast<std::size_t>(ijk[0]) < dims.getNX())
             && (static_cast<std::size_t>(ijk[1]) < dims.getNY())
@@ -917,7 +917,7 @@ inline void keywordB( SummaryConfig::keyword_list& list,
           continue;
       }
 
-      int global_index = 1 + dims.getGlobalIndex(ijk[0], ijk[1], ijk[2]);
+      long long global_index = 1 + dims.getGlobalIndex(ijk[0], ijk[1], ijk[2]);
       list.push_back( param.number(global_index) );
   }
 }
@@ -1012,8 +1012,8 @@ inline void keywordR2R(const DeckKeyword&           keyword,
     //   /
     for (const auto& record : keyword) {
         // We *intentionally* record/use one-based region IDs here.
-        const auto r1 = record.getItem("REGION1").get<int>(0);
-        const auto r2 = record.getItem("REGION2").get<int>(0);
+        const auto r1 = record.getItem("REGION1").get<long long>(0);
+        const auto r2 = record.getItem("REGION2").get<long long>(0);
 
         list.push_back(param.number(EclIO::combineSummaryNumbers(r1, r2)));
     }
@@ -1043,7 +1043,7 @@ void keywordR(SummaryConfig::keyword_list& list,
         return;
     }
 
-    auto regions = std::vector<int>{};
+    auto regions = std::vector<long long>{};
 
     // Assume that the FIPNUM array contains the values {1,2,4}; i.e. the
     // maximum value is 4 and the value 3 is missing.  Values which are too
@@ -1065,7 +1065,7 @@ void keywordR(SummaryConfig::keyword_list& list,
     {
         const auto& item = deck_keyword.getDataRecord().getDataItem();
 
-        for (const auto& region_id : item.getData<int>()) {
+        for (const auto& region_id : item.getData<long long>()) {
             const auto& region_set = context.regions.at(region_name.value());
             auto max_iter = region_set.rbegin();
             if (region_id > *max_iter) {
@@ -1175,7 +1175,7 @@ inline void keywordMISC( SummaryConfig::keyword_list& list,
                 auto cijk = getijk( connection );
 
                 if( ijk_defaulted || ( cijk == getijk(record) ) ) {
-                    const int global_index = 1 + dims.getGlobalIndex(cijk[0], cijk[1], cijk[2]);
+                    const long long global_index = 1 + dims.getGlobalIndex(cijk[0], cijk[1], cijk[2]);
                     list.push_back( param.number(global_index) );
                 }
             }
@@ -1215,13 +1215,13 @@ inline void keywordMISC( SummaryConfig::keyword_list& list,
     }
 
 
-    int maxNumWellSegments(const Well& well)
+    long long maxNumWellSegments(const Well& well)
     {
         return well.isMultiSegment()
             ? well.getSegments().size() : 0;
     }
 
-    void makeSegmentNodes(const int                    segID,
+    void makeSegmentNodes(const long long                    segID,
                           const DeckKeyword&           keyword,
                           const Well&                  well,
                           SummaryConfig::keyword_list& list)
@@ -1309,7 +1309,7 @@ inline void keywordMISC( SummaryConfig::keyword_list& list,
             // Negative 1 (< 0) if segment ID defaulted.  Defaulted
             // segment number in record implies all segments.
             const auto segID = record.getItem(1).defaultApplied(0)
-                ? -1 : record.getItem(1).get<int>(0);
+                ? -1 : record.getItem(1).get<long long>(0);
 
             for (const auto& well_name : well_names) {
                 makeSegmentNodes(segID, keyword, schedule.getWellatEnd(well_name), list);
@@ -1375,7 +1375,7 @@ inline void keywordMISC( SummaryConfig::keyword_list& list,
 
         throw std::invalid_argument {
             "Unhandled Summary Parameter Category '"
-            + std::to_string(static_cast<int>(cat)) + '\''
+            + std::to_string(static_cast<long long>(cat)) + '\''
         };
     }
 
@@ -1408,8 +1408,8 @@ inline void keywordMISC( SummaryConfig::keyword_list& list,
 void handleKW(SummaryConfig::keyword_list&    list,
               SummaryConfigContext&           context,
               const std::vector<std::string>& node_names,
-              const std::vector<int>&         analyticAquiferIDs,
-              const std::vector<int>&         numericAquiferIDs,
+              const std::vector<long long>&         analyticAquiferIDs,
+              const std::vector<long long>&         numericAquiferIDs,
               const DeckKeyword&              keyword,
               const Schedule&                 schedule,
               const FieldPropsManager&        field_props,
@@ -1496,8 +1496,8 @@ void handleKW(SummaryConfig::keyword_list&    list,
 
 inline void handleKW( SummaryConfig::keyword_list& list,
                       const std::string& keyword,
-                      const std::vector<int>& analyticAquiferIDs,
-                      const std::vector<int>& numericAquiferIDs,
+                      const std::vector<long long>& analyticAquiferIDs,
+                      const std::vector<long long>& numericAquiferIDs,
                       const KeywordLocation& location,
                       const Schedule& schedule,
                       const ParseContext& /* parseContext */,
@@ -1662,7 +1662,7 @@ SummaryConfigNode& SummaryConfigNode::namedEntity(std::string name)
     return *this;
 }
 
-SummaryConfigNode& SummaryConfigNode::number(const int num)
+SummaryConfigNode& SummaryConfigNode::number(const long long num)
 {
     this->number_ = num;
     return *this;
@@ -1772,7 +1772,7 @@ bool operator<(const SummaryConfigNode& lhs, const SummaryConfigNode& rhs)
             // Ordering determined by pair of named entity and numeric ID.
             //
             // Would ideally implement this in terms of operator< for
-            // std::tuple<std::string,int>, with objects generated by std::tie(),
+            // std::tuple<std::string,long long>, with objects generated by std::tie(),
             // but `namedEntity()` does not return an lvalue.
             const auto& lnm = lhs.namedEntity();
             const auto& rnm = rhs.namedEntity();

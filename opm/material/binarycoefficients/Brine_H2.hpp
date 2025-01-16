@@ -39,8 +39,8 @@ namespace BinaryCoeff {
 */
 template<class Scalar, class H2O, class H2, bool verbose = true>
 class Brine_H2 {
-    static const int liquidPhaseIdx = 0; // index of the liquid phase
-    static const int gasPhaseIdx = 1; // index of the gas phase
+    static const long long liquidPhaseIdx = 0; // index of the liquid phase
+    static const long long gasPhaseIdx = 1; // index of the gas phase
 
 public:
     /*!

@@ -30,10 +30,10 @@
 #include <vector>
 
 namespace {
-    std::size_t columnarGlobalIdx(const std::array<int, 3>&           dims,
-                                  const std::array<int, 3>&           ijk,
-                                  const std::array<int, 3>::size_type outer,
-                                  const std::array<int, 3>::size_type middle)
+    std::size_t columnarGlobalIdx(const std::array<long long, 3>&           dims,
+                                  const std::array<long long, 3>&           ijk,
+                                  const std::array<long long, 3>::size_type outer,
+                                  const std::array<long long, 3>::size_type middle)
     {
         // Linear index assuming C-like loop order
         //
@@ -62,11 +62,11 @@ namespace {
         return ijk[2] + dims[2]*(ijk[middle] + dims[middle]*ijk[outer]);
     }
 
-    std::pair<std::array<int, 3>::size_type, std::array<int, 3>::size_type>
-    inferOuterLoopOrdering(const std::array<int, 3>& cartDims)
+    std::pair<std::array<long long, 3>::size_type, std::array<long long, 3>::size_type>
+    inferOuterLoopOrdering(const std::array<long long, 3>& cartDims)
     {
-        auto outer  = std::array<int, 3>::size_type{0};
-        auto middle = std::array<int, 3>::size_type{1};
+        auto outer  = std::array<long long, 3>::size_type{0};
+        auto middle = std::array<long long, 3>::size_type{1};
 
         if (cartDims[middle] > cartDims[outer]) {
             std::swap(outer, middle);
@@ -77,8 +77,8 @@ namespace {
 
     std::vector<std::size_t>
     computeColumnarGlobalIndex(const std::vector<std::size_t>&                             activeCells,
-                               const std::array<int, 3>&                                   cartDims,
-                               const std::function<std::array<int, 3>(const std::size_t)>& getIJK)
+                               const std::array<long long, 3>&                                   cartDims,
+                               const std::function<std::array<long long, 3>(const std::size_t)>& getIJK)
     {
         auto colGlobIx = activeCells;
 
@@ -94,12 +94,12 @@ namespace {
         return colGlobIx;
     }
 
-    std::vector<int>
+    std::vector<long long>
     buildMappingTables(const std::size_t                                           numActive,
-                       const std::array<int, 3>&                                   cartDims,
-                       const std::function<std::array<int, 3>(const std::size_t)>& getIJK)
+                       const std::array<long long, 3>&                                   cartDims,
+                       const std::function<std::array<long long, 3>(const std::size_t)>& getIJK)
     {
-        auto natural2columnar = std::vector<int>(numActive, 0);
+        auto natural2columnar = std::vector<long long>(numActive, 0);
 
         auto activeCells = std::vector<std::size_t>(numActive, std::size_t{0});
         std::iota(activeCells.begin(), activeCells.end(), std::size_t{0});
@@ -128,8 +128,8 @@ bool Opm::ActiveIndexByColumns::operator==(const ActiveIndexByColumns& rhs) cons
 
 Opm::ActiveIndexByColumns::
 ActiveIndexByColumns(const std::size_t                                           numActive,
-                     const std::array<int, 3>&                                   cartDims,
-                     const std::function<std::array<int, 3>(const std::size_t)>& getIJK)
+                     const std::array<long long, 3>&                                   cartDims,
+                     const std::function<std::array<long long, 3>(const std::size_t)>& getIJK)
     : natural2columnar_{ buildMappingTables(numActive, cartDims, getIJK) }
 {}
 

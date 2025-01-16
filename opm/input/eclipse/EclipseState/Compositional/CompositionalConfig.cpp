@@ -189,7 +189,7 @@ CompositionalConfig::CompositionalConfig(const Deck& deck, const Runspec& runspe
         const auto& keywords = props_section.get<ParserKeywords::NCOMPS>();
         for (const auto& kw : keywords) {
             const auto& item = kw.getRecord(0).getItem<ParserKeywords::NCOMPS::NUM_COMPS>();
-            const auto ncomps = item.get<int>(0);
+            const auto ncomps = item.get<long long>(0);
             if (size_t(ncomps) != this->num_comps) {
                 const std::string msg = fmt::format("NCOMPS is specified with {}, which is different from the number specified in COMPS {}",
                                                     ncomps, this->num_comps);

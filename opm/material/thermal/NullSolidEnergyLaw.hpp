@@ -38,7 +38,7 @@ template <class ScalarT>
 class NullSolidEnergyLaw
 {
 public:
-    using Params = int;
+    using Params = long long;
     using Scalar = ScalarT;
 
     /*!

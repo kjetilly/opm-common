@@ -553,12 +553,12 @@ private:
 
         size_t iP1 =
             static_cast<size_t>(
-                std::max<int>(0, std::min(static_cast<int>(nPress_) - 2,
-                                          static_cast<int>(scalarValue(alphaP1)))));
+                std::max<long long>(0LL, std::min(static_cast<long long>(nPress_) - 2,
+                                          static_cast<long long>(scalarValue(alphaP1)))));
         size_t iP2 =
             static_cast<size_t>(
-                std::max(0, std::min(static_cast<int>(nPress_) - 2,
-                                     static_cast<int>(scalarValue(alphaP2)))));
+                std::max(0LL, std::min(static_cast<long long>(nPress_) - 2,
+                                     static_cast<long long>(scalarValue(alphaP2)))));
         alphaP1 -= iP1;
         alphaP2 -= iP2;
 
@@ -580,20 +580,20 @@ private:
 
         size_t iT =
             static_cast<size_t>(
-                std::max(0, std::min(static_cast<int>(nTemp_) - 2,
-                                     static_cast<int>(scalarValue(alphaT)))));
+                std::max(0LL, std::min(static_cast<long long>(nTemp_) - 2,
+                                     static_cast<long long>(scalarValue(alphaT)))));
         alphaT -= iT;
 
         Evaluation alphaP1 = pressGasIdx_(p, iT);
         Evaluation alphaP2 = pressGasIdx_(p, iT + 1);
         size_t iP1 =
             static_cast<size_t>(
-                std::max(0, std::min(static_cast<int>(nPress_) - 2,
-                                     static_cast<int>(scalarValue(alphaP1)))));
+                std::max(0LL, std::min(static_cast<long long>(nPress_) - 2,
+                                     static_cast<long long>(scalarValue(alphaP1)))));
         size_t iP2 =
             static_cast<size_t>(
-                std::max(0, std::min(static_cast<int>(nPress_) - 2,
-                                     static_cast<int>(scalarValue(alphaP2)))));
+                std::max(0LL, std::min(static_cast<long long>(nPress_) - 2,
+                                     static_cast<long long>(scalarValue(alphaP2)))));
         alphaP1 -= iP1;
         alphaP2 -= iP2;
 
@@ -610,21 +610,21 @@ private:
     static Evaluation interpolateGasTRho_(const Scalar* values, const Evaluation& T, const Evaluation& rho)
     {
         Evaluation alphaT = tempIdx_(T);
-        unsigned iT = std::max(0,
-                               std::min(static_cast<int>(nTemp_ - 2),
-                                        static_cast<int>(alphaT)));
+        unsigned iT = std::max(0LL,
+                               std::min(static_cast<long long>(nTemp_ - 2),
+                                        static_cast<long long>(alphaT)));
         alphaT -= iT;
 
         Evaluation alphaP1 = densityGasIdx_(rho, iT);
         Evaluation alphaP2 = densityGasIdx_(rho, iT + 1);
         unsigned iP1 =
-            std::max(0,
-                     std::min(static_cast<int>(nDensity_ - 2),
-                              static_cast<int>(alphaP1)));
+            std::max(0LL,
+                     std::min(static_cast<long long>(nDensity_ - 2),
+                              static_cast<long long>(alphaP1)));
         unsigned iP2 =
-            std::max(0,
-                     std::min(static_cast<int>(nDensity_ - 2),
-                              static_cast<int>(alphaP2)));
+            std::max(0LL,
+                     std::min(static_cast<long long>(nDensity_ - 2),
+                              static_cast<long long>(alphaP2)));
         alphaP1 -= iP1;
         alphaP2 -= iP2;
 
@@ -641,13 +641,13 @@ private:
     static Evaluation interpolateLiquidTRho_(const Scalar* values, const Evaluation& T, const Evaluation& rho)
     {
         Evaluation alphaT = tempIdx_(T);
-        unsigned iT = std::max<int>(0, std::min<int>(nTemp_ - 2, static_cast<int>(alphaT)));
+        unsigned iT = std::max<long long>(0, std::min<long long>(nTemp_ - 2, static_cast<long long>(alphaT)));
         alphaT -= iT;
 
         Evaluation alphaP1 = densityLiquidIdx_(rho, iT);
         Evaluation alphaP2 = densityLiquidIdx_(rho, iT + 1);
-        unsigned iP1 = std::max<int>(0, std::min<int>(nDensity_ - 2, static_cast<int>(alphaP1)));
-        unsigned iP2 = std::max<int>(0, std::min<int>(nDensity_ - 2, static_cast<int>(alphaP2)));
+        unsigned iP1 = std::max<long long>(0, std::min<long long>(nDensity_ - 2, static_cast<long long>(alphaP1)));
+        unsigned iP2 = std::max<long long>(0, std::min<long long>(nDensity_ - 2, static_cast<long long>(alphaP2)));
         alphaP1 -= iP1;
         alphaP2 -= iP2;
 

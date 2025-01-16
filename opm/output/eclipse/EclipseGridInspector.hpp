@@ -61,19 +61,19 @@ public:
 
     /// Assuming that the pillars are vertical, compute the
     /// volume of the cell given by logical coordinates (i, j, k).
-    double cellVolumeVerticalPillars(int i, int j, int k) const;
+    double cellVolumeVerticalPillars(long long i, long long j, long long k) const;
 
     /// Assuming that the pillars are vertical, compute the
     /// volume of the cell given by the cell index
-    double cellVolumeVerticalPillars(int cell_idx) const;
+    double cellVolumeVerticalPillars(long long cell_idx) const;
 
     /// Compute the average dip in x- and y-direction of the
     /// cell tops and bottoms relative to the xy-plane
-    std::pair<double,double> cellDips(int i, int j, int k) const;
-    std::pair<double,double> cellDips(int cell_idx) const;
+    std::pair<double,double> cellDips(long long i, long long j, long long k) const;
+    std::pair<double,double> cellDips(long long cell_idx) const;
 
     // Convert global cell index to logical ijk-coordinates
-    std::array<int, 3> cellIdxToLogicalCoords(int cell_idx) const;
+    std::array<long long, 3> cellIdxToLogicalCoords(long long cell_idx) const;
 
     /// Returns a vector with the outer limits of grid (in the grid's unit).
     /// The vector contains [xmin, xmax, ymin, ymax, zmin, zmax], as
@@ -82,19 +82,19 @@ public:
 
     /// Returns the extent of the logical cartesian grid
     /// as number of cells in the (i, j, k) directions.
-    std::array<int, 3> gridSize() const;
+    std::array<long long, 3> gridSize() const;
 
     /// Returns the eight z-values associated with a given cell.
     /// The ordering is such that i runs fastest. That is, with
     /// L = low and H = high:
     /// {LLL, HLL, LHL, HHL, LLH, HLH, LHH, HHH }.
-    std::array<double, 8> cellZvals(int i, int j, int k) const;
+    std::array<double, 8> cellZvals(long long i, long long j, long long k) const;
 
 private:
     Opm::Deck deck_;
-    int logical_gridsize_[3];
+    long long logical_gridsize_[3];
     void init_();
-    void checkLogicalCoords(int i, int j, int k) const;
+    void checkLogicalCoords(long long i, long long j, long long k) const;
 };
 
 } // namespace Opm

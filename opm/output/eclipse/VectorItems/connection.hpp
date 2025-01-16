@@ -24,7 +24,7 @@
 
 namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems {
     namespace IConn {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             SeqIndex   =  0, // Connection sequence index
             CellI      =  1, // I-location (1-based cell index) of connection
             CellJ      =  2, // J-location (1-based cell index) of connection

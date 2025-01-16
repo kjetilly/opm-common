@@ -33,31 +33,31 @@ namespace Opm {
         static MessageLimits serializationTestObject();
 
         ///Get all the value from MESSAGES keyword.
-        int getMessagePrintLimit() const;
-        int getCommentPrintLimit() const;
-        int getWarningPrintLimit() const;
-        int getProblemPrintLimit() const;
-        int getErrorPrintLimit() const;
-        int getBugPrintLimit() const;
-        void setMessagePrintLimit(int value);
-        void setCommentPrintLimit(int value);
-        void setWarningPrintLimit(int value);
-        void setProblemPrintLimit(int value);
-        void setErrorPrintLimit(int value);
-        void setBugPrintLimit(int value);
+        long long getMessagePrintLimit() const;
+        long long getCommentPrintLimit() const;
+        long long getWarningPrintLimit() const;
+        long long getProblemPrintLimit() const;
+        long long getErrorPrintLimit() const;
+        long long getBugPrintLimit() const;
+        void setMessagePrintLimit(long long value);
+        void setCommentPrintLimit(long long value);
+        void setWarningPrintLimit(long long value);
+        void setProblemPrintLimit(long long value);
+        void setErrorPrintLimit(long long value);
+        void setBugPrintLimit(long long value);
 
-        int getMessageStopLimit() const;
-        int getCommentStopLimit() const;
-        int getWarningStopLimit() const;
-        int getProblemStopLimit() const;
-        int getErrorStopLimit() const;
-        int getBugStopLimit() const;
-        void setMessageStopLimit(int value);
-        void setCommentStopLimit(int value);
-        void setWarningStopLimit(int value);
-        void setProblemStopLimit(int value);
-        void setErrorStopLimit(int value);
-        void setBugStopLimit(int value);
+        long long getMessageStopLimit() const;
+        long long getCommentStopLimit() const;
+        long long getWarningStopLimit() const;
+        long long getProblemStopLimit() const;
+        long long getErrorStopLimit() const;
+        long long getBugStopLimit() const;
+        void setMessageStopLimit(long long value);
+        void setCommentStopLimit(long long value);
+        void setWarningStopLimit(long long value);
+        void setProblemStopLimit(long long value);
+        void setErrorStopLimit(long long value);
+        void setBugStopLimit(long long value);
 
         bool operator==(const MessageLimits& data) const;
         void update(const DeckKeyword& keyword);
@@ -80,18 +80,18 @@ namespace Opm {
         }
 
     private:
-        int message_print_limit;
-        int comment_print_limit;
-        int warning_print_limit;
-        int problem_print_limit;
-        int error_print_limit;
-        int bug_print_limit;
-        int message_stop_limit;
-        int comment_stop_limit;
-        int warning_stop_limit;
-        int problem_stop_limit;
-        int error_stop_limit;
-        int bug_stop_limit;
+        long long message_print_limit;
+        long long comment_print_limit;
+        long long warning_print_limit;
+        long long problem_print_limit;
+        long long error_print_limit;
+        long long bug_print_limit;
+        long long message_stop_limit;
+        long long comment_stop_limit;
+        long long warning_stop_limit;
+        long long problem_stop_limit;
+        long long error_stop_limit;
+        long long bug_stop_limit;
     };
 }
 

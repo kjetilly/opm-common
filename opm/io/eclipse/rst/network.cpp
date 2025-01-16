@@ -62,7 +62,7 @@ public:
         typename std::vector<T>::const_iterator
     >;
 
-    explicit BranchVectors(const std::vector<int>&                      intehead,
+    explicit BranchVectors(const std::vector<long long>&                      intehead,
                            std::shared_ptr<Opm::EclIO::RestartFileView> rst_view);
 
     std::size_t numActiveBranches() const
@@ -70,7 +70,7 @@ public:
         return this->numActiveBranches_;
     }
 
-    Window<int> ibran(const std::size_t branchID) const;
+    Window<long long> ibran(const std::size_t branchID) const;
 
 private:
     std::size_t numActiveBranches_;
@@ -79,17 +79,17 @@ private:
     std::shared_ptr<Opm::EclIO::RestartFileView> rstView_;
 };
 
-BranchVectors::BranchVectors(const std::vector<int>&                      intehead,
+BranchVectors::BranchVectors(const std::vector<long long>&                      intehead,
                              std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
     : numActiveBranches_(intehead[VI::intehead::NOACTBR])
     , numIBranElem_     (intehead[VI::intehead::NIBRAN])
     , rstView_          (std::move(rst_view))
 {}
 
-BranchVectors::Window<int>
+BranchVectors::Window<long long>
 BranchVectors::ibran(const std::size_t branchID) const
 {
-    return getDataWindow(this->rstView_->getKeyword<int>("IBRAN"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("IBRAN"),
                          this->numIBranElem_, branchID);
 }
 
@@ -103,7 +103,7 @@ public:
         typename std::vector<T>::const_iterator
     >;
 
-    explicit NodeVectors(const std::vector<int>&                      intehead,
+    explicit NodeVectors(const std::vector<long long>&                      intehead,
                          std::shared_ptr<Opm::EclIO::RestartFileView> rst_view);
 
     std::size_t numActiveNodes() const
@@ -111,7 +111,7 @@ public:
         return this->numActiveNodes_;
     }
 
-    Window<int>         inode(const std::size_t nodeID) const;
+    Window<long long>         inode(const std::size_t nodeID) const;
     Window<double>      rnode(const std::size_t nodeID) const;
     Window<std::string> znode(const std::size_t nodeID) const;
 
@@ -124,7 +124,7 @@ private:
     std::shared_ptr<Opm::EclIO::RestartFileView> rstView_;
 };
 
-NodeVectors::NodeVectors(const std::vector<int>&                      intehead,
+NodeVectors::NodeVectors(const std::vector<long long>&                      intehead,
                          std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
     : numActiveNodes_(intehead[VI::intehead::NOACTNOD])
     , numINodeElem_  (intehead[VI::intehead::NINODE])
@@ -133,10 +133,10 @@ NodeVectors::NodeVectors(const std::vector<int>&                      intehead,
     , rstView_       (std::move(rst_view))
 {}
 
-NodeVectors::Window<int>
+NodeVectors::Window<long long>
 NodeVectors::inode(const std::size_t nodeID) const
 {
-    return getDataWindow(this->rstView_->getKeyword<int>("INODE"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("INODE"),
                          this->numINodeElem_, nodeID);
 }
 
@@ -157,7 +157,7 @@ NodeVectors::znode(const std::size_t nodeID) const
 // ---------------------------------------------------------------------------
 
 namespace {
-    int branch_vfp_no_pressure_loss()
+    long long branch_vfp_no_pressure_loss()
     {
         return 9999;
     }

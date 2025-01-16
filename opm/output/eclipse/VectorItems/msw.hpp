@@ -26,7 +26,7 @@ namespace Opm::RestartIO::Helpers::VectorItems {
 
     namespace ISeg {
 
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             SegNo          = 0, // Segment number (one-based)
             OutSeg         = 1, // Outlet segment (one-based)
             InSegCurBranch = 2, // Inflow segment current branch (one-based)
@@ -50,7 +50,7 @@ namespace Opm::RestartIO::Helpers::VectorItems {
     } // ISeg
 
     namespace ILbr {
-        enum index : std::vector<int>::size_type {
+        enum index : std::vector<long long>::size_type {
             OutletSegment          = 0, // Branch's outlet segment (one-based)
             NumBranchSegments      = 1, // Number of segments on branch
             FirstSegment           = 2, // First segment on branch (kick-off, heel)

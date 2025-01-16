@@ -80,7 +80,7 @@ static bool has_result_files(const std::string& rootName)
 
 //------------------------------------------------//
 
-int main(int argc, char** argv) {
+long long main(long long argc, char** argv) {
     bool integrationTest           = false;
     bool onlyLastSequence          = false;
     bool reportStepOnly            = false;
@@ -94,8 +94,8 @@ int main(int argc, char** argv) {
     bool acceptExtraKeywordsBoth   = false;
     bool analysis                  = false;
     char* keyword                  = nullptr;
-    int c                          = 0;
-    int reportStepNumber           = -1;
+    long long c                          = 0;
+    long long reportStepNumber           = -1;
     std::string fileTypeString;
 
     while ((c = getopt(argc, argv, "hik:alnpt:Rr:xdy")) != -1) {
@@ -161,7 +161,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    int argOffset = optind;
+    long long argOffset = optind;
 
     if (argc != argOffset + 4) {
         std::cerr << "Error: The number of options and arguments given is not correct. "

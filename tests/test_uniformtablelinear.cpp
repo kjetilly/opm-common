@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(table_operations)
 {
     // Make a simple table.
     double yva[] = { 1.0, -1.0, 3.0, 4.0, 2.0 };
-    const int numvals = sizeof(yva)/sizeof(yva[0]);
+    const long long numvals = sizeof(yva)/sizeof(yva[0]);
     std::vector<double> yv(yva, yva + numvals);
     const double xmin = 1.0;
     const double xdelta = 2.5;
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(table_operations)
     BOOST_CHECK(t1 == t1_copy2);
 
     // Check some evaluations.
-    for (int i = 0; i < numvals; ++i) {
+    for (long long i = 0; i < numvals; ++i) {
         BOOST_CHECK_EQUAL(t1(xmin + i*xdelta), yv[i]);
     }
     BOOST_CHECK_EQUAL(t1(2.25), 0.0);
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(table_operations)
     t1.rescaleDomain(new_domain);
     BOOST_CHECK_EQUAL(t1.domain().first, new_domain.first);
     BOOST_CHECK_EQUAL(t1.domain().second, new_domain.second);
-    for (int i = 0; i < numvals; ++i) {
+    for (long long i = 0; i < numvals; ++i) {
         BOOST_CHECK_EQUAL(t1(-100.0 + i*120.0/(double(numvals - 1))), yv[i]);
     }
     BOOST_CHECK_EQUAL(t1(-85.0), 0.0);

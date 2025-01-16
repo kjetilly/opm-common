@@ -83,9 +83,9 @@ template<> const UDAValue& ParserItem::value_ref< UDAValue >() const {
     return this->uval;
 }
 
-template<> const int& ParserItem::value_ref< int >() const {
-    if( this->data_type != get_type< int >() )
-        throw std::invalid_argument( "ValueRef<int>: Wrong type." );
+template<> const long long& ParserItem::value_ref< long long >() const {
+    if( this->data_type != get_type< long long >() )
+        throw std::invalid_argument( "ValueRef<long long>: Wrong type." );
     return this->ival;
 }
 
@@ -191,7 +191,7 @@ void ParserItem::setInputType(ParserItem::itype input_type_arg) {
     this->input_type = input_type_arg;
 
     if (input_type == itype::INT)
-        this->setDataType(int());
+        this->setDataType(std::common_type<long long>::type());
 
     else if (input_type == itype::DOUBLE)
         this->setDataType(double());
@@ -418,7 +418,7 @@ std::string ParserItem::createCode(const std::string& indent) const {
         stream << indent << "item.setDefault( ";
         switch( this->data_type ) {
         case type_tag::integer:
-            stream << this->getDefault< int >();
+            stream << this->getDefault< long long >();
             break;
 
         case type_tag::fdouble:
@@ -567,9 +567,9 @@ DeckItem ParserItem::scan( RawRecord& record, UnitSystem& active_unitsystem, Uni
     switch( this->data_type ) {
     case type_tag::integer:
         {
-            DeckItem item( this->name(), int());
-            scan_item< int >( item, *this, record );
-            item.shrink_to_fit<int>();
+            DeckItem item( this->name(),  std::common_type<long long>::type());
+            scan_item< long long >( item, *this, record );
+            item.shrink_to_fit<long long>();
             return item;
         }
         break;
@@ -633,7 +633,7 @@ std::ostream& ParserItem::inlineClass( std::ostream& stream, const std::string& 
         auto defval = [this]() -> std::string {
             switch( this->data_type ) {
                 case type_tag::integer:
-                    return std::to_string( this->getDefault< int >() );
+                    return std::to_string( this->getDefault< long long >() );
                 case type_tag::fdouble:
                     return as_string( this->getDefault< double >() );
                 default:
@@ -710,7 +710,7 @@ std::ostream& operator<<( std::ostream& stream, const ParserItem& item ) {
         stream << "default: ";
         switch( item.data_type ) {
             case type_tag::integer:
-                stream << item.getDefault< int >();
+                stream << item.getDefault< long long >();
                 break;
 
             case type_tag::fdouble:
@@ -744,17 +744,17 @@ bool ParserItem::parseRaw( ) const {
     return (this->input_type == itype::RAW_STRING);
 }
 
-template void ParserItem::setDefault( int );
+template void ParserItem::setDefault( long long );
 template void ParserItem::setDefault( double );
 template void ParserItem::setDefault( std::string );
 template void ParserItem::setDefault( UDAValue );
 
-template void ParserItem::setDataType( int );
+template void ParserItem::setDataType( long long );
 template void ParserItem::setDataType( double );
 template void ParserItem::setDataType( std::string );
 template void ParserItem::setDataType( UDAValue );
 
-template const int& ParserItem::getDefault() const;
+template const long long& ParserItem::getDefault() const;
 template const double& ParserItem::getDefault() const;
 template const std::string& ParserItem::getDefault() const;
 template const UDAValue& ParserItem::getDefault() const;

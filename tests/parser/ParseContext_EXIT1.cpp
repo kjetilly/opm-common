@@ -40,7 +40,7 @@ void test_exit(Opm::InputErrorAction action) {
     if (pid == 0)
         exit1(action);
 
-    int wait_status;
+    long long wait_status;
     waitpid(pid, &wait_status, 0);
 
     if (WIFEXITED(wait_status)) {
@@ -54,7 +54,7 @@ void test_exit(Opm::InputErrorAction action) {
         std::exit(EXIT_FAILURE);
 }
 
-int main() {
+long long main() {
     test_exit(Opm::InputErrorAction::EXIT1);
     test_exit(Opm::InputErrorAction::DELAYED_EXIT1);
 }

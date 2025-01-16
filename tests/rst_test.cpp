@@ -67,7 +67,7 @@ void initLogging() {
 */
 
 
-std::pair<Opm::EclipseState, Opm::Schedule> load_schedule(std::shared_ptr<const Opm::Python> python, const std::string& fname, int& report_step) {
+std::pair<Opm::EclipseState, Opm::Schedule> load_schedule(std::shared_ptr<const Opm::Python> python, const std::string& fname, long long& report_step) {
     Opm::Parser parser;
     auto deck = parser.parseFile(fname);
     Opm::EclipseState state(deck);
@@ -94,7 +94,7 @@ std::pair<Opm::EclipseState, Opm::Schedule> load_schedule(std::shared_ptr<const 
 }
 
 std::pair<Opm::EclipseState, Opm::Schedule> load_schedule(std::shared_ptr<const Opm::Python> python, const std::string& fname) {
-    int report_step;
+    long long report_step;
     return load_schedule(python, fname, report_step);
 }
 
@@ -107,7 +107,7 @@ int main(int argc, char ** argv) {
         load_schedule(python, argv[1]);
     else {
         bool equal = true;
-        int report_step;
+        long long report_step;
         const auto& [state, sched] = load_schedule(python, argv[1]);
         const auto& [rst_state, rst_sched] = load_schedule(python, argv[2], report_step);
 

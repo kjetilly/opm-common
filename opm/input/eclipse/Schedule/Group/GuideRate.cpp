@@ -63,7 +63,7 @@ double Opm::GuideRate::RateVector::eval(const GuideRateModel::Target target) con
         return this->oil_rat + this->wat_rat + this->gas_rat;
 
     throw std::logic_error {
-        "Don't know how to convert target type " + std::to_string(static_cast<int>(target))
+        "Don't know how to convert target type " + std::to_string(static_cast<long long>(target))
     };
 }
 
@@ -126,7 +126,7 @@ double Opm::GuideRate::get(const std::string& name, const Phase& phase) const
 {
     auto iter = this->injection_group_values.find(std::make_pair(phase, name));
     if (iter == this->injection_group_values.end()) {
-        auto message = fmt::format("Did not find any guiderate values for injection group {}:{}", name, std::to_string(static_cast<int>(phase)));
+        auto message = fmt::format("Did not find any guiderate values for injection group {}:{}", name, std::to_string(static_cast<long long>(phase)));
         throw std::logic_error {message};
     }
     return iter->second;
@@ -196,7 +196,7 @@ double Opm::GuideRate::getSI(const std::string& group, const Phase& phase) const
     }
 
     throw std::invalid_argument {
-        fmt::format("Unsupported Injection Guiderate Phase '{}'", static_cast<int>(phase))
+        fmt::format("Unsupported Injection Guiderate Phase '{}'", static_cast<long long>(phase))
     };
 }
 

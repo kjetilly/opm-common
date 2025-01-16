@@ -56,7 +56,7 @@ bool operator<( const HexIntersectionInfo& hi1, const HexIntersectionInfo& hi2 )
 //--------------------------------------------------------------------------------------------------
 struct RigHexIntersectionTools
 {
-    static int lineHexCellIntersection( const cvf::Vec3d                  p1,
+    static long long lineHexCellIntersection( const cvf::Vec3d                  p1,
                                         const cvf::Vec3d                  p2,
                                         const cvf::Vec3d                  hexCorners[8],
                                         const size_t                      hexIndex,

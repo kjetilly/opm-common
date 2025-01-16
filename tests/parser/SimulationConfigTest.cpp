@@ -183,8 +183,8 @@ static Deck createDeck(const std::string& input) {
 BOOST_AUTO_TEST_CASE(SimulationConfigBCCON) {
     auto deck = createDeck(inputStr_bccon);
     BCConfig bcconfig(deck);
-    std::vector<int> i1s = { 1, 10};
-    std::vector<int> k2s = { 1, 4};
+    std::vector<long long> i1s = { 1, 10};
+    std::vector<long long> k2s = { 1, 4};
     std::vector<Opm::FaceDir::DirEnum> dirs = { Opm::FaceDir::XMinus , Opm::FaceDir::XPlus};
     for (const auto bc : bcconfig) {
         BOOST_CHECK(bc.i1 == (i1s[bc.index - 1 ]) - 1);
@@ -263,9 +263,9 @@ BOOST_AUTO_TEST_CASE(SimulationConfigCPRBoth) {
     const auto& record = cpr.getRecord(0);
     BOOST_CHECK_EQUAL( 1U , cpr.size());
     BOOST_CHECK_EQUAL( record.getItem<ParserKeywords::CPR::WELL>().get< std::string >(0) , "well1");
-    BOOST_CHECK_EQUAL( record.getItem<ParserKeywords::CPR::I>().get< int >(0) , 10);
-    BOOST_CHECK_EQUAL( record.getItem<ParserKeywords::CPR::J>().get< int >(0) , 20);
-    BOOST_CHECK_EQUAL( record.getItem<ParserKeywords::CPR::K>().get< int >(0) , 30);
+    BOOST_CHECK_EQUAL( record.getItem<ParserKeywords::CPR::I>().get< long long >(0) , 10);
+    BOOST_CHECK_EQUAL( record.getItem<ParserKeywords::CPR::J>().get< long long >(0) , 20);
+    BOOST_CHECK_EQUAL( record.getItem<ParserKeywords::CPR::K>().get< long long >(0) , 30);
 }
 
 

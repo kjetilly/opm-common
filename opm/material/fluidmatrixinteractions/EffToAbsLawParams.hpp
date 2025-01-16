@@ -39,7 +39,7 @@ namespace Opm {
  *        class to convert material laws from effective to absolute
  *        saturations.
  */
-template <class EffLawParamsT, int numPhases>
+template <class EffLawParamsT, long long numPhases>
 class EffToAbsLawParams : public EffLawParamsT
 {
     typedef EffLawParamsT EffLawParams;

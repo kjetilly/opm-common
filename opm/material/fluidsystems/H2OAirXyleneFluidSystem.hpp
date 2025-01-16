@@ -69,23 +69,23 @@ public:
     typedef ::Opm::Air<Scalar> Air;
 
     //! \copydoc BaseFluidSystem::numPhases
-    static const int numPhases = 3;
+    static const long long numPhases = 3;
     //! \copydoc BaseFluidSystem::numComponents
-    static const int numComponents = 3;
+    static const long long numComponents = 3;
 
     //! The index of the water phase
-    static const int waterPhaseIdx = 0;
+    static const long long waterPhaseIdx = 0;
     //! The index of the NAPL phase
-    static const int naplPhaseIdx = 1;
+    static const long long naplPhaseIdx = 1;
     //! The index of the gas phase
-    static const int gasPhaseIdx = 2;
+    static const long long gasPhaseIdx = 2;
 
     //! The index of the water component
-    static const int H2OIdx = 0;
+    static const long long H2OIdx = 0;
     //! The index of the NAPL component
-    static const int NAPLIdx = 1;
+    static const long long NAPLIdx = 1;
     //! The index of the air pseudo-component
-    static const int airIdx = 2;
+    static const long long airIdx = 2;
 
     //! \copydoc BaseFluidSystem::init
     static void init()

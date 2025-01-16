@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(RUN) {
                 BOOST_CHECK_CLOSE( press[0], dh[0] * 86400, 1e-3 );
             }
 
-            const int report_step = 50;
+            const long long report_step = 50;
             {
                 const KeywordLocation location {"SKIPREST", "SPE1CASE1.DATA", 388};
                 deck.addKeyword({location, "SKIPREST"});

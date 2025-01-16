@@ -364,7 +364,7 @@ UDQSet sortOrder(const UDQSet& arg, Compare&& cmp)
 {
     auto result = arg;
 
-    auto ix = std::vector<int>{};
+    auto ix = std::vector<long long>{};
     {
         auto i = 0;
         for (const auto& elm : arg) {
@@ -382,7 +382,7 @@ UDQSet sortOrder(const UDQSet& arg, Compare&& cmp)
     }
 
     std::sort(ix.begin(), ix.end(), [&arg, cmp = std::forward<Compare>(cmp)]
-              (const int i1, const int i2)
+              (const long long i1, const long long i2)
     {
         return cmp(*arg[i1].value(), *arg[i2].value());
     });

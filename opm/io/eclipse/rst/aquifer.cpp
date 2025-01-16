@@ -70,13 +70,13 @@ public:
         typename std::vector<T>::const_iterator
     >;
 
-    explicit ConnectionVectors(const std::vector<int>&                      intehead,
+    explicit ConnectionVectors(const std::vector<long long>&                      intehead,
                                std::shared_ptr<Opm::EclIO::RestartFileView> rst_view);
 
-    Window<int>   icaq(const int         occurrence,
+    Window<long long>   icaq(const long long         occurrence,
                        const std::size_t connectionID) const;
 
-    Window<float> scaq(const int         occurrence,
+    Window<float> scaq(const long long         occurrence,
                        const std::size_t connectionID) const;
 
 private:
@@ -86,23 +86,23 @@ private:
     std::shared_ptr<Opm::EclIO::RestartFileView> rstView_;
 };
 
-ConnectionVectors::ConnectionVectors(const std::vector<int>&                      intehead,
+ConnectionVectors::ConnectionVectors(const std::vector<long long>&                      intehead,
                                      std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
     : numIConnElem_(intehead[VI::intehead::NICAQZ])
     , numSConnElem_(intehead[VI::intehead::NSCAQZ])
     , rstView_     (std::move(rst_view))
 {}
 
-ConnectionVectors::Window<int>
-ConnectionVectors::icaq(const int         occurrence,
+ConnectionVectors::Window<long long>
+ConnectionVectors::icaq(const long long         occurrence,
                         const std::size_t connectionID) const
 {
-    return getDataWindow(this->rstView_->getKeyword<int>("ICAQ", occurrence),
+    return getDataWindow(this->rstView_->getKeyword<long long>("ICAQ", occurrence),
                          this->numIConnElem_, connectionID);
 }
 
 ConnectionVectors::Window<float>
-ConnectionVectors::scaq(const int         occurrence,
+ConnectionVectors::scaq(const long long         occurrence,
                         const std::size_t connectionID) const
 {
     return getDataWindow(this->rstView_->getKeyword<float>("SCAQ", occurrence),
@@ -119,17 +119,17 @@ public:
         typename std::vector<T>::const_iterator
     >;
 
-    explicit AquiferVectors(const std::vector<int>&                      intehead,
+    explicit AquiferVectors(const std::vector<long long>&                      intehead,
                             std::shared_ptr<Opm::EclIO::RestartFileView> rst_view);
 
-    int maxAquiferID() const;
+    long long maxAquiferID() const;
 
-    Window<int>    iaaq(const std::size_t aquiferID) const;
+    Window<long long>    iaaq(const std::size_t aquiferID) const;
     Window<float>  saaq(const std::size_t aquiferID) const;
     Window<double> xaaq(const std::size_t aquiferID) const;
 
 private:
-    int         maxAquiferID_{};
+    long long         maxAquiferID_{};
     std::size_t numIAquifElem_;
     std::size_t numSAquifElem_;
     std::size_t numXAquifElem_;
@@ -137,7 +137,7 @@ private:
     std::shared_ptr<Opm::EclIO::RestartFileView> rstView_;
 };
 
-AquiferVectors::AquiferVectors(const std::vector<int>&                      intehead,
+AquiferVectors::AquiferVectors(const std::vector<long long>&                      intehead,
                                std::shared_ptr<Opm::EclIO::RestartFileView> rst_view)
     : maxAquiferID_ (intehead[VI::intehead::MAX_AN_AQUIFER_ID])
     , numIAquifElem_(intehead[VI::intehead::NIAAQZ])
@@ -146,15 +146,15 @@ AquiferVectors::AquiferVectors(const std::vector<int>&                      inte
     , rstView_      (std::move(rst_view))
 {}
 
-int AquiferVectors::maxAquiferID() const
+long long AquiferVectors::maxAquiferID() const
 {
     return this->maxAquiferID_;
 }
 
-AquiferVectors::Window<int>
+AquiferVectors::Window<long long>
 AquiferVectors::iaaq(const std::size_t aquiferID) const
 {
-    return getDataWindow(this->rstView_->getKeyword<int>("IAAQ"),
+    return getDataWindow(this->rstView_->getKeyword<long long>("IAAQ"),
                          this->numIAquifElem_, aquiferID);
 }
 
@@ -177,15 +177,15 @@ AquiferVectors::xaaq(const std::size_t aquiferID) const
 class ConnectionOccurrence
 {
 public:
-    explicit ConnectionOccurrence(const int                    numAquifers,
+    explicit ConnectionOccurrence(const long long                    numAquifers,
                                   Opm::EclIO::RestartFileView& rst_view);
 
-    int icaq(const int aquiferID) const
+    long long icaq(const long long aquiferID) const
     {
         return this->occurrence_[aquiferID].I;
     }
 
-    int scaq(const int aquiferID) const
+    long long scaq(const long long aquiferID) const
     {
         return this->occurrence_[aquiferID].S;
     }
@@ -193,14 +193,14 @@ public:
 private:
     struct Occurrence
     {
-        int I{-1};
-        int S{-1};
+        long long I{-1};
+        long long S{-1};
     };
 
     std::vector<Occurrence> occurrence_{};
 };
 
-ConnectionOccurrence::ConnectionOccurrence(const int                    maxAquiferID,
+ConnectionOccurrence::ConnectionOccurrence(const long long                    maxAquiferID,
                                            Opm::EclIO::RestartFileView& rst_view)
     : occurrence_(maxAquiferID)
 {
@@ -228,8 +228,8 @@ ConnectionOccurrence::ConnectionOccurrence(const int                    maxAquif
     //   format allows for general ordering.  This mapping facility exists
     //   mainly to handle the general case.
     for (auto occurrence = 0*maxAquiferID; occurrence < maxAquiferID; ++occurrence) {
-        const auto& iAquifID = rst_view.getKeyword<int>(integerAquifID, occurrence);
-        const auto& sAquifID = rst_view.getKeyword<int>(floatAquifID,   occurrence);
+        const auto& iAquifID = rst_view.getKeyword<long long>(integerAquifID, occurrence);
+        const auto& sAquifID = rst_view.getKeyword<long long>(floatAquifID,   occurrence);
 
         this->occurrence_[iAquifID.front() - 1].I = occurrence;
         this->occurrence_[sAquifID.front() - 1].S = occurrence;
@@ -238,7 +238,7 @@ ConnectionOccurrence::ConnectionOccurrence(const int                    maxAquif
 
 // ---------------------------------------------------------------------
 
-Opm::FaceDir::DirEnum face_direction(const int directionValue)
+Opm::FaceDir::DirEnum face_direction(const long long directionValue)
 {
     using FDValue = VI::IAnalyticAquiferConn::Value::FaceDirection;
     using FDir    = Opm::FaceDir::DirEnum;
@@ -315,7 +315,7 @@ load_analytic_aquifer_cells(const ConnectionOccurrence& occurence,
                             const Opm::EclipseGrid&     grid,
                             const std::size_t           num_conn,
                             const double                tot_influx,
-                            const int                   aquifer_id)
+                            const long long                   aquifer_id)
 {
     auto cells = Opm::RestartIO::RstAquifer::Connections{};
     cells.reserve(num_conn);
@@ -336,7 +336,7 @@ load_analytic_aquifer_cells(const ConnectionOccurrence& occurence,
 // ---------------------------------------------------------------------
 
 Opm::RestartIO::RstAquifer::CarterTracy
-load_carter_tracy(const int              aquiferID,
+load_carter_tracy(const long long              aquiferID,
                   const AquiferVectors&  aquifers,
                   const Opm::UnitSystem& usys)
 {
@@ -386,7 +386,7 @@ load_carter_tracy(const int              aquiferID,
 // ---------------------------------------------------------------------
 
 Opm::RestartIO::RstAquifer::ConstantFlux
-load_constant_flux(const int              aquiferID,
+load_constant_flux(const long long              aquiferID,
                    const AquiferVectors&  aquifers,
                    const Opm::UnitSystem& usys)
 {
@@ -410,7 +410,7 @@ load_constant_flux(const int              aquiferID,
 // ---------------------------------------------------------------------
 
 Opm::RestartIO::RstAquifer::Fetkovich
-load_fetkovich(const int              aquiferID,
+load_fetkovich(const long long              aquiferID,
                const AquiferVectors&  aquifers,
                const Opm::UnitSystem& usys)
 {
@@ -446,12 +446,12 @@ load_fetkovich(const int              aquiferID,
 
 // ---------------------------------------------------------------------
 
-int num_aquifers(const std::vector<int>& intehead)
+long long num_aquifers(const std::vector<long long>& intehead)
 {
     return intehead[VI::intehead::NAQUIF];
 }
 
-int num_aquifer_connections(const AquiferVectors& aquifers,
+long long num_aquifer_connections(const AquiferVectors& aquifers,
                             const std::size_t     aquiferID)
 {
     using Ix = VI::IAnalyticAquifer::index;
@@ -461,15 +461,15 @@ int num_aquifer_connections(const AquiferVectors& aquifers,
     return iaaq[Ix::NumAquiferConn];
 }
 
-std::unordered_map<int, Opm::RestartIO::RstAquifer::Connections>
+std::unordered_map<long long, Opm::RestartIO::RstAquifer::Connections>
 load_aquifer_connections(const ConnectionOccurrence& occurence,
                          const AquiferVectors&       aquifers,
                          const ConnectionVectors&    connections,
                          const Opm::EclipseGrid&     grid,
                          const Opm::UnitSystem&      usys,
-                         const int                   max_aquifer_id)
+                         const long long                   max_aquifer_id)
 {
-    auto aqConn = std::unordered_map<int, Opm::RestartIO::RstAquifer::Connections>{};
+    auto aqConn = std::unordered_map<long long, Opm::RestartIO::RstAquifer::Connections>{};
 
     auto tot_influx = [&aquifers, &usys](const std::size_t aquiferID) -> double
     {
@@ -484,7 +484,7 @@ load_aquifer_connections(const ConnectionOccurrence& occurence,
     auto load = [&occurence, &connections, &grid]
         (const std::size_t num_connections,
          const double      total_influx,
-         const int         aquifer_id)
+         const long long         aquifer_id)
     {
         return load_analytic_aquifer_cells(occurence, connections, grid,
                                            num_connections, total_influx, aquifer_id);
@@ -535,13 +535,13 @@ public:
         return this->fetkovich_;
     }
 
-    const std::unordered_map<int, RstAquifer::Connections>& connections() const
+    const std::unordered_map<long long, RstAquifer::Connections>& connections() const
     {
         return this->connections_;
     }
 
 private:
-    std::unordered_map<int, RstAquifer::Connections> connections_{};
+    std::unordered_map<long long, RstAquifer::Connections> connections_{};
     std::vector<RstAquifer::CarterTracy>             carterTracy_{};
     std::vector<RstAquifer::ConstantFlux>            constantFlux_{};
     std::vector<RstAquifer::Fetkovich>               fetkovich_{};
@@ -553,19 +553,19 @@ private:
 
     void loadAnalyticAquifers(const AquiferVectors& aquifers,
                               const UnitSystem&     usys);
-    void loadAnalyticAquifer(const int             aquiferID,
+    void loadAnalyticAquifer(const long long             aquiferID,
                              const AquiferVectors& aquifers,
                              const UnitSystem&     usys);
 
-    void loadCarterTracy(const int             aquiferID,
+    void loadCarterTracy(const long long             aquiferID,
                          const AquiferVectors& aquifers,
                          const UnitSystem&     usys);
 
-    void loadConstantFlux(const int             aquiferID,
+    void loadConstantFlux(const long long             aquiferID,
                           const AquiferVectors& aquifers,
                           const UnitSystem&     usys);
 
-    void loadFetkovich(const int             aquiferID,
+    void loadFetkovich(const long long             aquiferID,
                        const AquiferVectors& aquifers,
                        const UnitSystem&     usys);
 };
@@ -620,7 +620,7 @@ loadAnalyticAquifers(const AquiferVectors& aquifers,
 
 void
 Opm::RestartIO::RstAquifer::Implementation::
-loadAnalyticAquifer(const int             aquiferID,
+loadAnalyticAquifer(const long long             aquiferID,
                     const AquiferVectors& aquifers,
                     const UnitSystem&     usys)
 {
@@ -649,7 +649,7 @@ loadAnalyticAquifer(const int             aquiferID,
 
 void
 Opm::RestartIO::RstAquifer::Implementation::
-loadCarterTracy(const int             aquiferID,
+loadCarterTracy(const long long             aquiferID,
                 const AquiferVectors& aquifers,
                 const UnitSystem&     usys)
 {
@@ -658,7 +658,7 @@ loadCarterTracy(const int             aquiferID,
 
 void
 Opm::RestartIO::RstAquifer::Implementation::
-loadConstantFlux(const int             aquiferID,
+loadConstantFlux(const long long             aquiferID,
                  const AquiferVectors& aquifers,
                  const UnitSystem&     usys)
 {
@@ -667,7 +667,7 @@ loadConstantFlux(const int             aquiferID,
 
 void
 Opm::RestartIO::RstAquifer::Implementation::
-loadFetkovich(const int             aquiferID,
+loadFetkovich(const long long             aquiferID,
               const AquiferVectors& aquifers,
               const UnitSystem&     usys)
 {
@@ -729,7 +729,7 @@ Opm::RestartIO::RstAquifer::fetkovich() const
     return this->pImpl_->fetkovich();
 }
 
-const std::unordered_map<int, Opm::RestartIO::RstAquifer::Connections>&
+const std::unordered_map<long long, Opm::RestartIO::RstAquifer::Connections>&
 Opm::RestartIO::RstAquifer::connections() const
 {
     return this->pImpl_->connections();

@@ -874,7 +874,7 @@ private:
     bool wasDrain_{};              // Previous status.
     Scalar krnSwImbStart_{};       // Saturation value where primary drainage relperm equals krnImbStart_
 
-    int nState_{};                 // Number of cycles. Primary cycle is nState_=1.
+    long long nState_{};                 // Number of cycles. Primary cycle is nState_=1.
 
     Scalar SncrtWAG_{};
     Scalar tolWAG_{0.001};

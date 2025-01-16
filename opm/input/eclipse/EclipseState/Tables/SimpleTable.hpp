@@ -36,7 +36,7 @@ namespace Opm {
 
     public:
         SimpleTable() = default;
-        SimpleTable(TableSchema, const std::string& tableName, const DeckItem& deckItem, const int tableID);
+        SimpleTable(TableSchema, const std::string& tableName, const DeckItem& deckItem, const long long tableID);
         explicit SimpleTable( TableSchema );
 
         static SimpleTable serializationTestObject();
@@ -48,7 +48,7 @@ namespace Opm {
         //! \param scaling_factor If zero use SI value, else use value scaled by scaling factor
         void init( const std::string& tableName,
                    const DeckItem& deckItem,
-                   const int tableID,
+                   const long long tableID,
                    double scaling_factor = 0.0);
         size_t numColumns() const;
         size_t numRows() const;

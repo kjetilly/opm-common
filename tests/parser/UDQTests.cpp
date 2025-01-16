@@ -90,12 +90,12 @@ namespace {
         }
     }
 
-    Opm::Segment makeSegment(const int segmentNumber)
+    Opm::Segment makeSegment(const long long segmentNumber)
     {
         return { segmentNumber, 1, 1, 1.0, 0.0, 0.5, 0.01, 0.25, 1.23, true, 0.0, 0.0 };
     }
 
-    std::shared_ptr<Opm::WellSegments> makeSegments(const int numSegments)
+    std::shared_ptr<Opm::WellSegments> makeSegments(const long long numSegments)
     {
         auto segments = std::vector<Opm::Segment>{};
         segments.reserve(numSegments);
@@ -110,7 +110,7 @@ namespace {
 
     Opm::Well makeProducerWell(const std::string& wname,
                                const std::size_t  insert,
-                               const int          numSegments)
+                               const long long          numSegments)
     {
         auto w = Opm::Well {
             wname, "G", 0, insert, 1, 2, {},
@@ -132,7 +132,7 @@ namespace {
 
     Opm::Well makeInjectionWell(const std::string& wname,
                                 const std::size_t  insert,
-                                const int          numSegments)
+                                const long long          numSegments)
     {
         auto w = Opm::Well {
             wname, "G", 0, insert, 1, 2, {},

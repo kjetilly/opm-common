@@ -339,7 +339,7 @@ namespace {
     ///
     /// \return Date-number corresponding to specified day-of-year in
     ///    specified year, subject to restrictions outlined above.
-    double toDateNum(const int year, const int yday)
+    double toDateNum(const long long year, const long long yday)
     {
         return std::floor(365.25 * (year + 1900))
             + (yday + 1); // Day of year [1 .. 365]

@@ -655,7 +655,7 @@ public:
         Evaluation deltaP = pressure*2;
         Valgrind::CheckDefined(pressure);
         Valgrind::CheckDefined(deltaP);
-        for (int i = 0; i < 5 && std::abs(scalarValue(pressure)*1e-9) < std::abs(scalarValue(deltaP)); ++i) {
+        for (long long i = 0; i < 5 && std::abs(scalarValue(pressure)*1e-9) < std::abs(scalarValue(deltaP)); ++i) {
             Evaluation f = gasDensity(temperature, pressure) - density;
 
             Evaluation df_dp;
@@ -758,7 +758,7 @@ public:
         Scalar eps = scalarValue(pressure)*1e-7;
 
         Evaluation deltaP = pressure*2;
-        for (int i = 0; i < 5 && std::abs(scalarValue(pressure)*1e-9) < std::abs(scalarValue(deltaP)); ++i) {
+        for (long long i = 0; i < 5 && std::abs(scalarValue(pressure)*1e-9) < std::abs(scalarValue(deltaP)); ++i) {
             Evaluation f = liquidDensity(temperature, pressure) - density;
 
             Evaluation df_dp;

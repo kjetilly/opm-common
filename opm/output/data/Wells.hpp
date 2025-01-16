@@ -249,7 +249,7 @@ namespace Opm { namespace data {
     struct Connection
     {
         using global_index = std::size_t;
-        static const constexpr int restart_size = 6;
+        static const constexpr long long restart_size = 6;
 
         global_index index{};
         Rates rates{};
@@ -520,7 +520,7 @@ namespace Opm { namespace data {
                 return "Out of bounds (NumItems)";
             }
 
-            return "Unknown (" + std::to_string(static_cast<int>(p)) + ')';
+            return "Unknown (" + std::to_string(static_cast<long long>(p)) + ')';
         }
 
         static auto serializationTestItems()
@@ -555,7 +555,7 @@ namespace Opm { namespace data {
                 return "Out of bounds (NumItems)";
             }
 
-            return "Unknown (" + std::to_string(static_cast<int>(p)) + ')';
+            return "Unknown (" + std::to_string(static_cast<long long>(p)) + ')';
         }
 
         static auto serializationTestItems()
@@ -789,7 +789,7 @@ namespace Opm { namespace data {
                 return "Out of bounds (NumItems)";
             }
 
-            return "Unknown (" + std::to_string(static_cast<int>(p)) + ')';
+            return "Unknown (" + std::to_string(static_cast<long long>(p)) + ')';
         }
 
         static auto serializationTestItems()
@@ -814,7 +814,7 @@ namespace Opm { namespace data {
         double bhp{0.0};
         double thp{0.0};
         double temperature{0.0};
-        int control{0};
+        long long control{0};
         double efficiency_scaling_factor{1.0};
 
         WellFiltrate filtrate;
@@ -957,7 +957,7 @@ namespace Opm { namespace data {
 
         template <class MessageBufferType>
         void write(MessageBufferType& buffer) const {
-            unsigned int size = this->size();
+            size_t size = this->size();
             buffer.write(size);
             for (const auto& witr : *this) {
                 const std::string& name = witr.first;
@@ -969,7 +969,7 @@ namespace Opm { namespace data {
 
         template <class MessageBufferType>
         void read(MessageBufferType& buffer) {
-            unsigned int size;
+            size_t size;
             buffer.read(size);
             for (size_t i = 0; i < size; ++i) {
                 std::string name;
@@ -1230,7 +1230,7 @@ namespace Opm { namespace data {
             buffer.write(this->alq);
 
             //tracer:
-            unsigned int size = this->tracer.size();
+            size_t size = this->tracer.size();
             buffer.write(size);
             for (const auto& [name, rate] : this->tracer) {
                 buffer.write(name);
@@ -1274,7 +1274,7 @@ namespace Opm { namespace data {
         auto json_rates = json_data.add_object("rates");
         this->rates.init_json(json_rates);
 
-        json_data.add_item("global_index", static_cast<int>(this->index));
+        json_data.add_item("global_index", static_cast<long long>(this->index));
         json_data.add_item("pressure", this->pressure);
         json_data.add_item("reservoir_rate", this->reservoir_rate);
         json_data.add_item("cell_pressure", this->cell_pressure);
@@ -1345,7 +1345,7 @@ namespace Opm { namespace data {
         }
 
         {
-            const unsigned int size = this->connections.size();
+            const size_t size = this->connections.size();
             buffer.write(size);
 
             for (const Connection& comp : this->connections) {
@@ -1355,7 +1355,7 @@ namespace Opm { namespace data {
 
         {
             const auto nSeg =
-                static_cast<unsigned int>(this->segments.size());
+                static_cast<size_t>(this->segments.size());
             buffer.write(nSeg);
 
             for (const auto& seg : this->segments) {
@@ -1403,7 +1403,7 @@ namespace Opm { namespace data {
             buffer.read(this->alq);
 
             //tracer:
-            unsigned int size;
+            size_t size;
             buffer.read(size);
             for (size_t i = 0; i < size; ++i) {
                 std::string tracer_name;
@@ -1507,7 +1507,7 @@ namespace Opm { namespace data {
 
         // Connection information
         {
-            unsigned int size = 0;
+            size_t size = 0;
             buffer.read(size);
 
             this->connections.resize(size);
@@ -1517,7 +1517,7 @@ namespace Opm { namespace data {
         }
 
         // Segment information (if applicable)
-        const auto nSeg = [&buffer]() -> unsigned int
+        const auto nSeg = [&buffer]() -> size_t
         {
             auto n = 0u;
             buffer.read(n);

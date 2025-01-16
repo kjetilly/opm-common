@@ -81,7 +81,7 @@ bool operator==(const std::vector<T> & t1, const std::vector<T> & t2)
 
 
 BOOST_AUTO_TEST_CASE(TestERft_1) {
-    using Date = std::tuple<int, int, int>;
+    using Date = std::tuple<long long, long long, long long>;
 
     std::vector<std::string> ref_wellList= {"A-1H", "B-2H", "INJ", "PROD"};
     std::vector<Date> ref_dates= {
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(TestERft_1) {
 
    //    // test member function getRft(name, wellName, date)
 
-    std::vector<int> vect1=rft1.getRft<int>("CONIPOS","B-2H", Date{2016,5,31});
+    std::vector<long long> vect1=rft1.getRft<long long>("CONIPOS","B-2H", Date{2016,5,31});
     std::vector<float> vect2=rft1.getRft<float>("PRESSURE","B-2H", Date{2016,5,31});
     std::vector<std::string> vect3=rft1.getRft<std::string>("WELLETC","B-2H", Date{2016,5,31});
 
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(TestERft_1) {
 
    // test member function getRft(name, reportIndex)
 
-    std::vector<int> vect1a=rft1.getRft<int>("CONIPOS", 3);
+    std::vector<long long> vect1a=rft1.getRft<long long>("CONIPOS", 3);
     BOOST_CHECK_EQUAL(vect1.size(), vect1a.size());
 
     std::vector<float> vect2a = rft1.getRft<float>("PRESSURE", 3);
@@ -161,12 +161,12 @@ BOOST_AUTO_TEST_CASE(TestERft_1) {
     }
 
     // called with invalid argument, array not existing, wrong well name or wrong date
-    BOOST_CHECK_THROW(std::vector<int> vect11=rft1.getRft<int>("CONIPOS","C-2H", Date{2016,5,31}),std::invalid_argument);
-    BOOST_CHECK_THROW(std::vector<int> vect11=rft1.getRft<int>("CONIPOS","B-2H", Date{2016,5,30}),std::invalid_argument);
-    BOOST_CHECK_THROW(std::vector<int> vect11=rft1.getRft<int>("XXXXXXX","B-2H", Date{2016,5,31}),std::invalid_argument);
+    BOOST_CHECK_THROW(std::vector<long long> vect11=rft1.getRft<long long>("CONIPOS","C-2H", Date{2016,5,31}),std::invalid_argument);
+    BOOST_CHECK_THROW(std::vector<long long> vect11=rft1.getRft<long long>("CONIPOS","B-2H", Date{2016,5,30}),std::invalid_argument);
+    BOOST_CHECK_THROW(std::vector<long long> vect11=rft1.getRft<long long>("XXXXXXX","B-2H", Date{2016,5,31}),std::invalid_argument);
 
     // called with wrong type
-    BOOST_CHECK_THROW(std::vector<int> vect11=rft1.getRft<int>("SGAS","B-2H", Date{2016,5,31}),std::runtime_error);
+    BOOST_CHECK_THROW(std::vector<long long> vect11=rft1.getRft<long long>("SGAS","B-2H", Date{2016,5,31}),std::runtime_error);
     BOOST_CHECK_THROW(std::vector<float> vect11=rft1.getRft<float>("CONIPOS","B-2H", Date{2016,5,31}),std::runtime_error);
     BOOST_CHECK_THROW(std::vector<std::string> vect11=rft1.getRft<std::string>("CONIPOS","B-2H", Date{2016,5,31}), std::runtime_error);
 }
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(TestERft_2)
                     eclArrType arrType = std::get<1>(array);
 
                     if (arrType == INTE) {
-                        std::vector<int> vect = rft1.getRft<int>(arrName, wellName, date);
+                        std::vector<long long> vect = rft1.getRft<long long>(arrName, wellName, date);
                         eclTest.write(arrName, vect);
                     } else if (arrType == REAL) {
                         std::vector<float> vect = rft1.getRft<float>(arrName, wellName, date);

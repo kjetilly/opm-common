@@ -166,12 +166,12 @@ static const std::unordered_map<std::string, keyword_info<double>> double_keywor
                                                                                       {"MULTZ",   keyword_info<double>{}.init(1.0).mult(true).global_kw(true)},
                                                                                       {"MULTZ-",  keyword_info<double>{}.init(1.0).mult(true).global_kw(true)}};
 
-static const std::unordered_map<std::string, keyword_info<int>> int_keywords = {{"ACTNUM",  keyword_info<int>{}.init(1)},
-                                                                                {"FLUXNUM", keyword_info<int>{}},
-                                                                                {"ISOLNUM", keyword_info<int>{}.init(1)},
-                                                                                {"MULTNUM", keyword_info<int>{}.init(1)},
-                                                                                {"OPERNUM", keyword_info<int>{}},
-                                                                                {"ROCKNUM", keyword_info<int>{}}};
+static const std::unordered_map<std::string, keyword_info<long long>> int_keywords = {{"ACTNUM",  keyword_info<long long>{}.init(1)},
+                                                                                {"FLUXNUM", keyword_info<long long>{}},
+                                                                                {"ISOLNUM", keyword_info<long long>{}.init(1)},
+                                                                                {"MULTNUM", keyword_info<long long>{}.init(1)},
+                                                                                {"OPERNUM", keyword_info<long long>{}},
+                                                                                {"ROCKNUM", keyword_info<long long>{}}};
 
 }
 
@@ -193,7 +193,7 @@ static const std::unordered_map<std::string, keyword_info<double>> double_keywor
                                                                                       {"MULTZ",   keyword_info<double>{}.init(1.0).mult(true).global_kw(true)},
                                                                                       {"MULTZ-",  keyword_info<double>{}.init(1.0).mult(true).global_kw(true)}};
 
-static const std::unordered_map<std::string, keyword_info<int>> int_keywords = {};
+static const std::unordered_map<std::string, keyword_info<long long>> int_keywords = {};
 }
 
 namespace PROPS {
@@ -202,7 +202,7 @@ static const std::unordered_map<std::string, keyword_info<double>> double_keywor
                                                                                       {"IPCG",     keyword_info<double>{}.unit_string("Pressure")},
                                                                                       {"PCW",      keyword_info<double>{}.unit_string("Pressure")},
                                                                                       {"IPCW",     keyword_info<double>{}.unit_string("Pressure")}};
-static const std::unordered_map<std::string, keyword_info<int>> int_keywords = {};
+static const std::unordered_map<std::string, keyword_info<long long>> int_keywords = {};
 
 #define dirfunc(base) base, base "X", base "X-", base "Y", base "Y-", base "Z", base "Z-"
 
@@ -243,25 +243,25 @@ static const std::set<std::string> satfunc = {"SWLPC", "ISWLPC", "SGLPC", "ISGLP
 
 namespace REGIONS {
 
-static const std::unordered_map<std::string, keyword_info<int>> int_keywords = {{"ENDNUM",   keyword_info<int>{}.init(1)},
-                                                                                {"EOSNUM",   keyword_info<int>{}.init(1)},
-                                                                                {"EQLNUM",   keyword_info<int>{}.init(1)},
-                                                                                {"FIPNUM",   keyword_info<int>{}.init(1)},
-                                                                                {"IMBNUM",   keyword_info<int>{}.init(1)},
-                                                                                {"OPERNUM",  keyword_info<int>{}},
-                                                                                {"STRESSEQUILNUM", keyword_info<int>{}.init(1)},
-                                                                                {"MISCNUM",  keyword_info<int>{}},
-                                                                                {"MISCNUM",  keyword_info<int>{}},
-                                                                                {"PVTNUM",   keyword_info<int>{}.init(1)},
-                                                                                {"SATNUM",   keyword_info<int>{}.init(1)},
-                                                                                {"LWSLTNUM", keyword_info<int>{}},
-                                                                                {"ROCKNUM",  keyword_info<int>{}},
-                                                                                {"KRNUMX",   keyword_info<int>{}},
-                                                                                {"KRNUMY",   keyword_info<int>{}},
-                                                                                {"KRNUMZ",   keyword_info<int>{}},
-                                                                                {"IMBNUMX",   keyword_info<int>{}},
-                                                                                {"IMBNUMY",   keyword_info<int>{}},
-                                                                                {"IMBNUMZ",   keyword_info<int>{}},
+static const std::unordered_map<std::string, keyword_info<long long>> int_keywords = {{"ENDNUM",   keyword_info<long long>{}.init(1)},
+                                                                                {"EOSNUM",   keyword_info<long long>{}.init(1)},
+                                                                                {"EQLNUM",   keyword_info<long long>{}.init(1)},
+                                                                                {"FIPNUM",   keyword_info<long long>{}.init(1)},
+                                                                                {"IMBNUM",   keyword_info<long long>{}.init(1)},
+                                                                                {"OPERNUM",  keyword_info<long long>{}},
+                                                                                {"STRESSEQUILNUM", keyword_info<long long>{}.init(1)},
+                                                                                {"MISCNUM",  keyword_info<long long>{}},
+                                                                                {"MISCNUM",  keyword_info<long long>{}},
+                                                                                {"PVTNUM",   keyword_info<long long>{}.init(1)},
+                                                                                {"SATNUM",   keyword_info<long long>{}.init(1)},
+                                                                                {"LWSLTNUM", keyword_info<long long>{}},
+                                                                                {"ROCKNUM",  keyword_info<long long>{}},
+                                                                                {"KRNUMX",   keyword_info<long long>{}},
+                                                                                {"KRNUMY",   keyword_info<long long>{}},
+                                                                                {"KRNUMZ",   keyword_info<long long>{}},
+                                                                                {"IMBNUMX",   keyword_info<long long>{}},
+                                                                                {"IMBNUMY",   keyword_info<long long>{}},
+                                                                                {"IMBNUMZ",   keyword_info<long long>{}},
                                                                                 };
 }
 
@@ -301,7 +301,7 @@ static const std::unordered_map<std::string, keyword_info<double>> double_keywor
                                                                                       {"MULTZ",   keyword_info<double>{}.init(1.0).mult(true).global_kw(true)},
                                                                                       {"MULTZ-",  keyword_info<double>{}.init(1.0).mult(true).global_kw(true)}};
 
-static const std::unordered_map<std::string, keyword_info<int>> int_keywords = {{"ROCKNUM",   keyword_info<int>{}}};
+static const std::unordered_map<std::string, keyword_info<long long>> int_keywords = {{"ROCKNUM",   keyword_info<long long>{}}};
 
 }
 
@@ -319,12 +319,12 @@ public:
     using ScalarOperation = Fieldprops::ScalarOperation;
 
     struct MultregpRecord {
-        int region_value;
+        long long region_value;
         double multiplier;
         std::string region_name;
 
 
-        MultregpRecord(int rv, double m, const std::string& rn) :
+        MultregpRecord(long long rv, double m, const std::string& rn) :
             region_value(rv),
             multiplier(m),
             region_name(rn)
@@ -361,7 +361,7 @@ public:
         /// Named property is not known to the internal handling mechanism.
         ///
         /// Might for instance be because the client code requested a
-        /// property of type \c int, but the name is only known as property
+        /// property of type \c long long, but the name is only known as property
         /// of type \c double, or because there was a misprint in the
         /// property name.
         ///
@@ -372,7 +372,7 @@ public:
 
     /// Wrapper type for field properties
     ///
-    /// \tparam T Property element type.  Typically \c double or \c int.
+    /// \tparam T Property element type.  Typically \c double or \c long long.
     template<typename T>
     struct FieldDataManager
     {
@@ -512,7 +512,7 @@ public:
     ///
     /// Note: We would ideally use strong enums (i.e., "enum class") for
     /// this, but those don't mesh very well with bitwise operations.
-    enum TryGetFlags : unsigned int {
+    enum TryGetFlags : size_t {
         /// Whether or not to permit looking up property names of unmatching
         /// types.
         AllowUnsupported = (1u << 0),
@@ -531,7 +531,7 @@ public:
     /// Special case constructor used to process ACTNUM only.
     FieldProps(const Deck& deck, const EclipseGrid& grid);
 
-    void reset_actnum(const std::vector<int>& actnum);
+    void reset_actnum(const std::vector<long long>& actnum);
 
     void prune_global_for_schedule_run();
 
@@ -539,8 +539,8 @@ public:
 
     const std::string& default_region() const;
 
-    std::vector<int> actnum();
-    const std::vector<int>& actnumRaw() const;
+    std::vector<long long> actnum();
+    const std::vector<long long>& actnumRaw() const;
 
     template <typename T>
     static bool supported(const std::string& keyword);
@@ -555,7 +555,7 @@ public:
     ///
     /// Will create property array if permitted and possible.
     ///
-    /// \tparam T Property element type.  Typically \c double or \c int.
+    /// \tparam T Property element type.  Typically \c double or \c long long.
     ///
     /// \param[in] keyword Property name
     ///
@@ -565,7 +565,7 @@ public:
     /// \return Access structure for requested property array.
     template <typename T>
     FieldDataManager<T>
-    try_get(const std::string& keyword, const unsigned int flags = 0u)
+    try_get(const std::string& keyword, const size_t flags = 0u)
     {
         const auto allow_unsupported =
             (flags & TryGetFlags::AllowUnsupported) != 0u;
@@ -710,7 +710,7 @@ public:
 
     void deleteMINPVV();
 
-    void set_active_indices(const std::vector<int>& indices);
+    void set_active_indices(const std::vector<long long>& indices);
 
 private:
     void processMULTREGP(const Deck& deck);
@@ -765,7 +765,7 @@ private:
     std::string region_name(const DeckItem& region_item) const;
 
     std::pair<std::vector<Box::cell_index>,bool>
-    region_index(const std::string& region_name, int region_value);
+    region_index(const std::string& region_name, long long region_value);
 
     void handle_OPERATE(const DeckKeyword& keyword, Box box);
     void handle_operation(Section section, const DeckKeyword& keyword, Box box);
@@ -791,7 +791,7 @@ private:
                                const DeckKeyword& keyword,
                                const Box& box);
 
-    void handle_int_keyword(const Fieldprops::keywords::keyword_info<int>& kw_info,
+    void handle_int_keyword(const Fieldprops::keywords::keyword_info<long long>& kw_info,
                             const DeckKeyword& keyword,
                             const Box& box);
 
@@ -819,8 +819,8 @@ private:
     std::size_t nx,ny,nz;
     Phases m_phases;
     SatFuncControls m_satfuncctrl;
-    std::vector<int> m_actnum;
-    std::unordered_map<int,int> m_active_index;
+    std::vector<long long> m_actnum;
+    std::unordered_map<long long,long long> m_active_index;
     std::vector<double> cell_volume;
     std::vector<double> cell_depth;
     const std::string m_default_region;
@@ -828,7 +828,7 @@ private:
     TableManager tables;
     std::optional<satfunc::RawTableEndPoints> m_rtep;
     std::vector<MultregpRecord> multregp;
-    std::unordered_map<std::string, Fieldprops::FieldData<int>> int_data;
+    std::unordered_map<std::string, Fieldprops::FieldData<long long>> int_data;
     std::unordered_map<std::string, Fieldprops::FieldData<double>> double_data;
     std::unordered_map<std::string, std::string> fipreg_shortname_translation{};
 

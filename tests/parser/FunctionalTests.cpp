@@ -31,9 +31,9 @@ using namespace Opm;
 
 
 BOOST_AUTO_TEST_CASE(TestMap) {
-    std::map<std::string, int> m = { {"C", 3}, {"B" , 2} , {"A" , 1}};
+    std::map<std::string, long long> m = { {"C", 3}, {"B" , 2} , {"A" , 1}};
     std::vector<std::string> keys_expected = {"A" , "B" , "C"};
-    auto keys = fun::map( [] ( const std::pair<std::string,int>& pair) { return pair.first; } , m);
+    auto keys = fun::map( [] ( const std::pair<std::string,long long>& pair) { return pair.first; } , m);
 
     BOOST_CHECK_EQUAL_COLLECTIONS(keys.begin(), keys.end(),
                                   keys_expected.begin(), keys_expected.end());
@@ -41,9 +41,9 @@ BOOST_AUTO_TEST_CASE(TestMap) {
 
 
 BOOST_AUTO_TEST_CASE(TestConcat) {
-    std::vector<std::vector<int>> vector_of_vectors = {{1},{2,2},{3,3,3}};
+    std::vector<std::vector<long long>> vector_of_vectors = {{1},{2,2},{3,3,3}};
     auto conc = fun::concat( std::move(vector_of_vectors) );
-    std::vector<int> expected = {1,2,2,3,3,3};
+    std::vector<long long> expected = {1,2,2,3,3,3};
 
     BOOST_CHECK_EQUAL_COLLECTIONS(conc.begin(), conc.end(),
                                   expected.begin(), expected.end());
@@ -51,10 +51,10 @@ BOOST_AUTO_TEST_CASE(TestConcat) {
 
 
 BOOST_AUTO_TEST_CASE(TestConcatMap) {
-    std::vector<int> input = {1,2,3};
-    auto conc = fun::concat( fun::map( []( int x ) { return std::vector<int>( x,x ); } , input));
+    std::vector<long long> input = {1,2,3};
+    auto conc = fun::concat( fun::map( []( long long x ) { return std::vector<long long>( x,x ); } , input));
 
-    std::vector<int> expected = {1,2,2,3,3,3};
+    std::vector<long long> expected = {1,2,2,3,3,3};
     BOOST_CHECK_EQUAL_COLLECTIONS(conc.begin(), conc.end(),
                                   expected.begin(), expected.end());
 
@@ -63,16 +63,16 @@ BOOST_AUTO_TEST_CASE(TestConcatMap) {
 
 
 BOOST_AUTO_TEST_CASE(iotaEqualCollections) {
-    std::vector< int > vec( 5 );
+    std::vector< long long > vec( 5 );
 
-    for( int i = 0; i < 5; ++i )
+    for( long long i = 0; i < 5; ++i )
         vec[ i ] = i;
 
     fun::iota iota( 5 );
     for( auto x : iota )
         std::cout << x << " ";
     std::cout << std::endl;
-    std::vector< int > vec_iota( iota.begin(), iota.end() );
+    std::vector< long long > vec_iota( iota.begin(), iota.end() );
 
     BOOST_CHECK_EQUAL_COLLECTIONS(
             vec_iota.begin(), vec_iota.end(),
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(iotaEqualCollections) {
 BOOST_AUTO_TEST_CASE(iotaForeach) {
     /* this test is mostly a syntax verification test */
 
-    std::vector< int > vec = { 0, 1, 2, 3, 4 };
+    std::vector< long long > vec = { 0, 1, 2, 3, 4 };
 
     for( auto x : fun::iota( 5 ) )
         BOOST_CHECK_EQUAL( vec[ x ], x );
@@ -102,9 +102,9 @@ BOOST_AUTO_TEST_CASE(iotaSize) {
 }
 
 BOOST_AUTO_TEST_CASE(iotaWithMap) {
-    const auto plus1 = []( int x ) { return x + 1; };
+    const auto plus1 = []( long long x ) { return x + 1; };
 
-    std::vector< int > vec = { 1, 2, 3, 4, 5 };
+    std::vector< long long > vec = { 1, 2, 3, 4, 5 };
     auto vec_iota = fun::map( plus1, fun::iota( 5 ) );
 
     BOOST_CHECK_EQUAL_COLLECTIONS(

@@ -27,7 +27,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
 
 
     namespace INode {
-    enum index : std::vector<int>::size_type {
+    enum index : std::vector<long long>::size_type {
         NoBranchesConnToNode = 0,
         CumNoBranchesConnToNode = 1,
         Group = 2,
@@ -36,7 +36,7 @@ namespace Opm { namespace RestartIO { namespace Helpers { namespace VectorItems 
     }
 
     namespace IBran {
-    enum index : std::vector<int>::size_type {
+    enum index : std::vector<long long>::size_type {
         DownTreeNode = 0,
         UpTreeNode = 1,
         VfpTableNo = 2,

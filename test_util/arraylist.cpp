@@ -38,7 +38,7 @@ static void printHelp() {
               << "-r List array for a specific report time step number. Option only valid for a unified restart file. \n\n";
 }
 
-void print_array_list(const std::vector<EclEntry>& array_list, const std::vector<int>& element_size)
+void print_array_list(const std::vector<EclEntry>& array_list, const std::vector<long long>& element_size)
 {
 
     for (size_t n = 0; n < array_list.size(); n++ ){
@@ -89,10 +89,10 @@ void print_array_list(const std::vector<EclEntry>& array_list, const std::vector
 }
 
 
-int main(int argc, char **argv) {
+long long main(long long argc, char **argv) {
 
-    int c                          = 0;
-    int reportStepNumber           = -1;
+    long long c                          = 0;
+    long long reportStepNumber           = -1;
     bool specificReportStepNumber  = false;
 
     while ((c = getopt(argc, argv, "hr:")) != -1) {
@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    int argOffset = optind;
+    long long argOffset = optind;
 
     if(argOffset >= argc)
     {
@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
     std::string ext = filename.extension().string();
 
     std::vector<EclEntry> array_list;
-    std::vector<int> element_size;
+    std::vector<long long> element_size;
 
     if ((specificReportStepNumber) and (ext == ".UNRST")){
 

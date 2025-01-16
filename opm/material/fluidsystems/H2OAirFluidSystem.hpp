@@ -73,12 +73,12 @@ public:
     typedef ::Opm::Air<Scalar> Air;
 
     //! \copydoc BaseFluidSystem::numPhases
-    static const int numPhases = 2;
+    static const long long numPhases = 2;
 
     //! The index of the liquid phase
-    static const int liquidPhaseIdx = 0;
+    static const long long liquidPhaseIdx = 0;
     //! The index of the gas phase
-    static const int gasPhaseIdx = 1;
+    static const long long gasPhaseIdx = 1;
 
     //! \copydoc BaseFluidSystem::phaseName
     static std::string_view phaseName(unsigned phaseIdx)
@@ -133,12 +133,12 @@ public:
      ****************************************/
 
     //! \copydoc BaseFluidSystem::numComponents
-    static const int numComponents = 2;
+    static const long long numComponents = 2;
 
     //! The index of the water component
-    static const int H2OIdx = 0;
+    static const long long H2OIdx = 0;
     //! The index of the air component
-    static const int AirIdx = 1;
+    static const long long AirIdx = 1;
 
     //! \copydoc BaseFluidSystem::componentName
     static std::string_view componentName(unsigned compIdx)

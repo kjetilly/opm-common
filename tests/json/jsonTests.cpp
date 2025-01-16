@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(create) {
     {
         auto dict = json.add_object("object");
         dict.add_item("key", "String");
-        dict.add_item("int", 100);
+        dict.add_item("long long", 100);
         dict.add_item("double", 2.7172);
     }
 

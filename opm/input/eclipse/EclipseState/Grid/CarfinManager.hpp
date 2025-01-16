@@ -32,15 +32,15 @@ namespace Opm {
                                Carfin::ActiveIdx  activeIdx);
 
         void setInputCarfin(const std::string& name,
-                            int i1, int i2,
-                            int j1, int j2,
-                            int k1, int k2,
-                            int nx, int ny, int nz);
+                            long long i1, long long i2,
+                            long long j1, long long j2,
+                            long long k1, long long k2,
+                            long long nx, long long ny, long long nz);
         void readKeywordCarfin(const std::string& name,
-                               int i1, int i2,
-                               int j1, int j2,
-                               int k1, int k2,
-                               int nx, int ny, int nz);
+                               long long i1, long long i2,
+                               long long j1, long long j2,
+                               long long k1, long long k2,
+                               long long nx, long long ny, long long nz);
 
         void endSection();
         void endInputCarfin();
@@ -59,10 +59,10 @@ namespace Opm {
         std::unique_ptr<Carfin> m_keywordCarfin;
 
         std::unique_ptr<Carfin>
-        makeLgr(std::string name, int i1, int i2, 
-                int j1, int j2, 
-                int k1, int k2, 
-                int nx , int ny , int nz) const;
+        makeLgr(std::string name, long long i1, long long i2, 
+                long long j1, long long j2, 
+                long long k1, long long k2, 
+                long long nx , long long ny , long long nz) const;
     };
 }
 

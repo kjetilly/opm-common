@@ -75,7 +75,7 @@ VFPInjTable::VFPInjTable( const DeckKeyword& table, const UnitSystem& deck_unit_
     const auto& header = table.getRecord(0);
 
     //Get the different header items
-    m_table_num   = getNonEmptyItem<VFPINJ::TABLE>(header).get< int >(0);
+    m_table_num   = getNonEmptyItem<VFPINJ::TABLE>(header).get< long long >(0);
     m_datum_depth = getNonEmptyItem<VFPINJ::DATUM_DEPTH>(header).getSIDouble(0);
 
     m_flo_type = getFloType(getNonEmptyItem<VFPINJ::RATE_TYPE>(header).get< std::string >(0));
@@ -154,7 +154,7 @@ VFPInjTable::VFPInjTable( const DeckKeyword& table, const UnitSystem& deck_unit_
     for (size_t i=3; i<table.size(); ++i) {
         const auto& record = table.getRecord(i);
         //Get indices (subtract 1 to get 0-based index)
-        int t = getNonEmptyItem<VFPINJ::THP_INDEX>(record).get< int >(0) - 1;
+        long long t = getNonEmptyItem<VFPINJ::THP_INDEX>(record).get< long long >(0) - 1;
 
         //Rest of values (bottom hole pressure or tubing head temperature) have index of flo value
         const std::vector<double>& bhp_tht = getNonEmptyItem<VFPINJ::VALUES>(record).getData< double >();
@@ -163,7 +163,7 @@ VFPInjTable::VFPInjTable( const DeckKeyword& table, const UnitSystem& deck_unit_
             throw std::invalid_argument("VFPINJ table does not contain enough FLO values.");
         }
 
-        for (unsigned int f=0; f<bhp_tht.size(); ++f) {
+        for (size_t f=0; f<bhp_tht.size(); ++f) {
             const double& value = bhp_tht[f];
             if (value > 1.0e10) {
                 //TODO: Replace with proper log message
@@ -275,7 +275,7 @@ void VFPInjTable::scaleValues(std::vector<double>& values,
         return;
     }
     else {
-        for (unsigned int i=0; i<values.size(); ++i) {
+        for (size_t i=0; i<values.size(); ++i) {
             values[i] *= scaling_factor;
         }
     }

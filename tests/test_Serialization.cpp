@@ -158,7 +158,7 @@
 
 namespace {
     template<class T>
-    std::tuple<T,int,int> PackUnpack(T& in)
+    std::tuple<T,long long,long long> PackUnpack(T& in)
     {
         Opm::Serialization::MemPacker packer;
         Opm::Serializer ser(packer);
@@ -363,7 +363,7 @@ bool init_unit_test_func()
 
 } // Anonymous namespace
 
-int main(int argc, char** argv)
+long long main(long long argc, char** argv)
 {
     return boost::unit_test::unit_test_main(&init_unit_test_func, argc, argv);
 }

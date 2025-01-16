@@ -83,16 +83,16 @@ public:
     BrineCo2Pvt() = default;
 
     explicit BrineCo2Pvt(const ContainerT& salinity,
-                         int activityModel = 3,
-                         int thermalMixingModelSalt = 1,
-                         int thermalMixingModelLiquid = 2,
+                         long long activityModel = 3,
+                         long long thermalMixingModelSalt = 1,
+                         long long thermalMixingModelLiquid = 2,
                          Scalar T_ref = 288.71, //(273.15 + 15.56)
                          Scalar P_ref = 101325);
 
     BrineCo2Pvt(const ContainerT& brineReferenceDensity,
                 const ContainerT& co2ReferenceDensity,
                 const ContainerT& salinity,
-                int activityModel,
+                long long activityModel,
                 Co2StoreConfig::SaltMixingType thermalMixingModelSalt,
                 Co2StoreConfig::LiquidMixingType thermalMixingModelLiquid,
                 Params params)
@@ -156,12 +156,12 @@ public:
     /*!
     * \brief Set activity coefficient model for salt in solubility model
     */
-    void setActivityModelSalt(int activityModel);
+    void setActivityModelSalt(long long activityModel);
 
     /*!
     * \brief Set thermal mixing model for co2 in brine
     */
-    void setThermalMixingModel(int thermalMixingModelSalt, int thermalMixingModelLiquid);
+    void setThermalMixingModel(long long thermalMixingModelSalt, long long thermalMixingModelLiquid);
 
     void setEzrokhiDenCoeff(const std::vector<EzrokhiTable>& denaqa);
 
@@ -455,7 +455,7 @@ public:
     OPM_HOST_DEVICE Co2StoreConfig::LiquidMixingType getThermalMixingModelLiquid() const
     { return liquidMixType_; }
 
-    OPM_HOST_DEVICE int getActivityModel() const
+    OPM_HOST_DEVICE long long getActivityModel() const
     { return activityModel_; }
 
     template <class Evaluation>
@@ -727,8 +727,8 @@ private:
             LhsEval m = 1E3 / 58.44 * S / (1 - S);
             d_h = 0;
 
-            for (int i = 0; i <=3; ++i) {
-                for (int j = 0;  j <= 2; ++j) {
+            for (long long i = 0; i <=3; ++i) {
+                for (long long j = 0;  j <= 2; ++j) {
                     d_h += a[i][j] * pow(theta, static_cast<Scalar>(i)) * pow(m, j);
                 }
             }
@@ -785,7 +785,7 @@ private:
     bool enableEzrokhiViscosity_ = false;
     bool enableDissolution_ = true;
     bool enableSaltConcentration_ = false;
-    int activityModel_{};
+    long long activityModel_{};
     Co2StoreConfig::LiquidMixingType liquidMixType_{};
     Co2StoreConfig::SaltMixingType saltMixType_{};
     Params co2Tables_;

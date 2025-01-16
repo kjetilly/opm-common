@@ -72,7 +72,7 @@ correct_type(const Parameter& parameter,
     }
 }
 
-int ParameterMapItemTrait<int>::
+long long ParameterMapItemTrait<long long>::
 convert(const ParameterMapItem& item,
         std::string& conversion_error,
         const bool)
@@ -88,7 +88,7 @@ convert(const ParameterMapItem& item,
     }
     std::stringstream stream;
     stream << parameter.getValue();
-    int value;
+    long long value;
     stream >> value;
     if (stream.fail()) {
         conversion_error = "Conversion to '" +

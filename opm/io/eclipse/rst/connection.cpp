@@ -34,16 +34,16 @@ namespace VI = ::Opm::RestartIO::Helpers::VectorItems;
 namespace {
 
 template <typename T>
-T from_int(int);
+T from_int(long long);
 
-template<> Opm::Connection::State from_int(int int_state)
+template<> Opm::Connection::State from_int(long long int_state)
 {
     return (int_state == 1)
         ? Opm::Connection::State::OPEN
         : Opm::Connection::State::SHUT;
 }
 
-template<> Opm::Connection::Direction from_int(int int_dir)
+template<> Opm::Connection::Direction from_int(long long int_dir)
 {
     switch (int_dir) {
     case 1: return Opm::Connection::Direction::X;
@@ -99,8 +99,8 @@ using M = ::Opm::UnitSystem::measure;
 
 Opm::RestartIO::RstConnection::RstConnection(const UnitSystem& unit_system,
                                              const std::size_t rst_index_,
-                                             const int         nsconz,
-                                             const int*        icon,
+                                             const long long         nsconz,
+                                             const long long*        icon,
                                              const float*      scon,
                                              const double*     xcon)
     : rst_index { rst_index_ }

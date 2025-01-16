@@ -37,7 +37,7 @@
 #include <vector>
 
 #if HAVE_DUNE_COMMON
-namespace Dune { template<typename,int> class FieldVector; }
+namespace Dune { template<typename,long long> class FieldVector; }
 #endif
 
 #if HAVE_DUNE_ISTL
@@ -532,7 +532,7 @@ protected:
     };
 
 #if HAVE_DUNE_COMMON
-    template<class T, int N>
+    template<class T, long long N>
     struct is_array<Dune::FieldVector<T,N>> {
         constexpr static bool value = true;
     };
@@ -589,7 +589,7 @@ protected:
                 (*this)(*data);
             }
         } else {
-            int ptr = 0;
+            long long ptr = 0;
             (*this)(ptr);
             if (ptr == 1) {
                 const_cast<PtrType&>(data) = std::make_unique<T1>();

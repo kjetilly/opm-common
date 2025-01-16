@@ -189,7 +189,7 @@ void testMonotonic(const Spline& sp,
 struct Fixture {
     Fixture()
     {
-        for (int i = 0; i < 5; ++i) {
+        for (long long i = 0; i < 5; ++i) {
             xVec.push_back(x[i]);
             yVec.push_back(y[i]);
             pointVec.push_back(points[i]);
@@ -328,8 +328,8 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_CASE(Monotonic)
 {
-    static constexpr int numSamples = 5;
-    static constexpr int n = numSamples - 1;
+    static constexpr long long numSamples = 5;
+    static constexpr long long n = numSamples - 1;
     std::array<double, numSamples> x{0.0, 5.0, 7.5, 8.75, 10.0 };
     std::array<double, numSamples> y{10.0, 0.0, 10.0, 0.0, 10.0 };
     static constexpr double m1 = 10;

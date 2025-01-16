@@ -43,14 +43,14 @@ Tabdims::Tabdims(const Deck& deck) :
 {
     if (deck.hasKeyword("TABDIMS")) {
         const auto& record = deck["TABDIMS"][0].getRecord(0);
-        m_ntsfun = record.getItem("NTSFUN").get<int>(0);
-        m_ntpvt  = record.getItem("NTPVT").get<int>(0);
-        m_nssfun = record.getItem("NSSFUN").get<int>(0);
-        m_nppvt  = record.getItem("NPPVT").get<int>(0);
-        m_ntfip  = record.getItem("NTFIP").get<int>(0);
-        m_nrpvt  = record.getItem("NRPVT").get<int>(0);
-        m_neosres = record.getItem("NUM_EOS_RES").get<int>(0);
-        m_neossur = record.getItem("NUM_EOS_SURFACE").get<int>(0);
+        m_ntsfun = record.getItem("NTSFUN").get<long long>(0);
+        m_ntpvt  = record.getItem("NTPVT").get<long long>(0);
+        m_nssfun = record.getItem("NSSFUN").get<long long>(0);
+        m_nppvt  = record.getItem("NPPVT").get<long long>(0);
+        m_ntfip  = record.getItem("NTFIP").get<long long>(0);
+        m_nrpvt  = record.getItem("NRPVT").get<long long>(0);
+        m_neosres = record.getItem("NUM_EOS_RES").get<long long>(0);
+        m_neossur = record.getItem("NUM_EOS_SURFACE").get<long long>(0);
     }
 }
 

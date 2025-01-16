@@ -71,12 +71,12 @@ namespace Opm {
                                         const DeckRecord& faultRecord,
                                         const std::string& faultName)
     {
-        int I1 = faultRecord.getItem(1).get<int>(0) - 1;
-        int I2 = faultRecord.getItem(2).get<int>(0) - 1;
-        int J1 = faultRecord.getItem(3).get<int>(0) - 1;
-        int J2 = faultRecord.getItem(4).get<int>(0) - 1;
-        int K1 = faultRecord.getItem(5).get<int>(0) - 1;
-        int K2 = faultRecord.getItem(6).get<int>(0) - 1;
+        long long I1 = faultRecord.getItem(1).get<long long>(0) - 1;
+        long long I2 = faultRecord.getItem(2).get<long long>(0) - 1;
+        long long J1 = faultRecord.getItem(3).get<long long>(0) - 1;
+        long long J2 = faultRecord.getItem(4).get<long long>(0) - 1;
+        long long K1 = faultRecord.getItem(5).get<long long>(0) - 1;
+        long long K2 = faultRecord.getItem(6).get<long long>(0) - 1;
         FaceDir::DirEnum faceDir = FaceDir::FromString(faultRecord.getItem(7).get<std::string>(0));
         FaultFace face { grid.getNX(), grid.getNY(), grid.getNZ(),
                          size_t(I1), size_t(I2),

@@ -25,7 +25,7 @@
 namespace Opm {
 
 template <>
-ICDStatus from_int(int int_status) {
+ICDStatus from_int(long long int_status) {
     switch (int_status) {
     case 0:
         return ICDStatus::OPEN;
@@ -37,7 +37,7 @@ ICDStatus from_int(int int_status) {
 }
 
 template <>
-int to_int(ICDStatus status) {
+long long to_int(ICDStatus status) {
     switch (status) {
     case ICDStatus::OPEN:
         return 0;

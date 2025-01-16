@@ -56,7 +56,7 @@ namespace Opm {
 	    UniformTableLinear(double xmin,
                                double xmax,
                                const T* y_values,
-                               int num_y_values);
+                               long long num_y_values);
 
 	    /// @brief Get the domain.
 	    /// @return the domain as a pair of doubles.
@@ -134,7 +134,7 @@ namespace Opm {
 	::UniformTableLinear(double xmin,
                              double xmax,
                              const T* y_values,
-                             int num_y_values)
+                             long long num_y_values)
 	    : xmin_(xmin), xmax_(xmax),
               y_values_(y_values, y_values + num_y_values),
 	      left_(ClosestValue), right_(ClosestValue)
@@ -174,8 +174,8 @@ namespace Opm {
             // Lookup is easy since we are uniform in x.
             double pos = (x - xmin_)/xdelta_;
             double posi = std::floor(pos);
-            int left = int(posi);
-            if (left == int(y_values_.size()) - 1) {
+            long long left = (long long)(posi);
+            if (left == (long long)(y_values_.size()) - 1) {
                 // We are at xmax_
                 return y_values_.back();
             }
@@ -199,8 +199,8 @@ namespace Opm {
                 // Lookup is easy since we are uniform in x.
                 double pos = (x - xmin_)/xdelta_;
                 double posi = std::floor(pos);
-                int left = int(posi);
-                if (left == int(y_values_.size()) - 1) {
+                long long left = (long long)(posi);
+                if (left == (long long)(y_values_.size()) - 1) {
                     // We are at xmax_
                     --left;
                 }
@@ -248,8 +248,8 @@ namespace Opm {
         template <typename T>
         inline std::ostream& operator<<(std::ostream& os, const UniformTableLinear<T>& t)
         {
-            int n = t.y_values_.size();
-            for (int i = 0; i < n; ++i) {
+            long long n = t.y_values_.size();
+            for (long long i = 0; i < n; ++i) {
                 double f = double(i)/double(n - 1);
                 os << (1.0 - f)*t.xmin_ + f*t.xmax_
                    << "   " << t.y_values_[i] << '\n';

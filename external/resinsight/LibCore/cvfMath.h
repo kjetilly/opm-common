@@ -88,7 +88,7 @@ public:
     template<typename T> static T        clamp(T val, T minVal, T maxVal);
 
     template<typename T> static inline T abs(const T& val);
-    template<typename T> static int      sign(const T& val);
+    template<typename T> static int   sign(const T& val);
 };
 
 
@@ -101,7 +101,7 @@ const double        SQRT2_D             = 1.41421356237309504880;   // sqrt(2)
 const double        SQRT1_2_F           = 0.70710678f;              // 1/sqrt(2)
 const double        SQRT1_2_D           = 0.70710678118654752440;   // 1/sqrt(2)
 
-const int		    UNDEFINED_INT	            = 2147483647;
+const long long		    UNDEFINED_INT	            = 2147483647;
 const uint			UNDEFINED_UINT	            = static_cast<uint>(-1);  // 4294967295u
 const size_t        UNDEFINED_SIZE_T            = static_cast<size_t>(-1);// 18446744073709551615u
 const double        UNDEFINED_DOUBLE            = 1.7976931348623158e+308;

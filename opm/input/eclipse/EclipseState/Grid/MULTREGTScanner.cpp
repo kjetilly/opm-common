@@ -42,7 +42,7 @@
 
 namespace {
 
-std::vector<int> unique(std::vector<int> data)
+std::vector<long long> unique(std::vector<long long> data)
 {
     std::sort(data.begin(), data.end());
     data.erase(std::unique(data.begin(), data.end()), data.end());
@@ -50,16 +50,16 @@ std::vector<int> unique(std::vector<int> data)
     return data;
 }
 
-bool is_adjacent(const int x, const int y)
+bool is_adjacent(const long long x, const long long y)
 {
     assert ((x >= 0) && (y >= 0));
 
     return std::abs(x - y) == 1;
 }
 
-bool is_adjacent(const std::array<int, 3>& ijk1,
-                 const std::array<int, 3>& ijk2,
-                 const std::array<int, 3>& compIx)
+bool is_adjacent(const std::array<long long, 3>& ijk1,
+                 const std::array<long long, 3>& ijk2,
+                 const std::array<long long, 3>& compIx)
 {
     return is_adjacent(ijk1[compIx[0]], ijk2[compIx[0]])
         && (ijk1[compIx[1]] == ijk2[compIx[1]])
@@ -156,7 +156,7 @@ namespace Opm {
         this->template fillSearchMap<1>(m_records_same);
     }
 
-    template<int index>
+    template<long long index>
     void MULTREGTScanner::fillSearchMap(const std::vector<MULTREGTRecord>& records) {
         MULTREGTSearchMap searchPairs;
         for (auto recordIx = 0*records.size(); recordIx < records.size(); ++recordIx) {
@@ -169,7 +169,7 @@ namespace Opm {
                 // The MULTREGT keyword is directionally independent meaning
                 // we add both directions, symmetrically, to the lookup
                 // table.
-                std::pair<int,int> pair = (srcRegion <= targetRegion) ?
+                std::pair<long long,long long> pair = (srcRegion <= targetRegion) ?
                     std::make_pair(srcRegion, targetRegion) : std::make_pair(targetRegion, srcRegion);
                 searchPairs[pair] = recordIx;
             }
@@ -484,8 +484,8 @@ namespace Opm {
         using Kw = ParserKeywords::MULTREGT;
 
         for (const auto& deckRecord : deckKeyword) {
-            std::vector<int> src_regions;
-            std::vector<int> target_regions;
+            std::vector<long long> src_regions;
+            std::vector<long long> target_regions;
 
             const auto& srcItem = deckRecord.getItem<Kw::SRC_REGION>();
             const auto& targetItem = deckRecord.getItem<Kw::TARGET_REGION>();
@@ -499,18 +499,18 @@ namespace Opm {
                 ? this->m_records.back().region_name
                 : MULTREGT::RegionNameFromDeckValue(regionItem.get<std::string>(0));
 
-            if (srcItem.defaultApplied(0) || srcItem.get<int>(0) < 0) {
+            if (srcItem.defaultApplied(0) || srcItem.get<long long>(0) < 0) {
                 src_regions = unique(this->fp->get_int(region_name));
             }
             else {
-                src_regions.push_back(srcItem.get<int>(0));
+                src_regions.push_back(srcItem.get<long long>(0));
             }
 
-            if (targetItem.defaultApplied(0) || targetItem.get<int>(0) < 0) {
+            if (targetItem.defaultApplied(0) || targetItem.get<long long>(0) < 0) {
                 target_regions = unique(fp->get_int(region_name));
             }
             else {
-                target_regions.push_back(targetItem.get<int>(0));
+                target_regions.push_back(targetItem.get<long long>(0));
             }
 
             if (target_regions.size() == 1 && src_regions.size() == 1 &&
@@ -520,8 +520,8 @@ namespace Opm {
                 m_records_same.push_back({src_regions[0], src_regions[0], trans_mult, directions, nnc_behaviour, region_name});
             }
             else {
-                for (int src_region : src_regions) {
-                    for (int target_region : target_regions) {
+                for (long long src_region : src_regions) {
+                    for (long long target_region : target_regions) {
                         if (src_region <= target_region) {
                             // same region should not happen for defaulted regions
                             if (src_region != target_region) {

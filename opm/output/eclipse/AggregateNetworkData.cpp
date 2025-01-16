@@ -63,18 +63,18 @@ namespace VI = Opm::RestartIO::Helpers::VectorItems;
 namespace {
 
 // maximum number of network nodes
-std::size_t nodmax(const std::vector<int>& inteHead)
+std::size_t nodmax(const std::vector<long long>& inteHead)
 {
     return inteHead[Opm::RestartIO::Helpers::VectorItems::NODMAX];
 }
 
 // maximum number of network branches
-std::size_t nbrmax(const std::vector<int>& inteHead)
+std::size_t nbrmax(const std::vector<long long>& inteHead)
 {
     return inteHead[Opm::RestartIO::Helpers::VectorItems::NBRMAX];
 }
 
-std::size_t entriesPerInobr(const std::vector<int>& inteHead)
+std::size_t entriesPerInobr(const std::vector<long long>& inteHead)
 {
     return inteHead[Opm::RestartIO::Helpers::VectorItems::NINOBR];
 }
@@ -112,19 +112,19 @@ void branchLoop(const std::vector<const Opm::Network::Branch*>& branches,
 }
 
 template <typename T>
-std::optional<int> findInVector(const std::vector<T>  & vecOfElements, const T  & element)
+std::optional<long long> findInVector(const std::vector<T>  & vecOfElements, const T  & element)
 {
     // Find given element in vector
     auto it = std::find(vecOfElements.begin(), vecOfElements.end(), element);
 
-    return (it != vecOfElements.end()) ? std::optional<int>{std::distance(vecOfElements.begin(), it)} : std::nullopt;
+    return (it != vecOfElements.end()) ? std::optional<long long>{std::distance(vecOfElements.begin(), it)} : std::nullopt;
 }
 
-int next_branch(int node_no, const std::vector<int>& inlets, const std::vector<int>& outlets)
+long long next_branch(long long node_no, const std::vector<long long>& inlets, const std::vector<long long>& outlets)
 {
-    int nxt_br = 0;
-    auto res_inlets = findInVector<int>(inlets, node_no);
-    auto res_outlets = findInVector<int>(outlets, node_no);
+    long long nxt_br = 0;
+    auto res_inlets = findInVector<long long>(inlets, node_no);
+    auto res_outlets = findInVector<long long>(outlets, node_no);
 
     if ((!res_inlets) && (!res_outlets)) {
         return 0;
@@ -144,33 +144,33 @@ int next_branch(int node_no, const std::vector<int>& inlets, const std::vector<i
 }
 
 
-std::vector<int> inobrFunc( const Opm::Schedule&    sched,
+std::vector<long long> inobrFunc( const Opm::Schedule&    sched,
                             const std::size_t       lookup_step
                  )
 {
     const auto& ntwNdNm = sched[lookup_step].network().node_names();
     const auto& branchPtrs = sched[lookup_step].network().branches();
 
-    std::vector<int> newInobr;
-    const int used_flag = -9;
-    std::vector<int> inlets;
-    std::vector<int> outlets;
+    std::vector<long long> newInobr;
+    const long long used_flag = -9;
+    std::vector<long long> inlets;
+    std::vector<long long> outlets;
 
     for (const auto& branch : branchPtrs) {
         auto dwntr_nd_res = findInVector<std::string>(ntwNdNm, branch->downtree_node());
-        int ind = (dwntr_nd_res) ? dwntr_nd_res.value() + 1 : 0 ;
+        long long ind = (dwntr_nd_res) ? dwntr_nd_res.value() + 1 : 0 ;
         inlets.push_back(ind);
         auto uptr_nd_res = findInVector<std::string>(ntwNdNm, branch->uptree_node());
         ind = (dwntr_nd_res) ? uptr_nd_res.value() + 1 : 0 ;
         outlets.push_back(ind);
     }
 
-    int n1 = inlets[0];
+    long long n1 = inlets[0];
     newInobr.push_back(n1 * (-1));
     inlets[0] = used_flag;
 
     while (static_cast<std::size_t>(n1) <= ntwNdNm.size()) {
-        int ind_br = next_branch(n1, inlets, outlets);
+        long long ind_br = next_branch(n1, inlets, outlets);
         while (ind_br != 0) {
             newInobr.push_back(ind_br);
             auto& xlet = ind_br > 0 ? outlets[ind_br - 1] : inlets[std::abs(ind_br) - 1];
@@ -382,15 +382,15 @@ nodeProps nodeRateDensity(const Opm::EclipseState&                  es,
 }
 
 namespace INode {
-std::size_t entriesPerNode(const std::vector<int>& inteHead)
+std::size_t entriesPerNode(const std::vector<long long>& inteHead)
 {
     return inteHead[Opm::RestartIO::Helpers::VectorItems::NINODE];
 }
 
-Opm::RestartIO::Helpers::WindowedArray<int>
-allocate(const std::vector<int>& inteHead)
+Opm::RestartIO::Helpers::WindowedArray<long long>
+allocate(const std::vector<long long>& inteHead)
 {
-    using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+    using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
     return WV {
         WV::NumWindows{ nodmax(inteHead) },
@@ -398,11 +398,11 @@ allocate(const std::vector<int>& inteHead)
     };
 }
 
-int numberOfBranchesConnToNode(const Opm::Schedule& sched, const std::string& nodeName, const size_t lookup_step)
+long long numberOfBranchesConnToNode(const Opm::Schedule& sched, const std::string& nodeName, const size_t lookup_step)
 {
     auto& network = sched[lookup_step].network();
     if (network.has_node(nodeName)) {
-        int noBranches = network.downtree_branches(nodeName).size();
+        long long noBranches = network.downtree_branches(nodeName).size();
         noBranches = (network.uptree_branch(nodeName).has_value()) ? noBranches+1 : noBranches;
         return noBranches;
     } else {
@@ -411,12 +411,12 @@ int numberOfBranchesConnToNode(const Opm::Schedule& sched, const std::string& no
     }
 }
 
-int cumNumberOfBranchesConnToNode(const Opm::Schedule& sched, const std::string& nodeName, const size_t lookup_step)
+long long cumNumberOfBranchesConnToNode(const Opm::Schedule& sched, const std::string& nodeName, const size_t lookup_step)
 {
     auto& network = sched[lookup_step].network();
     auto result = findInVector<std::string>(network.node_names(), nodeName);
     if (result) {
-        int cumNoBranches = 1;
+        long long cumNoBranches = 1;
         const std::size_t ind_name = result.value();
         if (ind_name == 0) {
             return cumNoBranches;
@@ -457,15 +457,15 @@ void staticContrib(const Opm::Schedule&     sched,
 }// Inode
 
 namespace IBran {
-std::size_t entriesPerBranch(const std::vector<int>& inteHead)
+std::size_t entriesPerBranch(const std::vector<long long>& inteHead)
 {
     return inteHead[Opm::RestartIO::Helpers::VectorItems::NIBRAN];
 }
 
-Opm::RestartIO::Helpers::WindowedArray<int>
-allocate(const std::vector<int>& inteHead)
+Opm::RestartIO::Helpers::WindowedArray<long long>
+allocate(const std::vector<long long>& inteHead)
 {
-    using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
+    using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
 
     return WV {
         WV::NumWindows{ nbrmax(inteHead) },
@@ -495,11 +495,11 @@ void staticContrib(const Opm::Schedule&         sched,
 namespace INobr {
 
 
-Opm::RestartIO::Helpers::WindowedArray<int>
-allocate(const std::vector<int>& inteHead)
+Opm::RestartIO::Helpers::WindowedArray<long long>
+allocate(const std::vector<long long>& inteHead)
 {
-    using WV = Opm::RestartIO::Helpers::WindowedArray<int>;
-    int nitPrWin = std::max(static_cast<int>(entriesPerInobr(inteHead)), 1);
+    using WV = Opm::RestartIO::Helpers::WindowedArray<long long>;
+    long long nitPrWin = std::max(static_cast<long long>(entriesPerInobr(inteHead)), 1LL);
     return WV {
         WV::NumWindows{ 1 },
         WV::WindowSize{ static_cast<std::size_t>(nitPrWin)  }
@@ -507,7 +507,7 @@ allocate(const std::vector<int>& inteHead)
 }
 
 template <class INobrArray>
-void staticContrib(const std::vector<int>&   inbr,
+void staticContrib(const std::vector<long long>&   inbr,
                    INobrArray&  iNobr)
 {
     for (std::size_t inb = 0; inb < inbr.size(); inb++) {
@@ -518,7 +518,7 @@ void staticContrib(const std::vector<int>&   inbr,
 } // Inobr
 
 namespace ZNode {
-std::size_t entriesPerZnode(const std::vector<int>& inteHead)
+std::size_t entriesPerZnode(const std::vector<long long>& inteHead)
 {
     return inteHead[Opm::RestartIO::Helpers::VectorItems::NZNODE];
 }
@@ -526,7 +526,7 @@ std::size_t entriesPerZnode(const std::vector<int>& inteHead)
 Opm::RestartIO::Helpers::WindowedArray<
 Opm::EclIO::PaddedOutputString<8>
 >
-allocate(const std::vector<int>& inteHead)
+allocate(const std::vector<long long>& inteHead)
 {
     using WV = Opm::RestartIO::Helpers::WindowedArray<
                Opm::EclIO::PaddedOutputString<8>
@@ -547,13 +547,13 @@ void staticContrib(const std::string&       nodeName,
 } // Znode
 
 namespace RNode {
-std::size_t entriesPerRnode(const std::vector<int>& inteHead)
+std::size_t entriesPerRnode(const std::vector<long long>& inteHead)
 {
     return inteHead[Opm::RestartIO::Helpers::VectorItems::NRNODE];
 }
 
 Opm::RestartIO::Helpers::WindowedArray<double>
-allocate(const std::vector<int>& inteHead)
+allocate(const std::vector<long long>& inteHead)
 {
     using WV = Opm::RestartIO::Helpers::WindowedArray<double>;
 
@@ -589,13 +589,13 @@ void dynamicContrib(const Opm::Schedule&      sched,
 
 
 namespace RBran {
-std::size_t entriesPerRbran(const std::vector<int>& inteHead)
+std::size_t entriesPerRbran(const std::vector<long long>& inteHead)
 {
     return inteHead[Opm::RestartIO::Helpers::VectorItems::NRBRAN];
 }
 
 Opm::RestartIO::Helpers::WindowedArray<double>
-allocate(const std::vector<int>& inteHead)
+allocate(const std::vector<long long>& inteHead)
 {
     using WV = Opm::RestartIO::Helpers::WindowedArray<double>;
 
@@ -638,7 +638,7 @@ void dynamicContrib(const Opm::EclipseState&         es,
 // =====================================================================
 
 Opm::RestartIO::Helpers::AggregateNetworkData::
-AggregateNetworkData(const std::vector<int>& inteHead)
+AggregateNetworkData(const std::vector<long long>& inteHead)
     : iNode_ (INode::allocate(inteHead))
     , iBran_ (IBran::allocate(inteHead))
     , iNobr_ (INobr::allocate(inteHead))
@@ -657,7 +657,7 @@ captureDeclaredNetworkData(const Opm::EclipseState&             es,
                            const Opm::UnitSystem&               units,
                            const std::size_t                    lookup_step,
                            const Opm::SummaryState&             sumState,
-                           const std::vector<int>&              inteHead)
+                           const std::vector<long long>&              inteHead)
 {
 
     auto ntwNdNm = sched[lookup_step].network().node_names();
@@ -692,7 +692,7 @@ captureDeclaredNetworkData(const Opm::EclipseState&             es,
     });
 
     // Define Static Contributions to INobr Array
-    const std::vector<int> inobr = inobrFunc(sched, lookup_step);
+    const std::vector<long long> inobr = inobrFunc(sched, lookup_step);
 
     // Define Static Contributions to INobr Array
     if (inobr.size() > entriesPerInobr(inteHead)) {

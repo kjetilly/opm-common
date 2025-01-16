@@ -51,29 +51,29 @@ class Evaluation<ValueT, 8>
 public:
     //! the template argument which specifies the number of
     //! derivatives (-1 == "DynamicSize" means runtime determined)
-    static const int numVars = 8;
+    static const long long numVars = 8;
 
     //! field type
     typedef ValueT ValueType;
 
     //! number of derivatives
-    OPM_HOST_DEVICE constexpr int size() const
+    OPM_HOST_DEVICE constexpr long long size() const
     { return 8; };
 
 protected:
     //! length of internal data vector
-    OPM_HOST_DEVICE constexpr int length_() const
+    OPM_HOST_DEVICE constexpr long long length_() const
     { return size() + 1; }
 
 
     //! position index for value
-    OPM_HOST_DEVICE constexpr int valuepos_() const
+    OPM_HOST_DEVICE constexpr long long valuepos_() const
     { return 0; }
     //! start index for derivatives
-    OPM_HOST_DEVICE constexpr int dstart_() const
+    OPM_HOST_DEVICE constexpr long long dstart_() const
     { return 1; }
     //! end+1 index for derivatives
-    OPM_HOST_DEVICE constexpr int dend_() const
+    OPM_HOST_DEVICE constexpr long long dend_() const
     { return length_(); }
 
     //! instruct valgrind to check that the value and all derivatives of the
@@ -113,7 +113,7 @@ public:
     // i.e., f(x) = c. this implies an evaluation with the given value and all
     // derivatives being zero.
     template <class RhsValueType>
-    OPM_HOST_DEVICE Evaluation(const RhsValueType& c, int varPos)
+    OPM_HOST_DEVICE Evaluation(const RhsValueType& c, long long varPos)
     {
         // The variable position must be in represented by the given variable descriptor
         assert(0 <= varPos && varPos < size());
@@ -160,7 +160,7 @@ public:
 
     // create a function evaluation for a "naked" depending variable (i.e., f(x) = x)
     template <class RhsValueType>
-    OPM_HOST_DEVICE static Evaluation createVariable(const RhsValueType& value, int varPos)
+    OPM_HOST_DEVICE static Evaluation createVariable(const RhsValueType& value, long long varPos)
     {
         // copy function value and set all derivatives to 0, except for the variable
         // which is represented by the value (which is set to 1.0)
@@ -168,7 +168,7 @@ public:
     }
 
     template <class RhsValueType>
-    OPM_HOST_DEVICE static Evaluation createVariable(int nVars, const RhsValueType& value, int varPos)
+    OPM_HOST_DEVICE static Evaluation createVariable(long long nVars, const RhsValueType& value, long long varPos)
     {
         if (nVars != 8)
             throw std::logic_error("This statically-sized evaluation can only represent objects"
@@ -180,7 +180,7 @@ public:
     }
 
     template <class RhsValueType>
-    OPM_HOST_DEVICE static Evaluation createVariable(const Evaluation&, const RhsValueType& value, int varPos)
+    OPM_HOST_DEVICE static Evaluation createVariable(const Evaluation&, const RhsValueType& value, long long varPos)
     {
         // copy function value and set all derivatives to 0, except for the variable
         // which is represented by the value (which is set to 1.0)
@@ -191,7 +191,7 @@ public:
     // "evaluate" a constant function (i.e. a function that does not depend on the set of
     // relevant variables, f(x) = c).
     template <class RhsValueType>
-    OPM_HOST_DEVICE static Evaluation createConstant(int nVars, const RhsValueType& value)
+    OPM_HOST_DEVICE static Evaluation createConstant(long long nVars, const RhsValueType& value)
     {
         if (nVars != 8)
             throw std::logic_error("This statically-sized evaluation can only represent objects"
@@ -498,7 +498,7 @@ public:
     {
         assert(size() == other.size());
 
-        for (int idx = 0; idx < length_(); ++idx) {
+        for (long long idx = 0; idx < length_(); ++idx) {
             if (data_[idx] != other.data_[idx]) {
                 return false;
             }
@@ -567,7 +567,7 @@ public:
     { data_[valuepos_()] = val; }
 
     // return varIdx'th derivative
-    OPM_HOST_DEVICE const ValueType& derivative(int varIdx) const
+    OPM_HOST_DEVICE const ValueType& derivative(long long varIdx) const
     {
         assert(0 <= varIdx && varIdx < size());
 
@@ -575,7 +575,7 @@ public:
     }
 
     // set derivative at position varIdx
-    OPM_HOST_DEVICE void setDerivative(int varIdx, const ValueType& derVal)
+    OPM_HOST_DEVICE void setDerivative(long long varIdx, const ValueType& derVal)
     {
         assert(0 <= varIdx && varIdx < size());
 

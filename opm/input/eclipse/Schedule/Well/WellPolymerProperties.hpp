@@ -28,9 +28,9 @@ namespace Opm {
     struct WellPolymerProperties {
         double m_polymerConcentration = 0.0;
         double m_saltConcentration = 0.0;
-        int m_plymwinjtable = -1;
-        int m_skprwattable = -1;
-        int m_skprpolytable = -1;
+        long long m_plymwinjtable = -1;
+        long long m_skprwattable = -1;
+        long long m_skprpolytable = -1;
 
         static WellPolymerProperties serializationTestObject();
 

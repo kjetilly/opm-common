@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE(MULTREGT_COPY_MULTNUM) {
     BOOST_CHECK_NO_THROW(fp.has_int("MULTNUM"));
     const auto& fdata = fp.get_global_int("FLUXNUM");
     const auto& mdata = fp.get_global_int("MULTNUM");
-    std::vector<int> data = { 1, 2, 1, 2, 3, 4, 3, 4 };
+    std::vector<long long> data = { 1, 2, 1, 2, 3, 4, 3, 4 };
 
     for (auto i = 0; i < 2 * 2 * 2; i++) {
         BOOST_CHECK_EQUAL(fdata[i], mdata[i]);
@@ -510,8 +510,8 @@ BOOST_AUTO_TEST_CASE(AQUNNC_Handling_OneAquCell)
 
     auto getMultRegular = [&grid]
         (const Opm::MULTREGTScanner& scanner,
-         const std::array<int,3>&    c1,
-         const std::array<int,3>&    c2,
+         const std::array<long long,3>&    c1,
+         const std::array<long long,3>&    c2,
          const Opm::FaceDir::DirEnum direction)
     {
         return scanner.getRegionMultiplier(grid.getGlobalIndex(c1[0], c1[1], c1[2]),
@@ -521,8 +521,8 @@ BOOST_AUTO_TEST_CASE(AQUNNC_Handling_OneAquCell)
 
     auto getMultNNC = [&grid]
         (const Opm::MULTREGTScanner& scanner,
-         const std::array<int,3>&    c1,
-         const std::array<int,3>&    c2)
+         const std::array<long long,3>&    c1,
+         const std::array<long long,3>&    c2)
     {
         return scanner.getRegionMultiplierNNC(grid.getGlobalIndex(c1[0], c1[1], c1[2]),
                                               grid.getGlobalIndex(c2[0], c2[1], c2[2]));
@@ -648,8 +648,8 @@ BOOST_AUTO_TEST_CASE(AQUNNC_Handling_ThreeAquCells)
 
     auto getMultRegular = [&grid]
         (const Opm::MULTREGTScanner& scanner,
-         const std::array<int,3>&    c1,
-         const std::array<int,3>&    c2,
+         const std::array<long long,3>&    c1,
+         const std::array<long long,3>&    c2,
          const Opm::FaceDir::DirEnum direction)
     {
         return scanner.getRegionMultiplier(grid.getGlobalIndex(c1[0], c1[1], c1[2]),
@@ -659,8 +659,8 @@ BOOST_AUTO_TEST_CASE(AQUNNC_Handling_ThreeAquCells)
 
     auto getMultNNC = [&grid]
         (const Opm::MULTREGTScanner& scanner,
-         const std::array<int,3>&    c1,
-         const std::array<int,3>&    c2)
+         const std::array<long long,3>&    c1,
+         const std::array<long long,3>&    c2)
     {
         return scanner.getRegionMultiplierNNC(grid.getGlobalIndex(c1[0], c1[1], c1[2]),
                                               grid.getGlobalIndex(c2[0], c2[1], c2[2]));
@@ -795,12 +795,12 @@ namespace {
     public:
         explicit TMultRegion(const Opm::Deck& deck);
 
-        double regular(const std::array<int,3>&    c1,
-                       const std::array<int,3>&    c2,
+        double regular(const std::array<long long,3>&    c1,
+                       const std::array<long long,3>&    c2,
                        const Opm::FaceDir::DirEnum direction) const;
 
-        double nnc(const std::array<int,3>& c1,
-                   const std::array<int,3>& c2) const;
+        double nnc(const std::array<long long,3>& c1,
+                   const std::array<long long,3>& c2) const;
 
     private:
         Opm::EclipseGrid grid_;
@@ -814,8 +814,8 @@ namespace {
         , scanner_ { grid_, &fp_, deck.getKeywordList<Opm::ParserKeywords::MULTREGT>() }
     {}
 
-    double TMultRegion::regular(const std::array<int,3>&    c1,
-                                const std::array<int,3>&    c2,
+    double TMultRegion::regular(const std::array<long long,3>&    c1,
+                                const std::array<long long,3>&    c2,
                                 const Opm::FaceDir::DirEnum direction) const
     {
         return this->scanner_
@@ -824,8 +824,8 @@ namespace {
                                  direction);
     }
 
-    double TMultRegion::nnc(const std::array<int,3>& c1,
-                            const std::array<int,3>& c2) const
+    double TMultRegion::nnc(const std::array<long long,3>& c1,
+                            const std::array<long long,3>& c2) const
     {
         return this->scanner_
             .getRegionMultiplierNNC(this->grid_.getGlobalIndex(c1[0], c1[1], c1[2]),

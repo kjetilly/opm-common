@@ -97,9 +97,9 @@ static const std::vector<double> default_time =     { 0.010, 0.050, 0.100, 0.150
 }
 
 AquiferCT::AQUCT_data::AQUCT_data(const DeckRecord& record, const TableManager& tables)
-    : aquiferID     (record.getItem<ParserKeywords::AQUCT::AQUIFER_ID>().get<int>(0))
-    , inftableID    (record.getItem<ParserKeywords::AQUCT::TABLE_NUM_INFLUENCE_FN>().get<int>(0))
-    , pvttableID    (record.getItem<ParserKeywords::AQUCT::TABLE_NUM_WATER_PRESS>().get<int>(0))
+    : aquiferID     (record.getItem<ParserKeywords::AQUCT::AQUIFER_ID>().get<long long>(0))
+    , inftableID    (record.getItem<ParserKeywords::AQUCT::TABLE_NUM_INFLUENCE_FN>().get<long long>(0))
+    , pvttableID    (record.getItem<ParserKeywords::AQUCT::TABLE_NUM_WATER_PRESS>().get<long long>(0))
     , porosity      (record.getItem<ParserKeywords::AQUCT::PORO_AQ>().getSIDouble(0))
     , datum_depth   (record.getItem<ParserKeywords::AQUCT::DAT_DEPTH>().getSIDouble(0))
     , total_compr   (record.getItem<ParserKeywords::AQUCT::C_T>().getSIDouble(0))
@@ -140,9 +140,9 @@ bool AquiferCT::AQUCT_data::operator==(const AquiferCT::AQUCT_data& other) const
         ;
 }
 
-AquiferCT::AQUCT_data::AQUCT_data(const int aqID,
-                                  const int infID,
-                                  const int pvtID,
+AquiferCT::AQUCT_data::AQUCT_data(const long long aqID,
+                                  const long long infID,
+                                  const long long pvtID,
                                   const double phi_aq_,
                                   const double d0_,
                                   const double C_t_,
@@ -287,7 +287,7 @@ const std::vector<AquiferCT::AQUCT_data>& AquiferCT::data() const {
     return this->m_aquct;
 }
 
-bool AquiferCT::hasAquifer(const int aquID) const {
+bool AquiferCT::hasAquifer(const long long aquID) const {
     return std::any_of(this->m_aquct.begin(), this->m_aquct.end(),
                        [&aquID](const auto& aqu) { return aqu.aquiferID == aquID; });
 }

@@ -43,7 +43,7 @@ namespace Opm {
         explicit DeckKeyword(const ParserKeyword& parserKeyword);
         DeckKeyword(const KeywordLocation& location, const std::string& keywordName);
         DeckKeyword(const ParserKeyword& parserKeyword, const std::vector<std::vector<DeckValue>>& record_list, const UnitSystem& system_active, const UnitSystem& system_default);
-        DeckKeyword(const ParserKeyword& parserKeyword, const std::vector<int>& data);
+        DeckKeyword(const ParserKeyword& parserKeyword, const std::vector<long long>& data);
         DeckKeyword(const ParserKeyword& parserKeyword, const std::vector<double>& data, const UnitSystem& system_active, const UnitSystem& system_default);
 
         static DeckKeyword serializationTestObject();
@@ -66,7 +66,7 @@ namespace Opm {
         bool isDataKeyword() const;
         bool isDoubleRecordKeyword() const;
 
-        const std::vector<int>& getIntData() const;
+        const std::vector<long long>& getIntData() const;
         const std::vector<double>& getRawDoubleData() const;
         const std::vector<double>& getSIDoubleData() const;
         const std::vector<std::string>& getStringData() const;

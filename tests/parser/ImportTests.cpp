@@ -64,8 +64,8 @@ BOOST_AUTO_TEST_CASE(CreateImportContainer) {
         EclIO::EclOutput output {"FILE_NAME", false};
         output.write<double>("PORO", {0, 1, 2, 3, 4});
         output.write<float>("PERMX", {10, 20, 30, 40});
-        output.write<int>("FIPNUM", {100, 200, 300, 400});
-        output.write<int>("UNKNOWN", {100, 200, 300, 400});
+        output.write<long long>("FIPNUM", {100, 200, 300, 400});
+        output.write<long long>("UNKNOWN", {100, 200, 300, 400});
         output.write<float>("MAPAXES", {10, 20, 30, 40, 50, 60});
     }
 

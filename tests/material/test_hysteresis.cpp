@@ -733,12 +733,12 @@ class FieldPropsManager;
 // To support Local Grid Refinement for CpGrid, additional arguments have been added
 // in some EclMaterialLawManager(InitParams) member functions. Therefore, we define
 // some lambda expressions that does not affect this test file.
-std::function<std::vector<int>(const Opm::FieldPropsManager&, const std::string&, bool)> doOldLookup =
+std::function<std::vector<long long>(const Opm::FieldPropsManager&, const std::string&, bool)> doOldLookup =
     [](const Opm::FieldPropsManager& fieldPropManager, const std::string& propString, bool needsTranslation)
     {
-        std::vector<int> dest;
+        std::vector<long long> dest;
         const auto& intRawData = fieldPropManager.get_int(propString);
-        unsigned int numElems =  intRawData.size();
+        size_t numElems =  intRawData.size();
         dest.resize(numElems);
         for (unsigned elemIdx = 0; elemIdx < numElems; ++elemIdx) {
             dest[elemIdx] = intRawData[elemIdx] - needsTranslation;
@@ -767,7 +767,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOil, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -784,7 +784,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOil, Scalar, Types)
     Scalar Sw = 0.0;
     Scalar tol = 1e-3;
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 100; ++ i) {
+    for (long long i = 0; i <= 100; ++ i) {
         Scalar Sg = Scalar(i) / 100;
         Scalar So = 1 - Sg;
         typename Fixture<Scalar>::FluidState fs;
@@ -800,7 +800,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOil, Scalar, Types)
         BOOST_CHECK_CLOSE(So, kr[Fixture<Scalar>::oilPhaseIdx], tol);
         BOOST_CHECK_CLOSE(Sg, kr[Fixture<Scalar>::gasPhaseIdx], tol);
     }
-    for (int i = 100; i >= 0; -- i) {
+    for (long long i = 100; i >= 0; -- i) {
         Scalar Sg = Scalar(i) / 100;
         Scalar So = 1 - Sg;
         typename Fixture<Scalar>::FluidState fs;
@@ -823,7 +823,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOilScanning, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -840,7 +840,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOilScanning, Scalar, Types)
     Scalar Sw = 0.0;
     Scalar tol = 1e-3;
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar Sg = Scalar(i) / 100;
         Scalar So = 1 - Sg;
         typename Fixture<Scalar>::FluidState fs;
@@ -875,7 +875,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOilScanning, Scalar, Types)
     Scalar Snr = 1 / ( (C + killoughScalingParam) + 1.0/maxSg);
     BOOST_CHECK_CLOSE(Snr, trappedSg, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar Sg = Scalar(i) / 100;
         Scalar So = 1 - Sg;
         typename Fixture<Scalar>::FluidState fs;
@@ -897,7 +897,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerConnateWaterScanning, Sca
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -914,7 +914,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerConnateWaterScanning, Sca
     Scalar Sw = 0.12;
     Scalar tol = 1e-3;
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar Sg = Scalar(i) / 100;
         Scalar So = 1 - Sg - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -948,7 +948,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerConnateWaterScanning, Sca
     Scalar Snr = maxSg / (1 + killoughScalingParam * (0.88 - maxSg) + C*maxSg );
     BOOST_CHECK_CLOSE(Snr, trappedSg, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar Sg = Scalar(i) / 100;
         Scalar So = 1 - Sg - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -971,7 +971,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOilScanningWetting, Scalar, T
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -992,7 +992,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOilScanningWetting, Scalar, T
     Scalar somin_out = 0.0;
     Scalar trappedSo = 0.0;
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sg = 1 - So;
         typename Fixture<Scalar>::FluidState fs;
@@ -1030,7 +1030,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOilScanningWetting, Scalar, T
     trappedSo = MaterialLaw::trappedOilSaturation(param, /*maximumTrapping*/true);
     BOOST_CHECK_SMALL(trappedSo, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sg = 1 - So;
         typename Fixture<Scalar>::FluidState fs;
@@ -1082,7 +1082,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughGasOilScanningWetting, Scalar, T
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
             BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }
@@ -1092,7 +1092,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerConnateWaterScanningWetti
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -1123,7 +1123,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerConnateWaterScanningWetti
     //0.2      0    1.0   0
     //.88   1.0  0.0   0 /
 
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sg = 1 - So - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1165,7 +1165,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerConnateWaterScanningWetti
     trappedSo = MaterialLaw::trappedOilSaturation(param, /*maximumTrapping*/true);
     BOOST_CHECK_SMALL(trappedSo, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sg = 1 - So - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1225,7 +1225,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerConnateWaterScanningWetti
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
             BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }
@@ -1235,7 +1235,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pStone1ConnateWaterScanningWett
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -1254,7 +1254,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pStone1ConnateWaterScanningWett
     Scalar trappedSo = 0.0;
     Scalar trappedSg = 0.0;
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sg = 1 - So - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1296,7 +1296,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pStone1ConnateWaterScanningWett
     trappedSo = MaterialLaw::trappedOilSaturation(param, /*maximumTrapping*/true);
     BOOST_CHECK_SMALL(trappedSo, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sg = 1 - So - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1354,7 +1354,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pStone1ConnateWaterScanningWett
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
            BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }
@@ -1364,7 +1364,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pStone2ConnateWaterScanningWett
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -1383,7 +1383,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pStone2ConnateWaterScanningWett
     Scalar trappedSo = 0.0;
     Scalar trappedSg = 0.0;
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sg = 1 - So - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1424,7 +1424,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pStone2ConnateWaterScanningWett
     trappedSo = MaterialLaw::trappedOilSaturation(param, /*maximumTrapping*/true);
     BOOST_CHECK_SMALL(trappedSo, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sg = 1 - So - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1483,7 +1483,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pStone2ConnateWaterScanningWett
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
             BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }
@@ -1493,7 +1493,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisCarlsonGasOilScanning, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -1510,7 +1510,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisCarlsonGasOilScanning, Scalar, Types)
     Scalar Sw = 0.0;
     Scalar tol = 1e-3;
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar Sg = Scalar(i) / 100;
         Scalar So = 1 - Sg;
         typename Fixture<Scalar>::FluidState fs;
@@ -1556,7 +1556,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisCarlsonGasOilScanning, Scalar, Types)
                       MaterialLawGasOil::twoPhaseSatKrn(imbibitionParams, 0.5 + deltaSwImbKrn), 
                       tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar Sg = Scalar(i) / 100;
         Scalar So = 1 - Sg;
         typename Fixture<Scalar>::FluidState fs;
@@ -1618,7 +1618,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisCarlsonGasOilScanning, Scalar, Types)
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
             BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }
@@ -1628,7 +1628,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughOilWater, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -1645,7 +1645,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughOilWater, Scalar, Types)
     Scalar Sg = 0.0;
     Scalar tol = 1e-3;
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 100; ++ i) {
+    for (long long i = 0; i <= 100; ++ i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sw = 1 - So;
         typename Fixture<Scalar>::FluidState fs;
@@ -1661,7 +1661,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughOilWater, Scalar, Types)
         BOOST_CHECK_CLOSE(So, kr[Fixture<Scalar>::oilPhaseIdx], tol);
         BOOST_CHECK_CLOSE(Sg, kr[Fixture<Scalar>::gasPhaseIdx], tol);
     }
-    for (int i = 100; i >= 0; -- i) {
+    for (long long i = 100; i >= 0; -- i) {
         Scalar So = Scalar(i) / 100;
         Scalar Sw = 1 - So;
         typename Fixture<Scalar>::FluidState fs;
@@ -1686,7 +1686,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughOilWaterScanning, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -1704,7 +1704,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughOilWaterScanning, Scalar, Types)
     Scalar tol = 1e-3;
     
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar Sw = Scalar(i) / 100;
         Scalar So = 1 - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1740,7 +1740,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughOilWaterScanning, Scalar, Types)
     BOOST_CHECK_CLOSE(0.12, trappedSo, tol);
     BOOST_CHECK_CLOSE(swmin_out, 1 - somax_out, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar Sw = Scalar(i) / 100;
         Scalar So = 1 - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1791,7 +1791,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughOilWaterScanning, Scalar, Types)
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
             BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }
@@ -1802,7 +1802,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughWettingOilWater, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -1831,7 +1831,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughWettingOilWater, Scalar, Types)
     //0.8    1.0  0.0   0 /
 
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar Sw = Swl + (Scalar(i) / 100);
         Scalar So = 1 - Sw;
 
@@ -1883,7 +1883,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughWettingOilWater, Scalar, Types)
     //Scalar Swr = 1 / ( (Cw + killoughScalingParam) + 1.0/maxSw);
     BOOST_CHECK_CLOSE(Swcri, trappedSw, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar Sw = Scalar(i) / 100 + Swl; 
         Scalar So = 1 - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -1938,7 +1938,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughWettingOilWater, Scalar, Types)
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
             BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }
@@ -1948,7 +1948,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerScanning, Scalar, Types)
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -1966,7 +1966,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerScanning, Scalar, Types)
     Scalar tol = 1e-3;
     
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar Sw = Scalar(i) / 100;
         Scalar So = 1 - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -2001,7 +2001,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerScanning, Scalar, Types)
     BOOST_CHECK_CLOSE(0.12, trappedSo, tol);
     BOOST_CHECK_CLOSE(swmin_out, 1 - somax_out, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar Sw = Scalar(i) / 100;
         Scalar So = 1 - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -2051,7 +2051,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKillough3pBakerScanning, Scalar, Types)
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
             BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }
@@ -2062,7 +2062,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughWetting3phaseBaker, Scalar, Type
 {
     using MaterialLaw = typename Fixture<Scalar>::MaterialLaw;
     using MaterialLawManager = typename Fixture<Scalar>::MaterialLawManager;
-    constexpr int numPhases = Fixture<Scalar>::numPhases;
+    constexpr long long numPhases = Fixture<Scalar>::numPhases;
 
     Opm::Parser parser;
 
@@ -2091,7 +2091,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughWetting3phaseBaker, Scalar, Type
     //0.12     0    1.0   0
     //0.88    1.0  0.0   0 /
     std::array<Scalar,numPhases> kr = {0.0, 0.0, 0.0};
-    for (int i = 0; i <= 50; ++ i) {
+    for (long long i = 0; i <= 50; ++ i) {
         Scalar Sw = Scalar(i) / 100;
         Scalar So = 1 - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -2140,7 +2140,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughWetting3phaseBaker, Scalar, Type
     //BOOST_CHECK_CLOSE(Swr, trappedSw, tol);
     BOOST_CHECK_SMALL(trappedSw, tol);
 
-    for (int i = 50; i >= 0; -- i) {
+    for (long long i = 50; i >= 0; -- i) {
         Scalar Sw = Scalar(i) / 100;
         Scalar So = 1 - Sw;
         typename Fixture<Scalar>::FluidState fs;
@@ -2194,7 +2194,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(HysteresisKilloughWetting3phaseBaker, Scalar, Type
         MaterialLaw::relativePermeabilities(kr,
                                             param,
                                             fs);
-        for (int phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
+        for (long long phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
             BOOST_CHECK_CLOSE(kr_restart[phaseIdx], kr[phaseIdx], tol);
         }
     }

@@ -74,7 +74,7 @@ namespace Opm {
                     "only from RESTART files");
         }
 
-        int step = record.getItem( 1 ).get< int >(0);
+        long long step = record.getItem( 1 ).get< long long >(0);
         const std::string& root = record.getItem( 0 ).get< std::string >( 0 );
         const std::string& input_path = deck.getInputPath();
 
@@ -102,7 +102,7 @@ namespace Opm {
         return result;
     }
 
-    void InitConfig::setRestart( const std::string& root, int step) {
+    void InitConfig::setRestart( const std::string& root, long long step) {
         m_restartRequested = true;
         m_restartStep = step;
         m_restartRootName = root;
@@ -112,7 +112,7 @@ namespace Opm {
         return m_restartRequested;
     }
 
-    int InitConfig::getRestartStep() const {
+    long long InitConfig::getRestartStep() const {
         return m_restartStep;
     }
 

@@ -45,11 +45,11 @@ static void printHelp() {
 }
 
 
-int main(int argc, char **argv) {
+long long main(long long argc, char **argv) {
 
-    int c                          = 0;
+    long long c                          = 0;
 #ifdef _OPENMP
-    int max_threads = -1;
+    long long max_threads = -1;
 #endif
     bool force                     = false;
 
@@ -73,10 +73,10 @@ int main(int argc, char **argv) {
         }
     }
 
-    int argOffset = optind;
+    long long argOffset = optind;
 
 #ifdef _OPENMP
-    int available_threads = omp_get_max_threads();
+    long long available_threads = omp_get_max_threads();
 
     if (max_threads < 0)
         max_threads = available_threads-2;
@@ -91,11 +91,11 @@ int main(int argc, char **argv) {
 
     auto lap0 = std::chrono::system_clock::now();
 
-    int num_esmry = argc-argOffset;
+    long long num_esmry = argc-argOffset;
     std::vector<bool> status(num_esmry, false);
 
     #pragma omp parallel for
-    for (int f = 0; f < num_esmry; f ++){
+    for (long long f = 0; f < num_esmry; f ++){
         std::filesystem::path inputFileName = argv[f + argOffset];
 
         std::filesystem::path esmryFileName = inputFileName.parent_path() / inputFileName.stem();

@@ -37,7 +37,7 @@
 #include "raw/RawRecord.hpp"
 
 namespace Opm {
-KeywordSize::KeywordSize(const std::string& in_keyword, const std::string& in_item, int in_shift)
+KeywordSize::KeywordSize(const std::string& in_keyword, const std::string& in_item, long long in_shift)
     : KeywordSize(in_keyword, in_item, false, in_shift)
 {
 }
@@ -47,7 +47,7 @@ KeywordSize::KeywordSize(const std::string& in_keyword, const std::string& in_it
 {
 }
 
-KeywordSize::KeywordSize(const std::string& in_keyword, const std::string& in_item, bool table_collection, int in_shift)
+KeywordSize::KeywordSize(const std::string& in_keyword, const std::string& in_item, bool table_collection, long long in_shift)
     : shift(in_shift)
     , is_table_collection(table_collection)
     , m_size_type(OTHER_KEYWORD_IN_DECK)
@@ -55,7 +55,7 @@ KeywordSize::KeywordSize(const std::string& in_keyword, const std::string& in_it
 {
 }
 
-KeywordSize::KeywordSize(std::size_t in_min_size, const std::string& in_keyword, const std::string& in_item, bool table_collection, int in_shift)
+KeywordSize::KeywordSize(std::size_t in_min_size, const std::string& in_keyword, const std::string& in_item, bool table_collection, long long in_shift)
     : KeywordSize(in_keyword, in_item, table_collection, in_shift)
 {
     this->min_size(in_min_size);
@@ -130,7 +130,7 @@ KeywordSize::code() const
     return this->is_code;
 }
 
-int
+long long
 KeywordSize::size_shift() const
 {
     return this->shift;
@@ -159,7 +159,7 @@ KeywordSize::max_size() const
     return this->m_max_size;
 }
 
-void KeywordSize::min_size(int s) {
+void KeywordSize::min_size(long long s) {
     this->m_min_size = s;
 }
 
@@ -413,7 +413,7 @@ std::string KeywordSize::construct() const
         }
     }
 
-    void ParserKeyword::initSizeKeyword(const std::string& sizeKeyword, const std::string& sizeItem, bool table_collection, int size_shift) {
+    void ParserKeyword::initSizeKeyword(const std::string& sizeKeyword, const std::string& sizeItem, bool table_collection, long long size_shift) {
         this->keyword_size = KeywordSize(sizeKeyword, sizeItem, table_collection, size_shift);
     }
 
@@ -421,7 +421,7 @@ std::string KeywordSize::construct() const
         if (sizeObject.is_object()) {
             std::string sizeKeyword = sizeObject.get_string("keyword");
             std::string sizeItem = sizeObject.get_string("item");
-            int size_shift = 0;
+            long long size_shift = 0;
             if (sizeObject.has_item("shift"))
                 size_shift = sizeObject.get_int("shift");
 
@@ -607,7 +607,7 @@ void set_dimensions( ParserItem& item,
 
         if (input_type == ParserItem::itype::INT) {
             if(hasDefault) {
-                int defaultValue = dataConfig.get_int("default");
+                long long defaultValue = dataConfig.get_int("default");
                 item.setDefault(defaultValue);
             }
             record.addDataItem(item);
