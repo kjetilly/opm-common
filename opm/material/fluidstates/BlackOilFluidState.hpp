@@ -141,7 +141,8 @@ public:
      * 
      * \param fluidSystem The fluid system which is used to compute various quantities
      */
-    OPM_HOST_DEVICE BlackOilFluidState(const FluidSystem& fluidSystem) : fluidSystem_(&fluidSystem) {}
+    OPM_HOST_DEVICE BlackOilFluidState(FluidSystem& fluidSystem) : fluidSystem_(&fluidSystem) {
+    }
 
     /**
      * \brief Construct a fluid state object.
@@ -690,7 +691,7 @@ public:
     }
 
 private:
-    OPM_HOST_DEVICE static unsigned storageToCanonicalPhaseIndex_(unsigned storagePhaseIdx, const FluidSystem& fluidSystem)
+    OPM_HOST_DEVICE static unsigned storageToCanonicalPhaseIndex_(unsigned storagePhaseIdx, FluidSystem& fluidSystem)
     {
         if constexpr (numStoragePhases == 3)
             return storagePhaseIdx;
@@ -698,7 +699,7 @@ private:
             return fluidSystem.activeToCanonicalPhaseIdx(storagePhaseIdx);
     }
 
-    OPM_HOST_DEVICE static unsigned canonicalToStoragePhaseIndex_(unsigned canonicalPhaseIdx, const FluidSystem& fluidSystem)
+    OPM_HOST_DEVICE static unsigned canonicalToStoragePhaseIndex_(unsigned canonicalPhaseIdx, FluidSystem& fluidSystem)
     {
         if constexpr (numStoragePhases == 3)
             return canonicalPhaseIdx;
@@ -727,7 +728,7 @@ private:
     // be copyable while still supporting a default FluidSystem pointing to a static object.
     // Once we move to a fully dynamic FluidSystem, this can be changed to a reference
     // (an std::reference_wrapper).
-    FluidSystem const* fluidSystem_;
+    mutable FluidSystem* fluidSystem_;
 };
 
 } // namespace Opm
