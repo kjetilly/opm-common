@@ -391,7 +391,7 @@ public:
      */
     STATIC_OR_DEVICE void initEnd();
 
-    STATIC_OR_DEVICE bool isInitialized()
+    STATIC_OR_DEVICE bool isInitialized() CONST_OR_NOTHING
     { return isInitialized_; }
 
     /****************************************
@@ -415,12 +415,12 @@ public:
     STATIC_OR_NOTHING Scalar surfaceTemperature;
 
     //! \copydoc BaseFluidSystem::phaseName
-    STATIC_OR_NOTHING std::string_view phaseName(unsigned phaseIdx);
+    STATIC_OR_NOTHING std::string_view phaseName(unsigned phaseIdx) CONST_OR_NOTHING;
 
 
 
     //! \copydoc BaseFluidSystem::isLiquid
-    STATIC_OR_DEVICE bool isLiquid(unsigned phaseIdx)
+    STATIC_OR_DEVICE bool isLiquid(unsigned phaseIdx) CONST_OR_NOTHING
     {
         assert(phaseIdx < numPhases);
         return phaseIdx != gasPhaseIdx;
@@ -446,31 +446,31 @@ protected:
 
 public:
     //! \brief Returns the number of active fluid phases (i.e., usually three)
-    STATIC_OR_DEVICE unsigned numActivePhases()
+    STATIC_OR_DEVICE unsigned numActivePhases() CONST_OR_NOTHING
     { return numActivePhases_; }
 
     //! \brief Returns whether a fluid phase is active
-    STATIC_OR_DEVICE bool phaseIsActive(unsigned phaseIdx)
+    STATIC_OR_DEVICE bool phaseIsActive(unsigned phaseIdx) CONST_OR_NOTHING
     {
         assert(phaseIdx < numPhases);
         return phaseIsActive_[phaseIdx];
     }
 
     //! \brief returns the index of "primary" component of a phase (solvent)
-    STATIC_OR_DEVICE unsigned solventComponentIndex(unsigned phaseIdx);
+    STATIC_OR_DEVICE unsigned solventComponentIndex(unsigned phaseIdx) CONST_OR_NOTHING;
 
     //! \brief returns the index of "secondary" component of a phase (solute)
-    STATIC_OR_DEVICE unsigned soluteComponentIndex(unsigned phaseIdx);
+    STATIC_OR_DEVICE unsigned soluteComponentIndex(unsigned phaseIdx) CONST_OR_NOTHING;
 
     //! \copydoc BaseFluidSystem::componentName
-    STATIC_OR_NOTHING std::string_view componentName(unsigned compIdx);
+    STATIC_OR_NOTHING std::string_view componentName(unsigned compIdx) CONST_OR_NOTHING;
 
     //! \copydoc BaseFluidSystem::molarMass
-    STATIC_OR_DEVICE Scalar molarMass(unsigned compIdx, unsigned regionIdx = 0)
+    STATIC_OR_DEVICE Scalar molarMass(unsigned compIdx, unsigned regionIdx = 0) CONST_OR_NOTHING
     { return molarMass_[regionIdx][compIdx]; }
 
     //! \copydoc BaseFluidSystem::isIdealMixture
-    STATIC_OR_DEVICE bool isIdealMixture(unsigned /*phaseIdx*/)
+    STATIC_OR_DEVICE bool isIdealMixture(unsigned /*phaseIdx*/) CONST_OR_NOTHING
     {
         // fugacity coefficients are only pressure dependent -> we
         // have an ideal mixture
@@ -478,11 +478,11 @@ public:
     }
 
     //! \copydoc BaseFluidSystem::isCompressible
-    STATIC_OR_DEVICE bool isCompressible(unsigned /*phaseIdx*/)
+    STATIC_OR_DEVICE bool isCompressible(unsigned /*phaseIdx*/) CONST_OR_NOTHING
     { return true; /* all phases are compressible */ }
 
     //! \copydoc BaseFluidSystem::isIdealGas
-    STATIC_OR_DEVICE bool isIdealGas(unsigned /*phaseIdx*/)
+    STATIC_OR_DEVICE bool isIdealGas(unsigned /*phaseIdx*/) CONST_OR_NOTHING
     { return false; }
 
 
@@ -494,7 +494,7 @@ public:
      *
      * By default, this is 1.
      */
-    STATIC_OR_DEVICE std::size_t numRegions()
+    STATIC_OR_DEVICE std::size_t numRegions() CONST_OR_NOTHING
     { return molarMass_.size(); }
 
     /*!
@@ -503,7 +503,7 @@ public:
      *
      * By default, dissolved gas is considered.
      */
-    STATIC_OR_DEVICE bool enableDissolvedGas()
+    STATIC_OR_DEVICE bool enableDissolvedGas() CONST_OR_NOTHING
     { return enableDissolvedGas_; }
 
 
@@ -513,7 +513,7 @@ public:
      *
      * By default, dissolved gas is considered.
      */
-    STATIC_OR_DEVICE bool enableDissolvedGasInWater()
+    STATIC_OR_DEVICE bool enableDissolvedGasInWater() CONST_OR_NOTHING
     { return enableDissolvedGasInWater_; }
 
     /*!
@@ -522,7 +522,7 @@ public:
      *
      * By default, vaporized oil is not considered.
      */
-    STATIC_OR_DEVICE bool enableVaporizedOil()
+    STATIC_OR_DEVICE bool enableVaporizedOil() CONST_OR_NOTHING
     { return enableVaporizedOil_; }
 
     /*!
@@ -531,7 +531,7 @@ public:
      *
      * By default, vaporized water is not considered.
      */
-    STATIC_OR_DEVICE bool enableVaporizedWater()
+    STATIC_OR_DEVICE bool enableVaporizedWater() CONST_OR_NOTHING
     { return enableVaporizedWater_; }
 
     /*!
@@ -539,7 +539,7 @@ public:
      *
      * By default, diffusion is not considered.
      */
-    STATIC_OR_DEVICE bool enableDiffusion()
+    STATIC_OR_DEVICE bool enableDiffusion() CONST_OR_NOTHING
     { return enableDiffusion_; }
 
     /*!
@@ -547,7 +547,7 @@ public:
      *
      * By default, saturated tables are used. If false the unsaturated tables are extrapolated
      */
-    STATIC_OR_DEVICE bool useSaturatedTables()
+    STATIC_OR_DEVICE bool useSaturatedTables() CONST_OR_NOTHING
     { return useSaturatedTables_; }
 
     /*!
@@ -555,7 +555,7 @@ public:
      *
      * \copydoc Doxygen::phaseIdxParam
      */
-    STATIC_OR_DEVICE Scalar referenceDensity(unsigned phaseIdx, unsigned regionIdx)
+    STATIC_OR_DEVICE Scalar referenceDensity(unsigned phaseIdx, unsigned regionIdx) CONST_OR_NOTHING
     { return referenceDensity_[regionIdx][phaseIdx]; }
 
     /****************************************
@@ -565,7 +565,7 @@ public:
     template <class FluidState, class LhsEval = typename FluidState::Scalar, class ParamCacheEval = LhsEval>
     STATIC_OR_DEVICE LhsEval density(const FluidState& fluidState,
                            const ParameterCache<ParamCacheEval>& paramCache,
-                           unsigned phaseIdx)
+                           unsigned phaseIdx) CONST_OR_NOTHING
     { return density<FluidState, LhsEval>(fluidState, phaseIdx, paramCache.regionIndex()); }
 
     //! \copydoc BaseFluidSystem::fugacityCoefficient
@@ -573,7 +573,7 @@ public:
     STATIC_OR_DEVICE LhsEval fugacityCoefficient(const FluidState& fluidState,
                                        const ParameterCache<ParamCacheEval>& paramCache,
                                        unsigned phaseIdx,
-                                       unsigned compIdx)
+                                       unsigned compIdx) CONST_OR_NOTHING
     {
         return fugacityCoefficient<FluidState, LhsEval>(fluidState,
                                                         phaseIdx,
@@ -585,7 +585,7 @@ public:
     template <class FluidState, class LhsEval = typename FluidState::Scalar, class ParamCacheEval = LhsEval>
     STATIC_OR_DEVICE LhsEval viscosity(const FluidState& fluidState,
                              const ParameterCache<ParamCacheEval>& paramCache,
-                             unsigned phaseIdx)
+                             unsigned phaseIdx) CONST_OR_NOTHING
     { return viscosity<FluidState, LhsEval>(fluidState, phaseIdx, paramCache.regionIndex()); }
 
     //! \copydoc BaseFluidSystem::enthalpy
@@ -609,7 +609,7 @@ public:
     template <class FluidState, class LhsEval = typename FluidState::Scalar>
     STATIC_OR_DEVICE LhsEval density(const FluidState& fluidState,
                            unsigned phaseIdx,
-                           unsigned regionIdx)
+                           unsigned regionIdx) CONST_OR_NOTHING
     {
         assert(phaseIdx <= numPhases);
         assert(regionIdx <= numRegions());
@@ -1052,7 +1052,7 @@ public:
     template <class FluidState, class LhsEval = typename FluidState::Scalar>
     STATIC_OR_DEVICE LhsEval viscosity(const FluidState& fluidState,
                              unsigned phaseIdx,
-                             unsigned regionIdx)
+                             unsigned regionIdx) CONST_OR_NOTHING
     {
         OPM_TIMEBLOCK_LOCAL(viscosity);
         assert(phaseIdx <= numPhases);
@@ -1886,7 +1886,7 @@ NOTHING_OR_DEVICE void FLUIDSYSTEM_CLASSNAME<Scalar,IndexTraits, Storage, SmartP
 
 template <class Scalar, class IndexTraits, template<typename> typename Storage, template<typename> typename SmartPointer>
 std::string_view FLUIDSYSTEM_CLASSNAME<Scalar,IndexTraits, Storage, SmartPointer>::
-phaseName(unsigned phaseIdx)
+phaseName(unsigned phaseIdx) CONST_OR_NOTHING
 {
     switch (phaseIdx) {
     case waterPhaseIdx:
@@ -1903,7 +1903,7 @@ phaseName(unsigned phaseIdx)
 
 template <class Scalar, class IndexTraits, template<typename> typename Storage, template<typename> typename SmartPointer>
 NOTHING_OR_DEVICE unsigned FLUIDSYSTEM_CLASSNAME<Scalar,IndexTraits,Storage, SmartPointer>::
-solventComponentIndex(unsigned phaseIdx)
+solventComponentIndex(unsigned phaseIdx) CONST_OR_NOTHING
 {
     switch (phaseIdx) {
     case waterPhaseIdx:
@@ -1920,7 +1920,7 @@ solventComponentIndex(unsigned phaseIdx)
 
 template <class Scalar, class IndexTraits, template<typename> typename Storage, template<typename> typename SmartPointer>
 NOTHING_OR_DEVICE unsigned FLUIDSYSTEM_CLASSNAME<Scalar,IndexTraits,Storage, SmartPointer>::
-soluteComponentIndex(unsigned phaseIdx)
+soluteComponentIndex(unsigned phaseIdx) CONST_OR_NOTHING
 {
     switch (phaseIdx) {
     case waterPhaseIdx:
@@ -1942,7 +1942,7 @@ soluteComponentIndex(unsigned phaseIdx)
 
 template <class Scalar, class IndexTraits, template<typename> typename Storage, template<typename> typename SmartPointer>
 std::string_view FLUIDSYSTEM_CLASSNAME<Scalar,IndexTraits,Storage, SmartPointer>::
-componentName(unsigned compIdx)
+componentName(unsigned compIdx) CONST_OR_NOTHING
 {
     switch (compIdx) {
     case waterCompIdx:

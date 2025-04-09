@@ -52,6 +52,9 @@
 // Functions defined outside of the class need OPM_HOST_DEVICE, but never static
 #define NOTHING_OR_DEVICE
 
+// Functions in the static variant will not be declared const, while the nonstatic will
+#define CONST_OR_NOTHING 
+
 // Define the class names for the static and nonstatic versions of the fluid system
 #define FLUIDSYSTEM_CLASSNAME_NONSTATIC BlackOilFluidSystemNonStatic
 #define FLUIDSYSTEM_CLASSNAME_STATIC BlackOilFluidSystem
@@ -76,6 +79,7 @@ class FLUIDSYSTEM_CLASSNAME_NONSTATIC;
 
 // Undefine the macros we defined above
 #undef NOTHING_OR_DEVICE
+#undef CONST_OR_NOTHING
 #undef STATIC_OR_DEVICE
 #undef COMPILING_STATIC_FLUID_SYSTEM
 #undef STATIC_OR_NOTHING
