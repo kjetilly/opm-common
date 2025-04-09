@@ -136,7 +136,7 @@ getSaltConcentration_(typename std::enable_if<!HasMember_saltConcentration<Fluid
 }
 
 template <class FluidSystem, class FluidState, class LhsEval>
-auto
+OPM_HOST_DEVICE auto
 getSaltConcentration_(
     typename std::enable_if<HasMember_saltConcentration<FluidState>::value, const FluidState&>::type fluidState,
     unsigned) -> decltype(decay<LhsEval>(fluidState.saltConcentration()))
@@ -145,7 +145,7 @@ getSaltConcentration_(
 }
 
 template <class FluidSystem, class FluidState, class LhsEval>
-LhsEval
+OPM_HOST_DEVICE LhsEval
 getSaltSaturation_(typename std::enable_if<!HasMember_saltSaturation<FluidState>::value, const FluidState&>::type,
                    unsigned)
 {
@@ -153,7 +153,7 @@ getSaltSaturation_(typename std::enable_if<!HasMember_saltSaturation<FluidState>
 }
 
 template <class FluidSystem, class FluidState, class LhsEval>
-auto
+OPM_HOST_DEVICE auto
 getSaltSaturation_(
     typename std::enable_if<HasMember_saltSaturation<FluidState>::value, const FluidState&>::type fluidState, unsigned)
     -> decltype(decay<LhsEval>(fluidState.saltSaturation()))

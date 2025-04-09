@@ -61,7 +61,7 @@ public:
     /*!
      * \brief The default constructor.
      */
-    EclTwoPhaseMaterialParams()
+    OPM_HOST_DEVICE EclTwoPhaseMaterialParams()
     {
     }
 
