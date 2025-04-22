@@ -29,6 +29,11 @@
 
 #include <memory>
 
+#include <opm/common/utility/gpuDecorators.hpp>
+#if OPM_IS_COMPILING_WITH_GPU_COMPILER
+#include <opm/simulators/linalg/gpuistl/gpu_smart_pointer.hpp>
+#include <opm/simulators/linalg/gpuistl/GpuView.hpp>
+#endif
 #include <opm/material/common/EnsureFinalized.hpp>
 
 namespace Opm {
@@ -38,6 +43,22 @@ enum class EclTwoPhaseApproach {
     OilWater,
     GasWater
 };
+
+#if OPM_IS_COMPILING_WITH_GPU_COMPILER
+template<class T>
+struct NoPointer {
+    using type = T;
+};
+template<class OriginalContainer>
+struct TransformContainer {
+    using type = NoPointer<OriginalContainer>; //Opm::gpuistl::GpuView<typename OriginalContainer::value_type>;
+};
+#else
+template<class OriginalContainer>
+struct TransformContainer {
+    using type = OriginalContainer;
+};
+#endif
 
 /*!
  * \brief Implementation for the parameters required by the material law for two-phase
@@ -54,9 +75,17 @@ class EclTwoPhaseMaterialParams : public EnsureFinalized
 public:
     using EnsureFinalized :: finalize;
 
-    using GasOilParams = GasOilParamsT;
-    using OilWaterParams = OilWaterParamsT;
-    using GasWaterParams = GasWaterParamsT;
+    using GasOilParams = typename TransformContainer<GasOilParamsT>::type;
+    using OilWaterParams = typename TransformContainer<OilWaterParamsT>::type;
+    using GasWaterParams = typename TransformContainer<GasWaterParamsT>::type;
+
+    #if OPM_IS_COMPILING_WITH_GPU_COMPILER
+    template<class T>
+    using SmartPointer = Opm::gpuistl::PointerView<T>;
+    #else
+    template<class T>
+    using SmartPointer = std::shared_ptr<T>;
+    #endif
 
     /*!
      * \brief The default constructor.
@@ -65,46 +94,46 @@ public:
     {
     }
 
-    void setApproach(EclTwoPhaseApproach newApproach)
+    OPM_HOST_DEVICE void setApproach(EclTwoPhaseApproach newApproach)
     { approach_ = newApproach; }
 
-    EclTwoPhaseApproach approach() const
+    OPM_HOST_DEVICE EclTwoPhaseApproach approach() const
     { return approach_; }
 
     /*!
      * \brief The parameter object for the gas-oil twophase law.
      */
-    const GasOilParams& gasOilParams() const
+     OPM_HOST_DEVICE const GasOilParams& gasOilParams() const
     { EnsureFinalized::check(); return *gasOilParams_; }
 
     /*!
      * \brief The parameter object for the gas-oil twophase law.
      */
-    GasOilParams& gasOilParams()
+     OPM_HOST_DEVICE GasOilParams& gasOilParams()
     { EnsureFinalized::check(); return *gasOilParams_; }
 
     /*!
      * \brief Set the parameter object for the gas-oil twophase law.
      */
-    void setGasOilParams(std::shared_ptr<GasOilParams> val)
+     OPM_HOST_DEVICE void setGasOilParams(SmartPointer<GasOilParams> val)
     { gasOilParams_ = val; }
 
     /*!
      * \brief The parameter object for the oil-water twophase law.
      */
-    const OilWaterParams& oilWaterParams() const
+     OPM_HOST_DEVICE const OilWaterParams& oilWaterParams() const
     { EnsureFinalized::check(); return *oilWaterParams_; }
 
     /*!
      * \brief The parameter object for the oil-water twophase law.
      */
-    OilWaterParams& oilWaterParams()
+     OPM_HOST_DEVICE OilWaterParams& oilWaterParams()
     { EnsureFinalized::check(); return *oilWaterParams_; }
 
     /*!
      * \brief Set the parameter object for the oil-water twophase law.
      */
-    void setOilWaterParams(std::shared_ptr<OilWaterParams> val)
+    void setOilWaterParams(SmartPointer<OilWaterParams> val)
     { oilWaterParams_ = val; }
 
   /*!
@@ -122,7 +151,7 @@ public:
     /*!
      * \brief Set the parameter object for the gas-water twophase law.
      */
-    void setGasWaterParams(std::shared_ptr<GasWaterParams> val)
+    void setGasWaterParams(SmartPointer<GasWaterParams> val)
     { gasWaterParams_ = val; }
 
     template<class Serializer>
@@ -140,9 +169,9 @@ public:
 private:
     EclTwoPhaseApproach approach_{EclTwoPhaseApproach::GasOil};
 
-    std::shared_ptr<GasOilParams> gasOilParams_;
-    std::shared_ptr<OilWaterParams> oilWaterParams_;
-    std::shared_ptr<GasWaterParams> gasWaterParams_;
+    SmartPointer<GasOilParams> gasOilParams_{nullptr};
+    SmartPointer<OilWaterParams> oilWaterParams_{nullptr};
+    SmartPointer<GasWaterParams> gasWaterParams_{nullptr};
 };
 
 } // namespace Opm
