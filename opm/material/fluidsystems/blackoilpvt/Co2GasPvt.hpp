@@ -482,6 +482,7 @@ namespace Opm::gpuistl{
     Co2GasPvt<ScalarT, Params, GPUContainer>
     copy_to_gpu(Co2GasPvt<ScalarT, Opm::CO2Tables<double, std::vector<double>>, std::vector<ScalarT>>& cpuCo2)
     {
+        #if 1
         return Co2GasPvt<ScalarT, Params, GPUContainer>(
             copy_to_gpu<GPUContainer>(cpuCo2.getParams()),
             GPUContainer(cpuCo2.getBrineReferenceDensity()),
@@ -491,6 +492,7 @@ namespace Opm::gpuistl{
             cpuCo2.getEnableVaporization(),
             cpuCo2.getActivityModel(),
             cpuCo2.getGasType());
+        #endif
     }
 
     template <class ViewType, class OutputParams, class InputParams, class ContainerType, class ScalarT>

@@ -587,7 +587,7 @@ namespace gpuistl{
 
         return GasPvtMultiplexer<Scalar, true, GPUContainerDouble, GPUContainerScalar>(
             GasPvtApproach::Co2Gas,
-            copy_to_gpu<GPUContainerScalar, Params>(gasMultiplexer.template getRealPvt<GasPvtApproach::Co2Gas>())
+            copy_to_gpu<GPUContainerScalar, Params, Scalar>(gasMultiplexer.template getRealPvt<GasPvtApproach::Co2Gas>())
         );
     }
 

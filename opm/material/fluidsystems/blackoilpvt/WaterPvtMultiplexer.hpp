@@ -26,7 +26,7 @@
  */
 #ifndef OPM_WATER_PVT_MULTIPLEXER_HPP
 #define OPM_WATER_PVT_MULTIPLEXER_HPP
-
+#include <functional>
 #include <opm/material/fluidsystems/blackoilpvt/BrineCo2Pvt.hpp>
 #include <opm/material/fluidsystems/blackoilpvt/BrineH2Pvt.hpp>
 #include <opm/material/fluidsystems/blackoilpvt/ConstantCompressibilityWaterPvt.hpp>

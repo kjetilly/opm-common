@@ -122,16 +122,16 @@ public:
     template <class ContainerT, class FluidState>
     OPM_HOST_DEVICE static Scalar relpermOilInOilGasSystem(const Params& /*params*/,
                                            const FluidState& /*fluidState*/) {
-        throw std::logic_error {
+        OPM_THROW(std::logic_error, 
             "relpermOilInOilGasSystem() is specific to three phases"
-                };
+        );
     }
     template <class ContainerT, class FluidState>
     OPM_HOST_DEVICE static Scalar relpermOilInOilWaterSystem(const Params& /*params*/,
                                                  const FluidState& /*fluidState*/) {
-        throw std::logic_error {
+        OPM_THROW(std::logic_error, 
                 "relpermOilInOilWaterSystem() is specific to three phases"
-                    };
+        );
     }
 
     /*!
@@ -312,7 +312,7 @@ public:
     OPM_HOST_DEVICE static Evaluation pcgn(const Params& /* params */,
                            const FluidState& /* fs */)
     {
-        throw std::logic_error("Not implemented: pcgn()");
+        OPM_THROW(std::logic_error, "Not implemented: pcgn()");
     }
 
     /*!
@@ -328,7 +328,7 @@ public:
     OPM_HOST_DEVICE static Evaluation pcnw(const Params& /* params */,
                            const FluidState& /* fs */)
     {
-        throw std::logic_error("Not implemented: pcnw()");
+        OPM_THROW(std::logic_error, "Not implemented: pcnw()");
     }
 
     /*!
@@ -339,7 +339,7 @@ public:
                             const Params& /* params */,
                             const FluidState& /* fs */)
     {
-        throw std::logic_error("Not implemented: saturations()");
+        OPM_THROW(std::logic_error, "Not implemented: saturations()");
     }
 
     /*!
@@ -349,7 +349,7 @@ public:
     OPM_HOST_DEVICE static Evaluation Sg(const Params& /* params */,
                          const FluidState& /* fluidState */)
     {
-        throw std::logic_error("Not implemented: Sg()");
+        OPM_THROW(std::logic_error, "Not implemented: Sg()");
     }
 
     /*!
@@ -359,7 +359,7 @@ public:
     OPM_HOST_DEVICE static Evaluation Sn(const Params& /* params */,
                          const FluidState& /* fluidState */)
     {
-        throw std::logic_error("Not implemented: Sn()");
+        OPM_THROW(std::logic_error, "Not implemented: Sn()");
     }
 
     /*!
@@ -369,7 +369,7 @@ public:
     OPM_HOST_DEVICE static Evaluation Sw(const Params& /* params */,
                          const FluidState& /* fluidState */)
     {
-        throw std::logic_error("Not implemented: Sw()");
+        OPM_THROW(std::logic_error, "Not implemented: Sw()");
     }
 
     /*!
@@ -433,7 +433,7 @@ public:
     OPM_HOST_DEVICE static Evaluation krg(const Params& /* params */,
                           const FluidState& /* fluidState */)
     {
-        throw std::logic_error("Not implemented: krg()");
+        OPM_THROW(std::logic_error, "Not implemented: krg()");
     }
 
     /*!
@@ -443,7 +443,7 @@ public:
     OPM_HOST_DEVICE static Evaluation krw(const Params& /* params */,
                           const FluidState& /* fluidState */)
     {
-        throw std::logic_error("Not implemented: krw()");
+        OPM_THROW(std::logic_error, "Not implemented: krw()");
     }
 
     /*!
@@ -453,7 +453,7 @@ public:
     OPM_HOST_DEVICE static Evaluation krn(const Params& /* params */,
                           const FluidState& /* fluidState */)
     {
-        throw std::logic_error("Not implemented: krn()");
+        OPM_THROW(std::logic_error, "Not implemented: krn()");
     }
 
 
