@@ -44,12 +44,6 @@
 namespace Opm {
 
 template <typename IndexTraits>
-PhaseUsageInfo<IndexTraits>::PhaseUsageInfo()
-{
-    reset_();
-}
-
-template <typename IndexTraits>
 void PhaseUsageInfo<IndexTraits>::updateIndexMapping_() {
     int activePhaseIdx = 0;
     for (unsigned phaseIdx = 0; phaseIdx < numPhases; ++phaseIdx) {
@@ -69,17 +63,6 @@ void PhaseUsageInfo<IndexTraits>::updateIndexMapping_() {
             ++activeCompIdx;
         }
     }
-}
-
-template <typename IndexTraits>
-void PhaseUsageInfo<IndexTraits>::reset_() {
-    numActivePhases_ = 0;
-    std::fill_n(&phaseIsActive_[0], numPhases, false);
-    std::fill_n(&canonicalToActivePhaseIdx_[0], numPhases, -1);
-    std::fill_n(&activeToCanonicalPhaseIdx_[0], numPhases, -1);
-
-    std::fill_n(&activeToCanonicalCompIdx_[0], numComponents, -1);
-    std::fill_n(&canonicalToActiveCompIdx_[0], numComponents, -1);
 }
 
 #if HAVE_ECL_INPUT

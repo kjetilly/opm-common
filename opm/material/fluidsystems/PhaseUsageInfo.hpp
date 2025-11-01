@@ -24,6 +24,9 @@
 #ifndef OPM_PHASEUSAGEINFO_HPP
 #define OPM_PHASEUSAGEINFO_HPP
 
+#include <opm/common/ErrorMacros.hpp>
+#include <opm/common/utility/gpuDecorators.hpp>
+
 #if HAVE_ECL_INPUT
 #include <opm/common/ErrorMacros.hpp>
 #include <opm/input/eclipse/EclipseState/EclipseState.hpp>
@@ -52,43 +55,45 @@ public:
     static constexpr int oilCompIdx = IndexTraits::oilCompIdx;
     static constexpr int gasCompIdx = IndexTraits::gasCompIdx;
 
-    PhaseUsageInfo();
+    OPM_HOST_DEVICE PhaseUsageInfo() {
+        reset_();
+    }
 
-    [[nodiscard]] unsigned numActivePhases() const {
+     [[nodiscard]] OPM_HOST_DEVICE unsigned numActivePhases() const {
         return numActivePhases_;
     }
 
-    [[nodiscard]] bool phaseIsActive(unsigned phaseIdx) const {
+    [[nodiscard]] OPM_HOST_DEVICE bool phaseIsActive(unsigned phaseIdx) const {
         assert(phaseIdx < numPhases);
         return phaseIsActive_[phaseIdx];
     }
 
-    [[nodiscard]] short canonicalToActivePhaseIdx(unsigned phaseIdx) const {
+    [[nodiscard]] OPM_HOST_DEVICE short canonicalToActivePhaseIdx(unsigned phaseIdx) const {
         if (!phaseIsActive(phaseIdx)) {
-            throw std::logic_error("Canonical phase " +
-                                   std::to_string(phaseIdx) + " is not active.");
+            OPM_THROW(std::logic_error, "Canonical phase " +
+                      std::to_string(phaseIdx) + " is not active.");
         }
         return canonicalToActivePhaseIdx_[phaseIdx];
     }
 
-    [[nodiscard]] short activeToCanonicalPhaseIdx(unsigned activePhaseIdx) const {
+    [[nodiscard]] OPM_HOST_DEVICE short activeToCanonicalPhaseIdx(unsigned activePhaseIdx) const {
         assert(activePhaseIdx< numActivePhases_);
         return activeToCanonicalPhaseIdx_[activePhaseIdx];
     }
 
-    [[nodiscard]] short activeToCanonicalCompIdx(unsigned activeCompIdx) const {
+    [[nodiscard]] OPM_HOST_DEVICE short activeToCanonicalCompIdx(unsigned activeCompIdx) const {
         if (activeCompIdx >= numActivePhases()) {
             return activeCompIdx; // e.g. for solvent
         }
         return activeToCanonicalCompIdx_[activeCompIdx];
     }
 
-    [[nodiscard]] short canonicalToActiveCompIdx(unsigned compIdx) const {
+    [[nodiscard]] OPM_HOST_DEVICE short canonicalToActiveCompIdx(unsigned compIdx) const {
         assert(compIdx < numComponents);
         return canonicalToActiveCompIdx_[compIdx];
     }
 
-    [[nodiscard]] short activePhaseToActiveCompIdx(unsigned activePhaseIdx) const {
+    [[nodiscard]] OPM_HOST_DEVICE short activePhaseToActiveCompIdx(unsigned activePhaseIdx) const {
         if (activePhaseIdx >= numActivePhases()) {
             return activePhaseIdx; // e.g. for solvent
         }
@@ -98,7 +103,7 @@ public:
         return activeCompIdx;
     }
 
-    [[nodiscard]] short activeCompToActivePhaseIdx(unsigned activeCompIdx) const {
+    [[nodiscard]] OPM_HOST_DEVICE short activeCompToActivePhaseIdx(unsigned activeCompIdx) const {
         if (activeCompIdx >= numActivePhases()) {
             return activeCompIdx; // e.g. for solvent
         }
@@ -114,43 +119,43 @@ public:
     void initFromState(const EclipseState& eclState);
 #endif
 
-    bool hasSolvent() const noexcept {
+    OPM_HOST_DEVICE bool hasSolvent() const noexcept {
         return has_solvent;
     }
 
-    bool hasPolymer() const noexcept {
+    OPM_HOST_DEVICE bool hasPolymer() const noexcept {
         return has_polymer;
     }
 
-    bool hasEnergy() const noexcept {
+    OPM_HOST_DEVICE bool hasEnergy() const noexcept {
         return has_energy;
     }
 
-    bool hasPolymerMW() const noexcept {
+    OPM_HOST_DEVICE bool hasPolymerMW() const noexcept {
         return has_polymermw;
     }
 
-    bool hasFoam() const noexcept {
+    OPM_HOST_DEVICE bool hasFoam() const noexcept {
         return has_foam;
     }
 
-    bool hasBrine() const noexcept {
+    OPM_HOST_DEVICE bool hasBrine() const noexcept {
         return has_brine;
     }
 
-    bool hasZFraction() const noexcept {
+    OPM_HOST_DEVICE bool hasZFraction() const noexcept {
        return has_zFraction;
     }
 
-    bool hasBiofilm() const noexcept {
+    OPM_HOST_DEVICE bool hasBiofilm() const noexcept {
         return has_biofilm;
     }
 
-    bool hasMICP() const noexcept {
+    OPM_HOST_DEVICE bool hasMICP() const noexcept {
         return has_micp;
     }
 
-    bool hasCO2orH2Store() const noexcept {
+    OPM_HOST_DEVICE bool hasCO2orH2Store() const noexcept {
         return has_co2_or_h2store;
     }
 
@@ -180,7 +185,14 @@ private:
     //  updating the mapping between active and canonical phase indices
     void updateIndexMapping_();
 
-    void reset_();
+    OPM_HOST_DEVICE void reset_() {
+        numActivePhases_ = 0;
+        std::fill_n(&phaseIsActive_[0], numPhases, false);
+        std::fill_n(&canonicalToActivePhaseIdx_[0], numPhases, -1);
+        std::fill_n(&activeToCanonicalPhaseIdx_[0], numPhases, -1);
+        std::fill_n(&activeToCanonicalCompIdx_[0], numComponents, -1);
+        std::fill_n(&canonicalToActiveCompIdx_[0], numComponents, -1);
+    }
 
 };
 
