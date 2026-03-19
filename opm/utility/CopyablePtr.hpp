@@ -19,51 +19,101 @@
 
 #ifndef OPM_COPYABLE_PTR_HPP
 #define OPM_COPYABLE_PTR_HPP
+
+#include <memory>
+#include <opm/common/utility/gpuDecorators.hpp>
+
 namespace Opm {
 namespace Utility {
-// Wraps std::unique_ptr and makes it copyable.
+
+// Wraps a raw pointer and makes it copyable, with GPU support.
+//
+// On the host: owns the pointed-to object (deep copies on copy-construct/assign,
+//   destroys on destruction) — same semantics as the original unique_ptr wrapper.
+// On the device (CUDA/HIP kernel): behaves as a non-owning view; copy/assign
+//   simply copy the raw pointer and the destructor is a no-op.
 //
 // WARNING: This template should not be used with polymorphic classes.
-//  That would require a virtual clone() method to be implemented.
-//  It will only ever copy the static class type of the pointed to class.
+//   That would require a virtual clone() method. It will only ever copy
+//   the static class type of the pointed-to object.
 template <class T>
 class CopyablePtr {
 public:
-    CopyablePtr() : ptr_(nullptr) {}
-    CopyablePtr(const CopyablePtr& other) {
-        if (other) { // other does not contain a nullptr
-            ptr_ = std::make_unique<T>(*other.get());
-        }
-        else {
-            ptr_ = nullptr;
+    OPM_HOST_DEVICE CopyablePtr() : ptr_(nullptr) {}
+
+    OPM_HOST_DEVICE CopyablePtr(const CopyablePtr& other) {
+        if constexpr (OPM_IS_INSIDE_HOST_FUNCTION) {
+            ptr_ = other.ptr_ ? new T(*other.ptr_) : nullptr;
+        } else {
+            ptr_ = other.ptr_; // non-owning on device
         }
     }
-    // assignment operator
-    CopyablePtr<T>& operator=(const CopyablePtr<T>& other) {
-        if (other) {
-            ptr_ = std::make_unique<T>(*other.get());
+
+    OPM_HOST_DEVICE CopyablePtr(CopyablePtr&& other) noexcept : ptr_(other.ptr_) {
+        if constexpr (OPM_IS_INSIDE_HOST_FUNCTION) {
+            other.ptr_ = nullptr;
         }
-        else {
-            ptr_ = nullptr;
+    }
+
+    // copy assignment
+    OPM_HOST_DEVICE CopyablePtr& operator=(const CopyablePtr& other) {
+        if constexpr (OPM_IS_INSIDE_HOST_FUNCTION) {
+            if (this != &other) {
+                delete ptr_;
+                ptr_ = other.ptr_ ? new T(*other.ptr_) : nullptr;
+            }
+        } else {
+            ptr_ = other.ptr_; // non-owning on device
         }
         return *this;
     }
-    // assign directly from a unique_ptr
-    CopyablePtr<T>& operator=(std::unique_ptr<T>&& uptr) {
-        ptr_ = std::move(uptr);
+
+    // move assignment
+    OPM_HOST_DEVICE CopyablePtr& operator=(CopyablePtr&& other) noexcept {
+        if constexpr (OPM_IS_INSIDE_HOST_FUNCTION) {
+            if (this != &other) {
+                delete ptr_;
+                ptr_ = other.ptr_;
+                other.ptr_ = nullptr;
+            }
+        } else {
+            ptr_ = other.ptr_; // non-owning on device
+        }
         return *this;
     }
+
+    // assign directly from a unique_ptr (host only)
+    CopyablePtr& operator=(std::unique_ptr<T>&& uptr) {
+        delete ptr_;
+        ptr_ = uptr.release();
+        return *this;
+    }
+
+    OPM_HOST_DEVICE ~CopyablePtr() {
+        if constexpr (OPM_IS_INSIDE_HOST_FUNCTION) {
+            delete ptr_;
+        }
+        // no-op on device: ownership is not transferred to/from GPU memory
+    }
+
     // member access operator
-    T* operator->() const {return ptr_.get(); }
+    OPM_HOST_DEVICE T* operator->() const { return ptr_; }
+
     // boolean context operator
-    explicit operator bool() const noexcept {
-        return ptr_ ? true : false;
+    OPM_HOST_DEVICE explicit operator bool() const noexcept { return ptr_ != nullptr; }
+
+    // get a raw pointer to the stored value
+    OPM_HOST_DEVICE T* get() const { return ptr_; }
+
+    // release ownership (host only — transfers ownership out)
+    T* release() {
+        T* tmp = ptr_;
+        ptr_ = nullptr;
+        return tmp;
     }
-    // get a pointer to the stored value
-    T* get() const {return ptr_.get();}
-    T* release() const {return ptr_.release();}
+
 private:
-    std::unique_ptr<T> ptr_;
+    T* ptr_;
 };
 
 } // namespace Utility
