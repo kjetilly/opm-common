@@ -39,33 +39,27 @@
 namespace Opm {
     class EclipseState;
     class FieldPropsManager;
-    template <class TraitsT,
-              class GasOilMaterialLawT,
-              class OilWaterMaterialLawT,
-              class GasWaterMaterialLawT,
-              class ParamsT>
-    class EclMultiplexerMaterial;
 }
 
 namespace Opm::EclMaterialLaw {
 
-template<class Traits, template<class, class, class, class> class MaterialLawType> class HystParams;
-template<class Traits, template<class, class, class, class> class MaterialLawType> class Manager;
+template<class Traits> class HystParams;
+template<class Traits> class Manager;
 
-template<class Traits, template<class, class, class, class> class MaterialLawType>
+template<class Traits>
 class InitParams
 {
     using Scalar = typename Traits::Scalar;
 
 public:
-    InitParams(const Manager<Traits, MaterialLawType>& parent,
+    InitParams(const Manager<Traits>& parent,
                const EclipseState& eclState,
                std::size_t numCompressedElems);
 
     using LookupFunction = std::function<unsigned(unsigned)>;
     using IntLookupFunction = std::function<std::vector<int>(const FieldPropsManager&,
                                                              const std::string&, bool)>;
-    using MaterialLawParams = typename Manager<Traits, MaterialLawType>::MaterialLawParams;
+    using MaterialLawParams = typename Manager<Traits>::MaterialLawParams;
 
     // Function argument 'fieldPropIntOnLeadAssigner' needed to lookup
     // field properties of cells on the leaf grid view for CpGrid with local grid refinement.
@@ -75,7 +69,7 @@ public:
     void run(const IntLookupFunction& fieldPropIntOnLeafAssigner,
              const LookupFunction& lookupIdxOnLevelZeroAssigner);
 
-    typename Manager<Traits, MaterialLawType>::Params params_;
+    typename Manager<Traits>::Params params_;
 
 private:
     // Function argument 'fieldPropIntOnLeadAssigner' needed to lookup
@@ -102,7 +96,7 @@ private:
     // field properties of cells on the leaf grid view for CpGrid with local grid refinement.
     void initSatnumRegionArray_(const IntLookupFunction& fieldPropIntOnLeafAssigner);
 
-    void initThreePhaseParams_(HystParams<Traits, MaterialLawType>& hystParams,
+    void initThreePhaseParams_(HystParams<Traits>& hystParams,
                                MaterialLawParams& materialParams,
                                unsigned satRegionIdx,
                                unsigned elemIdx);
@@ -118,7 +112,7 @@ private:
 
     unsigned satRegion_(const std::vector<int>& array, unsigned elemIdx) const;
 
-    const Manager<Traits, MaterialLawType>& parent_;
+    const Manager<Traits>& parent_;
     const EclipseState& eclState_;
     std::size_t numCompressedElems_;
 

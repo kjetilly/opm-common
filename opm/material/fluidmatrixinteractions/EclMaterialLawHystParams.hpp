@@ -41,9 +41,9 @@ class EclipseState;
 
 namespace Opm::EclMaterialLaw {
 
-template<class Traits, template<class, class, class, class> class MaterialLawType> class Manager;
+template<class Traits> class Manager;
 
-template<class Traits, template<class, class, class, class> class MaterialLawType>
+template<class Traits>
 class HystParams
 {
 public:
@@ -52,11 +52,11 @@ public:
     using GasWaterHystParams = typename TwoPhaseTypes<Traits>::GasWaterHystParams;
     using OilWaterHystParams = typename TwoPhaseTypes<Traits>::OilWaterHystParams;
 
-    HystParams(typename Manager<Traits, MaterialLawType>::Params& params,
+    HystParams(typename Manager<Traits>::Params& params,
                const EclEpsGridProperties& epsGridProperties,
                const EclEpsGridProperties* epsImbGridProperties,
                const EclipseState& eclState,
-               const Manager<Traits, MaterialLawType>& parent);
+               const Manager<Traits>& parent);
 
     void finalize();
 
@@ -121,11 +121,11 @@ private:
     std::shared_ptr<OilWaterHystParams> oilWaterParams_;
     std::shared_ptr<GasWaterHystParams> gasWaterParams_;
 
-    typename Manager<Traits, MaterialLawType>::Params& params_;
+    typename Manager<Traits>::Params& params_;
     const EclEpsGridProperties& epsGridProperties_;
     const EclEpsGridProperties* epsImbGridProperties_;
     const EclipseState& eclState_;
-    const Manager<Traits, MaterialLawType>& parent_;
+    const Manager<Traits>& parent_;
 };
 
 } // namespace Opm::EclMaterialLaw

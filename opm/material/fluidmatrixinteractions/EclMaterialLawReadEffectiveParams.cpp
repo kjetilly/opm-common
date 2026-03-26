@@ -37,7 +37,6 @@
 #include <opm/input/eclipse/EclipseState/Tables/WsfTable.hpp>
 
 #include <opm/material/fluidmatrixinteractions/EclMaterialLawManager.hpp>
-#include <opm/material/fluidmatrixinteractions/EclMultiplexerMaterial.hpp>
 
 #include <algorithm>
 #include <cstddef>
@@ -47,11 +46,11 @@
 namespace Opm::EclMaterialLaw {
 
 /* constructors*/
-template <class Traits, template<class, class, class, class> class MaterialLawType>
-ReadEffectiveParams<Traits, MaterialLawType>::
-ReadEffectiveParams(typename Manager<Traits, MaterialLawType>::Params& params,
+template <class Traits>
+ReadEffectiveParams<Traits>::
+ReadEffectiveParams(typename Manager<Traits>::Params& params,
                     const EclipseState& eclState,
-                    const Manager<Traits, MaterialLawType>& parent)
+                    const Manager<Traits>& parent)
     : params_(params)
     , eclState_(eclState)
     , parent_(parent)
@@ -59,9 +58,9 @@ ReadEffectiveParams(typename Manager<Traits, MaterialLawType>::Params& params,
 }
 
 /* public methods */
-template <class Traits, template<class, class, class, class> class MaterialLawType>
+template <class Traits>
 void
-ReadEffectiveParams<Traits, MaterialLawType>::
+ReadEffectiveParams<Traits>::
 read()
 {
     const std::size_t numSatRegions = this->eclState_.runspec().tabdims().getNumSatTables();
@@ -78,9 +77,9 @@ read()
 /* private methods, alphabetically sorted*/
 
 // Relative permeability values not strictly greater than 'tolcrit' treated as zero.
-template <class Traits, template<class, class, class, class> class MaterialLawType>
+template <class Traits>
 std::vector<double>
-ReadEffectiveParams<Traits, MaterialLawType>::
+ReadEffectiveParams<Traits>::
 normalizeKrValues_(const double tolcrit, const TableColumn& krValues) const
 {
     auto kr = krValues.vectorCopy();
@@ -91,9 +90,9 @@ normalizeKrValues_(const double tolcrit, const TableColumn& krValues) const
     return kr;
 }
 
-template <class Traits, template<class, class, class, class> class MaterialLawType>
+template <class Traits>
 void
-ReadEffectiveParams<Traits, MaterialLawType>::
+ReadEffectiveParams<Traits>::
 readGasOilParameters_(unsigned satRegionIdx)
 {
     if (!this->parent_.hasGas() || !this->parent_.hasOil()) {
@@ -192,10 +191,10 @@ readGasOilParameters_(unsigned satRegionIdx)
     }
 }
 
-template <class Traits, template<class, class, class, class> class MaterialLawType>
+template <class Traits>
 template <class TableType>
 void
-ReadEffectiveParams<Traits, MaterialLawType>::
+ReadEffectiveParams<Traits>::
 readGasOilFamily2_(GasOilEffectiveParams& effParams,
                    const Scalar Swco,
                    const double tolcrit,
@@ -219,9 +218,9 @@ readGasOilFamily2_(GasOilEffectiveParams& effParams,
     realParams.finalize();
 }
 
-template <class Traits, template<class, class, class, class> class MaterialLawType>
+template <class Traits>
 void
-ReadEffectiveParams<Traits, MaterialLawType>::
+ReadEffectiveParams<Traits>::
 readGasOilSgof_(GasOilEffectiveParams& effParams,
                 const Scalar Swco,
                 const double tolcrit,
@@ -242,9 +241,9 @@ readGasOilSgof_(GasOilEffectiveParams& effParams,
     realParams.finalize();
 }
 
-template <class Traits, template<class, class, class, class> class MaterialLawType>
+template <class Traits>
 void
-ReadEffectiveParams<Traits, MaterialLawType>::
+ReadEffectiveParams<Traits>::
 readGasOilSlgof_(GasOilEffectiveParams& effParams,
                  const Scalar Swco,
                  const double tolcrit,
@@ -265,9 +264,9 @@ readGasOilSlgof_(GasOilEffectiveParams& effParams,
     realParams.finalize();
 }
 
-template <class Traits, template<class, class, class, class> class MaterialLawType>
+template <class Traits>
 void
-ReadEffectiveParams<Traits, MaterialLawType>::
+ReadEffectiveParams<Traits>::
 readGasWaterParameters_(unsigned satRegionIdx)
 {
     if (!this->parent_.hasGas() || !this->parent_.hasWater() || this->parent_.hasOil()) {
@@ -353,9 +352,9 @@ readGasWaterParameters_(unsigned satRegionIdx)
     }
 }
 
-template <class Traits, template<class, class, class, class> class MaterialLawType>
+template <class Traits>
 void
-ReadEffectiveParams<Traits, MaterialLawType>::
+ReadEffectiveParams<Traits>::
 readOilWaterParameters_(unsigned satRegionIdx)
 {
     if (!this->parent_.hasOil() || !this->parent_.hasWater()) {
@@ -474,11 +473,11 @@ readOilWaterParameters_(unsigned satRegionIdx)
 }
 
 // Make some actual code, by realizing the previously defined templated class
-template class ReadEffectiveParams<ThreePhaseMaterialTraits<double,0,1,2,true,true>, EclMultiplexerMaterial>;
-template class ReadEffectiveParams<ThreePhaseMaterialTraits<float,0,1,2,true,true>, EclMultiplexerMaterial>;
-template class ReadEffectiveParams<ThreePhaseMaterialTraits<double,2,0,1,true,true>, EclMultiplexerMaterial>;
-template class ReadEffectiveParams<ThreePhaseMaterialTraits<float,2,0,1,true,true>, EclMultiplexerMaterial>;
-template class ReadEffectiveParams<ThreePhaseMaterialTraits<double,0,1,2,false,true>, EclMultiplexerMaterial>;
-template class ReadEffectiveParams<ThreePhaseMaterialTraits<float,0,1,2,false,true>, EclMultiplexerMaterial>;
+template class ReadEffectiveParams<ThreePhaseMaterialTraits<double,0,1,2,true,true>>;
+template class ReadEffectiveParams<ThreePhaseMaterialTraits<float,0,1,2,true,true>>;
+template class ReadEffectiveParams<ThreePhaseMaterialTraits<double,2,0,1,true,true>>;
+template class ReadEffectiveParams<ThreePhaseMaterialTraits<float,2,0,1,true,true>>;
+template class ReadEffectiveParams<ThreePhaseMaterialTraits<double,0,1,2,false,true>>;
+template class ReadEffectiveParams<ThreePhaseMaterialTraits<float,0,1,2,false,true>>;
 
 } // namespace Opm::EclMaterialLaw
