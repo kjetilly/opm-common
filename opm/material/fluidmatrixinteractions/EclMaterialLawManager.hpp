@@ -64,7 +64,7 @@ class TableColumn;
 
 namespace Opm::EclMaterialLaw {
 
-template<class Traits> class InitParams;
+template<class Traits, template<class, class, class, class> class MaterialLawType> class InitParams;
 
 /*!
  * \ingroup fluidmatrixinteractions
@@ -72,7 +72,7 @@ template<class Traits> class InitParams;
  * \brief Provides an simple way to create and manage the material law objects
  *        for a complete ECL deck.
  */
-template <class TraitsT>
+template <class TraitsT, template<class, class, class, class> class MaterialLawType = EclMultiplexerMaterial>
 class Manager
 {
     using Traits = TraitsT;
@@ -87,10 +87,10 @@ class Manager
 
 public:
     // the three-phase material law used by the simulation
-    using MaterialLaw = EclMultiplexerMaterial<Traits,
-                                               typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasOilLaw,
-                                               typename EclMaterialLaw::TwoPhaseTypes<Traits>::OilWaterLaw,
-                                               typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasWaterLaw>;
+    using MaterialLaw = MaterialLawType<Traits,
+                                         typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasOilLaw,
+                                         typename EclMaterialLaw::TwoPhaseTypes<Traits>::OilWaterLaw,
+                                         typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasWaterLaw>;
     using MaterialLawParams = typename MaterialLaw::Params;
     using DirectionalMaterialLawParamsPtr = std::unique_ptr<DirectionalMaterialLawParams<MaterialLawParams>>;
 

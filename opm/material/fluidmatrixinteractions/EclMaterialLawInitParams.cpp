@@ -28,6 +28,7 @@
 #include <opm/material/fluidmatrixinteractions/EclMaterialLawHystParams.hpp>
 #include <opm/material/fluidmatrixinteractions/EclMaterialLawManager.hpp>
 #include <opm/material/fluidmatrixinteractions/EclMaterialLawReadEffectiveParams.hpp>
+#include <opm/material/fluidmatrixinteractions/EclMultiplexerMaterial.hpp>
 #include <opm/material/fluidmatrixinteractions/EclMultiplexerMaterialParams.hpp>
 
 #include <cassert>
@@ -48,9 +49,9 @@ namespace Opm::EclMaterialLaw {
 
 /* constructors*/
 
-template <class Traits>
-InitParams<Traits>::
-InitParams(const Manager<Traits>& parent,
+template <class Traits, template<class, class, class, class> class MaterialLawType>
+InitParams<Traits, MaterialLawType>::
+InitParams(const Manager<Traits, MaterialLawType>& parent,
            const EclipseState& eclState,
            std::size_t numCompressedElems)
     : parent_{parent}
@@ -68,9 +69,9 @@ InitParams(const Manager<Traits>& parent,
 
 /* public methods */
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 run(const IntLookupFunction& fieldPropIntOnLeafAssigner,
     const LookupFunction& lookupIdxOnLevelZeroAssigner)
 {
@@ -92,7 +93,7 @@ run(const IntLookupFunction& fieldPropIntOnLeafAssigner,
         for (unsigned elemIdx = 0; elemIdx < this->numCompressedElems_; ++elemIdx) {
             unsigned satRegionIdx = satRegion_(*satnumArray[i], elemIdx);
             //unsigned satNumCell = this->parent_.satnumRegionArray_[elemIdx];
-            HystParams<Traits> hystParams{
+            HystParams<Traits, MaterialLawType> hystParams{
                 params_,
                 epsGridProperties_,
                 epsImbGridProperties_.get(),
@@ -118,9 +119,9 @@ run(const IntLookupFunction& fieldPropIntOnLeafAssigner,
 
 /* private methods alphabetically sorted*/
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 copySatnumArrays_(const IntLookupFunction& fieldPropIntOnLeafAssigner)
 {
     copyIntArray_(params_.krnumXArray, "KRNUMX", fieldPropIntOnLeafAssigner);
@@ -137,9 +138,9 @@ copySatnumArrays_(const IntLookupFunction& fieldPropIntOnLeafAssigner)
     assert(!this->parent_.enableHysteresis() || this->numCompressedElems_ == params_.imbnumRegionArray.size());
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 copyIntArray_(std::vector<int>& dest,
               const std::string& keyword,
               const IntLookupFunction& fieldPropIntOnLeafAssigner) const
@@ -149,18 +150,18 @@ copyIntArray_(std::vector<int>& dest,
     }
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 unsigned
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 imbRegion_(const std::vector<int>& array, unsigned elemIdx) const
 {
     const std::vector<int>& default_vec = params_.imbnumRegionArray;
     return satOrImbRegion(array, default_vec, elemIdx);
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 initArrays_(std::vector<const std::vector<int>*>& satnumArray,
             std::vector<const std::vector<int>*>& imbnumArray,
             std::vector<std::vector<MaterialLawParams>*>& mlpArray)
@@ -185,9 +186,9 @@ initArrays_(std::vector<const std::vector<int>*>& satnumArray,
     }
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 initMaterialLawParamVectors_()
 {
     params_.materialLawParams.resize(this->numCompressedElems_);
@@ -197,18 +198,18 @@ initMaterialLawParamVectors_()
     }
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 initOilWaterScaledEpsInfo_()
 {
     // This vector will be updated in the hystParams.setDrainageOilWater() in the run() method
     params_.oilWaterScaledEpsInfoDrainage.resize(this->numCompressedElems_);
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 initSatnumRegionArray_(const IntLookupFunction& fieldPropIntOnLeafAssigner)
 {
     // copy the SATNUM grid property. in some cases this is not necessary, but it
@@ -223,10 +224,10 @@ initSatnumRegionArray_(const IntLookupFunction& fieldPropIntOnLeafAssigner)
     }
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
-initThreePhaseParams_(HystParams<Traits>& hystParams,
+InitParams<Traits, MaterialLawType>::
+initThreePhaseParams_(HystParams<Traits, MaterialLawType>& hystParams,
                       MaterialLawParams& materialParams,
                       unsigned satRegionIdx,
                       unsigned elemIdx)
@@ -288,12 +289,12 @@ initThreePhaseParams_(HystParams<Traits>& hystParams,
     } // end switch()
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 readEffectiveParameters_()
 {
-    ReadEffectiveParams<Traits> effectiveReader{
+    ReadEffectiveParams<Traits, MaterialLawType> effectiveReader{
         params_,
         this->eclState_,
         this->parent_
@@ -303,9 +304,9 @@ readEffectiveParameters_()
     effectiveReader.read();
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 readUnscaledEpsPointsVectors_()
 {
     if (this->parent_.hasGas() && this->parent_.hasOil()) {
@@ -331,10 +332,10 @@ readUnscaledEpsPointsVectors_()
     }
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 template <class Container>
 void
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 readUnscaledEpsPoints_(Container& dest,
                        const EclEpsConfig& config,
                        EclTwoPhaseSystemType system_type)
@@ -347,9 +348,9 @@ readUnscaledEpsPoints_(Container& dest,
     }
 }
 
-template <class Traits>
+template <class Traits, template<class, class, class, class> class MaterialLawType>
 unsigned
-InitParams<Traits>::
+InitParams<Traits, MaterialLawType>::
 satRegion_(const std::vector<int>& array, unsigned elemIdx) const
 {
     const std::vector<int>& default_vec = params_.satnumRegionArray;
@@ -357,11 +358,11 @@ satRegion_(const std::vector<int>& array, unsigned elemIdx) const
 }
 
 // Make some actual code, by realizing the previously defined templated class
-template class InitParams<ThreePhaseMaterialTraits<double,0,1,2,true,true>>;
-template class InitParams<ThreePhaseMaterialTraits<float,0,1,2,true,true>>;
-template class InitParams<ThreePhaseMaterialTraits<double,2,0,1,true,true>>;
-template class InitParams<ThreePhaseMaterialTraits<float,2,0,1,true,true>>;
-template class InitParams<ThreePhaseMaterialTraits<double,0,1,2,false,true>>;
-template class InitParams<ThreePhaseMaterialTraits<float,0,1,2,false,true>>;
+template class InitParams<ThreePhaseMaterialTraits<double,0,1,2,true,true>, EclMultiplexerMaterial>;
+template class InitParams<ThreePhaseMaterialTraits<float,0,1,2,true,true>, EclMultiplexerMaterial>;
+template class InitParams<ThreePhaseMaterialTraits<double,2,0,1,true,true>, EclMultiplexerMaterial>;
+template class InitParams<ThreePhaseMaterialTraits<float,2,0,1,true,true>, EclMultiplexerMaterial>;
+template class InitParams<ThreePhaseMaterialTraits<double,0,1,2,false,true>, EclMultiplexerMaterial>;
+template class InitParams<ThreePhaseMaterialTraits<float,0,1,2,false,true>, EclMultiplexerMaterial>;
 
 } // namespace Opm::EclMaterialLaw

@@ -43,10 +43,10 @@ namespace Opm {
 
 namespace Opm::EclMaterialLaw {
 
-template<class Traits> class Manager;
+template<class Traits, template<class, class, class, class> class MaterialLawType> class Manager;
 
 
-template<class Traits>
+template<class Traits, template<class, class, class, class> class MaterialLawType>
 class ReadEffectiveParams
 {
     using Scalar = typename Traits::Scalar;
@@ -70,9 +70,9 @@ class ReadEffectiveParams
         typename TwoPhaseTypes<Traits>::OilWaterEffectiveParamVector;
 
 public:
-    ReadEffectiveParams(typename Manager<Traits>::Params& params,
+    ReadEffectiveParams(typename Manager<Traits, MaterialLawType>::Params& params,
                         const EclipseState& eclState,
-                        const Manager<Traits>& parent);
+                        const Manager<Traits, MaterialLawType>& parent);
 
     void read();
 
@@ -105,9 +105,9 @@ private:
 
     void readOilWaterParameters_(unsigned satRegionIdx);
 
-    typename Manager<Traits>::Params& params_;
+    typename Manager<Traits, MaterialLawType>::Params& params_;
     const EclipseState& eclState_;
-    const Manager<Traits>& parent_;
+    const Manager<Traits, MaterialLawType>& parent_;
 };
 
 } // namespace Opm::EclMaterialLaw
