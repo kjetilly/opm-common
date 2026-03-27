@@ -41,9 +41,9 @@ namespace Opm {
     class TableColumn;
 }
 
-namespace Opm::EclMaterialLaw {
+#include <opm/material/fluidmatrixinteractions/EclMaterialLawManager.hpp>
 
-template<class Traits> class Manager;
+namespace Opm::EclMaterialLaw {
 
 
 template<class Traits>

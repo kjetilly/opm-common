@@ -358,8 +358,8 @@ public:
      * \brief Returns the formation volume factor [-] and viscosity [Pa s] of the fluid phase.
      */
     template <class FluidState, class LhsEval = typename FluidState::Scalar>
-    std::pair<LhsEval, LhsEval>
-    inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState, unsigned regionIdx)
+    OPM_HOST_DEVICE std::pair<LhsEval, LhsEval>
+    inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState, unsigned regionIdx) const
     {
         // Deal with the possibility that we are in a two-phase CO2STORE with OIL and GAS as phases.
         const bool waterIsActive = fluidState.phaseIsActive(FluidState::waterPhaseIdx);

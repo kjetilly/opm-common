@@ -263,7 +263,7 @@ public:
      */
     template <class FluidState, class LhsEval = typename FluidState::Scalar>
     std::pair<LhsEval, LhsEval>
-    inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState, unsigned regionIdx)
+    inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState, unsigned regionIdx) const
     {
         // Deal with the possibility that we are in a two-phase H2STORE with OIL and GAS as phases.
         const bool waterIsActive = fluidState.phaseIsActive(FluidState::waterPhaseIdx);

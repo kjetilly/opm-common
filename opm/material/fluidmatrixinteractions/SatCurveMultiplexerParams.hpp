@@ -33,6 +33,7 @@
 #include "PiecewiseLinearTwoPhaseMaterial.hpp"
 #include "PiecewiseLinearTwoPhaseMaterialParams.hpp"
 
+#include <opm/common/utility/gpuDecorators.hpp>
 #include <opm/material/common/EnsureFinalized.hpp>
 
 #include <cassert>
@@ -132,14 +133,16 @@ public:
             realParams_ = ParamPointerType(new PLParams, Deleter< PLParams > () );
             break;
         }
+
+        rawPtr_ = realParams_.get();
     }
 
-    SatCurveMultiplexerApproach approach() const
+    OPM_HOST_DEVICE SatCurveMultiplexerApproach approach() const
     { return approach_; }
 
     // get the parameter object for the LET curve
     template <SatCurveMultiplexerApproach approachV>
-    typename std::enable_if<approachV == SatCurveMultiplexerApproach::LET, LETParams>::type&
+    OPM_HOST_DEVICE typename std::enable_if<approachV == SatCurveMultiplexerApproach::LET, LETParams>::type&
     getRealParams()
     {
         assert(approach() == approachV);
@@ -147,7 +150,7 @@ public:
     }
 
     template <SatCurveMultiplexerApproach approachV>
-    typename std::enable_if<approachV == SatCurveMultiplexerApproach::LET, const LETParams>::type&
+    OPM_HOST_DEVICE typename std::enable_if<approachV == SatCurveMultiplexerApproach::LET, const LETParams>::type&
     getRealParams() const
     {
         assert(approach() == approachV);
@@ -156,7 +159,7 @@ public:
 
     // get the parameter object for the PL curve
     template <SatCurveMultiplexerApproach approachV>
-    typename std::enable_if<approachV == SatCurveMultiplexerApproach::PiecewiseLinear, PLParams>::type&
+    OPM_HOST_DEVICE typename std::enable_if<approachV == SatCurveMultiplexerApproach::PiecewiseLinear, PLParams>::type&
     getRealParams()
     {
         assert(approach() == approachV);
@@ -164,7 +167,7 @@ public:
     }
 
     template <SatCurveMultiplexerApproach approachV>
-    typename std::enable_if<approachV == SatCurveMultiplexerApproach::PiecewiseLinear, const PLParams>::type&
+    OPM_HOST_DEVICE typename std::enable_if<approachV == SatCurveMultiplexerApproach::PiecewiseLinear, const PLParams>::type&
     getRealParams() const
     {
         assert(approach() == approachV);
@@ -203,19 +206,20 @@ public:
 
 private:
     template <class ParamT>
-    ParamT& castTo()
+    OPM_HOST_DEVICE ParamT& castTo()
     {
-        return *(static_cast<ParamT *> (realParams_.operator->()));
+        return *(static_cast<ParamT *> (rawPtr_));
     }
 
     template <class ParamT>
-    const ParamT& castTo() const
+    OPM_HOST_DEVICE const ParamT& castTo() const
     {
-        return *(static_cast<const ParamT *> (realParams_.operator->()));
+        return *(static_cast<const ParamT *> (rawPtr_));
     }
 
     SatCurveMultiplexerApproach approach_{SatCurveMultiplexerApproach::PiecewiseLinear};
     ParamPointerType realParams_;
+    void* rawPtr_ = nullptr;
 };
 
 } // namespace Opm

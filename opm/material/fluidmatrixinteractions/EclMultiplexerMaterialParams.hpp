@@ -36,6 +36,7 @@
 #include <memory>
 #include <type_traits>
 
+#include <opm/common/utility/gpuDecorators.hpp>
 #include <opm/material/common/EnsureFinalized.hpp>
 
 namespace Opm {
@@ -103,53 +104,72 @@ public:
     /*!
      * \brief The multiplexer constructor.
      */
-    EclMultiplexerMaterialParams() : realParams_()
+    OPM_HOST_DEVICE EclMultiplexerMaterialParams()
     {
+        // Zero-initialize the storage to represent a null shared_ptr.
+        for (unsigned i = 0; i < sizeof(realParamsStorage_); ++i)
+            reinterpret_cast<char*>(&realParamsStorage_)[i] = 0;
+    }
+
+    OPM_HOST_DEVICE ~EclMultiplexerMaterialParams()
+    {
+#if !OPM_IS_INSIDE_DEVICE_FUNCTION
+        realParams_().~ParamPointerType();
+#endif
     }
 
     EclMultiplexerMaterialParams(const EclMultiplexerMaterialParams& other)
-        : realParams_()
     {
+        new (&realParamsStorage_) ParamPointerType();
         setApproach( other.approach() );
     }
 
     EclMultiplexerMaterialParams& operator= ( const EclMultiplexerMaterialParams& other )
     {
-        realParams_.reset();
+        realParams_().reset();
+        rawPtr_ = nullptr;
         setApproach( other.approach() );
         return *this;
     }
 
     void setApproach(EclMultiplexerApproach newApproach)
     {
-        assert(realParams_ == 0);
+        assert(realParams_() == 0);
         approach_ = newApproach;
 
         switch (approach()) {
         case EclMultiplexerApproach::Stone1:
-            realParams_ = ParamPointerType(new Stone1Params, Deleter< Stone1Params > () );
+            realParams_() = ParamPointerType(new Stone1Params, Deleter< Stone1Params > () );
             break;
 
         case EclMultiplexerApproach::Stone2:
-            realParams_ = ParamPointerType(new Stone2Params, Deleter< Stone2Params > () );
+            realParams_() = ParamPointerType(new Stone2Params, Deleter< Stone2Params > () );
             break;
 
         case EclMultiplexerApproach::Default:
-            realParams_ = ParamPointerType(new DefaultParams, Deleter< DefaultParams > () );
+            realParams_() = ParamPointerType(new DefaultParams, Deleter< DefaultParams > () );
             break;
 
         case EclMultiplexerApproach::TwoPhase:
-            realParams_ = ParamPointerType(new TwoPhaseParams, Deleter< TwoPhaseParams > () );
+            realParams_() = ParamPointerType(new TwoPhaseParams, Deleter< TwoPhaseParams > () );
             break;
 
         case EclMultiplexerApproach::OnePhase:
             // Do nothing, no parameters.
             break;
         }
+
+        rawPtr_ = realParams_().get();
     }
 
-    EclMultiplexerApproach approach() const
+    OPM_HOST_DEVICE EclMultiplexerApproach approach() const
     { return approach_; }
+
+    /*!
+     * \brief Set the raw pointer used for GPU device access.
+     */
+    OPM_HOST_DEVICE void setRawPtr(void* ptr)
+    { rawPtr_ = ptr; }
 
     // get the parameter object for the Stone1 case
     template <EclMultiplexerApproach approachV>
@@ -187,7 +207,7 @@ public:
 
     // get the parameter object for the default case
     template <EclMultiplexerApproach approachV>
-    typename std::enable_if<approachV == EclMultiplexerApproach::Default, DefaultParams>::type&
+    OPM_HOST_DEVICE typename std::enable_if<approachV == EclMultiplexerApproach::Default, DefaultParams>::type&
     getRealParams()
     {
         assert(approach() == approachV);
@@ -195,7 +215,7 @@ public:
     }
 
     template <EclMultiplexerApproach approachV>
-    typename std::enable_if<approachV == EclMultiplexerApproach::Default, const DefaultParams>::type&
+    OPM_HOST_DEVICE typename std::enable_if<approachV == EclMultiplexerApproach::Default, const DefaultParams>::type&
     getRealParams() const
     {
         assert(approach() == approachV);
@@ -247,19 +267,26 @@ public:
 
 private:
     template <class ParamT>
-    ParamT& castTo()
+    OPM_HOST_DEVICE ParamT& castTo()
     {
-        return *(static_cast<ParamT *> (realParams_.operator->()));
+        return *(static_cast<ParamT *> (rawPtr_));
     }
 
     template <class ParamT>
-    const ParamT& castTo() const
+    OPM_HOST_DEVICE const ParamT& castTo() const
     {
-        return *(static_cast<const ParamT *> (realParams_.operator->()));
+        return *(static_cast<const ParamT *> (rawPtr_));
     }
 
     EclMultiplexerApproach approach_{EclMultiplexerApproach::Default};
-    ParamPointerType realParams_;
+    alignas(alignof(ParamPointerType)) char realParamsStorage_[sizeof(ParamPointerType)];
+    void* rawPtr_ = nullptr;
+
+    ParamPointerType& realParams_()
+    { return *reinterpret_cast<ParamPointerType*>(realParamsStorage_); }
+
+    const ParamPointerType& realParams_() const
+    { return *reinterpret_cast<const ParamPointerType*>(realParamsStorage_); }
 };
 } // namespace Opm
 

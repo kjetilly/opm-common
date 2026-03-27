@@ -267,7 +267,7 @@ public:
      */
     template <class FluidState, class LhsEval = typename FluidState::Scalar>
     std::pair<LhsEval, LhsEval>
-    inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState, unsigned regionIdx)
+    inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState, unsigned regionIdx) const
     {
         auto [b, mu] = isothermalPvt_->inverseFormationVolumeFactorAndViscosity(fluidState, regionIdx);
         const LhsEval& temperature = decay<LhsEval>(fluidState.temperature(FluidState::oilPhaseIdx));

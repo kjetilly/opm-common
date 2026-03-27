@@ -206,7 +206,7 @@ public:
      */
     template <class FluidState, class LhsEval = typename FluidState::Scalar>
     std::pair<LhsEval, LhsEval>
-    inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState, unsigned regionIdx)
+    inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState, unsigned regionIdx) const
     {
         const LhsEval& p = decay<LhsEval>(fluidState.pressure(FluidState::gasPhaseIdx));
         const LhsEval& Rvw = decay<LhsEval>(fluidState.Rvw());

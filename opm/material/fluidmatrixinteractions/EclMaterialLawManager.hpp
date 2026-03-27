@@ -28,8 +28,12 @@
 #ifndef OPM_ECL_MATERIAL_LAW_MANAGER_HPP
 #define OPM_ECL_MATERIAL_LAW_MANAGER_HPP
 
+#include "opm/material/fluidmatrixinteractions/EclMultiplexerMaterialParams.hpp"
 #include <opm/input/eclipse/EclipseState/Grid/FaceDir.hpp>
 #include <opm/input/eclipse/EclipseState/WagHysteresisConfig.hpp>
+
+#include <opm/common/utility/VectorWithDefaultAllocator.hpp>
+#include <opm/common/utility/gpuistl_if_available.hpp>
 
 #include <opm/material/fluidmatrixinteractions/EclEpsConfig.hpp>
 #include <opm/material/fluidmatrixinteractions/EclMaterialLawTwoPhaseTypes.hpp>
@@ -43,6 +47,7 @@
 #include <cassert>
 #include <functional>
 #include <memory>
+#include <type_traits>
 #include <vector>
 
 namespace Opm {
@@ -66,13 +71,36 @@ namespace Opm::EclMaterialLaw {
 
 template<class Traits> class InitParams;
 
+template<class, class, class, class>
+struct DefaultParams {};
+
+/// Helper to detect if two template-template parameters are the same.
+template <template <class, class, class, class> class A,
+          template <class, class, class, class> class B>
+struct IsSameTemplateTemplate : std::false_type {};
+template <template <class, class, class, class> class A>
+struct IsSameTemplateTemplate<A, A> : std::true_type {};
+
 /*!
  * \ingroup fluidmatrixinteractions
  *
  * \brief Provides an simple way to create and manage the material law objects
  *        for a complete ECL deck.
+ *
+ * \tparam TraitsT  The material traits type (phase indices, scalar type, etc.)
+ * \tparam ParamsT  A template-template parameter for the material law parameters type.
+ *                  When set to DefaultParams (the default), the multiplexer params
+ *                  (EclMultiplexerMaterialParams) are used. Otherwise, ParamsT is
+ *                  instantiated with <Traits, GasOilLaw, OilWaterLaw, GasWaterLaw>
+ *                  and used directly as the MaterialLawParams type.
+ * \tparam Storage  A template for container types (default: VectorWithDefaultAllocator,
+ *                  i.e. std::vector). Can be replaced with e.g. GpuBuffer for GPU storage.
+ * \tparam SharedPointer  A template for shared pointer types (default: std::shared_ptr).
  */
-template <class TraitsT>
+template <class TraitsT,
+          template <class, class, class, class> class ParamsT = DefaultParams,
+          template<class> class Storage = VectorWithDefaultAllocator,
+          template<class> class SharedPointer = std::shared_ptr>
 class Manager
 {
     using Traits = TraitsT;
@@ -85,21 +113,34 @@ class Manager
     using GasWaterEffectiveParamVector = typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasWaterEffectiveParamVector;
     using OilWaterEffectiveParamVector = typename EclMaterialLaw::TwoPhaseTypes<Traits>::OilWaterEffectiveParamVector;
 
+    using GasOilLaw = typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasOilLaw;
+    using OilWaterLaw = typename EclMaterialLaw::TwoPhaseTypes<Traits>::OilWaterLaw;
+    using GasWaterLaw = typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasWaterLaw;
+
 public:
     // the three-phase material law used by the simulation
-    using MaterialLaw = EclMultiplexerMaterial<Traits,
-                                               typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasOilLaw,
-                                               typename EclMaterialLaw::TwoPhaseTypes<Traits>::OilWaterLaw,
-                                               typename EclMaterialLaw::TwoPhaseTypes<Traits>::GasWaterLaw>;
-    using MaterialLawParams = typename MaterialLaw::Params;
+    using MaterialLaw = EclMultiplexerMaterial<Traits, GasOilLaw, OilWaterLaw, GasWaterLaw>;
+
+    /*!
+     * \brief The material law parameters type.
+     *
+     * When ParamsT is not DefaultParams, ParamsT<Traits, GasOilLaw, OilWaterLaw, GasWaterLaw>
+     * is used directly. Otherwise, the MaterialLaw's default Params type
+     * (EclMultiplexerMaterialParams) is used.
+     */
+    using MaterialLawParams = std::conditional_t<
+        IsSameTemplateTemplate<ParamsT, DefaultParams>::value,
+        typename MaterialLaw::Params,
+        ParamsT<Traits, GasOilLaw, OilWaterLaw, GasWaterLaw>>;
+
     using DirectionalMaterialLawParamsPtr = std::unique_ptr<DirectionalMaterialLawParams<MaterialLawParams>>;
 
 private:
-    using GasOilScalingPointsVector = std::vector<std::shared_ptr<EclEpsScalingPoints<Scalar>>>;
-    using OilWaterScalingPointsVector = std::vector<std::shared_ptr<EclEpsScalingPoints<Scalar>>>;
-    using GasWaterScalingPointsVector = std::vector<std::shared_ptr<EclEpsScalingPoints<Scalar>>>;
-    using OilWaterScalingInfoVector = std::vector<EclEpsScalingPointsInfo<Scalar>>;
-    using MaterialLawParamsVector = std::vector<std::shared_ptr<MaterialLawParams>>;
+    using GasOilScalingPointsVector = Storage<SharedPointer<EclEpsScalingPoints<Scalar>>>;
+    using OilWaterScalingPointsVector = Storage<SharedPointer<EclEpsScalingPoints<Scalar>>>;
+    using GasWaterScalingPointsVector = Storage<SharedPointer<EclEpsScalingPoints<Scalar>>>;
+    using OilWaterScalingInfoVector = Storage<EclEpsScalingPointsInfo<Scalar>>;
+    using MaterialLawParamsVector = Storage<SharedPointer<MaterialLawParams>>;
 
 public:
     struct Params
@@ -111,15 +152,15 @@ public:
         GasOilScalingPointsVector gasOilUnscaledPointsVector{};
         OilWaterScalingPointsVector oilWaterUnscaledPointsVector{};
         GasWaterScalingPointsVector gasWaterUnscaledPointsVector{};
-        std::vector<int> krnumXArray{};
-        std::vector<int> krnumYArray{};
-        std::vector<int> krnumZArray{};
-        std::vector<int> imbnumXArray{};
-        std::vector<int> imbnumYArray{};
-        std::vector<int> imbnumZArray{};
-        std::vector<int> satnumRegionArray{};
-        std::vector<int> imbnumRegionArray{};
-        std::vector<MaterialLawParams> materialLawParams{};
+        Storage<int> krnumXArray{};
+        Storage<int> krnumYArray{};
+        Storage<int> krnumZArray{};
+        Storage<int> imbnumXArray{};
+        Storage<int> imbnumYArray{};
+        Storage<int> imbnumZArray{};
+        Storage<int> satnumRegionArray{};
+        Storage<int> imbnumRegionArray{};
+        Storage<MaterialLawParams> materialLawParams{};
         DirectionalMaterialLawParamsPtr dirMaterialLawParams{};
         bool onlyPiecewiseLinear = true;
 
@@ -205,7 +246,7 @@ public:
     const EclEpsScalingPointsInfo<Scalar>& unscaledEpsInfo(unsigned satRegionIdx) const
     { return unscaledEpsInfo_[satRegionIdx]; }
 
-    std::shared_ptr<WagHysteresisConfig::WagHysteresisConfigRecord>
+    SharedPointer<WagHysteresisConfig::WagHysteresisConfigRecord>
     wagHystersisConfig(unsigned satRegionIdx) const
     { return wagHystersisConfig_[satRegionIdx]; }
 
@@ -266,7 +307,7 @@ public:
     EclTwoPhaseApproach twoPhaseApproach() const
     { return twoPhaseApproach_; }
 
-    const std::vector<Scalar>& stoneEtas() const
+    const Storage<Scalar>& stoneEtas() const
     { return stoneEtas_; }
 
     template <class FluidState>
@@ -331,6 +372,54 @@ public:
         return this->params_.onlyPiecewiseLinear;
     }
 
+    // Getters for GPU copy support
+    const Storage<MaterialLawParams>& getMaterialLawParams() const
+    { return params_.materialLawParams; }
+
+    EclMultiplexerApproach getThreePhaseApproach() const
+    { return threePhaseApproach_; }
+
+    EclTwoPhaseApproach getTwoPhaseApproach() const
+    { return twoPhaseApproach_; }
+
+    /*!
+     * \brief Construct a Manager from pre-built GPU data.
+     *
+     * This constructor is intended for creating GPU (GpuBuffer/GpuView) variants
+     * of the Manager. Init-phase data (scaling points, effective params, etc.)
+     * is not copied -- only the runtime-essential materialLawParams are stored.
+     */
+    Manager(Storage<MaterialLawParams>&& materialLawParams,
+            EclMultiplexerApproach threePhaseApproach,
+            EclTwoPhaseApproach twoPhaseApproach,
+            bool hasGas, bool hasOil, bool hasWater)
+        : threePhaseApproach_(threePhaseApproach)
+        , twoPhaseApproach_(twoPhaseApproach)
+        , hasGas_(hasGas)
+        , hasOil_(hasOil)
+        , hasWater_(hasWater)
+    {
+        params_.materialLawParams = std::move(materialLawParams);
+    }
+
+    Manager() = default;
+
+#if HAVE_CUDA
+    // Forward declare friend functions for GPU support
+    template <class T,
+              template<class, class, class, class> class P,
+              template<class> class S,
+              template<class> class SP>
+    friend Manager<T, P, gpuistl::GpuBuffer, SP>
+    gpuistl::copy_to_gpu(const Manager<T, P, S, SP>&);
+
+    template <class T,
+              template<class, class, class, class> class P,
+              template<class> class SP>
+    friend Manager<T, P, gpuistl::GpuView, SP>
+    gpuistl::make_view(Manager<T, P, gpuistl::GpuBuffer, SP>&);
+#endif // HAVE_CUDA
+
 private:
     const MaterialLawParams& materialLawParamsFunc_(unsigned elemIdx, FaceDir::DirEnum facedir) const;
 
@@ -342,9 +431,9 @@ private:
 
     bool enableEndPointScaling_{false};
     EclHysteresisConfig hysteresisConfig_;
-    std::vector<std::shared_ptr<WagHysteresisConfig::WagHysteresisConfigRecord>> wagHystersisConfig_;
+    Storage<SharedPointer<WagHysteresisConfig::WagHysteresisConfigRecord>> wagHystersisConfig_;
 
-    std::vector<EclEpsScalingPointsInfo<Scalar>> unscaledEpsInfo_;
+    Storage<EclEpsScalingPointsInfo<Scalar>> unscaledEpsInfo_;
 
     Params params_;
 
@@ -352,11 +441,11 @@ private:
     // this attribute only makes sense for twophase simulations!
     EclTwoPhaseApproach twoPhaseApproach_ = EclTwoPhaseApproach::GasOil;
 
-    std::vector<Scalar> stoneEtas_;
+    Storage<Scalar> stoneEtas_;
 
     bool enablePpcwmax_{false};
-    std::vector<Scalar> maxAllowPc_;
-    std::vector<bool> modifySwl_;
+    Storage<Scalar> maxAllowPc_;
+    Storage<bool> modifySwl_;
 
     bool hasGas_{true};
     bool hasOil_{true};
@@ -368,5 +457,60 @@ private:
 };
 
 } // namespace Opm::EclMaterialLaw
+
+#if HAVE_CUDA
+#include <opm/common/utility/gpuistl_if_available.hpp>
+
+namespace Opm::gpuistl {
+
+/*!
+ * \brief Copy a CPU-based EclMaterialLaw::Manager to a GpuBuffer-based variant.
+ *
+ * Only runtime-essential data (materialLawParams, phase approach, phase flags)
+ * is copied to GPU memory. Init-phase data (scaling points, effective params,
+ * hysteresis config) is not transferred.
+ */
+template <class TraitsT,
+          template<class, class, class, class> class ParamsT,
+          template<class> class Storage,
+          template<class> class SharedPointer>
+EclMaterialLaw::Manager<TraitsT, ParamsT, GpuBuffer, SharedPointer>
+copy_to_gpu(const EclMaterialLaw::Manager<TraitsT, ParamsT, Storage, SharedPointer>& cpuManager)
+{
+    using MaterialLawParams = typename EclMaterialLaw::Manager<TraitsT, ParamsT, Storage, SharedPointer>::MaterialLawParams;
+
+    return EclMaterialLaw::Manager<TraitsT, ParamsT, GpuBuffer, SharedPointer>(
+        GpuBuffer<MaterialLawParams>(cpuManager.getMaterialLawParams()),
+        cpuManager.getThreePhaseApproach(),
+        cpuManager.getTwoPhaseApproach(),
+        cpuManager.hasGas(),
+        cpuManager.hasOil(),
+        cpuManager.hasWater());
+}
+
+/*!
+ * \brief Create a GpuView-based Manager from a GpuBuffer-based Manager.
+ */
+template <class TraitsT,
+          template<class, class, class, class> class ParamsT,
+          template<class> class SharedPointer>
+EclMaterialLaw::Manager<TraitsT, ParamsT, GpuView, SharedPointer>
+make_view(EclMaterialLaw::Manager<TraitsT, ParamsT, GpuBuffer, SharedPointer>& gpuManager)
+{
+    using MaterialLawParams = typename EclMaterialLaw::Manager<TraitsT, ParamsT, GpuBuffer, SharedPointer>::MaterialLawParams;
+
+    auto mlpView = make_view<MaterialLawParams>(gpuManager.params_.materialLawParams);
+
+    return EclMaterialLaw::Manager<TraitsT, ParamsT, GpuView, SharedPointer>(
+        std::move(mlpView),
+        gpuManager.getThreePhaseApproach(),
+        gpuManager.getTwoPhaseApproach(),
+        gpuManager.hasGas(),
+        gpuManager.hasOil(),
+        gpuManager.hasWater());
+}
+
+} // namespace Opm::gpuistl
+#endif // HAVE_CUDA
 
 #endif

@@ -872,7 +872,7 @@ public:
     STATIC_OR_DEVICE std::pair<LhsEval, LhsEval>
     inverseFormationVolumeFactorAndViscosity(const FluidState& fluidState,
                                              unsigned phaseIdx,
-                                             unsigned regionIdx)
+                                             unsigned regionIdx) NOTHING_OR_CONST
     {
         switch (phaseIdx) {
         case oilPhaseIdx:
@@ -882,7 +882,12 @@ public:
         case waterPhaseIdx:
             return waterPvt_.inverseFormationVolumeFactorAndViscosity(fluidState, regionIdx);
         default:
+#if OPM_IS_INSIDE_DEVICE_FUNCTION
+            assert(false && "Unhandled phase index");
+            return {0.0, 0.0};
+#else
             throw std::logic_error("Unhandled phase index "+std::to_string(phaseIdx));
+#endif
         }
     }
 
@@ -1341,7 +1346,13 @@ public:
         case oilPhaseIdx: return 0.0;
         case gasPhaseIdx: return gasPvt_.saturatedWaterVaporizationFactor(regionIdx, T, p, saltConcentration);
         case waterPhaseIdx: return 0.0;
-        default: throw std::logic_error("Unhandled phase index "+std::to_string(phaseIdx));
+        default:
+#if OPM_IS_INSIDE_DEVICE_FUNCTION
+            assert(false && "Unhandled phase index");
+            return 0.0;
+#else
+            throw std::logic_error("Unhandled phase index "+std::to_string(phaseIdx));
+#endif
         }
     }
 
@@ -1399,7 +1410,13 @@ public:
         case gasPhaseIdx: return gasPvt_.saturatedOilVaporizationFactor(regionIdx, T, p);
         case waterPhaseIdx: return waterPvt_.saturatedGasDissolutionFactor(regionIdx, T, p,
         BlackOil::template getSaltConcentration_<FluidState, LhsEval>(fluidState, regionIdx));
-        default: throw std::logic_error("Unhandled phase index "+std::to_string(phaseIdx));
+        default:
+#if OPM_IS_INSIDE_DEVICE_FUNCTION
+            assert(false && "Unhandled phase index");
+            return 0.0;
+#else
+            throw std::logic_error("Unhandled phase index "+std::to_string(phaseIdx));
+#endif
         }
     }
 

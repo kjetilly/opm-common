@@ -41,10 +41,11 @@ namespace Opm {
     class FieldPropsManager;
 }
 
+#include <opm/material/fluidmatrixinteractions/EclMaterialLawManager.hpp>
+
 namespace Opm::EclMaterialLaw {
 
 template<class Traits> class HystParams;
-template<class Traits> class Manager;
 
 template<class Traits>
 class InitParams
