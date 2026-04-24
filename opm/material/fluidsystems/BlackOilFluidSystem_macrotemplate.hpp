@@ -244,6 +244,14 @@ public:
     static FLUIDSYSTEM_CLASSNAME_NONSTATIC<Scalar, IndexTraits, StorageT>& getNonStaticInstance()
     {
         static FLUIDSYSTEM_CLASSNAME_NONSTATIC<Scalar, IndexTraits, StorageT> instance{FLUIDSYSTEM_CLASSNAME<Scalar, IndexTraits, Storage>()};
+        // Refresh the singleton from the current static fluid-system state.
+        // The static fluid system can be re-initialised (for example by a
+        // subsequent readDeck call) and the non-static instance must mirror
+        // the current static data, otherwise downstream consumers (e.g. the
+        // GPU intensive-quantities path) end up using stale PVT/density
+        // tables and produce results that no longer match the CPU side.
+        instance = FLUIDSYSTEM_CLASSNAME_NONSTATIC<Scalar, IndexTraits, StorageT>(
+            FLUIDSYSTEM_CLASSNAME<Scalar, IndexTraits, Storage>());
         return instance;
 
     }
