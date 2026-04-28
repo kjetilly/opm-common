@@ -41,6 +41,7 @@
 #include <iosfwd>
 #include <stdexcept>
 
+#include <opm/common/ErrorMacros.hpp>
 #include <opm/common/utility/gpuDecorators.hpp>
 
 #if HAVE_DUNE_COMMON
