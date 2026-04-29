@@ -50,21 +50,21 @@ class FastSmallVector
 {
 public:
     //! default constructor
-    FastSmallVector()
+    constexpr FastSmallVector()
         : size_(0)
     {
         dataPtr_ = smallBuf_.data();
     }
 
     //! constructor based on the number of the element
-    explicit FastSmallVector(const size_t numElem)
+    explicit constexpr FastSmallVector(const size_t numElem)
     {
         init_(numElem);
     }
 
     //! constructor based on the number of the element, and all the elements
     //! will have the same value
-    FastSmallVector(const size_t numElem, const ValueType value)
+    constexpr FastSmallVector(const size_t numElem, const ValueType value)
     {
         init_(numElem);
 
@@ -72,7 +72,7 @@ public:
     }
 
     //! copy constructor
-    FastSmallVector(const FastSmallVector& other)
+    constexpr FastSmallVector(const FastSmallVector& other)
         : size_(0)
     {
         dataPtr_ = smallBuf_.data();
@@ -81,7 +81,7 @@ public:
     }
 
     //! move constructor
-    FastSmallVector(FastSmallVector&& other)
+    constexpr FastSmallVector(FastSmallVector&& other)
         : size_(0)
     {
         dataPtr_ = smallBuf_.data();
@@ -90,13 +90,13 @@ public:
     }
 
     //! destructor
-    ~FastSmallVector()
+    constexpr ~FastSmallVector()
     {
     }
 
 
     //! move assignment
-    FastSmallVector& operator=(FastSmallVector&& other)
+    constexpr FastSmallVector& operator=(FastSmallVector&& other)
     {
         size_ = other.size_;
         if (other.usingSmallBuf()) {
@@ -115,7 +115,7 @@ public:
     }
 
     //! copy assignment
-    FastSmallVector& operator=(const FastSmallVector& other)
+    constexpr FastSmallVector& operator=(const FastSmallVector& other)
     {
         size_ = other.size_;
 
@@ -132,17 +132,17 @@ public:
     }
 
     //! access the idx th element
-    ValueType& operator[](size_t idx)
+    constexpr ValueType& operator[](size_t idx)
     { return dataPtr_[idx]; }
 
     //! const access the idx th element
-    const ValueType& operator[](size_t idx) const
+    constexpr const ValueType& operator[](size_t idx) const
     { return dataPtr_[idx]; }
 
     using size_type = typename std::vector<ValueType>::size_type;
 
     //! number of elements
-    size_type size() const
+    constexpr size_type size() const
     { return size_; }
 
     //! Iterator type is a plain pointer, so be warned there is no validity checking.
@@ -152,33 +152,33 @@ public:
     using ConstIterator = const ValueType*;
 
     //! To support range-for etc.
-    ConstIterator begin() const
+    constexpr ConstIterator begin() const
     { return dataPtr_; }
 
     //! To support range-for etc.
-    ConstIterator end() const
+    constexpr ConstIterator end() const
     { return dataPtr_ + size_; }
 
     //! To support range-for etc.
-    ConstIterator cbegin() const
+    constexpr ConstIterator cbegin() const
     { return dataPtr_; }
 
     //! To support range-for etc.
-    ConstIterator cend() const
+    constexpr ConstIterator cend() const
     { return dataPtr_ + size_; }
 
     //! To support range-for etc.
-    Iterator begin()
+    constexpr Iterator begin()
     { return dataPtr_; }
 
     //! To support range-for etc.
-    Iterator end()
+    constexpr Iterator end()
     { return dataPtr_ + size_; }
 
-    size_type capacity()
+    constexpr size_type capacity()
     { return this->usingSmallBuf() ? N : data_.capacity(); }
 
-    void push_back(const ValueType& value)
+    constexpr void push_back(const ValueType& value)
     {
         if (this->usingSmallBuf()) {
             if (size_ < N) {
@@ -201,7 +201,7 @@ public:
         }
     }
 
-    void resize(size_t numElem)
+    constexpr void resize(size_t numElem)
     {
         if (numElem == size_) return; // nothing to do
 
@@ -227,7 +227,7 @@ public:
     }
 
 private:
-    void init_(size_t numElem)
+    constexpr void init_(size_t numElem)
     {
         size_ = numElem;
 
@@ -238,7 +238,7 @@ private:
             dataPtr_ = smallBuf_.data();
     }
 
-    bool usingSmallBuf() const
+    constexpr bool usingSmallBuf() const
     {
         return dataPtr_ == smallBuf_.data();
     }

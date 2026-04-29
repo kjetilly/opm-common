@@ -1319,18 +1319,6 @@ list(APPEND PUBLIC_HEADER_FILES
   opm/material/constraintsolvers/PTFlash.hpp
   opm/material/densead/DynamicEvaluation.hpp
   opm/material/densead/Evaluation.hpp
-  opm/material/densead/Evaluation1.hpp
-  opm/material/densead/Evaluation10.hpp
-  opm/material/densead/Evaluation11.hpp
-  opm/material/densead/Evaluation12.hpp
-  opm/material/densead/Evaluation2.hpp
-  opm/material/densead/Evaluation3.hpp
-  opm/material/densead/Evaluation4.hpp
-  opm/material/densead/Evaluation5.hpp
-  opm/material/densead/Evaluation6.hpp
-  opm/material/densead/Evaluation7.hpp
-  opm/material/densead/Evaluation8.hpp
-  opm/material/densead/Evaluation9.hpp
   opm/material/densead/EvaluationFormat.hpp
   opm/material/densead/EvaluationSpecializations.hpp
   opm/material/densead/Math.hpp
