@@ -90,7 +90,22 @@ public:
         return *this;
     }
 
-    // assign directly from a unique_ptr
+    // Assign directly from a unique_ptr.
+    //
+    // This overload is host-only when on_gpu == true: the GPU-view
+    // configuration has a no-op destructor, so taking ownership of a
+    // \c unique_ptr<T> from the host would leak the object. We therefore
+    // delete this overload in the host pass for GPU-view instantiations
+    // (so user code can only construct GPU views from non-owning raw
+    // pointers via \c to_gpu_view()).
+    //
+    // In a device-compiler pass (CUDA/HIP) we must still allow the
+    // overload to compile, because host-only code that is transitively
+    // instantiated for the device pass (e.g. \c FlowProblem::updateRelperms
+    // with directional mobilities) names it. Such code is never executed
+    // on the device, so the historical \c release()-and-leak fallback is
+    // harmless there.
+#if OPM_IS_INSIDE_DEVICE_FUNCTION
     CopyablePtr& operator=(std::unique_ptr<T>&& uptr) {
         if constexpr (on_gpu) {
             ptr_ = uptr.release();
@@ -99,6 +114,14 @@ public:
         }
         return *this;
     }
+#else
+    CopyablePtr& operator=(std::unique_ptr<T>&& uptr)
+        requires (!on_gpu)
+    {
+        ptr_ = std::move(uptr);
+        return *this;
+    }
+#endif
 
     OPM_HOST_DEVICE ~CopyablePtr() = default;
 
