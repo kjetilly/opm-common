@@ -29,8 +29,6 @@
 
 #include "SatCurveMultiplexerParams.hpp"
 
-#include <opm/common/utility/gpuDecorators.hpp>
-
 #include <stdexcept>
 
 
@@ -187,16 +185,12 @@ public:
     }
 
     template <class Evaluation, class ...Args>
-    OPM_HOST_DEVICE static Evaluation twoPhaseSatPcnw(const Params& params, const Evaluation& Sw)
+    static Evaluation twoPhaseSatPcnw(const Params& params, const Evaluation& Sw)
     {
         if constexpr (FrontIsSatCurveMultiplexerDispatchV<Args...>) {
             return twoPhaseSatPcnwT<Evaluation, Args...>(params, Sw);
         }
 
-#if OPM_IS_INSIDE_DEVICE_FUNCTION
-        return PLTwoPhaseLaw::twoPhaseSatPcnw(params.template getRealParams<SatCurveMultiplexerApproach::PiecewiseLinear>(),
-                                              Sw);
-#else
         switch (params.approach()) {
         case SatCurveMultiplexerApproach::LET:
             return LETTwoPhaseLaw::twoPhaseSatPcnw(params.template getRealParams<SatCurveMultiplexerApproach::LET>(),
@@ -210,11 +204,10 @@ public:
         }
 
         return 0.0;
-#endif
     }
 
     template <class Evaluation, class Head, class ...Args>
-    OPM_HOST_DEVICE static Evaluation twoPhaseSatPcnwT(const Params& params, const Evaluation& Sw)
+    static Evaluation twoPhaseSatPcnwT(const Params& params, const Evaluation& Sw)
     {
         if constexpr (Head::approach == SatCurveMultiplexerApproach::LET) {
             return LETTwoPhaseLaw::twoPhaseSatPcnw(params.template getRealParams<SatCurveMultiplexerApproach::LET>(),
@@ -325,16 +318,12 @@ public:
     }
 
     template <class Evaluation, class ...Args>
-    OPM_HOST_DEVICE static Evaluation twoPhaseSatKrw(const Params& params, const Evaluation& Sw)
+    static Evaluation twoPhaseSatKrw(const Params& params, const Evaluation& Sw)
     {
         if constexpr (FrontIsSatCurveMultiplexerDispatchV<Args...>) {
             return twoPhaseSatKrwT<Evaluation, Args...>(params, Sw);
         }
 
-#if OPM_IS_INSIDE_DEVICE_FUNCTION
-        return PLTwoPhaseLaw::twoPhaseSatKrw(params.template getRealParams<SatCurveMultiplexerApproach::PiecewiseLinear>(),
-                                             Sw);
-#else
         switch (params.approach()) {
         case SatCurveMultiplexerApproach::LET:
             return LETTwoPhaseLaw::twoPhaseSatKrw(params.template getRealParams<SatCurveMultiplexerApproach::LET>(),
@@ -348,11 +337,10 @@ public:
         }
 
         return 0.0;
-#endif
     }
 
     template <class Evaluation, class Head, class ...Args>
-    OPM_HOST_DEVICE static Evaluation twoPhaseSatKrwT(const Params& params, const Evaluation& Sw)
+    static Evaluation twoPhaseSatKrwT(const Params& params, const Evaluation& Sw)
     {
         if constexpr (Head::approach == SatCurveMultiplexerApproach::LET) {
             return LETTwoPhaseLaw::twoPhaseSatKrw(params.template getRealParams<SatCurveMultiplexerApproach::LET>(),
@@ -406,16 +394,12 @@ public:
     }
 
     template <class Evaluation, class ...Args>
-    OPM_HOST_DEVICE static Evaluation twoPhaseSatKrn(const Params& params, const Evaluation& Sw)
+    static Evaluation twoPhaseSatKrn(const Params& params, const Evaluation& Sw)
     {
         if constexpr (FrontIsSatCurveMultiplexerDispatchV<Args...>) {
             return twoPhaseSatKrnT<Evaluation, Args...>(params, Sw);
         }
 
-#if OPM_IS_INSIDE_DEVICE_FUNCTION
-        return PLTwoPhaseLaw::twoPhaseSatKrn(params.template getRealParams<SatCurveMultiplexerApproach::PiecewiseLinear>(),
-                                             Sw);
-#else
         switch (params.approach()) {
         case SatCurveMultiplexerApproach::LET:
             return LETTwoPhaseLaw::twoPhaseSatKrn(params.template getRealParams<SatCurveMultiplexerApproach::LET>(),
@@ -429,11 +413,10 @@ public:
         }
 
         return 0.0;
-#endif
     }
 
     template <class Evaluation, class Head, class ...Args>
-    OPM_HOST_DEVICE static Evaluation twoPhaseSatKrnT(const Params& params, const Evaluation& Sw)
+    static Evaluation twoPhaseSatKrnT(const Params& params, const Evaluation& Sw)
     {
         if constexpr (Head::approach == SatCurveMultiplexerApproach::LET) {
             return LETTwoPhaseLaw::twoPhaseSatKrn(params.template getRealParams<SatCurveMultiplexerApproach::LET>(),
