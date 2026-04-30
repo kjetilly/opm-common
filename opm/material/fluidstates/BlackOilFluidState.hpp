@@ -43,12 +43,12 @@ OPM_GENERATE_HAS_MEMBER(pvtRegionIndex, ) // Creates 'HasMember_pvtRegionIndex<T
 
 template <class FluidState>
 OPM_HOST_DEVICE unsigned getPvtRegionIndex_(typename std::enable_if<HasMember_pvtRegionIndex<FluidState>::value,
-                                                    const FluidState&>::type fluidState)
+                                            const FluidState&>::type fluidState)
 { return fluidState.pvtRegionIndex(); }
 
 template <class FluidState>
 OPM_HOST_DEVICE unsigned getPvtRegionIndex_(typename std::enable_if<!HasMember_pvtRegionIndex<FluidState>::value,
-                                                    const FluidState&>::type)
+                                            const FluidState&>::type)
 { return 0; }
 
 OPM_GENERATE_HAS_MEMBER(invB, /*phaseIdx=*/0) // Creates 'HasMember_invB<T>'.
@@ -85,37 +85,37 @@ OPM_GENERATE_HAS_MEMBER(saltConcentration, ) // Creates 'HasMember_saltConcentra
 
 template <class FluidState>
 OPM_HOST_DEVICE auto getSaltConcentration_(typename std::enable_if<HasMember_saltConcentration<FluidState>::value,
-                                                    const FluidState&>::type fluidState)
+                                           const FluidState&>::type fluidState)
 { return fluidState.saltConcentration(); }
 
 template <class FluidState>
 OPM_HOST_DEVICE auto getSaltConcentration_(typename std::enable_if<!HasMember_saltConcentration<FluidState>::value,
-                                                    const FluidState&>::type)
+                                           const FluidState&>::type)
 { return 0.0; }
 
 OPM_GENERATE_HAS_MEMBER(saltSaturation, ) // Creates 'HasMember_saltSaturation<T>'.
 
 template <class FluidState>
 OPM_HOST_DEVICE auto getSaltSaturation_(typename std::enable_if<HasMember_saltSaturation<FluidState>::value,
-                                                    const FluidState&>::type fluidState)
+                                        const FluidState&>::type fluidState)
 { return fluidState.saltSaturation(); }
 
 
 template <class FluidState>
 OPM_HOST_DEVICE auto getSaltSaturation_(typename std::enable_if<!HasMember_saltSaturation<FluidState>::value,
-                                                    const FluidState&>::type)
+                                        const FluidState&>::type)
 { return 0.0; }
 
 OPM_GENERATE_HAS_MEMBER(solventSaturation, ) // Creates 'HasMember_solventSaturation<T>'.
 
 template <class FluidState>
 OPM_HOST_DEVICE auto getSolventSaturation_(typename std::enable_if<HasMember_solventSaturation<FluidState>::value,
-                                                    const FluidState&>::type fluidState)
+                                           const FluidState&>::type fluidState)
 { return fluidState.solventSaturation(); }
 
 template <class FluidState>
 OPM_HOST_DEVICE auto getSolventSaturation_(typename std::enable_if<!HasMember_solventSaturation<FluidState>::value,
-                                                    const FluidState&>::type)
+                                           const FluidState&>::type)
 { return 0.0; }
 
 /*!
