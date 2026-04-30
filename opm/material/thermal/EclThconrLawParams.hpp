@@ -44,8 +44,7 @@ public:
 
     OPM_HOST_DEVICE EclThconrLawParams(const EclThconrLawParams&) = default;
 
-    OPM_HOST_DEVICE EclThconrLawParams()
-    { }
+    OPM_HOST_DEVICE EclThconrLawParams() = default;
 
     /*!
      * \brief Set the total thermal conductivity [J/m^2 / (K/m)] of at Sg = 0

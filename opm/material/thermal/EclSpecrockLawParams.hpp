@@ -59,7 +59,7 @@ public:
 
     OPM_HOST_DEVICE EclSpecrockLawParams() = default;
 
-    OPM_HOST_DEVICE EclSpecrockLawParams(InternalEnergyFunction internalEnergyFunction)
+    OPM_HOST_DEVICE explicit EclSpecrockLawParams(InternalEnergyFunction internalEnergyFunction)
         : internalEnergyFunction_(std::move(internalEnergyFunction))
     {
         EnsureFinalized::finalize();
